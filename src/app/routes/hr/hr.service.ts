@@ -13,33 +13,33 @@ export class HrService  {
   private insertCountryUrl = 'https://localhost:7019/api/CountryMaster/createcountry';
   private updateCountryUrl = 'https://localhost:7019/api/CountryMaster/updatecountry';
   private deleteCountryUrl = 'https://localhost:7019/api/CountryMaster/deletecountry';
- 
+
 
   constructor(private http: HttpClient) {}
 
-  getAllCountries(): Observable<Country[]> {
-    return this.http.get<Country[]>(`${this.countryUrl}/getallcountries`);
-  }
+  // getAllCountries(): Observable<Country[]> {
+  //   return this.http.get<Country[]>(`${this.countryUrl}/getallcountries`);
+  // }
 
-  getAllCurrencies(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.currencyUrl}/getallcurrency`);
-  }
+  // getAllCurrencies(): Observable<any[]> {
+  //   return this.http.get<any[]>(`${this.currencyUrl}/getallcurrency`);
+  // }
 
-  getAllCurrencyDetails(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.countryDetailsUrl}/getallcurrencydetails`);
-  }
+  // getAllCurrencyDetails(): Observable<any[]> {
+  //   return this.http.get<any[]>(`${this.countryDetailsUrl}/getallcurrencydetails`);
+  // }
 
-  insertCountry(insertCountry: Country): Observable<any> {
-   return this.http.post(`${this.insertCountryUrl}`, insertCountry);
-  }
+  // insertCountry(insertCountry: Country): Observable<any> {
+  //  return this.http.post(`${this.insertCountryUrl}`, insertCountry);
+  // }
 
-  updateCountry(updateCountry: Country): Observable<any> {
-    return this.http.put(`${this.updateCountryUrl}`, updateCountry);
-  }
+  // updateCountry(updateCountry: Country): Observable<any> {
+  //   return this.http.put(`${this.updateCountryUrl}`, updateCountry);
+  // }
 
-   deleteCountry(countryId: number): Observable<any> {
-    return this.http.delete(`${this.deleteCountryUrl}/${countryId}`);
-  }
-  
+  //  deleteCountry(countryId: number): Observable<any> {
+  //   return this.http.delete(`${this.deleteCountryUrl}/${countryId}`);
+  // }
+
 
 }

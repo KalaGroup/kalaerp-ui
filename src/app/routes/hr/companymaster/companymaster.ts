@@ -9,8 +9,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { HrService } from '../hr.service';
-import { Country } from '@shared/interfaces/hr';
+//import { companyService } from '../hr.service';
+import { Companyservice } from '@shared/services/hr/company/companyservice';
+import { ICompany } from '@shared/interfaces/hr/company';
+import { ICountry } from '@shared/interfaces/hr/country';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -34,12 +36,12 @@ export class Companymaster {
    private readonly translate = inject(TranslateService);
       @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
        dialogRef!: MatDialogRef<any>;
-     
-     countries: Country[] = [];
+
+     countries: ICompany[] = [];
      showForm = false;
      countryModel: any = {};
      editIndex: number | null = null;
-   
+
      multiSelectable = true;
      rowSelectable = true;
      hideRowSelectionCheckbox = false;
@@ -52,21 +54,22 @@ export class Companymaster {
      showPaginator = true;
      expandable = false;
      columnResizable = false;
-    
+
      isLoading = false;
      list: any[] = [];
      isConfigExpanded: boolean = false;
-   
-   
-     constructor(private fb: FormBuilder,private hrService: HrService,private dialog: MatDialog,private toastService:Toastservice) {}
+
+
+     constructor(private fb: FormBuilder,private companyService: Companyservice,private dialog: MatDialog,private toastService:Toastservice) {}
        ngOnInit(): void {
-       // this.loadAllCountries();
+        this.loadAllCompanies();
+
       }
-   
+
        toggleConfigSection(): void {
        this.isConfigExpanded = !this.isConfigExpanded;
      }
-   
+
     columns: MtxGridColumn[] = [
   {
     header: this.translate.stream('SNo'),
@@ -98,7 +101,7 @@ export class Companymaster {
   },
   {
     header: this.translate.stream('Email'),
-    field: 'EmailID',
+    field: 'EmailId',
     sortable: true,
     minWidth: 180,
     width: '180px',
@@ -117,7 +120,7 @@ export class Companymaster {
     minWidth: 200,
     width: '200px',
     // Optional: Add tooltip for long addresses
-    showExpand: true,
+    //showExpand: true,
   },
   {
     header: this.translate.stream('Registered City'),
@@ -155,6 +158,48 @@ export class Companymaster {
     width: '100px',
   },
   {
+    header: this.translate.stream('Corporate Address'),
+    field: 'CorporateAddress',
+    sortable: true,
+    minWidth: 200,
+    width: '200px',
+  },
+  {
+    header: this.translate.stream('Corporate Country'),
+    field: 'CorporateCountryName',
+    sortable: true,
+    minWidth: 100,
+    width: '100px',
+  },
+  {
+    header: this.translate.stream('Corporate State'),
+    field: 'CorporateStateName',
+    sortable: true,
+    minWidth: 100,
+    width: '100px',
+  },
+  {
+    header: this.translate.stream('Corporate District'),
+    field: 'CorporateDistrictName',
+    sortable: true,
+    minWidth: 100,
+    width: '100px',
+  },
+  {
+    header: this.translate.stream('Corporate City'),
+    field: 'CorporateCityName',
+    sortable: true,
+    minWidth: 100,
+    width: '100px',
+  },
+  {
+    header: this.translate.stream('Corporate Pin Code'),
+    field: 'CorporatePinCode',
+    sortable: true,
+    minWidth: 100,
+    width: '100px',
+  },
+  {
     header: this.translate.stream('Website'),
     field: 'Website',
     sortable: true,
@@ -164,22 +209,31 @@ export class Companymaster {
     type: 'link',
   },
   {
+    header: this.translate.stream('Social Media'),
+    field: 'SocialMedialink',
+    sortable: true,
+    minWidth: 160,
+    width: '160px',
+    // Make website clickable
+    type: 'link',
+  },
+  {
     header: this.translate.stream('PAN'),
-    field: 'PAN',
+    field: 'Pan',
     sortable: true,
     minWidth: 120,
     width: '120px',
   },
   {
     header: this.translate.stream('GST'),
-    field: 'GST',
+    field: 'Gst',
     sortable: true,
     minWidth: 150,
     width: '150px',
   },
   {
     header: this.translate.stream('CIN'),
-    field: 'CIN',
+    field: 'Cin',
     sortable: true,
     minWidth: 180,
     width: '180px',
@@ -197,14 +251,14 @@ export class Companymaster {
   },
   {
     header: this.translate.stream('Entity Type'),
-    field: 'CompanyMasterEntityTypeName',
+    field: 'CompanyEntityTypeName',
     sortable: true,
     minWidth: 120,
     width: '120px',
   },
   {
     header: this.translate.stream('Currency'),
-    field: 'CompanyCurrencyName',
+    field: 'CurrencyName',
     sortable: true,
     minWidth: 100,
     width: '100px',
@@ -220,6 +274,24 @@ export class Companymaster {
       format: 'dd/MM/yyyy'
     }
   },
+  {
+  header: this.translate.stream('Logo'),
+  field: 'Logo',
+  sortable: false,
+  minWidth: 80,
+  width: '80px',
+  type: 'image', // Use built-in image type instead of cellTemplate
+  typeParameter: {
+    // style: {
+    //   width: '40px',
+    //   height: '40px',
+    //   borderRadius: '8px',
+    //   objectFit: 'contain',
+    // },
+   // fallback: 'assets/images/default-company-logo.png'
+  }
+},
+
   {
     header: this.translate.stream('Parent Company'),
     field: 'ParentCompanyName',
@@ -239,8 +311,8 @@ export class Companymaster {
     }
   },
   {
-    header: this.translate.stream('ALL Insights'),
-    field: 'AllInsightsEnabled',
+    header: this.translate.stream('AI Insights'),
+    field: 'AiinsightsEnabled',
     sortable: true,
     minWidth: 100,
     width: '100px',
@@ -358,7 +430,7 @@ export class Companymaster {
   },
   {
     header: this.translate.stream('Created By'),
-    field: 'CreatedByName',
+    field: 'CreatedBy',
     sortable: true,
     minWidth: 120,
     width: '120px',
@@ -401,58 +473,38 @@ export class Companymaster {
     ],
   },
 ];
-   
-  //  loadAllCountries() {
-  //    this.hrService.getAllCountries().subscribe({
-  //      next: (data) => {
-  //        this.list = data.map((item: any, index: number) => ({
-  //          ...item,
-  //          SNo: index + 1
-  //        }));
-  //        console.log('Fetched countries with S.No:', this.list);
-  //      },
-  //      error: (err) => {
-  //        console.error('Error fetching countries:', err);
-  //      }
-  //    });
-  //  }
-   
-   
-   edit(record: any) {
-     // Open dialog, pass in the record
-     this.dialog.open(AddEditCompany, {
-       width: '80%',
-       height: '70%',
-       maxWidth: '100vw',
-       maxHeight: '100vh',
-       data: { country: record },
-     }).afterClosed().subscribe(result => {
-       if (result) {
-          console.log('Country Updated:', result);
-           // Create update payload
-         const updatePayload: Country = {
-           CountryId: record.CountryId,             
-           CountryCode: result.CountryCode,
-           CountryName: result.CountryName,
-           CountryShortName: result.CountryShortName,
-           CountryCurrencyId: result.CurrencyId,
-           IsActive: result.IsActive,
-         }; 
-         console.log('Update payload:', updatePayload);
-         this.hrService.updateCountry(updatePayload).subscribe({
-           next: (response) => {
-             console.log('Country updated successfully:', response);
-             alert(`Country "${result.CountryName}" updated successfully!`);
-            // this.loadAllCountries(); 
-           },
-           error: (err) => {
-             console.error('Error updating country:', err);
-           }
-         }); 
+
+   loadAllCompanies() {
+     this.companyService.getAllCompanies().subscribe({
+       next: (data) => {
+         this.list = data.map((item: any, index: number) => ({
+           ...item,
+           SNo: index + 1
+         }));
+         console.log('Fetched companies:', this.list);
+       },
+       error: (err) => {
+         console.error('Error fetching countries:', err);
        }
      });
    }
-   
+
+
+   edit(record: any) {
+     // Open dialog, pass in the record
+     this.dialog.open(AddEditCompany, {
+       width: '100%',
+       height: '100%',
+       maxWidth: '100vw',
+       maxHeight: '100vh',
+       data: { company: record },
+     }).afterClosed().subscribe(result => {
+       if (result) {
+
+       }
+     });
+   }
+
      openAddDialog() {
      const dialogRef = this.dialog.open(AddEditCompany, {
        width: '100%',
@@ -461,79 +513,49 @@ export class Companymaster {
        maxHeight: '100vh',
        data: {} // empty for add
      });
-   
+
      dialogRef.afterClosed().subscribe(result => {
        if (result) {
-         console.log('Added country:', result);
-         const payload: Country = {
-           CountryCode: result.CountryCode,
-           CountryName: result.CountryName,
-           CountryShortName: result.CountryShortName,
-           CountryCurrencyId: result.CurrencyId, 
-           IsActive: result.IsActive, 
-         };
-         console.log('Payload for adding country:', payload);
-         // Call the service to insert the country
-         this.hrService.insertCountry(payload).subscribe({
-           next: (response) => {
-             console.log('Country added successfully:', response);  
-            // this.loadAllCountries(); 
-             alert(`Country "${result.CountryName}" added successfully!`);
-            // this.toastService.showSuccess(`Country "${result.CountryName}" added successfully!`);
-           },
-           error: (err) => {
-             console.error('Error while adding country:', err);
-             this.toastService.showError('Failed to add country. Please verify country details and try again.');
-           }
-         });
+         debugger
+         console.log('New company added:', result);
        }
      });
     }
-   
+
      closeDialog(): void {
        this.dialogRef.close();
      }
-   
+
      save(record: any): void {
        console.log('Saving record:', record);
        this.closeDialog();
      }
-   
+
       delete(value: any) {
-      debugger
-       this.hrService.deleteCountry(value.CountryId).subscribe({
-         next: (response) => {
-           console.log('Country deleted successfully:', response); 
-           alert(`You have deleted ${value.CountryName}..!`);
-           //this.loadAllCountries();
-         },
-         error: (err) => {
-           console.error('Error deleting country:', err);
-         }
-       });
+
      }
-   
+
       changeSelect(e: any) {
        console.log(e);
      }
-   
+
      changeSort(e: any) {
        console.log(e);
      }
-   
+
       enableRowExpandable() {
        this.columns[0].showExpand = this.expandable;
      }
-   
+
       updateCell() {
        this.list = this.list.map(item => {
          item.weight = Math.round(Math.random() * 1000) / 100;
          return item;
        });
      }
-   
+
      updateList() {
        this.list = this.list.splice(-1).concat(this.list);
      }
-   
+
 }
