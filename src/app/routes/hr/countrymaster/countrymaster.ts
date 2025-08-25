@@ -9,8 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { HrService } from '../hr.service';
-import { Country } from '@shared/interfaces/hr';
+//import { countryService } from '../hr.service';
+import { Countryservice } from '@shared/services/hr/country/countryservice';
+import { ICountry } from '@shared/interfaces/hr/country';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -34,8 +35,8 @@ export class Countrymaster implements OnInit {
    private readonly translate = inject(TranslateService);
    @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
     dialogRef!: MatDialogRef<any>;
-  
-  countries: Country[] = [];
+
+  countries: ICountry[] = [];
   showForm = false;
   countryModel: any = {};
   editIndex: number | null = null;
@@ -52,13 +53,13 @@ export class Countrymaster implements OnInit {
   showPaginator = true;
   expandable = false;
   columnResizable = false;
- 
+
   isLoading = false;
   list: any[] = [];
   isConfigExpanded: boolean = false;
 
 
-  constructor(private fb: FormBuilder,private hrService: HrService,private dialog: MatDialog,private toastService:Toastservice) {}
+  constructor(private fb: FormBuilder,private countryService: Countryservice,private dialog: MatDialog,private toastService:Toastservice) {}
     ngOnInit(): void {
      this.loadAllCountries();
    }
@@ -141,7 +142,7 @@ export class Countrymaster implements OnInit {
 ];
 
 loadAllCountries() {
-  this.hrService.getAllCountries().subscribe({
+  this.countryService.getAllCountries().subscribe({
     next: (data) => {
       this.list = data.map((item: any, index: number) => ({
         ...item,
@@ -169,25 +170,25 @@ edit(record: any) {
     if (result) {
        console.log('Country Updated:', result);
         // Create update payload
-      const updatePayload: Country = {
-        CountryId: record.CountryId,             
+      const updatePayload: ICountry = {
+        CountryId: record.CountryId,
         CountryCode: result.CountryCode,
         CountryName: result.CountryName,
         CountryShortName: result.CountryShortName,
         CountryCurrencyId: result.CurrencyId,
-        IsActive: result.IsActive,              
-      }; 
+        IsActive: result.IsActive,
+      };
       console.log('Update payload:', updatePayload);
-      this.hrService.updateCountry(updatePayload).subscribe({
+      this.countryService.updateCountry(updatePayload).subscribe({
         next: (response) => {
           console.log('Country updated successfully:', response);
           alert(`Country "${result.CountryName}" updated successfully!`);
-          this.loadAllCountries(); 
+          this.loadAllCountries();
         },
         error: (err) => {
           console.error('Error updating country:', err);
         }
-      }); 
+      });
     }
   });
 }
@@ -205,19 +206,19 @@ edit(record: any) {
     if (result) {
       debugger;
       console.log('Added country:', result);
-      const payload: Country = {
+      const payload: ICountry = {
         CountryCode: result.CountryCode,
         CountryName: result.CountryName,
         CountryShortName: result.CountryShortName,
-        CountryCurrencyId: result.CurrencyId, 
-        IsActive: result.IsActive, 
+        CountryCurrencyId: result.CurrencyId,
+        IsActive: result.IsActive,
       };
       console.log('Payload for adding country:', payload);
       // Call the service to insert the country
-      this.hrService.insertCountry(payload).subscribe({
+      this.countryService.insertCountry(payload).subscribe({
         next: (response) => {
-          console.log('Country added successfully:', response);  
-          this.loadAllCountries(); 
+          console.log('Country added successfully:', response);
+          this.loadAllCountries();
           alert(`Country "${result.CountryName}" added successfully!`);
          // this.toastService.showSuccess(`Country "${result.CountryName}" added successfully!`);
         },
@@ -241,9 +242,9 @@ edit(record: any) {
 
    delete(value: any) {
    debugger
-    this.hrService.deleteCountry(value.CountryId).subscribe({
+    this.countryService.deleteCountry(value.CountryId).subscribe({
       next: (response) => {
-        console.log('Country deleted successfully:', response); 
+        console.log('Country deleted successfully:', response);
         alert(`You have deleted ${value.CountryName}..!`);
         this.loadAllCountries();
       },

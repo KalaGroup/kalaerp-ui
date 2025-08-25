@@ -8,7 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { HrService } from '../../hr.service';
+//import { currencyService } from '../../hr.service';
+import { Currencyservice } from '@shared/services/hr/currency/currencyservice';
 import { MatIconModule } from '@angular/material/icon';
 
 
@@ -37,7 +38,7 @@ currencyForm!: FormGroup;
   filteredCurrencyList: any[] = [];
 
 
-  constructor(private hrService: HrService,
+  constructor(private currencyService: Currencyservice,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddEditCurrency>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -84,10 +85,10 @@ currencyForm!: FormGroup;
   }
 
   loadAllCurrencies(): void {
-    this.hrService.getAllCurrencies().subscribe({
+    this.currencyService.getAllCurrencies().subscribe({
       next: (res) => {
         this.currencyList = res;
-        console.log('Loaded currencies:', res); 
+        console.log('Loaded currencies:', res);
          this.filteredCurrencyList = [...this.currencyList];
          this.currencySearchControl.valueChanges.subscribe(value => {
         const filterValue = (value || '').toLowerCase();
@@ -111,7 +112,7 @@ currencyForm!: FormGroup;
     const countryData = this.data.country;
     // Find currency by name (trim whitespace for comparison)
     if (countryData?.CurrencyName) {
-      const currency = this.currencyList.find(c => 
+      const currency = this.currencyList.find(c =>
         c.CurrencyName.trim() === countryData.CurrencyName.trim()
       );
       currencyId = currency ? currency.CurrencyId : null;

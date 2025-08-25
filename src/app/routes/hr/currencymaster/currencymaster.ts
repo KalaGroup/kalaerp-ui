@@ -9,8 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { HrService } from '../hr.service';
-import { Country } from '@shared/interfaces/hr';
+//import { currencyService } from '../hr.service';
+import { Currencyservice } from '@shared/services/hr/currency/currencyservice';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -20,13 +20,13 @@ import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
 import { AddEditCurrency } from './add-edit-currency/add-edit-currency';
 import { Toastservice } from 'app/routes/toastservice';
-import { Currency } from '@shared/interfaces/hr';
+import { ICurrency } from '@shared/interfaces/hr/currency';
 
 @Component({
   selector: 'app-currencymaster',
   imports: [
     CommonModule, MatTableModule, MatCardModule, MatDividerModule, MatButtonModule, MatIconModule,
-    ReactiveFormsModule, FormsModule, MatFormFieldModule, MatCheckboxModule, MatRadioModule, 
+    ReactiveFormsModule, FormsModule, MatFormFieldModule, MatCheckboxModule, MatRadioModule,
     MtxGridModule, PageHeader, MatDialogModule,
   ],
   templateUrl: './currencymaster.html',
@@ -34,9 +34,9 @@ import { Currency } from '@shared/interfaces/hr';
 })
 export class Currencymaster implements OnInit {
   private readonly translate = inject(TranslateService);
- 
-  
-  
+
+
+
   // Grid configuration
   multiSelectable = true;
   rowSelectable = true;
@@ -50,13 +50,13 @@ export class Currencymaster implements OnInit {
   showPaginator = true;
   expandable = false;
   columnResizable = false;
-  
+
   isLoading = true;
-  list: Currency[] = [];
-  selectedCurrency: Currency | null = null;
+  list: ICurrency[] = [];
+  selectedCurrency: ICurrency | null = null;
   currencyForm: FormGroup;
 
-  constructor(private fb: FormBuilder,private hrService: HrService,private dialog: MatDialog,private toastService:Toastservice) {
+  constructor(private fb: FormBuilder,private currencyService: Currencyservice,private dialog: MatDialog,private toastService:Toastservice) {
     this.currencyForm = this.fb.group({
       CurrencyName: ['', [Validators.required]],
       CurrencySymbol: ['', [Validators.required]],
@@ -143,7 +143,7 @@ export class Currencymaster implements OnInit {
           type: 'icon',
           icon: 'edit',
           tooltip: this.translate.stream('edit'),
-          click: (record: Currency) => this.edit(record),
+          click: (record: ICurrency) => this.edit(record),
         },
         {
           type: 'icon',
@@ -155,7 +155,7 @@ export class Currencymaster implements OnInit {
             closeText: this.translate.stream('close'),
             okText: this.translate.stream('ok'),
           },
-          click: (record: Currency) => this.delete(record),
+          click: (record: ICurrency) => this.delete(record),
         },
       ],
     },
@@ -163,7 +163,7 @@ export class Currencymaster implements OnInit {
 
   loadAllCurrencies(): void {
     this.isLoading = true;
-    this.hrService.getAllCurrencyDetails().subscribe({
+    this.currencyService.getAllCurrencies().subscribe({
       next: (data) => {
         this.list = data.map((item: any, index: number) => ({
           ...item,
@@ -193,24 +193,24 @@ export class Currencymaster implements OnInit {
          console.log('Country Updated:', result);
           // Create update payload
         // const updatePayload: Country = {
-        //   CountryId: record.CountryId,             
+        //   CountryId: record.CountryId,
         //   CountryCode: result.CountryCode,
         //   CountryName: result.CountryName,
         //   CountryShortName: result.CountryShortName,
         //   CountryCurrencyId: result.CurrencyId,
         //   IsActive: result.IsActive,
-        // }; 
+        // };
         // console.log('Update payload:', updatePayload);
-        // this.hrService.updateCountry(updatePayload).subscribe({
+        // this.currencyService.updateCountry(updatePayload).subscribe({
         //   next: (response) => {
         //     console.log('Country updated successfully:', response);
         //     alert(`Country "${result.CountryName}" updated successfully!`);
-        //     this.loadAllCountries(); 
+        //     this.loadAllCountries();
         //   },
         //   error: (err) => {
         //     console.error('Error updating country:', err);
         //   }
-        // }); 
+        // });
       }
     });
   }
@@ -223,7 +223,7 @@ export class Currencymaster implements OnInit {
       maxHeight: '100vh',
       data: {} // empty for add
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         debugger;
@@ -232,15 +232,15 @@ export class Currencymaster implements OnInit {
         //   CountryCode: result.CountryCode,
         //   CountryName: result.CountryName,
         //   CountryShortName: result.CountryShortName,
-        //   CountryCurrencyId: result.CurrencyId, 
-        //   IsActive: result.IsActive, 
+        //   CountryCurrencyId: result.CurrencyId,
+        //   IsActive: result.IsActive,
         // };
         // console.log('Payload for adding country:', payload);
         // Call the service to insert the country
-        // this.hrService.insertCountry(payload).subscribe({
+        // this.currencyService.insertCountry(payload).subscribe({
         //   next: (response) => {
-        //     console.log('Country added successfully:', response);  
-        //     this.loadAllCountries(); 
+        //     console.log('Country added successfully:', response);
+        //     this.loadAllCountries();
         //     alert(`Country "${result.CountryName}" added successfully!`);
         //    // this.toastService.showSuccess(`Country "${result.CountryName}" added successfully!`);
         //   },
@@ -255,13 +255,13 @@ export class Currencymaster implements OnInit {
 
   // edit(record: Currency): void {
   //   this.selectedCurrency = record;
-  //   this.currencyForm.patchValue(record); 
+  //   this.currencyForm.patchValue(record);
   // }
 
-  delete(record: Currency): void {
+  delete(record: ICurrency): void {
     console.log('Deleting currency:', record.CurrencyName);
     // Implement actual delete logic here
-    // this.hrService.deleteCurrency(record.id).subscribe({
+    // this.currencyService.deleteCurrency(record.id).subscribe({
     //   next: () => {
     //     this.loadAllCurrencies();
     //     // Show success message
@@ -276,17 +276,17 @@ export class Currencymaster implements OnInit {
   onFormSubmit(): void {
     if (this.currencyForm.valid) {
       const formData = this.currencyForm.value;
-      
+
       if (this.selectedCurrency) {
         // Update existing currency
         console.log('Updating currency:', formData);
-        // this.hrService.updateCurrency(this.selectedCurrency.id, formData).subscribe({...});
+        // this.currencyService.updateCurrency(this.selectedCurrency.id, formData).subscribe({...});
       } else {
         // Create new currency
         console.log('Creating new currency:', formData);
-        // this.hrService.createCurrency(formData).subscribe({...});
+        // this.currencyService.createCurrency(formData).subscribe({...});
       }
-      
+
       this.loadAllCurrencies();
     } else {
       console.log('Form is invalid');
