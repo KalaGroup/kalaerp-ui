@@ -35,6 +35,11 @@
           "route": "workstation",
           "name": "workstation",
           "type": "link"
+        },
+        {
+          "route": "profitcenter",
+          "name": "profitcenter",
+          "type": "link"
         }
       ]
     },
