@@ -30,6 +30,11 @@
           "route": "company",
           "name": "company",
           "type": "link"
+        },
+        {
+          "route": "workstation",
+          "name": "workstation",
+          "type": "link"
         }
       ]
     },
