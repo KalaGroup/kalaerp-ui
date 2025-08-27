@@ -40,6 +40,11 @@
           "route": "profitcenter",
           "name": "profitcenter",
           "type": "link"
+        },
+        {
+          "route": "recruitmentattributemaster",
+          "name": "recruitmentattributemaster",
+          "type": "link"
         }
       ]
     },
