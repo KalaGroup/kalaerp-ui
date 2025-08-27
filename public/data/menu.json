@@ -53,6 +53,11 @@
           "type": "link"
         },
         {
+          "route": "qualification",
+          "name": "qualification",
+          "type": "link"
+        },
+        {
           "route": "recruitmentattributemaster",
           "name": "recruitmentattributemaster",
           "type": "link"

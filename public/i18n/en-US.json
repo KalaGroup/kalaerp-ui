@@ -9,6 +9,7 @@
     "hr.state": "State Master",
     "hr.workstation": "Workstation Master",
     "hr.profitcenter": "Profit Center Master",
+    "hr.qualification": "Qualification Master",
     "hr.recruitmentattributemaster": "Recruitment Attributes Master",
     "design": "Design",
     "design.colors": "Color System",

@@ -7,6 +7,7 @@ import { Statemaster } from './statemaster/statemaster';
 import { Divisionmaster } from './divisionmaster/divisionmaster';
 import { Workstationmaster } from './workstationmaster/workstationmaster';
 import { Profitcentermaster } from './profitcentermaster/profitcentermaster';
+import { Qualificationmaster } from './qualificationmaster/qualificationmaster';
 import { Recruitmentattributemaster } from './recruitmentattributemaster/recruitmentattributemaster';
 
 
@@ -43,6 +44,12 @@ export const routes: Routes = [
   {
     path: 'profitcenter',
     component: Profitcentermaster,
+  },
+  {
+    path: 'qualification',
+    component: Qualificationmaster,
+  }
+
   },
   {
     path: 'recruitmentattributemaster',
