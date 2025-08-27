@@ -30,6 +30,17 @@
           "route": "company",
           "name": "company",
           "type": "link"
+        },
+                {
+          "route": "state",
+          "name": "state",
+          "type": "link"
+        },
+
+        {
+          "route": "division",
+          "name": "division",
+          "type": "link"
         }
       ]
     },

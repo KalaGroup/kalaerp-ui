@@ -13,6 +13,7 @@ export class HrService  {
   private insertCountryUrl = 'https://localhost:7019/api/CountryMaster/createcountry';
   private updateCountryUrl = 'https://localhost:7019/api/CountryMaster/updatecountry';
   private deleteCountryUrl = 'https://localhost:7019/api/CountryMaster/deletecountry';
+  getAllState: any;
 
 
   constructor(private http: HttpClient) {}
