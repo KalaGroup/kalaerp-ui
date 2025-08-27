@@ -19,10 +19,12 @@ import { HrService } from '../../hr.service';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { Country } from '@shared/interfaces/hr';
+import { profitcenterservices } from '@shared/services/hr/profitcenter/profitcenterservices';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-add-edit-profitcenter',
- imports: [
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     MatCardModule,
@@ -38,104 +40,119 @@ import { Country } from '@shared/interfaces/hr';
   styleUrl: './add-edit-profitcenter.scss'
 })
 export class AddEditProfitcenter {
-    cityForm!: FormGroup;
-  isEditMode = false;
-  filteredCountryList: Country[] = [];
-  countryList: any[] = [];
-  filteredStateList: any;
-  filteredTierTypeList: any;
-  filteredDistrictList: any;
-  selectedCountryId: number | null = null;
-  selectedStateId: number | null = null;
-  countrySearchControl = new FormControl('');
-  stateSearchControl = new FormControl('');
-  districtSearchControl = new FormControl('');
-  tierTypeSearchControl = new FormControl('');
-  stateList: any[] = [];
-  districtList: any[] = [];
-  tierTypeList: any[] = [];
+  profitcenterForm!: FormGroup;
+  isEditMode: boolean = false;
 
+  profitcentertypeList: any[] = [];
+  code: string = '';
+  profitcentertypeSearchControl = new FormControl('');
+  filteredprofitcentertypeList: any[] = [];
 
-  constructor(
+  constructor(private profitCenterServices: profitcenterservices, private http: HttpClient,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddEditProfitcenter>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.isEditMode = !!this.data && !!this.data.City;
-
+    this.isEditMode = !!this.data && !!this.data.profitcenter;
     console.log('Edit mode:', this.isEditMode);
     console.log('Data received:', this.data);
   }
 
   ngOnInit(): void {
- this.initializeForm();
+    this.initializeForm();
+    this.loadAllProfitCenter();
   }
-
   private initializeForm(): void {
-    const currentDate = new Date().toLocaleDateString('en-GB');
-    this.cityForm = this.fb.group({
-      CityId: [''],
+
+    const currentDate = new Date().toLocaleDateString('en-GB'); // dd/mm/yyyy format
+    this.profitcenterForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
-      CityAuth: [{ value: false, disabled: !this.isEditMode }],
-      CityIsActive: [{ value: true, disabled: !this.isEditMode }],
-      CityIsDiscard: [{ value: true, disabled: !this.isEditMode }],
-
-      CityName: ['', Validators.required],
-      CityShortName: ['', Validators.required],
-      CityCode: ['', Validators.required],
-      CityLatitude: ['', Validators.required],
-      CityLongitude: ['', Validators.required],
-      CityRemark: [''],
-      CreatedBy: ['', Validators.required,],
-
-      CityCountryID: ['', Validators.required],
-      CityStateID: ['', Validators.required],
-      CityDistrictID: ['', Validators.required],
-      CityTierTypeID: ['', Validators.required],
-
-      StateName: [''],
-      CountryName: [''],
-      DistrictName: [''],
+      ProfitCenterId: [''],
+      ProfitCenterCode: [''],
+      ProfitCenterName: ['', [Validators.required]],
+      ProfitCenterCompanyId: ['', [Validators.required]],
+      ParentProfitCenterId: [null],
+      ProfitCenterAuthRemark: [''],
+      ProfitCenterAuth: [true],
+      ProfitCenterRemark: [''],
+      ProfitCenterIsActive: [true],
+      ProfitCenterIsDiscard: [true],
+      CreatedBy: ['1'],
     });
 
-    // If editing, pre-fill form with available data
-    if (this.isEditMode && this.data.City) {
-      console.log('Patching form with city data:', this.data.City);
-
-      this.cityForm.patchValue({
-        CityId: this.data.City.CityId,
-        CityCode: this.data.City.CityCode,
-        CityName: this.data.City.CityName,
-        CityShortName: this.data.City.CityShortName,
-        CityLatitude: this.data.City.CityLatitude,
-        CityLongitude: this.data.City.CityLongitude,
-        CityRemark: this.data.City.CityRemark,
-        CityIsActive: this.data.City.CityIsActive,
-        CityIsDiscard: this.data.City.CityIsDiscard,
-        CityAuth: this.data.City.CityAuth,
-        CityCountryID: this.data.City.CityCountryID,
-        CityStateID: this.data.City.CityStateID,
-        CityDistrictID: this.data.City.CityDistrictID,
-        CityTierTypeID: this.data.City.CityTierTypeId,
-        CreatedBy: this.data.City.CreatedBy,
-        CreatedDate: new Date(this.data.City.CreatedDate).toLocaleDateString('en-GB'),
+    if (this.isEditMode && this.data.profitcenter) {
+      console.log('Patching form with qualification data:', this.data.profitcenter);
+      this.profitcenterForm.patchValue({
+        ProfitCenterId: this.data.profitcenter.ProfitCenterId || '',
+        ProfitCenterCode: this.data.profitcenter.ProfitCenterCode || '',
+        ProfitCenterName: this.data.profitcenter.ProfitCenterName || '',
+        ProfitCenterCompanyId: this.data.profitcenter.ProfitCenterCompanyId || '',
+        ParentProfitCenterId: this.data.profitcenter.ParentProfitCenterId || '',
+        ProfitCenterAuth: this.data.profitcenter.ProfitCenterAuth || '',
+        ProfitCenterRemark: this.data.profitcenter.ProfitCenterRemark || '',
+        ProfitCenterIsActive: this.data.profitcenter.ProfitCenterIsActive ?? true,
+        ProfitCenterIsDiscard: this.data.profitcenter.ProfitCenterIsDiscard ?? false,
+        CreatedBy: this.data.profitcenter.CreatedBy || '',
+        CreatedDate: this.data.profitcenter.CreatedDate || currentDate
       });
 
-      this.cityForm.get('CityIsActive')?.enable();
-      this.cityForm.get('CityIsDiscard')?.enable();
-      this.cityForm.get('CityAuth')?.enable();
+    }
+  }
+  loadAllProfitCenter(): void {
+    this.profitCenterServices.getAllProfitcenterCompany().subscribe({
+      next: res => {
+        this.profitcentertypeList = res;
+        this.filteredprofitcentertypeList = [...this.profitcentertypeList];
+        this.profitcentertypeSearchControl.valueChanges.subscribe((value: any) => {
+          const filterValue = (value || '').toLowerCase();
+          this.filteredprofitcentertypeList = this.profitcentertypeList.filter(profitcenter =>
+            profitcenter.CompanyName.toLowerCase().includes(filterValue)
+          );
+        });
 
-      console.log('Form values after patch:', this.cityForm.value);
+        console.log('Loaded qualification:', res);
+
+        // Now that the list is loaded, call the edit setup
+        if (this.isEditMode && this.data) {
+          this.setprofitcenterForEdit();
+        }
+      },
+      error: (err: any) => console.error('Error loading qualification', err)
+    });
+  }
+  private setprofitcenterForEdit(): void {
+    debugger;
+    let CompanyId = null;
+    const profitcenterData = this.data.profitcenter;
+
+    // Find QualificationType by name
+    if (profitcenterData?.CompanyName) {
+      const profitcenterType = this.profitcentertypeList.find(
+        q => q.CompanyName.trim() === profitcenterData.CompanyName.trim()
+      );
+      CompanyId = profitcenterType ? profitcenterType.CompanyId : null;
+
+      console.log('Found QualificationType by name:', CompanyId, 'for name:', profitcenterData.CompanyName);
+    }
+
+    if (CompanyId) {
+      this.profitcenterForm.patchValue({
+        ProfitCenterCompanyId: CompanyId,
+      });
+      console.log('QualificationType set in form:', CompanyId);
+    } else {
+      console.log('No QualificationType ID found for name:', profitcenterData?.CompanyName);
     }
   }
 
-
-
-onSubmit(): void {
-
-}
+  onSubmit(): void {
+    if (this.profitcenterForm.valid) {
+      this.dialogRef.close(this.profitcenterForm.value);
+    } else {
+      this.profitcenterForm.markAllAsTouched();
+    }
+  }
   onCancel(): void {
     this.dialogRef.close();
   }
-
 }
