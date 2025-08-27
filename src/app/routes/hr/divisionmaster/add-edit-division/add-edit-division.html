@@ -43,7 +43,7 @@
         <div class="col-sm-6 col-xl-6">
  <mat-form-field appearance="fill" class="w-100">
             <mat-label>Division Short Name</mat-label>
-            <input matInput formControlName="DivisionShortName"  placeholder="Enter Division name" />
+            <input matInput formControlName="DivisionShortName"  placeholder="Enter Division name"     (input)="toUpperCase($event)"  />
             @if (
               DivisionForm.get('DivisionShortName')?.invalid && DivisionForm.get('DivisionShortName')?.touched
             ) {

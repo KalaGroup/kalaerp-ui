@@ -94,7 +94,11 @@ export class AddEditDivision {
       console.log('Form values after patch:', this.DivisionForm.value);
     }    
   }
-
+toUpperCase(event: Event) {
+  const input = event.target as HTMLInputElement;
+  input.value = input.value.toUpperCase();
+  this.DivisionForm.get('ShortName')?.setValue(input.value, { emitEvent: false });
+}
 
   
   onSubmit(): void {

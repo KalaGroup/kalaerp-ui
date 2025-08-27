@@ -157,6 +157,7 @@ export class Divisionmaster implements OnInit {
 ];
 
 getAllDivision() {
+  debugger;
   this.divisionService.getAllDivision().subscribe({
     next: (data) => {
       this.list = data.map((item: any, index: number) => ({
