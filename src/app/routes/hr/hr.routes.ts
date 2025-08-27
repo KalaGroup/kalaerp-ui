@@ -5,6 +5,7 @@ import { Companymaster } from './companymaster/companymaster';
 import { Employeemaster } from './employeemaster/employeemaster';
 import { Workstationmaster } from './workstationmaster/workstationmaster';
 import { Profitcentermaster } from './profitcentermaster/profitcentermaster';
+import { Qualificationmaster } from './qualificationmaster/qualificationmaster';
 
 
 export const routes: Routes = [
@@ -31,6 +32,10 @@ export const routes: Routes = [
   {
     path: 'profitcenter',
     component: Profitcentermaster,
+  },
+  {
+    path: 'qualification',
+    component: Qualificationmaster,
   }
 
 ];

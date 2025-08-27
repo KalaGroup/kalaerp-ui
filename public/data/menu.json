@@ -40,6 +40,11 @@
           "route": "profitcenter",
           "name": "profitcenter",
           "type": "link"
+        },
+        {
+          "route": "qualification",
+          "name": "qualification",
+          "type": "link"
         }
       ]
     },
