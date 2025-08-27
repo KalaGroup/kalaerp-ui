@@ -5,101 +5,78 @@
 
   <mat-card-content>
     <form [formGroup]="stateForm" class="form-field-full">
-<div class="d-flex align-items-center justify-content-end gap-3" style="height: 56px">
-  <mat-checkbox formControlName="IsActive" color="primary" [disabled]="!isEditMode">
-    Active
-  </mat-checkbox>
-  <mat-checkbox formControlName="IsDiscard" color="primary" [disabled]="!isEditMode">
-    Discard
-  </mat-checkbox>
-</div>
-
-
-
+      <div class="d-flex align-items-center justify-content-end gap-3" style="height: 56px">
+        <mat-checkbox formControlName="IsActive" color="primary" [disabled]="!isEditMode">
+          Active
+        </mat-checkbox>
+        <mat-checkbox formControlName="IsDiscard" color="primary" [disabled]="!isEditMode">
+          Discard
+        </mat-checkbox>
+      </div>
       <div class="row mb-3">
         <div class="col-sm-6 col-xl-6">
-    <mat-form-field appearance="outline">
-      <mat-label>State Code</mat-label>
-      <input matInput formControlName="StateCode" placeholder="Enter full State Code" />
-      @if (stateForm.get('StateCode')?.invalid && stateForm.get('StateCode')?.touched) {
-        <mat-error>State Code is required</mat-error>
-      }
-    <mat-error *ngIf="stateForm.get('StateCode')?.hasError('required')">
-    State Code is required
-  </mat-error>
-  <mat-error *ngIf="stateForm.get('StateCode')?.hasError('maxlength')">
-    Max 10 characters allowed
-  </mat-error>
-  <mat-error *ngIf="stateForm.get('StateCode')?.hasError('pattern')">
-    Only letters and numbers allowed
-  </mat-error>
-  <mat-error *ngIf="stateForm.get('StateCode')?.hasError('serverError')">
-    {{ stateForm.get('StateCode')?.getError('serverError') }}
-  </mat-error>
-    </mat-form-field>
-        </div> 
+          <mat-form-field appearance="outline">
+            <mat-label>State Code</mat-label>
+            <input matInput formControlName="StateCode" placeholder="Enter full State Code" />
+            @if (stateForm.get('StateCode')?.invalid && stateForm.get('StateCode')?.touched) {
+            <mat-error>State Code is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
 
-      <!-- State Name -->
+        <!-- State Name -->
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
             <mat-label>State Name</mat-label>
             <input matInput formControlName="StateName" placeholder="Enter full State Name" />
             @if (stateForm.get('StateName')?.invalid && stateForm.get('StateName')?.touched) {
-              <mat-error>State Name is required</mat-error>
+            <mat-error>State Name is required</mat-error>
             }
           </mat-form-field>
         </div>
       </div>
 
-        <!--State Short Name-->
-    <div class="row mb-3">
-      <div class="col-sm-6 col-xl-6">
-    <mat-form-field appearance="outline">
-    <mat-label>State Short Name</mat-label>
-    <input 
-    matInput 
-    formControlName="ShortName" 
-    placeholder="e.g., MH, KA, DL"
-    (input)="toUpperCase($event)" 
-      />
-    <mat-error *ngIf="stateForm.get('ShortName')?.invalid && stateForm.get('ShortName')?.touched">
-    Short Name is required
-    </mat-error>
-    </mat-form-field>
-      </div>
-      <!--Country Selection-->
+      <!--State Short Name-->
+      <div class="row mb-3">
         <div class="col-sm-6 col-xl-6">
-        <mat-form-field appearance="outline">
-          <mat-label>Country</mat-label>
-          <mat-select formControlName="CountryID" placeholder="Select Country">
+          <mat-form-field appearance="outline">
+            <mat-label>State Short Name</mat-label>
+            <input matInput formControlName="ShortName" placeholder="e.g., MH, KA, DL" (input)="toUpperCase($event)" />
+          </mat-form-field>
+        </div>
+        <!--Country Selection-->
+        <div class="col-sm-6 col-xl-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Country</mat-label>
+            <mat-select formControlName="CountryID" placeholder="Select Country">
 
-            <mat-option>
-              <input matInput placeholder="Search Country..." [formControl]="countriesSearchControl"
-                     (click)="$event.stopPropagation()" />
-            </mat-option>
+              <mat-option>
+                <input matInput placeholder="Search Country..." [formControl]="countriesSearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
 
-            <mat-option value="">Select Country</mat-option>
+              <mat-option value="">Select Country</mat-option>
 
-            @for (country of filteredContriesList; track country.CountryId) {
+              @for (country of filteredContriesList; track country.CountryId) {
               <mat-option [value]="country.CountryId">
                 {{ country.CountryName}}
               </mat-option>
-            }
-          </mat-select>
+              }
+            </mat-select>
 
-          @if (stateForm.get('CountryID')?.invalid && stateForm.get('CountryID')?.touched) {
+            @if (stateForm.get('CountryID')?.invalid && stateForm.get('CountryID')?.touched) {
             <mat-error>Country is required</mat-error>
-          }
-        </mat-form-field>
+            }
+          </mat-form-field>
         </div>
       </div>
 
-     <!-- Action buttons -->
+      <!-- Action buttons -->
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button mat-flat-button color="primary" class="btn-primary px-4"
-                    [disabled]="stateForm.invalid" (click)="onSubmit()">
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="stateForm.invalid"
+              (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>

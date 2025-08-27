@@ -30,13 +30,13 @@ export const routes: Routes = [
   },
   {
     path: 'state',
-    component:Statemaster,
+    component: Statemaster,
   },
   {
     path: 'division',
     component: Divisionmaster,
-  }
   },
+
   {
     path: 'workstation',
     component: Workstationmaster,
