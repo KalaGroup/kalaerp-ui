@@ -23,6 +23,8 @@ import { Country, Currency } from '@shared/interfaces/hr';
 import { AddEditCurrency } from '../currencymaster/add-edit-currency/add-edit-currency';
 import { id } from 'date-fns/locale';
 import { AddEditProfitcenter } from './add-edit-profitcenter/add-edit-profitcenter';
+import { profitcenterservices } from '@shared/services/hr/profitcenter/profitcenterservices';
+import { Iprofitcentermaster } from '@shared/interfaces/hr/Iprofitcenter';
 
 @Component({
   selector: 'app-profitcentermaster',
@@ -51,6 +53,11 @@ export class Profitcentermaster implements OnInit {
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
+  profitcentermaster: any[] = [];
+  showForm = false;
+  profitcenterModel: any = {};
+  editIndex: number | null = null;
+
   // Grid settings
   multiSelectable = true;
   rowSelectable = true;
@@ -66,17 +73,18 @@ export class Profitcentermaster implements OnInit {
   columnResizable = false;
 
   isLoading = false;
-  isConfigExpanded = false;
-  list: Country[] = []; // Example data, replace with your own data source Interface
+  list: any[] = [];
+  isConfigExpanded: boolean = false;
 
-  constructor(private dialog: MatDialog) {}
-  ngOnInit(): void {}
 
+  constructor(private fb: FormBuilder, private profitCenterServices: profitcenterservices, private dialog: MatDialog, private toastService: Toastservice) { }
+  ngOnInit(): void {
+    this.loadAllProfitcenter();
+  }
   toggleConfigSection(): void {
     this.isConfigExpanded = !this.isConfigExpanded;
   }
-
-  cityColumns: MtxGridColumn[] = [
+  profitcentercolumns: MtxGridColumn[] = [
     {
       header: this.translate.stream('SNo'),
       field: 'SNo',
@@ -100,35 +108,35 @@ export class Profitcentermaster implements OnInit {
     },
     {
       header: this.translate.stream('Profit Center Company'),
-      field: 'ProfitCenterCompanyId',
+      field: 'CompanyName',
       sortable: true,
       minWidth: 150,
       width: '150px',
     },
     {
-      header: this.translate.stream('Parent Profit Center' ),
-      field: 'ParentProfitCenterID',
+      header: this.translate.stream('Parent Profit Center'),
+      field: 'ParentProfitCenterId',
       sortable: true,
       minWidth: 150,
       width: '150px',
     },
     {
       header: this.translate.stream('Remark'),
-      field: 'Remark',
+      field: 'ProfitCenterRemark',
       sortable: true,
       minWidth: 150,
       width: '150px',
     },
     {
       header: this.translate.stream('Auth Remark'),
-      field: 'Auth Remark',
+      field: 'ProfitCenterAuthRemark',
       sortable: true,
       minWidth: 140,
       width: '140px',
     },
     {
       header: this.translate.stream('Is Active'),
-      field: 'IsActive',
+      field: 'ProfitCenterIsActive',
       sortable: true,
       minWidth: 100,
       width: '100px',
@@ -163,79 +171,134 @@ export class Profitcentermaster implements OnInit {
     },
   ];
 
-  edit(record: any) {
-    this.dialog
-      .open(AddEditProfitcenter, {
-        width: '80%',
-        height: '70%',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        data: { City: record },
-      })
-      .afterClosed()
-      .subscribe(result => {
-        if (result) {
-          console.log('City Updated:', result);
-          // Create update payload as per your reqirements
-          const updatePayload = {
-            CityId: result.CityId,
-            CityCode: result.CityCode,
-            CityName: result.CityName,
-            CityShortName: result.CityShortName,
-            CityLatitude: result.CityLatitude,
-            CityLongitude: result.CityLongitude,
-            CityRemark: result.CityRemark,
-            CityAuth: result.CityAuth,
-            CityIsDiscard: result.CityIsDiscard,
-            CityIsActive: result.CityIsActive,
-            CityCountryID: result.CityCountryID,
-            CityStateID: result.CityStateID,
-            CityDistrictID: result.CityDistrictID,
-            CityTierTypeID: result.CityTierTypeID,
-            CreatedBy: result.CreatedBy,
-            CreatedDate: result.CreatedDate,
-          };
-        }
-      });
+  loadAllProfitcenter() {
+    this.profitCenterServices.getAllProfitcenter().subscribe({
+      next: (data) => {
+        this.list = data.map((item: any, index: number) => ({
+          ...item,
+          SNo: index + 1
+        }));
+        console.log('Fetched qualification with S.No:', this.list);
+      },
+      error: (err) => {
+        console.error('Error fetching qualification:', err);
+      }
+    });
   }
+  edit(record: Iprofitcentermaster) { // If you have a Qualification interface, use it here
+    // debugger; // Remove before production
 
-  openAddDialog() {
-    const dialogRef = this.dialog.open(AddEditProfitcenter, {
-      width: '70%',
-      height: '55%',
+    this.dialog.open<AddEditProfitcenter, { profitcenter: Iprofitcentermaster }, Iprofitcentermaster>(AddEditProfitcenter, {
+      width: '80%',
+      height: '70%',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: {},
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
+      data: { profitcenter: record },
+    }).afterClosed().subscribe(result => {
       if (result) {
-        console.log('Added City:', result);
-        const cityData = {
-          // Create Date as per your reqirements Change FormControls
-          CityId: 0,
-          CityCode: result.CityCode,
-          CityName: result.CityName,
-          CityShortName: result.CityShortName,
-          CityLatitude: result.CityLatitude,
-          CityLongitude: result.CityLongitude,
-          CityRemark: result.CityRemark,
-          CityAuth: result.CityAuth,
-          CityIsDiscard: result.CityIsDiscard,
-          CityIsActive: result.CityIsActive,
-          CityCountryID: result.CityCountryID,
-          CityStateID: result.CityStateID,
-          CityDistrictID: result.CityDistrictID,
-          CityTierTypeID: result.CityTierTypeID,
-          CreatedBy: result.CreatedBy,
-          CreatedDate: new Date().toISOString(),
+        console.log('Qualification Updated:', result);
+        console.log('Original record CreatedBy:', record.CreatedBy);
+        debugger
+        const updatePayload: Iprofitcentermaster = {
+          ProfitCenterId: record.ProfitCenterId,
+          ProfitCenterCode: result.ProfitCenterCode,
+          ProfitCenterName: result.ProfitCenterName,
+          ProfitCenterCompanyId: result.ProfitCenterCompanyId,
+          ParentProfitCenterId: result.ParentProfitCenterId, // Consistent casing
+          ProfitCenterRemark: result.ProfitCenterRemark,
+          ProfitCenterAuthRemark: result.ProfitCenterAuthRemark,
+          ProfitCenterAuth: result.ProfitCenterAuth,
+          ProfitCenterIsDiscard: result.ProfitCenterIsDiscard,
+          ProfitCenterIsActive: result.ProfitCenterIsActive,
+          CreatedBy: record.CreatedBy ?? 1, // fallback user id
+          CreatedDate: record.CreatedDate ?? new Date() // fallback date if missing
         };
+
+        console.log('Update payload:', updatePayload);
+
+        this.profitCenterServices.updateProfitcenter(updatePayload).subscribe({
+          next: (response) => {
+            console.log('Qualification updated successfully:', response);
+            alert(`Qualification "${result.ProfitCenterName}" updated successfully!`);
+            this.loadAllProfitcenter();
+          },
+          error: (err) => {
+            console.error('Error updating Qualification:', err);
+            alert('Error updating qualification. Please try again.');
+          }
+        });
       }
     });
   }
 
-  delete(value: any) {}
+  openAddDialog(): void {
+    const dialogRef = this.dialog.open(AddEditProfitcenter, {
+      width: '60%',
+      height: '60%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: {} // Empty for add
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(' profitcenter data:', result);
+
+        const payload: Iprofitcentermaster = {
+          ProfitCenterId: 0,
+          ProfitCenterCode: result.ProfitCenterCode,
+          ProfitCenterName: result.ProfitCenterName,
+          ProfitCenterCompanyId: result.ProfitCenterCompanyId,
+          ParentProfitCenterId: result.ParentProfitCenterId, // Ensure ID casing is correct
+          ProfitCenterRemark: result.ProfitCenterRemark,
+          ProfitCenterAuthRemark: result.ProfitCenterAuthRemark,
+          ProfitCenterAuth: result.ProfitCenterAuth,
+          ProfitCenterIsDiscard: result.ProfitCenterIsDiscard,
+          ProfitCenterIsActive: result.ProfitCenterIsActive,
+          CreatedBy: result.CreatedBy,// Replace with actual user ID if available
+          CreatedDate: new Date()
+        };
+
+        console.log('Payload for adding profitcenter:', payload);
+
+        this.profitCenterServices.insertProfitcenter(payload).subscribe({
+          next: (response) => {
+            console.log('profitcenter added successfully:', response);
+            this.loadAllProfitcenter();
+            alert(`profitcenter added successfully!`);
+
+          },
+          error: (err) => {
+            console.error('Error while adding profitcenter:', err);
+            this.toastService.showError('Failed to add profitcenter. Please verify the details and try again.');
+          }
+        });
+      }
+    });
+  }
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  save(record: any): void {
+    console.log('Saving record:', record);
+    this.closeDialog();
+  }
+
+  delete(value: any) {
+    debugger
+    this.profitCenterServices.deleteProfitcenter(value.ProfitCenterId).subscribe({
+      next: (response) => {
+        console.log('Delete success:', response);
+        console.log('profitcenter deleted successfully:', response);
+        this.loadAllProfitcenter();
+        alert(`profitcenter deleted successfully!`);
+      },
+      error: (err) => {
+        console.error('Error deleting profitcenter:', err);
+      }
+    });
+  }
   changeSelect(e: any) {
     console.log(e);
   }
@@ -245,12 +308,12 @@ export class Profitcentermaster implements OnInit {
   }
 
   enableRowExpandable() {
-    //this.columns[0].showExpand = this.expandable;
+    this.profitcentercolumns[0].showExpand = this.expandable;
   }
 
   updateCell() {
     this.list = this.list.map(item => {
-      (item as any).RandomValue = Math.round(Math.random() * 1000) / 100;
+      item.weight = Math.round(Math.random() * 1000) / 100;
       return item;
     });
   }
