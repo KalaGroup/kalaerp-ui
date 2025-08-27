@@ -3,6 +3,8 @@ import { Countrymaster } from './countrymaster/countrymaster';
 import { Currencymaster } from './currencymaster/currencymaster';
 import { Companymaster } from './companymaster/companymaster';
 import { Employeemaster } from './employeemaster/employeemaster';
+import { Statemaster } from './statemaster/statemaster';
+import { Divisionmaster } from './divisionmaster/divisionmaster';
 import { Workstationmaster } from './workstationmaster/workstationmaster';
 import { Profitcentermaster } from './profitcentermaster/profitcentermaster';
 import { Recruitmentattributemaster } from './recruitmentattributemaster/recruitmentattributemaster';
@@ -24,6 +26,15 @@ export const routes: Routes = [
   {
     path: 'employee',
     component: Employeemaster,
+  },
+  {
+    path: 'state',
+    component:Statemaster,
+  },
+  {
+    path: 'division',
+    component: Divisionmaster,
+  }
   },
   {
     path: 'workstation',

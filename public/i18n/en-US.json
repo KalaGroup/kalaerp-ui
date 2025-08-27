@@ -5,6 +5,8 @@
     "hr.country": "Country Master",
     "hr.currency": "Currency Master",
     "hr.company": "Company Master",
+    "hr.division": "Division Master",
+    "hr.state": "State Master",
     "hr.workstation": "Workstation Master",
     "hr.profitcenter": "Profit Center Master",
     "hr.recruitmentattributemaster": "Recruitment Attributes Master",
