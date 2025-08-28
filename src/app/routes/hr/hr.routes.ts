@@ -48,9 +48,9 @@ export const routes: Routes = [
   {
     path: 'qualification',
     component: Qualificationmaster,
-  }
-
   },
+
+
   {
     path: 'recruitmentattributemaster',
     component: Recruitmentattributemaster,
