@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { HrService } from '../../hr.service';
 import { MatIconModule } from '@angular/material/icon';
 import { de } from 'date-fns/locale';
 import { Divisionservice } from '@shared/services/hr/division/divisionservice';
@@ -63,7 +62,7 @@ export class AddEditDivision {
       DivisionRemark: [''],
       DivisionAuthRemark: [''],
       DivisionAuth: [{ value: true, disabled: !this.isEditMode }],
-      DivisionIsDiscard:[{ value: true, disabled: !this.isEditMode }], 
+      DivisionIsDiscard:[{ value: true, disabled: !this.isEditMode }],
       DivisionIsActive:[{ value: true, disabled: !this.isEditMode }],
       CreatedBy: ['1'],
       CreatedDate: [{ value: currentDate, disabled: true }]
@@ -92,7 +91,7 @@ export class AddEditDivision {
       this.DivisionForm.get('DivisionIsDiscard')?.enable();
       this.DivisionForm.get('DivisionAuth')?.enable();
       console.log('Form values after patch:', this.DivisionForm.value);
-    }    
+    }
   }
 toUpperCase(event: Event) {
   const input = event.target as HTMLInputElement;
@@ -100,7 +99,7 @@ toUpperCase(event: Event) {
   this.DivisionForm.get('ShortName')?.setValue(input.value, { emitEvent: false });
 }
 
-  
+
   onSubmit(): void {
     debugger;
         if (this.DivisionForm.valid) {
