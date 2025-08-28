@@ -23,7 +23,7 @@ export class qualificationservices {
     insertQualification(insertQualification: IQualification): Observable<any> {
         return this.http.post(`${this.insertqualificationUrl}`, insertQualification);
     }
-    private updatequalificationUrl = 'https://localhost:7019/api/QualificationMaster/UpdateState';
+    private updatequalificationUrl = 'https://localhost:7019/api/QualificationMaster/updatequalification';
     updateQualification(updateQualification: IQualification): Observable<any> {
         return this.http.put(`${this.updatequalificationUrl}`, updateQualification);
     }
