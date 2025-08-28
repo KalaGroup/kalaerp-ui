@@ -9,6 +9,8 @@ import { Workstationmaster } from './workstationmaster/workstationmaster';
 import { Profitcentermaster } from './profitcentermaster/profitcentermaster';
 import { Qualificationmaster } from './qualificationmaster/qualificationmaster';
 import { Recruitmentattributemaster } from './recruitmentattributemaster/recruitmentattributemaster';
+import { Component } from '@angular/core';
+import { Companyentitytypemaster } from './companyentitytypemaster/companyentitytypemaster';
 
 
 export const routes: Routes = [
@@ -55,4 +57,8 @@ export const routes: Routes = [
     path: 'recruitmentattributemaster',
     component: Recruitmentattributemaster,
   },
+  {
+    path: 'companyentitytype',
+    component: Companyentitytypemaster,
+  }
 ];

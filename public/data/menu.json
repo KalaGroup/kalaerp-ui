@@ -61,6 +61,11 @@
           "route": "recruitmentattributemaster",
           "name": "recruitmentattributemaster",
           "type": "link"
+        },
+        {
+          "route": "companyentitytype",
+          "name": "companyentitytype",
+          "type": "link"
         }
       ]
     },
