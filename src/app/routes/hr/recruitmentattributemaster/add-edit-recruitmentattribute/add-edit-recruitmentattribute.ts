@@ -20,10 +20,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { Country } from '@shared/interfaces/hr';
 import { AddEditWorkstation } from '../../workstationmaster/add-edit-workstation/add-edit-workstation';
+import { IRecruitmentAttribute } from '@shared/interfaces/hr/RecruitmentAttributeMaster';
+import { RecruitmentAttributeservices } from '@shared/services/hr/RecruitmentAttributeMaster/RecruitmentAttributeMasterservice';
 
 @Component({
   selector: 'app-add-edit-recruitmentattribute',
- imports: [
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     MatCardModule,
@@ -40,102 +42,76 @@ import { AddEditWorkstation } from '../../workstationmaster/add-edit-workstation
 })
 export class AddEditRecruitmentattribute {
 
-    cityForm!: FormGroup;
+  recruitmentattributeForm!: FormGroup;
   isEditMode = false;
-  filteredCountryList: Country[] = [];
-  countryList: any[] = [];
-  filteredStateList: any;
-  filteredTierTypeList: any;
-  filteredDistrictList: any;
-  selectedCountryId: number | null = null;
-  selectedStateId: number | null = null;
-  countrySearchControl = new FormControl('');
-  stateSearchControl = new FormControl('');
-  districtSearchControl = new FormControl('');
-  tierTypeSearchControl = new FormControl('');
-  stateList: any[] = [];
-  districtList: any[] = [];
-  tierTypeList: any[] = [];
+  //filteredrecruitmentattributeList: IRecruitmentAttribute[] = [];
+
 
 
   constructor(
     private fb: FormBuilder,
-    public dialogRef: MatDialogRef<AddEditWorkstation>,
+    private RecruitmentAttributeServices: RecruitmentAttributeservices, // Properly inject the service
+    public dialogRef: MatDialogRef<AddEditRecruitmentattribute>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.isEditMode = !!this.data && !!this.data.City;
-
+    this.isEditMode = !!this.data && !!this.data.recruitmentattribute;
     console.log('Edit mode:', this.isEditMode);
     console.log('Data received:', this.data);
   }
 
+
   ngOnInit(): void {
- this.initializeForm();
+    this.initializeForm();
   }
 
   private initializeForm(): void {
-    const currentDate = new Date().toLocaleDateString('en-GB');
-    this.cityForm = this.fb.group({
-      CityId: [''],
+    const currentDate = new Date().toLocaleDateString('en-GB'); // dd/mm/yyyy
+
+    this.recruitmentattributeForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
-      CityAuth: [{ value: false, disabled: !this.isEditMode }],
-      CityIsActive: [{ value: true, disabled: !this.isEditMode }],
-      CityIsDiscard: [{ value: true, disabled: !this.isEditMode }],
-
-      CityName: ['', Validators.required],
-      CityShortName: ['', Validators.required],
-      CityCode: ['', Validators.required],
-      CityLatitude: ['', Validators.required],
-      CityLongitude: ['', Validators.required],
-      CityRemark: [''],
-      CreatedBy: ['', Validators.required,],
-
-      CityCountryID: ['', Validators.required],
-      CityStateID: ['', Validators.required],
-      CityDistrictID: ['', Validators.required],
-      CityTierTypeID: ['', Validators.required],
-
-      StateName: [''],
-      CountryName: [''],
-      DistrictName: [''],
+      //FaciltyCode: [{ value: '', disabled: this.isEditMode }],
+      RecruitmentAttributeId: [this.isEditMode && this.data.recruitmentattribute ? this.data.recruitmentattribute.RecruitmentAttributeId : 0],
+      RecruitmentAttributeName: ['', [Validators.required]],
+      RecruitmentAttributeMarks: [''],
+      RecruitmentAttributeRemark: [''],
+      RecruitmentAttributeAuthRemark: ['ok'],
+      RecruitmentAttributeAuth: [{ value: true, disabled: !this.isEditMode }],
+      RecruitmentAttributeIsDiscard: [{ value: false, disabled: !this.isEditMode }],
+      RecruitmentAttributeIsActive: [{ value: true, disabled: this.isEditMode }],
+      CreatedBy: [0]
     });
 
-    // If editing, pre-fill form with available data
-    if (this.isEditMode && this.data.City) {
-      console.log('Patching form with city data:', this.data.City);
+    if (this.isEditMode && this.data.recruitmentattribute) {
+      console.log('Patching form with facility data:', this.data.recruitmentattribute);
+      this.recruitmentattributeForm.patchValue({
+        CreatedDate: this.data.recruitmentattribute.CreatedDate ? new Date(this.data.recruitmentattribute.CreatedDate).toLocaleDateString('en-GB') : currentDate,
+        RecruitmentAttributeId: this.data.recruitmentattribute.RecruitmentAttributeId,
+        RecruitmentAttributeName: this.data.recruitmentattribute.RecruitmentAttributeName || '',
+        RecruitmentAttributeMarks: this.data.recruitmentattribute.RecruitmentAttributeMarks || '',
+        RecruitmentAttributeRemark: this.data.recruitmentattribute.RecruitmentAttributeRemark || '',
+        RecruitmentAttributeAuthRemark: this.data.recruitmentattribute.RecruitmentAttributeAuthRemark || '',
+        RecruitmentAttributeIsActive: this.data.recruitmentattribute.RecruitmentAttributeIsActive ?? true,
+        RecruitmentAttributeIsDiscard: this.data.recruitmentattribute.RecruitmentAttributeIsDiscard ?? true,
+        RecruitmentAttributeAuth: this.data.recruitmentattribute.RecruitmentAttributeAuth ?? true,
 
-      this.cityForm.patchValue({
-        CityId: this.data.City.CityId,
-        CityCode: this.data.City.CityCode,
-        CityName: this.data.City.CityName,
-        CityShortName: this.data.City.CityShortName,
-        CityLatitude: this.data.City.CityLatitude,
-        CityLongitude: this.data.City.CityLongitude,
-        CityRemark: this.data.City.CityRemark,
-        CityIsActive: this.data.City.CityIsActive,
-        CityIsDiscard: this.data.City.CityIsDiscard,
-        CityAuth: this.data.City.CityAuth,
-        CityCountryID: this.data.City.CityCountryID,
-        CityStateID: this.data.City.CityStateID,
-        CityDistrictID: this.data.City.CityDistrictID,
-        CityTierTypeID: this.data.City.CityTierTypeId,
-        CreatedBy: this.data.City.CreatedBy,
-        CreatedDate: new Date(this.data.City.CreatedDate).toLocaleDateString('en-GB'),
+        CreatedBy: this.data.recruitmentattribute.CreatedBy ?? 0
       });
 
-      this.cityForm.get('CityIsActive')?.enable();
-      this.cityForm.get('CityIsDiscard')?.enable();
-      this.cityForm.get('CityAuth')?.enable();
-
-      console.log('Form values after patch:', this.cityForm.value);
     }
   }
 
 
 
-onSubmit(): void {
 
-}
+  onSubmit(): void {
+    if (this.recruitmentattributeForm.valid) {
+      this.recruitmentattributeForm.enable(); // Enable the form to include disabled fields
+      console.log('Form Value:', this.recruitmentattributeForm.value);
+      this.dialogRef.close(this.recruitmentattributeForm.value);
+    } else {
+      this.recruitmentattributeForm.markAllAsTouched();
+    }
+  }
   onCancel(): void {
     this.dialogRef.close();
   }

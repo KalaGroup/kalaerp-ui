@@ -19,8 +19,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
 import { AddEditQualification } from './add-edit-qualification/add-edit-qualification';
 import { Toastservice } from 'app/routes/toastservice';
-import { qualificationservices } from '@shared/services/hr/qualification/qualificationservices';
-import { IQualification } from '@shared/interfaces/hr/Iqualification';
+import { qualificationservices } from '@shared/services/hr/qualification/qualificationservice';
+import { IQualification } from '@shared/interfaces/hr/qualification';
+
 
 @Component({
   selector: 'app-qualificationmaster',
@@ -178,7 +179,7 @@ export class Qualificationmaster implements OnInit {
       if (result) {
         console.log('Qualification Updated:', result);
 
-        debugger
+
         const updatePayload: IQualification = {
           QualificationId: record.QualificationId,
           QualificationCode: result.QualificationCode,
@@ -264,7 +265,7 @@ export class Qualificationmaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger
+
     this.QualificationServices.deleteQualification(value.QualificationId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);

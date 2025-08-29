@@ -73,10 +73,10 @@ export class AddEditProfitcenter {
       ProfitCenterCompanyId: ['', [Validators.required]],
       ParentProfitCenterId: [null],
       ProfitCenterAuthRemark: [''],
-      ProfitCenterAuth: [true],
+      ProfitCenterAuth: [{ value: true, disabled: !this.isEditMode }],
       ProfitCenterRemark: [''],
-      ProfitCenterIsActive: [true],
-      ProfitCenterIsDiscard: [true],
+      ProfitCenterIsActive: [{ value: true, disabled: !this.isEditMode }],
+      ProfitCenterIsDiscard: [false],
       CreatedBy: ['1'],
     });
 
@@ -121,7 +121,7 @@ export class AddEditProfitcenter {
     });
   }
   private setprofitcenterForEdit(): void {
-    debugger;
+
     let CompanyId = null;
     const profitcenterData = this.data.profitcenter;
 
@@ -146,6 +146,9 @@ export class AddEditProfitcenter {
   }
 
   onSubmit(): void {
+
+    this.profitcenterForm.enable(); // Enable the form to include disabled fields
+    console.log('Form Value:', this.profitcenterForm.value);
     if (this.profitcenterForm.valid) {
       this.dialogRef.close(this.profitcenterForm.value);
     } else {

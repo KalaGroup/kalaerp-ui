@@ -31,12 +31,11 @@
           "name": "company",
           "type": "link"
         },
-                {
+        {
           "route": "state",
           "name": "state",
           "type": "link"
         },
-
         {
           "route": "division",
           "name": "division",
@@ -60,6 +59,16 @@
         {
           "route": "recruitmentattributemaster",
           "name": "recruitmentattributemaster",
+          "type": "link"
+        },
+        {
+          "route": "companyentitytype",
+          "name": "companyentitytype",
+          "type": "link"
+        },
+        {
+          "route": "petrolallowancemaster",
+          "name": "petrolallowancemaster",
           "type": "link"
         }
       ]

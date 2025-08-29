@@ -1,14 +1,14 @@
 import { TestBed } from '@angular/core/testing';
-import { qualificationservices } from './qualificationservices';
+import { RecruitmentAttributeservices } from './RecruitmentAttributeMasterservice';
 
 
 
 describe('Countryservice', () => {
-    let service: qualificationservices;
+    let service: RecruitmentAttributeservices;
 
     beforeEach(() => {
         TestBed.configureTestingModule({});
-        service = TestBed.inject(qualificationservices);
+        service = TestBed.inject(RecruitmentAttributeservices);
     });
 
     it('should be created', () => {

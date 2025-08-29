@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
-import { IQualification } from '@shared/interfaces/hr/Iqualification';
+import { IQualification } from '@shared/interfaces/hr/qualification';
 
 @Injectable({
     providedIn: 'root',
@@ -23,7 +23,7 @@ export class qualificationservices {
     insertQualification(insertQualification: IQualification): Observable<any> {
         return this.http.post(`${this.insertqualificationUrl}`, insertQualification);
     }
-    private updatequalificationUrl = 'https://localhost:7019/api/QualificationMaster/UpdateState';
+    private updatequalificationUrl = 'https://localhost:7019/api/QualificationMaster/updatequalification';
     updateQualification(updateQualification: IQualification): Observable<any> {
         return this.http.put(`${this.updatequalificationUrl}`, updateQualification);
     }
