@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { HrService } from '../../hr.service';
 import { MatIconModule } from '@angular/material/icon';
 import { Stateservice } from '@shared/services/hr/state/stateservice';
 import { Countryservice } from '@shared/services/hr/country/countryservice';
@@ -63,7 +62,7 @@ export class AddEditState {
       StateCode: ['', [Validators.required]],
       StateName: ['', [Validators.required]],
       ShortName: ['', [Validators.required]],
-      IsDiscard:[{ value: true, disabled: !this.isEditMode }], 
+      IsDiscard:[{ value: false, disabled: !this.isEditMode }], 
       IsActive:[{ value: true, disabled: !this.isEditMode }],
       CreatedBy: ['1'],
       CreatedDate: [{ value: currentDate, disabled: true }],
@@ -82,16 +81,16 @@ export class AddEditState {
         IsActive: this.data.state.IsActive,
         IsDiscard: this.data.state.IsDiscard,
         CreatedBy: this.data.state.CreatedBy
-  
+
       });
        this.stateForm.get('code')?.enable();
       this.stateForm.get('CreatedDate')?.disable();
       this.stateForm.get('IsActive')?.enable();
       console.log('Form values after patch:', this.stateForm.value);
-    }    
+    }
   }
     loadAllCountries(): void {
-    this.countryService.getAllCountries().subscribe({  
+    this.countryService.getAllCountries().subscribe({
       next: (res) => {
         this.countrieslist = res;
         console.log('Countries loaded:',res);
@@ -119,7 +118,7 @@ private setCountryForEdit(): void {
   const stateData = this.data.state;
 
   if (stateData?.CountryName) {
-    const country = this.countrieslist.find(c => 
+    const country = this.countrieslist.find(c =>
       c.CountryName.trim().toLowerCase() === stateData.CountryName.trim().toLowerCase()
     );
 
@@ -138,29 +137,6 @@ private setCountryForEdit(): void {
   }
 }
 
-loadDropDowns(): void {
-  this.countryService.getAllCountries().subscribe({
-    next: (res) => {
-      this.countrieslist = res;
-      this.filteredContriesList = [...this.countrieslist];
-
-      this.countriesSearchControl.valueChanges.subscribe((value: any) => {
-        const filterValue = (value || '').toLowerCase();
-        this.filteredContriesList = this.countrieslist.filter(country =>
-          country.CountryName.toLowerCase().includes(filterValue)
-        );  
-  });
-
-  if (this.isEditMode && this.data) {
-        this.setCountryForEdit();
-      }
-    },
-    error: (err) => {
-      console.error('Failed to load Countries:', err);
-    },
-  });
-}
-
 toUpperCase(event: Event) {
   const input = event.target as HTMLInputElement;
   input.value = input.value.toUpperCase();
@@ -168,6 +144,8 @@ toUpperCase(event: Event) {
 }
 
   onSubmit(): void {
+        this.stateForm.enable();//important for active boolean
+
         if (this.stateForm.valid) {
       this.dialogRef.close(this.stateForm.value);
     } else {

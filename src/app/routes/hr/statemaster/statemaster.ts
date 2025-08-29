@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { HrService } from '../hr.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -36,7 +35,7 @@ export class Statemaster implements OnInit {
    private readonly translate = inject(TranslateService);
    @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
     dialogRef!: MatDialogRef<any>;
-  
+
   states: IState[] = [];
   showForm = false;
   stateModel: any = {};
@@ -54,7 +53,7 @@ export class Statemaster implements OnInit {
   showPaginator = true;
   expandable = false;
   columnResizable = false;
- 
+
   isLoading = false;
   list: any[] = [];
   isConfigExpanded: boolean = false;
@@ -181,14 +180,14 @@ edit(record: any) {
        IsActive: result.IsActive,
        IsDiscard: result.IsDiscard,
       CreatedBy: '1', // or use actual user ID
-       
-     }; 
+
+     };
           console.log('Update payload:', updatePayload);
           this.stateService.updateState(updatePayload).subscribe({
             next: (response) => {
               console.log('State updated successfully:', response);
               alert(`State "${result.StateName}" updated successfully!`);
-              this.loadAllState(); 
+              this.loadAllState();
             },
             error: (err) => {
               console.error('Error updating state:', err);
@@ -229,8 +228,8 @@ edit(record: any) {
           debugger;
 
           console.log('Line 229');
-         this.toastService.showSuccess('State added successfully:', response);  
-          this.loadAllState(); 
+         this.toastService.showSuccess('State added successfully:', response);
+          this.loadAllState();
           alert(`State "${result.StateName}" added successfully!`);
         },
         error: (err) => {
@@ -269,7 +268,7 @@ edit(record: any) {
    debugger
     this.stateService.deleteState(value.StateId).subscribe({
       next: (response) => {
-        console.log('State deleted successfully:', response); 
+        console.log('State deleted successfully:', response);
         alert(`You have deleted ${value.StateName} successfully!`);
         this.loadAllState();
       },

@@ -1,5 +1,5 @@
 mat-card {
-  padding: 24px;
+  padding: 30px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
   background-color: #f0efefec;
@@ -8,7 +8,7 @@ mat-card {
 mat-card-title {
   font-size: 22px;
   margin-left: 20px;
-  margin-bottom: 30px;
+  margin-bottom: -30px;
 }
 
 mat-checkbox {
@@ -16,6 +16,7 @@ mat-checkbox {
   color: #333;
   margin-top: 10px;
   margin-bottom: 10px;
+  margin-top: -10px;
 }
 
 /* Make readonly fields look disabled but still accessible */
@@ -32,16 +33,4 @@ input[readonly] {
 
 .readonly-checkbox .mat-checkbox-inner-container {
   background-color: #f8f9fa;
-}
-
-.preview-image {
-  max-width: 50px;
-  max-height: 50px;
-  width: auto;
-  height: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  object-fit: contain;
-  margin-top: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
