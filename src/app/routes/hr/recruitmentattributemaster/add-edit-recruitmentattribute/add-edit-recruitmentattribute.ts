@@ -21,7 +21,7 @@ import { CommonModule } from '@angular/common';
 import { Country } from '@shared/interfaces/hr';
 import { AddEditWorkstation } from '../../workstationmaster/add-edit-workstation/add-edit-workstation';
 import { IRecruitmentAttribute } from '@shared/interfaces/hr/RecruitmentAttributeMaster';
-import { RecruitmentAttributeservices } from '@shared/services/hr/RecruitmentAttributeMaster/RecruitmentAttributeMasterservices';
+import { RecruitmentAttributeservices } from '@shared/services/hr/RecruitmentAttributeMaster/RecruitmentAttributeMasterservice';
 
 @Component({
   selector: 'app-add-edit-recruitmentattribute',
@@ -76,7 +76,7 @@ export class AddEditRecruitmentattribute {
       RecruitmentAttributeRemark: [''],
       RecruitmentAttributeAuthRemark: ['ok'],
       RecruitmentAttributeAuth: [{ value: true, disabled: !this.isEditMode }],
-      RecruitmentAttributeIsDiscard: [{ value: true, disabled: !this.isEditMode }],
+      RecruitmentAttributeIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       RecruitmentAttributeIsActive: [{ value: true, disabled: this.isEditMode }],
       CreatedBy: [0]
     });
@@ -105,6 +105,8 @@ export class AddEditRecruitmentattribute {
 
   onSubmit(): void {
     if (this.recruitmentattributeForm.valid) {
+      this.recruitmentattributeForm.enable(); // Enable the form to include disabled fields
+      console.log('Form Value:', this.recruitmentattributeForm.value);
       this.dialogRef.close(this.recruitmentattributeForm.value);
     } else {
       this.recruitmentattributeForm.markAllAsTouched();

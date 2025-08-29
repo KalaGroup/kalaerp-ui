@@ -1,0 +1,67 @@
+mat-card {
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background-color: #f8f9fa;
+}
+
+mat-card-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+}
+
+.checkbox-group {
+    gap: 20px;
+    justify-content: center;
+}
+
+mat-checkbox {
+    font-size: 15px;
+    margin: 0 15px;
+}
+
+/* Input fields */
+mat-form-field {
+    margin-top: 8px;
+}
+
+input[readonly] {
+    background-color: #f0f0f0 !important;
+    color: #6c757d !important;
+    cursor: default !important;
+}
+
+.readonly-checkbox {
+    pointer-events: none;
+}
+
+.readonly-checkbox .mat-checkbox-inner-container {
+    background-color: #f8f9fa;
+}
+
+/* Buttons */
+.primary-btn {
+    min-width: 120px;
+}
+
+.action-btn {
+    min-width: 100px;
+}
+
+@media screen and (max-width: 768px) {
+    .row>div {
+        margin-bottom: 15px;
+    }
+
+    .checkbox-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    mat-card-title {
+        font-size: 20px;
+    }
+}
