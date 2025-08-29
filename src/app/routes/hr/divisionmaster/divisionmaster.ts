@@ -214,66 +214,50 @@ edit(record: any) {
 }
 
  openAddDialog() {
-  const dialogRef = this.dialog.open(AddEditDivision, {
-    width: '60%',
-    height: '60%',
-    maxWidth: '100vw',
-    maxHeight: '100vh',
-    data: {} // empty for add
-  });
+   const dialogRef = this.dialog.open(AddEditDivision, {
+     width: '60%',
+     height: '60%',
+     maxWidth: '100vw',
+     maxHeight: '100vh',
+     data: {}, // empty for add
+   });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      debugger;
-      console.log('Added Division:', result);
-      const payload: IDivision = {
-        DivisionId: 0,
-        DivisionCode: result.DivisionCode,
-        DivisionName: result.DivisionName,
-        DivisionShortName: result.DivisionShortName,
-        DivisionMailId: result.DivisionMailId,
-        DivisionRemark: result.DivisionRemark,
-        DivisionAuthRemark: result.DivisionAuthRemark,
-        DivisionAuth: result.DivisionAuth,
-        DivisionIsActive: result.DivisionIsActive,
-        DivisionIsDiscard: result.DivisionIsDiscard,
-      CreatedBy: result.CreatedBy, // or use actual user ID
-      CreatedDate: new Date().toISOString()
-      };
-      console.log('Payload for adding state:', payload);
-      // Call the service to insert the state
-      this.divisionService.insertDivision(payload).subscribe({
-        next: (response) => {
-         this.toastService.showSuccess('Division added successfully:', response);  
-          this.getAllDivision(); 
-          alert(`Division "${result.DivisionName}" added successfully!`);
-        },
-        error: (err) => {
-         if (err.status === 400 && err.error) {
-      // Validation errors from FluentValidation
-      err.error.forEach((validationErr: any) => {
-        const field = validationErr.PropertyName;
-        const message = validationErr.ErrorMessage;
-
-        // Mark field error in form
-        if (this.divisionForm.get(field)) {
-          this.divisionForm.get(field)?.setErrors({ serverError: message });
-        }
-        // Optionally show toast
-        this.toastService.showError(message);
-      });
-      } else {
-      this.toastService.showError('Failed to add Division. Please verify Division details and try again.');
-       }     
-        },
-        error: (err) => {
-          console.error('Error while adding Division:', err);
-          this.toastService.showError('Failed to add Division. Please verify Division details and try again.');
-        }
-      });
-    }
-  })
-}
+   dialogRef.afterClosed().subscribe(result => {
+     if (result) {
+       debugger;
+       console.log('Added Division:', result);
+       const payload: IDivision = {
+         DivisionId: 0,
+         DivisionCode: result.DivisionCode,
+         DivisionName: result.DivisionName,
+         DivisionShortName: result.DivisionShortName,
+         DivisionMailId: result.DivisionMailId,
+         DivisionRemark: result.DivisionRemark,
+         DivisionAuthRemark: result.DivisionAuthRemark,
+         DivisionAuth: result.DivisionAuth,
+         DivisionIsActive: result.DivisionIsActive,
+         DivisionIsDiscard: result.DivisionIsDiscard,
+         CreatedBy: result.CreatedBy, // or use actual user ID
+         CreatedDate: new Date().toISOString(),
+       };
+       console.log('Payload for adding state:', payload);
+       // Call the service to insert the state
+       this.divisionService.insertDivision(payload).subscribe({
+         next: response => {
+           this.toastService.showSuccess('Division added successfully:', response);
+           this.getAllDivision();
+           alert(`Division "${result.DivisionName}" added successfully!`);
+         },
+         error: err => {
+           console.error('Error while adding Division:', err);
+           this.toastService.showError(
+             'Failed to add Division. Please verify Division details and try again.'
+           );
+         },
+       });
+     }
+   });
+ }
 
   closeDialog(): void {
     this.dialogRef.close();
@@ -288,7 +272,7 @@ edit(record: any) {
    debugger;
     this.divisionService.deleteDivision(value.divisionId).subscribe({
       next: (response) => {
-         this.toastService.showSuccess('Division Deleted successfully:', response);  
+         this.toastService.showSuccess('Division Deleted successfully:', response);
 
         console.log('Division deleted successfully:', response);
 

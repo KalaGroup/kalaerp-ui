@@ -13,8 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { Workstationservice } from '@shared/services/hr/workstation/workstationservice';
 import { profitcenterservices } from '@shared/services/hr/profitcenter/profitcenterservices';
-import { Iprofitcentermaster } from '@shared/interfaces/hr/Iprofitcenter';
 import { de } from 'date-fns/locale';
+import { Iprofitcentermaster } from '@shared/interfaces/hr/profitcenter';
 
 @Component({
   selector: 'app-add-edit-workstation',
@@ -44,7 +44,6 @@ export class AddEditWorkstation {
   profitcenterSearchControl = new FormControl('');
 
   constructor(
-    private workstationService: Workstationservice,
     private profitcenterService: profitcenterservices,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddEditWorkstation>,
