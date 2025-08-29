@@ -17,6 +17,8 @@
     "hr.qualificationtype": "Qualification Type Master",
     "hr.holidaymaster": "Holiday Master",
     "hr.departmentmaster": "Department Master",
+    "hr.rolesmaster": "Roles Master",
+    "hr.rolesdetails": "Roles Details",
     "design": "Design",
     "design.colors": "Color System",
     "design.icons": "Material Icons",
