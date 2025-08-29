@@ -21,11 +21,11 @@ import { Toastservice } from 'app/routes/toastservice';
 import { Country, Currency } from '@shared/interfaces/hr';
 import { AddEditCurrency } from '../currencymaster/add-edit-currency/add-edit-currency';
 import { id } from 'date-fns/locale';
-import { AddEditEmployeemasterupdationfor } from './add-edit-employeemasterupdationfor/add-edit-employeemasterupdationfor';
+import { AddEditHoliday } from './add-edit-holiday/add-edit-holiday';
 
 @Component({
-  selector: 'app-employeemasterupdationformaster',
-   imports: [
+  selector: 'app-holidaymaster',
+ imports: [
     CommonModule,
     MatTableModule,
     MatCardModule,
@@ -41,10 +41,10 @@ import { AddEditEmployeemasterupdationfor } from './add-edit-employeemasterupdat
     PageHeader,
     MatDialogModule,
   ],
-  templateUrl: './employeemasterupdationformaster.html',
-  styleUrl: './employeemasterupdationformaster.scss'
+  templateUrl: './holidaymaster.html',
+  styleUrl: './holidaymaster.scss'
 })
-export class Employeemasterupdationformaster implements OnInit {
+export class Holidaymaster implements OnInit {
   expandable: any;
   private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
@@ -76,7 +76,7 @@ export class Employeemasterupdationformaster implements OnInit {
     this.isConfigExpanded = !this.isConfigExpanded;
   }
 
-  EmployeeupdationColumns: MtxGridColumn[] = [
+  HolidayColumns: MtxGridColumn[] = [
     {
       header: this.translate.stream('SNo'),
       field: 'SNo',
@@ -85,22 +85,43 @@ export class Employeemasterupdationformaster implements OnInit {
       width: '80px',
     },
     {
-      header: this.translate.stream('Employee Master Updation For Name'),
-      field: 'EmployeeMasterUpdationForName',
+      header: this.translate.stream('Holiday FY'),
+      field: 'HolidayFY',
+      sortable: true,
+      minWidth: 120,
+      width: '120px',
+    },
+    {
+      header: this.translate.stream('Holiday Date'),
+      field: 'HolidayDate',
       sortable: true,
       minWidth: 150,
       width: '150px',
     },
     {
-      header: this.translate.stream('Remark '),
-      field: 'EmployeeMasterUpdationForRemark',
+      header: this.translate.stream('Holiday For'),
+      field: 'HolidayFor',
       sortable: true,
       minWidth: 150,
       width: '150px',
     },
     {
-      header: this.translate.stream('Auth Remark'),
-      field: 'EmployeeMasterUpdationForAuthRemark',
+      header: this.translate.stream('HolidayCompany'),
+      field: 'HolidayCompanyId',
+      sortable: true,
+      minWidth: 150,
+      width: '150px',
+    },
+        {
+      header: this.translate.stream('Remark'),
+      field: 'HolidayRemark',
+      sortable: true,
+      minWidth: 150,
+      width: '150px',
+    },
+            {
+      header: this.translate.stream('AuthRemark'),
+      field: 'HolidayAuthRemark',
       sortable: true,
       minWidth: 150,
       width: '150px',
@@ -108,10 +129,18 @@ export class Employeemasterupdationformaster implements OnInit {
 
     {
       header: this.translate.stream('Is Active'),
-      field: 'IsActive',
+      field: 'HolidayIsActive',
       sortable: true,
       minWidth: 100,
       width: '100px',
+    },
+        {
+      header: this.translate.stream('Auth'),
+      field: 'HolidayAuth',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+
     },
     {
       header: this.translate.stream('Action'),
@@ -145,7 +174,7 @@ export class Employeemasterupdationformaster implements OnInit {
 
   edit(record: any) {
     this.dialog
-      .open(AddEditEmployeemasterupdationfor, {
+      .open(AddEditHoliday, {
         width: '80%',
         height: '70%',
         maxWidth: '100vw',
@@ -164,9 +193,9 @@ export class Employeemasterupdationformaster implements OnInit {
   }
 
   openAddDialog() {
-    const dialogRef = this.dialog.open(AddEditEmployeemasterupdationfor, {
+    const dialogRef = this.dialog.open(AddEditHoliday, {
       width: '70%',
-      height: '50%',
+      height: '60%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {},
@@ -174,16 +203,16 @@ export class Employeemasterupdationformaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Added Employee Master Updation:', result);
-        const EmployeeMasterUpdationForData = {
-          // Change as per your reqirements Change FormControls
-          EmployeeMasterUpdationForId: 0,
-          EmployeeMasterUpdationForName: result.EmployeeMasterUpdationForName,
-          EmployeeMasterUpdationForAuthRemark: result.EmployeeMasterUpdationForAuthRemark,
-          EmployeeMasterUpdationForRemark: result.EmployeeMasterUpdationForRemark,
-          EmployeeMasterUpdationForAuth: result.EmployeeMasterUpdationForAuth,
-          EmployeeMasterUpdationForIsDiscard: result.EmployeeMasterUpdationForIsDiscard,
-          EmployeeMasterUpdationForIsActive: result.EmployeeMasterUpdationForIsActive,
+        console.log('Added Company Entity:', result);
+        const cityData = {
+          // Create Date as per your reqirements Change FormControls
+          CompEntityTypeID: 0,
+          CompanyEntityTypeName: result.CompanyEntityTypeName,
+          CompanyEntityTypeShortName: result.CompanyEntityTypeShortName,
+          CompanyEntityTypeRemark: result.CompanyEntityTypeRemark,
+          CompanyEntityTypeAuth: result.CompanyEntityTypeAuth,
+          CompanyEntityTypeIsDiscard: result.CompanyEntityTypeIsDiscard,
+          CompanyEntityTypeIsActive: result.CompanyEntityTypeIsActive,
           CreatedBy: result.CreatedBy,
           CreatedDate: new Date().toISOString(),
         };
@@ -191,9 +220,7 @@ export class Employeemasterupdationformaster implements OnInit {
     });
   }
 
-  delete(value: any) {
-
-  }
+  delete(value: any) {}
 
   changeSelect(e: any) {
     console.log(e);
