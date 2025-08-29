@@ -4,7 +4,7 @@
   </mat-card-title>
 
   <mat-card-content>
-    <form [formGroup]="DivisionForm" class="form-field-full">
+    <form [formGroup]="divisionForm" class="form-field-full">
       <!-- Auto-generated fields row -->
       <div class="row mb-3">
        <div class="col-sm-10 col-xl-3">
@@ -31,7 +31,7 @@
             <mat-label>Division Name</mat-label>
             <input matInput formControlName="DivisionName"  placeholder="Enter full Division name" />
             @if (
-              DivisionForm.get('DivisionName')?.invalid && DivisionForm.get('DivisionName')?.touched
+              divisionForm.get('DivisionName')?.invalid && divisionForm.get('DivisionName')?.touched
             ) {
               <mat-error>Division Name is required</mat-error>
             }
@@ -45,7 +45,7 @@
             <mat-label>Division Short Name</mat-label>
             <input matInput formControlName="DivisionShortName"  placeholder="Enter Division name"     (input)="toUpperCase($event)"  />
             @if (
-              DivisionForm.get('DivisionShortName')?.invalid && DivisionForm.get('DivisionShortName')?.touched
+              divisionForm.get('DivisionShortName')?.invalid && divisionForm.get('DivisionShortName')?.touched
             ) {
               <mat-error>Division Short Name is required</mat-error>
             }
@@ -61,7 +61,7 @@
             <mat-label>Mail ID</mat-label>
             <input matInput formControlName="DivisionMailId"  placeholder="Enter full Division name" />
             @if (
-              DivisionForm.get('DivisionMailId')?.invalid && DivisionForm.get('DivisionMailId')?.touched
+              divisionForm.get('DivisionMailId')?.invalid && divisionForm.get('DivisionMailId')?.touched
             ) {
               <mat-error>Mail ID is required</mat-error>
             }
@@ -83,7 +83,7 @@
             <mat-label>Division Code</mat-label>
             <input matInput formControlName="DivisionCode" placeholder="Enter full Division Code" />
             @if (
-              DivisionForm.get('DivisionCode')?.invalid && DivisionForm.get('DivisionCode')?.touched
+              divisionForm.get('DivisionCode')?.invalid && divisionForm.get('DivisionCode')?.touched
             ) {
               <mat-error>Division Code is required</mat-error>
             }
@@ -93,7 +93,7 @@
             <mat-label>Auth Remark</mat-label>
             <input matInput formControlName="DivisionAuthRemark" placeholder="Enter Remark" />
             @if (
-              DivisionForm.get('Remark')?.invalid && DivisionForm.get('Remark')?.touched
+              divisionForm.get('Remark')?.invalid && divisionForm.get('Remark')?.touched
             ) {
               <mat-error>Remark is required</mat-error>
             }
@@ -109,7 +109,7 @@
               mat-flat-button
               color="primary"
               class="btn-primary px-4"
-              [disabled]="DivisionForm.invalid"
+              [disabled]="divisionForm.invalid"
               (click)="onSubmit()"
             >
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
