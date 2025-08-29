@@ -17,11 +17,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { Country } from '@shared/interfaces/hr';
-
+import { ICompanyentitytype } from '@shared/interfaces/hr/companyentitytype';
+import { Companyentitytypeservice } from '@shared/services/hr/companyentitytype/companyentitytypeservice';
 
 @Component({
   selector: 'app-add-edit-companyentitytype',
+  standalone: true,
  imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -38,64 +39,79 @@ import { Country } from '@shared/interfaces/hr';
   styleUrl: './add-edit-companyentitytype.scss'
 })
 export class AddEditCompanyentitytype implements OnInit {
-
-    CompanyEntityForm!: FormGroup;
+  companyentitytypeForm!: FormGroup;
   isEditMode = false;
-
+  filteredprofitcenterList: ICompanyentitytype[] = [];
+  selectedCountryId: number | null = null;
+  selectedStateId: number | null = null;
+  profitcenterSearchControl = new FormControl('');
 
   constructor(
+    private companyentitytypeService: Companyentitytypeservice,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddEditCompanyentitytype>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.isEditMode = !!this.data && !!this.data.City;
-
+    this.isEditMode = !!this.data && !!this.data.companyentitytype;
     console.log('Edit mode:', this.isEditMode);
     console.log('Data received:', this.data);
   }
 
   ngOnInit(): void {
- this.initializeForm();
+    this.initializeForm();
   }
 
-  private initializeForm(): void {
-    const currentDate = new Date().toLocaleDateString('en-GB');
-    this.CompanyEntityForm = this.fb.group({
-      //CompEntityTypeID: [''],
-      CompanyEntityTypeName: ['', Validators.required],
-      CompanyEntityTypeShortName: ['', Validators.required],
-      CompanyEntityTypeAuth: [{ value: true, disabled:true }],
-      CompanyEntityTypeIsActive: [{ value: true, disabled: !this.isEditMode }],
+private initializeForm(): void {
+    debugger;
+    const currentDate = new Date();
+    this.companyentitytypeForm = this.fb.group({
+      CompEntityTypeId: [''],
+      CompanyEntityTypeName: ['', [Validators.required]],
+      CompanyEntityTypeShortName: ['', [Validators.required]],
+      CompanyEntityTypeRemark: [''],
+      CompanyEntityTypeAuth: [{ value: true, disabled: !this.isEditMode }],
       CompanyEntityTypeIsDiscard: [{ value: false, disabled: !this.isEditMode }],
-      CompanyEntityTypeRemark: ['',Validators.required],
-      CreatedBy: ['10'],
+      CompanyEntityTypeIsActive: [{ value: true, disabled: !this.isEditMode }],
+      CreatedBy: ['1'],
       CreatedDate: [{ value: currentDate, disabled: true }],
-
     });
-
-    // If editing, pre-fill form with available data
-    if (this.isEditMode && this.data.City) {
-      console.log('Patching form with Company Entity Type data:', this.data.City);
-
-      this.CompanyEntityForm.patchValue({
-        // Add your form fields here
+    if (this.isEditMode) {
+      debugger;
+      console.log('Patching form with Companyentitytype data:', this.data.companyentitytype);
+      this.companyentitytypeForm.patchValue({
+        //CreatedDate: currentDate, tommorow dicuss with Umar
+        code: this.data.companyentitytype.code,
+        CompEntityTypeId: this.data.companyentitytype.CompEntityTypeId,
+        CompanyEntityTypeName: this.data.companyentitytype.CompanyEntityTypeName,
+        CompanyEntityTypeShortName: this.data.companyentitytype.CompanyEntityTypeShortName,
+        CompanyEntityTypeRemark: this.data.companyentitytype.CompanyEntityTypeRemark,
+        CompanyEntityTypeAuth: this.data.companyentitytype.CompanyEntityTypeAuth,
+        CompanyEntityTypeIsActive: this.data.companyentitytype.CompanyEntityTypeIsActive,
+        CompanyEntityTypeIsDiscard: this.data.companyentitytype.CompanyEntityTypeIsDiscard,
+        CreatedBy: this.data.companyentitytype.CreatedBy,
       });
-
-      this.CompanyEntityForm.get('CompanyEntityTypeIsActive')?.enable();
-      this.CompanyEntityForm.get('CompanyEntityTypeIsDiscard')?.enable();
-      this.CompanyEntityForm.get('CompanyEntityTypeAuth')?.enable();
-
-      console.log('Form values after patch:', this.CompanyEntityForm.value);
+      this.companyentitytypeForm.get('code')?.enable();
+      this.companyentitytypeForm.get('CreatedDate')?.disable();
+      this.companyentitytypeForm.get('IsActive')?.enable();
+      console.log('Form values after patch:', this.companyentitytypeForm.value);
     }
   }
 
+  toUpperCase(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.toUpperCase();
+    this.companyentitytypeForm.get('CompanyEntityTypeShortName')?.setValue(input.value, { emitEvent: false });
+  }
 
-
-onSubmit(): void {
-// Add your default Submit logic here
-}
+  onSubmit(): void {
+        this.companyentitytypeForm.enable();//important for active boolean
+    if (this.companyentitytypeForm.valid) {
+      this.dialogRef.close(this.companyentitytypeForm.value);
+    } else {
+      this.companyentitytypeForm.markAllAsTouched();
+    }
+  }
   onCancel(): void {
     this.dialogRef.close();
   }
-
 }
