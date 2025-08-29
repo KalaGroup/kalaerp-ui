@@ -80,6 +80,11 @@
           "route": "qualificationtype",
           "name": "qualificationtype",
           "type": "link"
+        },
+        {
+          "route": "holidaymaster",
+          "name": "holidaymaster",
+          "type": "link"
         }
       ]
     },

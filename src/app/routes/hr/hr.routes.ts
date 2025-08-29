@@ -14,6 +14,8 @@ import { Companyentitytypemaster } from './companyentitytypemaster/companyentity
 import { Petrolallowancemaster } from './petrolallowancemaster/petrolallowancemaster';
 import { Employeemasterupdationformaster } from './employeemasterupdationformaster/employeemasterupdationformaster';
 import { Qualificationtypemaster } from './qualificationtypemaster/qualificationtypemaster';
+import { AddEditHoliday } from './holidaymaster/add-edit-holiday/add-edit-holiday';
+import { Holidaymaster } from './holidaymaster/holidaymaster';
 
 
 
@@ -74,5 +76,9 @@ export const routes: Routes = [
   {
     path: 'qualificationtype',
     component: Qualificationtypemaster,
+  },
+  {
+    path: 'holidaymaster',
+    component: Holidaymaster,
   }
 ];
