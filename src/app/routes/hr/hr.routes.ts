@@ -11,6 +11,8 @@ import { Qualificationmaster } from './qualificationmaster/qualificationmaster';
 import { Recruitmentattributemaster } from './recruitmentattributemaster/recruitmentattributemaster';
 import { Component } from '@angular/core';
 import { Companyentitytypemaster } from './companyentitytypemaster/companyentitytypemaster';
+import { Employeemasterupdationformaster } from './employeemasterupdationformaster/employeemasterupdationformaster';
+import { Qualificationtypemaster } from './qualificationtypemaster/qualificationtypemaster';
 
 
 export const routes: Routes = [
@@ -60,5 +62,13 @@ export const routes: Routes = [
   {
     path: 'companyentitytype',
     component: Companyentitytypemaster,
+  },
+  {
+    path: 'employeeupdationfor',
+    component: Employeemasterupdationformaster,
+  },
+  {
+    path: 'qualificationtype',
+    component: Qualificationtypemaster,
   }
 ];

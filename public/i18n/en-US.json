@@ -12,6 +12,8 @@
     "hr.qualification": "Qualification Master",
     "hr.recruitmentattributemaster": "Recruitment Attributes Master",
     "hr.companyentitytype": "Company Entity Type Master",
+    "hr.employeeupdationfor": "Employee Updation For",
+    "hr.qualificationtype": "Qualification Type Master",
     "design": "Design",
     "design.colors": "Color System",
     "design.icons": "Material Icons",
