@@ -63,7 +63,7 @@ export class AddEditState {
       StateCode: ['', [Validators.required]],
       StateName: ['', [Validators.required]],
       ShortName: ['', [Validators.required]],
-      IsDiscard:[{ value: true, disabled: !this.isEditMode }], 
+      IsDiscard:[{ value: false, disabled: !this.isEditMode }], 
       IsActive:[{ value: true, disabled: !this.isEditMode }],
       CreatedBy: ['1'],
       CreatedDate: [{ value: currentDate, disabled: true }],
@@ -138,29 +138,6 @@ private setCountryForEdit(): void {
   }
 }
 
-loadDropDowns(): void {
-  this.countryService.getAllCountries().subscribe({
-    next: (res) => {
-      this.countrieslist = res;
-      this.filteredContriesList = [...this.countrieslist];
-
-      this.countriesSearchControl.valueChanges.subscribe((value: any) => {
-        const filterValue = (value || '').toLowerCase();
-        this.filteredContriesList = this.countrieslist.filter(country =>
-          country.CountryName.toLowerCase().includes(filterValue)
-        );  
-  });
-
-  if (this.isEditMode && this.data) {
-        this.setCountryForEdit();
-      }
-    },
-    error: (err) => {
-      console.error('Failed to load Countries:', err);
-    },
-  });
-}
-
 toUpperCase(event: Event) {
   const input = event.target as HTMLInputElement;
   input.value = input.value.toUpperCase();
@@ -168,6 +145,8 @@ toUpperCase(event: Event) {
 }
 
   onSubmit(): void {
+        this.stateForm.enable();//important for active boolean
+
         if (this.stateForm.valid) {
       this.dialogRef.close(this.stateForm.value);
     } else {

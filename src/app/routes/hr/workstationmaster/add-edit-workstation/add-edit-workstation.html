@@ -3,39 +3,14 @@
 
   <!-- Please Note Change Form control as per your Requirements  -->
   <mat-card-content>
-    <form [formGroup]="cityForm" class="form-field-full">
-      <!-- Auto-generated fields row -->
-      <div class="row mb-3">
-        <div class="col-sm-4 col-xl-3">
-          <mat-form-field *ngIf="isEditMode" appearance="fill">
-            <mat-label>WorkStation ID</mat-label>
-            <input
-              matInput
-              formControlName="CityId"
-              [readonly]="true"
-              placeholder="Enter WorkStation ID"
-            />
-          </mat-form-field>
-        </div>
-
-        <div class="col-sm-4 col-xl-3">
-          <div class="d-flex align-items-center justify-content-end" style="height: 56px">
-            <mat-checkbox formControlName="CityAuth" color="primary" [disabled]="!isEditMode">
-              Auth
-            </mat-checkbox>
-            <mat-checkbox formControlName="CityIsActive" color="primary" [disabled]="!isEditMode">
-              Active
-            </mat-checkbox>
-            <mat-checkbox
-              formControlName="CityIsDiscard"
-              color="primary"
-              [disabled]="!isEditMode"
-              *ngIf="isEditMode"
-            >
-              Discard
-            </mat-checkbox>
-          </div>
-        </div>
+    <form [formGroup]="workstationForm" class="form-field-full">
+      <div class="d-flex align-items-center justify-content-end gap-3" style="height: 56px">
+        <mat-checkbox formControlName="WorkStationIsActive" color="primary" [disabled]="!isEditMode">
+          Active
+        </mat-checkbox>
+        <mat-checkbox formControlName="WorkStationIsDiscard" color="primary" [disabled]="!isEditMode">
+          Discard
+        </mat-checkbox>
       </div>
 
       <div class="row mb-3">
@@ -43,34 +18,38 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>WorkStation Code</mat-label>
-            <input matInput formControlName="CityName" placeholder="Enter WorkStation Code" />
-            <!-- @if (cityForm.get('CityName')?.invalid && cityForm.get('CityName')?.touched) {
-              <mat-error>City Name is required</mat-error>
-            } -->
+            <input matInput formControlName="WorkStationCode" placeholder="Enter WorkStation Code" />
+            @if (workstationForm.get('WorkStationCode')?.invalid && workstationForm.get('WorkStationCode')?.touched) {
+              <mat-error>WorkStation Code is required</mat-error>
+            }
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Profit Center</mat-label>
-            <mat-select formControlName="CityCountryID" placeholder="Select Profit Center">
+          <mat-form-field appearance="outline">
+            <mat-label>ProfitCenter</mat-label>
+            <mat-select formControlName="WorkStationProfitcenterId" placeholder="Select ProfitCenter">
+
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Select Profit Center..."
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search ProfitCenter..." [formControl]="profitcenterSearchControl"
+                  (click)="$event.stopPropagation()" />
               </mat-option>
-              <mat-option *ngFor="let country of filteredCountryList" [value]="country.CountryId">
-                {{ country.CountryName }}
+
+              <mat-option value="">Select ProfitCenter</mat-option>
+
+              @for (profitcenter of filteredprofitcenterList; track profitcenter.ProfitCenterId) {
+              <mat-option [value]="profitcenter.ProfitCenterId">
+                {{ profitcenter.ProfitCenterName }}
               </mat-option>
+              }
             </mat-select>
+
+            @if (workstationForm.get('WorkStationProfitcenterId')?.invalid && workstationForm.get('WorkStationProfitcenterId')?.touched) {
+            <mat-error>ProfitCenter is required</mat-error>
+            }
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="fill" class="w-100">
             <mat-label>Remark</mat-label>
-            <input matInput formControlName="CityRemark" placeholder="Enter remark..." />
-            <!-- @if (cityForm.get('CityRemark')?.invalid && cityForm.get('CityRemark')?.touched) {
-              <mat-error>City Remark is required</mat-error>
-            } -->
+            <input matInput formControlName="WorkStationRemark" placeholder="Enter remark..." />
           </mat-form-field>
         </div>
 
@@ -79,23 +58,18 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>WorkStation Name</mat-label>
-            <input matInput formControlName="CityCode" placeholder="Enter WorkStation Name" />
-            <!-- @if (cityForm.get('CityCode')?.invalid && cityForm.get('CityCode')?.touched) {
-              <mat-error>City Code is required</mat-error>
-            } -->
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" class="w-100">
-            <mat-label>Remark</mat-label>
-            <input matInput formControlName="CityRemark" placeholder="Enter remark..." />
-            @if (cityForm.get('CityRemark')?.invalid && cityForm.get('CityRemark')?.touched) {
-            <mat-error>City Remark is required</mat-error>
+            <input matInput formControlName="WorkStationName" placeholder="Enter WorkStation Name" />
+            @if (workstationForm.get('WorkStationName')?.invalid && workstationForm.get('WorkStationName')?.touched) {
+              <mat-error>WorkStation Name is required</mat-error>
             }
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100" *ngIf="isEditMode">
-            <mat-label>Auth Remark</mat-label>
-            <input matInput formControlName="CityRemark" placeholder="Enter Auth remark..." />
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>WorkStation Short Name</mat-label>
+            <input matInput formControlName="WorkStationShortName" placeholder="Enter WorkStation Short Name" (input)="toUpperCase($event)" />
+            @if (workstationForm.get('WorkStationShortName')?.invalid && workstationForm.get('WorkStationShortName')?.touched) {
+              <mat-error>WorkStation Short Name is required</mat-error>
+            }
           </mat-form-field>
         </div>
       </div>
@@ -108,7 +82,7 @@
               mat-flat-button
               color="primary"
               class="btn-primary px-4"
-              [disabled]="cityForm.invalid"
+              [disabled]="workstationForm.invalid"
               (click)="onSubmit()"
             >
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>

@@ -57,6 +57,7 @@ export class Divisionmaster implements OnInit {
   isLoading = false;
   list: IDivision[] = [];
   isConfigExpanded: boolean = false;
+    divisionForm: any;
 
 
   constructor(private fb: FormBuilder,private divisionService: Divisionservice,private dialog: MatDialog,private toastService:Toastservice) {}
@@ -240,24 +241,35 @@ edit(record: any) {
       CreatedBy: result.CreatedBy, // or use actual user ID
       CreatedDate: new Date().toISOString()
       };
-      console.log('Payload for adding Division:', payload);
-      // Call the service to insert the Division
+      console.log('Payload for adding state:', payload);
+      // Call the service to insert the state
       this.divisionService.insertDivision(payload).subscribe({
         next: (response) => {
-          debugger;
-
-          console.log('Line 229');
          this.toastService.showSuccess('Division added successfully:', response);  
           this.getAllDivision(); 
           alert(`Division "${result.DivisionName}" added successfully!`);
         },
         error: (err) => {
-          console.error('Error while adding Division:', err);
-          this.toastService.showError('Failed to add Division. Please verify Division details and try again.');
-        }   
+         if (err.status === 400 && err.error) {
+      // Validation errors from FluentValidation
+      err.error.forEach((validationErr: any) => {
+        const field = validationErr.PropertyName;
+        const message = validationErr.ErrorMessage;
+
+        // Mark field error in form
+        if (this.divisionForm.get(field)) {
+          this.divisionForm.get(field)?.setErrors({ serverError: message });
+        }
+        // Optionally show toast
+        this.toastService.showError(message);
+      });
+      } else {
+      this.toastService.showError('Failed to add Division. Please verify Division details and try again.');
+    }
+        }
       });
     }
-   });
+  })
 }
 
   closeDialog(): void {
@@ -273,7 +285,7 @@ edit(record: any) {
    debugger;
     this.divisionService.deleteDivision(value.divisionId).subscribe({
       next: (response) => {
-        console.log('Division deleted successfully:', response); 
+         this.toastService.showSuccess('Division Deleted successfully:', response);  
         alert(`You have deleted ${value.DivisionName}..!`);
         this.getAllDivision();
       },

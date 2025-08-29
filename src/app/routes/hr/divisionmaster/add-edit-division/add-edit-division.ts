@@ -1,5 +1,11 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule,FormControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormControl,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,10 +14,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { HrService } from '../../hr.service';
 import { MatIconModule } from '@angular/material/icon';
-import { de } from 'date-fns/locale';
 import { Divisionservice } from '@shared/services/hr/division/divisionservice';
+import { debug } from 'console';
 
 @Component({
   selector: 'app-add-edit-division',
@@ -25,20 +30,21 @@ import { Divisionservice } from '@shared/services/hr/division/divisionservice';
     MatSelectModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './add-edit-division.html',
-  styleUrl: './add-edit-division.scss'
+  styleUrl: './add-edit-division.scss',
 })
 export class AddEditDivision {
-  DivisionForm!: FormGroup;
+  divisionForm!: FormGroup;
   isEditMode: boolean = false;
   countrieslist: any[] = [];
   code: string = '';
   countriesSearchControl = new FormControl('');
   filteredContriesList: any[] = [];
 
-  constructor(private divisionService: Divisionservice,
+  constructor(
+    private divisionService: Divisionservice,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddEditDivision>,
     @Inject(MAT_DIALOG_DATA) public data: any
@@ -53,8 +59,9 @@ export class AddEditDivision {
   }
 
   private initializeForm(): void {
+    debugger;
     const currentDate = new Date();
-    this.DivisionForm = this.fb.group({
+    this.divisionForm = this.fb.group({
       DivisionId: [''],
       DivisionCode: ['', [Validators.required]],
       DivisionName: ['', [Validators.required]],
@@ -63,15 +70,14 @@ export class AddEditDivision {
       DivisionRemark: [''],
       DivisionAuthRemark: [''],
       DivisionAuth: [{ value: true, disabled: !this.isEditMode }],
-      DivisionIsDiscard:[{ value: true, disabled: !this.isEditMode }], 
-      DivisionIsActive:[{ value: true, disabled: !this.isEditMode }],
+      DivisionIsDiscard: [{ value: false, disabled: !this.isEditMode }],
+      DivisionIsActive: [{ value: true, disabled: !this.isEditMode }],
       CreatedBy: ['1'],
-      CreatedDate: [{ value: currentDate, disabled: true }]
+      CreatedDate: [{ value: currentDate, disabled: true }],
     });
     if (this.isEditMode) {
-      debugger;
       console.log('Patching form with country data:', this.data.division);
-      this.DivisionForm.patchValue({
+      this.divisionForm.patchValue({
         //CreatedDate: currentDate, tommorow dicuss with Umar
         DivisionId: this.data.division.DivisionId,
         DivisionCode: this.data.division.DivisionCode,
@@ -84,50 +90,34 @@ export class AddEditDivision {
         DivisionIsActive: this.data.division.DivisionIsActive,
         DivisionIsDiscard: this.data.division.DivisionIsDiscard,
         CreatedBy: this.data.division.CreatedBy,
-        CreatedDate: this.data.division.CreatedDate
+        CreatedDate: this.data.division.CreatedDate,
       });
-       this.DivisionForm.get('code')?.enable();
-      this.DivisionForm.get('CreatedDate')?.disable();
-      this.DivisionForm.get('DivisionIsActive')?.enable();
-      this.DivisionForm.get('DivisionIsDiscard')?.enable();
-      this.DivisionForm.get('DivisionAuth')?.enable();
-      console.log('Form values after patch:', this.DivisionForm.value);
-    }    
-  }
-toUpperCase(event: Event) {
-  const input = event.target as HTMLInputElement;
-  input.value = input.value.toUpperCase();
-  this.DivisionForm.get('ShortName')?.setValue(input.value, { emitEvent: false });
-}
-
-  
-  onSubmit(): void {
-    debugger;
-        if (this.DivisionForm.valid) {
-      this.dialogRef.close(this.DivisionForm.value);
-    } else {
-      this.DivisionForm.markAllAsTouched();
+      this.divisionForm.get('code')?.enable();
+      this.divisionForm.get('CreatedDate')?.disable();
+      this.divisionForm.get('DivisionIsActive')?.enable();
+      this.divisionForm.get('DivisionIsDiscard')?.enable();
+      this.divisionForm.get('DivisionAuth')?.enable();
+      console.log('Form values after patch:', this.divisionForm.value);
     }
-  if (this.DivisionForm.valid) {
-    const divisionData = this.DivisionForm.value;
-
-    this.divisionService.insertDivision(divisionData).subscribe({
-      next: (res: any) => {
-        console.log('Division saved successfully', res);
-        alert(res.message);
-        //alert('City saved successfully!');
-        this.dialogRef.close(res);
-      },
-      // error: (err: any) => {
-      //   console.error('Error saving Division', err);
-      //   alert('Error saving Division!');
-      // }
-    });
-  } else {
-    this.DivisionForm.markAllAsTouched();
   }
+  toUpperCase(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.toUpperCase();
+    this.divisionForm.get('ShortName')?.setValue(input.value, { emitEvent: false });
+  }
+
+  onSubmit(): void {
+    debugger
+    this.divisionForm.enable();//important for active boolean
+    
+        if (this.divisionForm.valid) {
+          console.log('Form submitted with values:', this.divisionForm.value);
+      this.dialogRef.close(this.divisionForm.value);
+    } else {
+      this.divisionForm.markAllAsTouched();
+    }
 }
- onCancel(): void {
+  onCancel(): void {
     this.dialogRef.close();
   }
 }
