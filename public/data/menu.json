@@ -90,6 +90,16 @@
           "route": "departmentmaster",
           "name": "departmentmaster",
           "type": "link"
+        },
+        {
+          "route": "rolesmaster",
+          "name": "rolesmaster",
+          "type": "link"
+        },
+        {
+          "route": "rolesdetails",
+          "name": "rolesdetails",
+          "type": "link"
         }
       ]
     },

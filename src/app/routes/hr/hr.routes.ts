@@ -17,6 +17,8 @@ import { Qualificationtypemaster } from './qualificationtypemaster/qualification
 import { AddEditHoliday } from './holidaymaster/add-edit-holiday/add-edit-holiday';
 import { Holidaymaster } from './holidaymaster/holidaymaster';
 import { Departmentmaster } from './departmentmaster/departmentmaster';
+import { Rolesmaster } from './rolesmaster/rolesmaster';
+import { Rolesdetails } from './rolesdetails/rolesdetails';
 
 
 
@@ -85,5 +87,13 @@ export const routes: Routes = [
   {
     path: 'departmentmaster',
     component: Departmentmaster,
+  },
+  {
+    path: 'rolesmaster',
+    component: Rolesmaster,
+  },
+  {
+    path: 'rolesdetails',
+    component: Rolesdetails,
   }
 ];
