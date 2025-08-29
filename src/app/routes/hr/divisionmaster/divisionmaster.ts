@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { HrService } from '../hr.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -35,7 +34,7 @@ export class Divisionmaster implements OnInit {
    private readonly translate = inject(TranslateService);
    @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
     dialogRef!: MatDialogRef<any>;
-  
+
   division: IDivision[] = [];
   showForm = false;
   divisionModel: any = {};
@@ -53,7 +52,7 @@ export class Divisionmaster implements OnInit {
   showPaginator = true;
   expandable = false;
   columnResizable = false;
- 
+
   isLoading = false;
   list: IDivision[] = [];
   isConfigExpanded: boolean = false;
@@ -197,14 +196,14 @@ edit(record: any) {
         DivisionIsDiscard: result.DivisionIsDiscard,
         DivisionIsActive: result.DivisionIsActive,
         CreatedBy: '1', // or use actual user ID
-        CreatedDate: result.CreatedDate,       
-     }; 
+        CreatedDate: result.CreatedDate,
+     };
           console.log('Update payload:', updatePayload);
           this.divisionService.updateDivision(updatePayload).subscribe({
             next: (response) => {
               console.log('Division updated successfully:', response);
               alert(`Division "${result.DivisionName}" updated successfully!`);
-              this.getAllDivision(); 
+              this.getAllDivision();
             },
             error: (err) => {
               console.error('Error updating Division:', err);
@@ -265,7 +264,11 @@ edit(record: any) {
       });
       } else {
       this.toastService.showError('Failed to add Division. Please verify Division details and try again.');
-    }
+       }     
+        },
+        error: (err) => {
+          console.error('Error while adding Division:', err);
+          this.toastService.showError('Failed to add Division. Please verify Division details and try again.');
         }
       });
     }
@@ -286,6 +289,9 @@ edit(record: any) {
     this.divisionService.deleteDivision(value.divisionId).subscribe({
       next: (response) => {
          this.toastService.showSuccess('Division Deleted successfully:', response);  
+
+        console.log('Division deleted successfully:', response);
+
         alert(`You have deleted ${value.DivisionName}..!`);
         this.getAllDivision();
       },

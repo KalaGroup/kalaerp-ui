@@ -67,8 +67,20 @@
           "type": "link"
         },
         {
+
           "route": "petrolallowancemaster",
           "name": "petrolallowancemaster",
+          "type": "link"
+        },
+        {
+
+          "route": "employeeupdationfor",
+          "name": "employeeupdationfor",
+          "type": "link"
+        },
+                {
+          "route": "qualificationtype",
+          "name": "qualificationtype",
           "type": "link"
         }
       ]
