@@ -10,7 +10,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { HrService } from '../../hr.service';
 import { tr } from 'date-fns/locale';
 import { PetrolAllowanceservice } from '@shared/services/hr/PetrolAllowanceMaster/PetrolAllowanceservice';
 

@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { HrService } from '../hr.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -211,7 +210,7 @@ export class Companyentitytypemaster implements OnInit {
     //this.columns[0].showExpand = this.expandable;
   }
 
-  updateCell() { 
+  updateCell() {
     // this.list = this.list.map(item => {
     //   (item as any).RandomValue = Math.round(Math.random() * 1000) / 100;
     //   return item;

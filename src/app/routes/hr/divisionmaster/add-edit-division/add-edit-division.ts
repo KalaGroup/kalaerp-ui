@@ -72,8 +72,6 @@ export class AddEditDivision {
       DivisionAuth: [{ value: true, disabled: !this.isEditMode }],
       DivisionIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       DivisionIsActive: [{ value: true, disabled: !this.isEditMode }],
-      DivisionIsDiscard:[{ value: true, disabled: !this.isEditMode }],
-      DivisionIsActive:[{ value: true, disabled: !this.isEditMode }],
       CreatedBy: ['1'],
       CreatedDate: [{ value: currentDate, disabled: true }],
     });
@@ -102,25 +100,26 @@ export class AddEditDivision {
       console.log('Form values after patch:', this.divisionForm.value);
     }
   }
+
   toUpperCase(event: Event) {
     const input = event.target as HTMLInputElement;
     input.value = input.value.toUpperCase();
     this.divisionForm.get('ShortName')?.setValue(input.value, { emitEvent: false });
-    console.log('Form values after patch:', this.DivisionForm.value);
-    }
+    console.log('Form values after patch:', this.divisionForm.value);
   }
 
   onSubmit(): void {
-    debugger
-    this.divisionForm.enable();//important for active boolean
-    
-        if (this.divisionForm.valid) {
-          console.log('Form submitted with values:', this.divisionForm.value);
+    debugger;
+    this.divisionForm.enable(); //important for active boolean
+
+    if (this.divisionForm.valid) {
+      console.log('Form submitted with values:', this.divisionForm.value);
       this.dialogRef.close(this.divisionForm.value);
     } else {
       this.divisionForm.markAllAsTouched();
     }
-}
+  }
+
   onCancel(): void {
     this.dialogRef.close();
   }

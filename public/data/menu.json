@@ -67,13 +67,11 @@
           "type": "link"
         },
         {
-
           "route": "petrolallowancemaster",
           "name": "petrolallowancemaster",
           "type": "link"
         },
         {
-
           "route": "employeeupdationfor",
           "name": "employeeupdationfor",
           "type": "link"
