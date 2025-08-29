@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { qualificationservices } from './qualificationservices';
+import { qualificationservices } from './qualificationservice';
 
 
 

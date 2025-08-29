@@ -31,12 +31,11 @@
           "name": "company",
           "type": "link"
         },
-                {
+        {
           "route": "state",
           "name": "state",
           "type": "link"
         },
-
         {
           "route": "division",
           "name": "division",
@@ -68,6 +67,13 @@
           "type": "link"
         },
         {
+
+          "route": "petrolallowancemaster",
+          "name": "petrolallowancemaster",
+          "type": "link"
+        },
+        {
+
           "route": "employeeupdationfor",
           "name": "employeeupdationfor",
           "type": "link"
