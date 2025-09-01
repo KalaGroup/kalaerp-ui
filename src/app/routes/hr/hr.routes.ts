@@ -9,6 +9,7 @@ import { Workstationmaster } from './workstationmaster/workstationmaster';
 import { Profitcentermaster } from './profitcentermaster/profitcentermaster';
 import { Qualificationmaster } from './qualificationmaster/qualificationmaster';
 import { Recruitmentattributemaster } from './recruitmentattributemaster/recruitmentattributemaster';
+import { employeetypemaster } from './employeetypemaster/employeetypemaster';
 import { Component } from '@angular/core';
 import { Companyentitytypemaster } from './companyentitytypemaster/companyentitytypemaster';
 import { Petrolallowancemaster } from './petrolallowancemaster/petrolallowancemaster';
@@ -21,7 +22,6 @@ import { Rolesmaster } from './rolesmaster/rolesmaster';
 import { Rolesdetails } from './rolesdetails/rolesdetails';
 import { Locationmaster } from './locationmaster/locationmaster';
 import { Classoftravelmaster } from './classoftravelmaster/classoftravelmaster';
-
 
 
 export const routes: Routes = [
@@ -65,6 +65,10 @@ export const routes: Routes = [
   {
     path: 'recruitmentattributemaster',
     component: Recruitmentattributemaster,
+  },
+  {
+    path: 'employeetypemaster',
+    component: employeetypemaster,
   },
   {
     path: 'companyentitytype',
