@@ -18,6 +18,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { Country } from '@shared/interfaces/hr';
+import { IQualificationtype } from '@shared/interfaces/hr/qualificationtype';
+import { Qualificationtypeservice } from '@shared/services/hr/qualificationtype/qualificationtypeservice';
 
 @Component({
   selector: 'app-add-edit-qualificationtype',
@@ -34,67 +36,78 @@ import { Country } from '@shared/interfaces/hr';
     MatIconModule,
   ],
   templateUrl: './add-edit-qualificationtype.html',
-  styleUrl: './add-edit-qualificationtype.scss'
+  styleUrl: './add-edit-qualificationtype.scss',
 })
 export class AddEditQualificationtype implements OnInit {
-
-    QualificationTypeForm!: FormGroup;
+  qualificationtypeForm!: FormGroup;
   isEditMode = false;
-
+  filteredprofitcenterList: IQualificationtype[] = [];
+  profitcenterList: any[] = [];
+  selectedCountryId: number | null = null;
+  selectedStateId: number | null = null;
+  profitcenterSearchControl = new FormControl('');
 
   constructor(
+    private qualificationtypeService: Qualificationtypeservice,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddEditQualificationtype>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.isEditMode = !!this.data && !!this.data.City; // Add your Data Name
-
+    this.isEditMode = !!this.data && !!this.data.qualificationtype;
     console.log('Edit mode:', this.isEditMode);
     console.log('Data received:', this.data);
   }
 
   ngOnInit(): void {
- this.initializeForm();
+    this.initializeForm();
   }
 
   private initializeForm(): void {
-    const currentDate = new Date().toLocaleDateString('en-GB');
-    this.QualificationTypeForm = this.fb.group({
-      //QualificationTypeID: [''],
-      QualificationTypeCode: ['', Validators.required],
-      QualificationTypeName: ['', Validators.required],
-      QualificationTypeAuth: [{ value: true, disabled:true }],
-      QualificationTypeIsActive: [{ value: true, disabled: !this.isEditMode }],
-      QualificationTypeIsDiscard: [{ value: false, disabled: !this.isEditMode }],
-      QualificationTypeRemark: ['',Validators.required],
-      CreatedBy: ['10'],
+    debugger;
+    const currentDate = new Date();
+    this.qualificationtypeForm = this.fb.group({
+      QualificationTypeId: [''],
+      QualificationTypeCode: ['', [Validators.required]],
+      QualificationTypeName: ['', [Validators.required]],
+      QualificationTypeRemark: [''],
+      QualificationTypeAuth: [{ value: true, disabled: !this.isEditMode }],
+      QualificationTypeIsDiscard:  [{ value: false, disabled: !this.isEditMode }],
+      QualificationTypeIsActive:  [{ value: true, disabled: !this.isEditMode }],
+      CreatedBy: ['1'],
       CreatedDate: [{ value: currentDate, disabled: true }],
-
     });
-
-    // If editing, pre-fill form with available data
-    if (this.isEditMode && this.data.City) {
-      console.log('Patching form with Company Entity Type data:', this.data.City);
-
-      this.QualificationTypeForm.patchValue({
-        // Add your form fields here
+    if (this.isEditMode) {
+      debugger;
+      console.log('Patching form with Qualificationtype data:', this.data.qualificationtype);
+      this.qualificationtypeForm.patchValue({
+        //CreatedDate: currentDate, tommorow dicuss with Umar
+        code: this.data.qualificationtype.code,
+        QualificationTypeId: this.data.qualificationtype.QualificationTypeId,
+        QualificationTypeCode: this.data.qualificationtype.QualificationTypeCode,
+        QualificationTypeName: this.data.qualificationtype.QualificationTypeName,
+        QualificationTypeRemark: this.data.qualificationtype.QualificationTypeRemark,
+        QualificationTypeAuth: this.data.qualificationtype.QualificationTypeAuth,
+        QualificationTypeIsDiscard: this.data.qualificationtype.QualificationTypeIsDiscard,
+        QualificationTypeIsActive: this.data.qualificationtype.QualificationTypeIsActive,
+        CreatedBy: this.data.qualificationtype.CreatedBy,
       });
-
-      this.QualificationTypeForm.get('QualificationTypeIsActive')?.enable();
-      this.QualificationTypeForm.get('QualificationTypeIsDiscard')?.enable();
-      this.QualificationTypeForm.get('QualificationTypeAuth')?.enable();
-
-      console.log('Form values after patch:', this.QualificationTypeForm.value);
+      this.qualificationtypeForm.get('code')?.enable();
+      this.qualificationtypeForm.get('CreatedDate')?.disable();
+      this.qualificationtypeForm.get('IsActive')?.enable();
+      console.log('Form values after patch:', this.qualificationtypeForm.value);
     }
   }
 
-
-
-onSubmit(): void {
-// Add your default Submit logic here
-}
+  onSubmit(): void {
+    debugger;
+        this.qualificationtypeForm.enable();//important for active boolean
+    if (this.qualificationtypeForm.valid) {
+      this.dialogRef.close(this.qualificationtypeForm.value);
+    } else {
+      this.qualificationtypeForm.markAllAsTouched();
+    }
+  }
   onCancel(): void {
     this.dialogRef.close();
   }
-
 }

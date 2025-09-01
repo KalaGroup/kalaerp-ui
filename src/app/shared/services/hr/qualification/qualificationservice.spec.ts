@@ -1,8 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { qualificationservices } from './qualificationservice';
 
-
-
 describe('Countryservice', () => {
     let service: qualificationservices;
 
