@@ -9,6 +9,7 @@ import { Workstationmaster } from './workstationmaster/workstationmaster';
 import { Profitcentermaster } from './profitcentermaster/profitcentermaster';
 import { Qualificationmaster } from './qualificationmaster/qualificationmaster';
 import { Recruitmentattributemaster } from './recruitmentattributemaster/recruitmentattributemaster';
+import { employeetypemaster } from './employeetypemaster/employeetypemaster';
 
 
 export const routes: Routes = [
@@ -49,10 +50,12 @@ export const routes: Routes = [
     path: 'qualification',
     component: Qualificationmaster,
   },
-
-
   {
     path: 'recruitmentattributemaster',
     component: Recruitmentattributemaster,
+  },
+  {
+    path: 'employeetypemaster',
+    component: employeetypemaster,
   },
 ];

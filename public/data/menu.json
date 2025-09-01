@@ -61,6 +61,11 @@
           "route": "recruitmentattributemaster",
           "name": "recruitmentattributemaster",
           "type": "link"
+        },
+        {
+          "route": "employeetypemaster",
+          "name": "employeetypemaster",
+          "type":"link" 
         }
       ]
     },
