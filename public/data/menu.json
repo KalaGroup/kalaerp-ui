@@ -76,7 +76,7 @@
           "name": "employeeupdationfor",
           "type": "link"
         },
-                {
+        {
           "route": "qualificationtype",
           "name": "qualificationtype",
           "type": "link"
@@ -104,6 +104,11 @@
         {
           "route": "location",
           "name": "location",
+          "type": "link"
+        },
+        {
+          "route": "classoftravel",
+          "name": "classoftravel",
           "type": "link"
         }
       ]
