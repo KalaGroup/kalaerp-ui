@@ -115,6 +115,11 @@
           "route": "classoftravel",
           "name": "classoftravel",
           "type": "link"
+        },
+        {
+          "route": "facility",
+          "name": "facility",
+          "type": "link"
         }
       ]
     },
