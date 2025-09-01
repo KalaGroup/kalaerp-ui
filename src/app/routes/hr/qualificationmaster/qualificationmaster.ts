@@ -9,8 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { HrService } from '../hr.service';
-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,8 +17,9 @@ import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
 import { AddEditQualification } from './add-edit-qualification/add-edit-qualification';
 import { Toastservice } from 'app/routes/toastservice';
-import { qualificationservices } from '@shared/services/hr/qualification/qualificationservices';
-import { IQualification } from '@shared/interfaces/hr/Iqualification';
+import { qualificationservices } from '@shared/services/hr/qualification/qualificationservice';
+import { IQualification } from '@shared/interfaces/hr/qualification';
+
 
 @Component({
   selector: 'app-qualificationmaster',
@@ -178,7 +177,7 @@ export class Qualificationmaster implements OnInit {
       if (result) {
         console.log('Qualification Updated:', result);
 
-        debugger
+
         const updatePayload: IQualification = {
           QualificationId: record.QualificationId,
           QualificationCode: result.QualificationCode,
@@ -210,7 +209,7 @@ export class Qualificationmaster implements OnInit {
   }
 
 
-  //Add New 
+  //Add New
   openAddDialog(): void {
     const dialogRef = this.dialog.open(AddEditQualification, {
       width: '60%',
@@ -223,7 +222,7 @@ export class Qualificationmaster implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log(' Qualification data:', result);
-
+        debugger
         const payload: IQualification = {
           QualificationId: 0,
           QualificationCode: result.QualificationCode,
@@ -243,6 +242,7 @@ export class Qualificationmaster implements OnInit {
           next: (response) => {
             console.log('Qualification added successfully:', response);
             this.loadAllQualification();
+            this.toastService.showSuccess;
             alert(`Qualification added successfully!`);
 
           },
@@ -264,7 +264,7 @@ export class Qualificationmaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger
+
     this.QualificationServices.deleteQualification(value.QualificationId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);

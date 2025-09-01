@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
-import { IQualification } from '@shared/interfaces/hr/Iqualification';
+import { IQualification } from '@shared/interfaces/hr/qualification';
 
 @Injectable({
     providedIn: 'root',

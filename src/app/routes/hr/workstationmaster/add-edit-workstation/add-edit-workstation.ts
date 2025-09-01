@@ -1,12 +1,6 @@
 /* eslint-disable @angular-eslint/prefer-inject */
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  ReactiveFormsModule,
-  FormControl,
-} from '@angular/forms';
+import {FormBuilder,FormGroup,Validators,ReactiveFormsModule,FormControl,} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,13 +9,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { HrService } from '../../hr.service';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { Country } from '@shared/interfaces/hr';
+import { Workstationservice } from '@shared/services/hr/workstation/workstationservice';
+import { profitcenterservices } from '@shared/services/hr/profitcenter/profitcenterservices';
+import { de } from 'date-fns/locale';
+import { Iprofitcentermaster } from '@shared/interfaces/hr/profitcenter';
 
 @Component({
   selector: 'app-add-edit-workstation',
+  standalone: true,
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -35,106 +32,143 @@ import { Country } from '@shared/interfaces/hr';
     MatIconModule,
   ],
   templateUrl: './add-edit-workstation.html',
-  styleUrl: './add-edit-workstation.scss'
+  styleUrl: './add-edit-workstation.scss',
 })
 export class AddEditWorkstation {
-
-    cityForm!: FormGroup;
+  workstationForm!: FormGroup;
   isEditMode = false;
-  filteredCountryList: Country[] = [];
-  countryList: any[] = [];
-  filteredStateList: any;
-  filteredTierTypeList: any;
-  filteredDistrictList: any;
+  filteredprofitcenterList: Iprofitcentermaster[] = [];
+  profitcenterList: any[] = [];
   selectedCountryId: number | null = null;
   selectedStateId: number | null = null;
-  countrySearchControl = new FormControl('');
-  stateSearchControl = new FormControl('');
-  districtSearchControl = new FormControl('');
-  tierTypeSearchControl = new FormControl('');
-  stateList: any[] = [];
-  districtList: any[] = [];
-  tierTypeList: any[] = [];
-
+  profitcenterSearchControl = new FormControl('');
 
   constructor(
+    private profitcenterService: profitcenterservices,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddEditWorkstation>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.isEditMode = !!this.data && !!this.data.City;
-
+    this.isEditMode = !!this.data && !!this.data.workstation;
     console.log('Edit mode:', this.isEditMode);
     console.log('Data received:', this.data);
   }
 
   ngOnInit(): void {
- this.initializeForm();
+    this.initializeForm();
+    this.loadAllProfitCenter();
   }
 
   private initializeForm(): void {
-    const currentDate = new Date().toLocaleDateString('en-GB');
-    this.cityForm = this.fb.group({
-      CityId: [''],
+    debugger;
+    const currentDate = new Date();
+    this.workstationForm = this.fb.group({
+      WorkStationId: [''],
+      WorkStationProfitcenterId: ['', [Validators.required]],
+      WorkStationCode: ['', [Validators.required]],
+      WorkStationName: ['', [Validators.required]],
+      WorkStationShortName: ['', [Validators.required]],
+      WorkStationRemark: [''],
+      WorkStationAuthRemark: [''],
+      WorkStationIsDiscard: [{ value: false, disabled: !this.isEditMode }],
+      WorkStationIsActive: [{ value: true, disabled: !this.isEditMode }],
+      CreatedBy: ['1'],
       CreatedDate: [{ value: currentDate, disabled: true }],
-      CityAuth: [{ value: false, disabled: !this.isEditMode }],
-      CityIsActive: [{ value: true, disabled: !this.isEditMode }],
-      CityIsDiscard: [{ value: true, disabled: !this.isEditMode }],
-
-      CityName: ['', Validators.required],
-      CityShortName: ['', Validators.required],
-      CityCode: ['', Validators.required],
-      CityLatitude: ['', Validators.required],
-      CityLongitude: ['', Validators.required],
-      CityRemark: [''],
-      CreatedBy: ['', Validators.required,],
-
-      CityCountryID: ['', Validators.required],
-      CityStateID: ['', Validators.required],
-      CityDistrictID: ['', Validators.required],
-      CityTierTypeID: ['', Validators.required],
-
-      StateName: [''],
-      CountryName: [''],
-      DistrictName: [''],
     });
-
-    // If editing, pre-fill form with available data
-    if (this.isEditMode && this.data.City) {
-      console.log('Patching form with city data:', this.data.City);
-
-      this.cityForm.patchValue({
-        CityId: this.data.City.CityId,
-        CityCode: this.data.City.CityCode,
-        CityName: this.data.City.CityName,
-        CityShortName: this.data.City.CityShortName,
-        CityLatitude: this.data.City.CityLatitude,
-        CityLongitude: this.data.City.CityLongitude,
-        CityRemark: this.data.City.CityRemark,
-        CityIsActive: this.data.City.CityIsActive,
-        CityIsDiscard: this.data.City.CityIsDiscard,
-        CityAuth: this.data.City.CityAuth,
-        CityCountryID: this.data.City.CityCountryID,
-        CityStateID: this.data.City.CityStateID,
-        CityDistrictID: this.data.City.CityDistrictID,
-        CityTierTypeID: this.data.City.CityTierTypeId,
-        CreatedBy: this.data.City.CreatedBy,
-        CreatedDate: new Date(this.data.City.CreatedDate).toLocaleDateString('en-GB'),
+    if (this.isEditMode) {
+      debugger;
+      console.log('Patching form with workstation data:', this.data.workstation);
+      this.workstationForm.patchValue({
+        //CreatedDate: currentDate, tommorow dicuss with Umar
+        code: this.data.workstation.code,
+        WorkStationId: this.data.workstation.WorkStationId,
+        WorkStationProfitcenterId: this.data.workstation.WorkStationProfitcenterId,
+        WorkStationCode: this.data.workstation.WorkStationCode,
+        WorkStationName: this.data.workstation.WorkStationName,
+        WorkStationShortName: this.data.workstation.WorkStationShortName,
+        WorkStationRemark: this.data.workstation.WorkStationRemark,
+        WorkStationAuthRemark: this.data.workstation.WorkStationAuthRemark,
+        WorkStationIsActive: this.data.workstation.WorkStationIsActive,
+        WorkStationIsDiscard: this.data.workstation.WorkStationIsDiscard,
+        CreatedBy: this.data.workstation.CreatedBy,
       });
-
-      this.cityForm.get('CityIsActive')?.enable();
-      this.cityForm.get('CityIsDiscard')?.enable();
-      this.cityForm.get('CityAuth')?.enable();
-
-      console.log('Form values after patch:', this.cityForm.value);
+      this.workstationForm.get('code')?.enable();
+      this.workstationForm.get('CreatedDate')?.disable();
+      this.workstationForm.get('IsActive')?.enable();
+      console.log('Form values after patch:', this.workstationForm.value);
     }
   }
 
+  loadAllProfitCenter(): void {
+    debugger;
+    this.profitcenterService.getAllProfitcenter().subscribe({
+      next: res => {
+        this.profitcenterList = res;
+        console.log('Profit Center loaded:', res);
+        this.filteredprofitcenterList = [...this.profitcenterList];
+        this.profitcenterSearchControl.valueChanges.subscribe(value => {
+          const filterValue = (value || '').toLowerCase();
+          this.filteredprofitcenterList = this.profitcenterList.filter(profitcenter =>
+            profitcenter.ProfitCenterName.toLowerCase().includes(filterValue)
+          );
+        });
+        // Handle Profit Center selection for edit mode
+        if (this.isEditMode && this.data) {
+          this.setProfitCenterForEdit();
+        }
+      },
+      error: err => {
+        console.error('Failed to load ProfitCenter:', err);
+      },
+    });
+  }
 
+  private setProfitCenterForEdit(): void {
+    debugger;
+    let ProfitCenterId: number | null = null;
+    const stateData = this.data.workstation;
 
-onSubmit(): void {
+    if (stateData?.ProfitCenterName) {
+      const ProfitCenter = this.profitcenterList.find(
+        p =>
+          p.ProfitCenterName.trim().toLowerCase() ===
+          stateData.ProfitCenterName.trim().toLowerCase()
+      );
 
-}
+      ProfitCenterId = ProfitCenter ? ProfitCenter.ProfitCenterId : null; // 🔥 use correct property name
+
+      console.log(
+        'Found ProfitCenterName by name:',
+        ProfitCenterId,
+        'for ProfitCenter:',
+        stateData.ProfitCenterName
+      );
+    }
+
+    if (ProfitCenterId) {
+      this.workstationForm.patchValue({
+        ProfitCenterId: ProfitCenterId,
+      });
+      console.log('ProfitCenter set in form:', ProfitCenterId);
+    } else {
+      console.log('No ProfitCenter ID found for ProfitCenter Name:', stateData?.ProfitCenterName);
+    }
+  }
+
+  toUpperCase(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.toUpperCase();
+    this.workstationForm.get('WorkStationShortName')?.setValue(input.value, { emitEvent: false });
+  }
+
+  onSubmit(): void {
+        this.workstationForm.enable();//important for active boolean
+    if (this.workstationForm.valid) {
+      this.dialogRef.close(this.workstationForm.value);
+    } else {
+      this.workstationForm.markAllAsTouched();
+    }
+  }
   onCancel(): void {
     this.dialogRef.close();
   }

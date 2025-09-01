@@ -15,7 +15,10 @@ export class Companyservice {
   private getAllRCityUrl = 'https://localhost:7019/api/CityMaster/getcitydetailsbydistrictid';
   private currencyUrl = 'https://localhost:7019/api/CurrencyMaster';
   private countryUrl = 'https://localhost:7019/api/CountryMaster';
-
+  private parentCompanyUrl = 'https://localhost:7019/api/CompanyMaster/getparentcompanyidandname';
+  private companyCreateUrl = 'https://localhost:7019/api/CompanyMaster/addcompany';
+  private companyUpdateUrl = 'https://localhost:7019/api/CompanyMaster/updatecompany';
+  private companyDeleteUrl = 'https://localhost:7019/api/CompanyMaster/deletecompany';
 
   constructor(private http: HttpClient) {}
 
@@ -46,4 +49,21 @@ export class Companyservice {
   getAllCountries(): Observable<ICountry[]> {
       return this.http.get<ICountry[]>(`${this.countryUrl}/getallcountries`);
   }
+
+  getParentCompanies(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.parentCompanyUrl}`);
+  }
+
+  createCompany(companyData: any): Observable<any> {
+    return this.http.post<any>(`${this.companyCreateUrl}`, companyData);
+  }
+
+  updateCompany(companyData: any): Observable<any> {
+    return this.http.put<any>(`${this.companyUpdateUrl}`, companyData);
+  }
+
+  deleteCompany(companyId: number): Observable<any> {
+    return this.http.delete<any>(`${this.companyDeleteUrl}/${companyId}`);
+  }
+
 }

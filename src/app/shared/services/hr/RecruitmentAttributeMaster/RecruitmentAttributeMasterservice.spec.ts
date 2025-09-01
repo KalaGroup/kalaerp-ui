@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { RecruitmentAttributeservices } from './RecruitmentAttributeMasterservices';
+import { RecruitmentAttributeservices } from './RecruitmentAttributeMasterservice';
 
 
 

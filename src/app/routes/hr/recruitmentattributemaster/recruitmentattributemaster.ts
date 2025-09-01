@@ -10,21 +10,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { HrService } from '../hr.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
-import { MtxDialog } from '@ng-matero/extensions/dialog';
+
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
 import { Toastservice } from 'app/routes/toastservice';
-import { Country, Currency } from '@shared/interfaces/hr';
-import { AddEditCurrency } from '../currencymaster/add-edit-currency/add-edit-currency';
-import { id } from 'date-fns/locale';
+
 import { AddEditRecruitmentattribute } from './add-edit-recruitmentattribute/add-edit-recruitmentattribute';
 import { IRecruitmentAttribute } from '@shared/interfaces/hr/RecruitmentAttributeMaster';
-import { RecruitmentAttributeservices } from '@shared/services/hr/RecruitmentAttributeMaster/RecruitmentAttributeMasterservices';
+import { RecruitmentAttributeservices } from '@shared/services/hr/RecruitmentAttributeMaster/RecruitmentAttributeMasterservice';
 
 @Component({
   selector: 'app-recruitmentattributemaster',
@@ -193,7 +190,7 @@ export class Recruitmentattributemaster implements OnInit {
           console.log('recruitmentattribute Updated:', result);
           return;
         }
-        debugger
+
         const updatePayload: IRecruitmentAttribute = {
           RecruitmentAttributeId: record.RecruitmentAttributeId,
           RecruitmentAttributeName: result.RecruitmentAttributeName,
@@ -243,7 +240,7 @@ export class Recruitmentattributemaster implements OnInit {
           CreatedBy: 1, // Set appropriately
           CreatedDate: new Date()
         };
-        debugger
+
         this.RecruitmentAttributeServices.insertRecruitmentAttribute(payload).subscribe({
           next: () => {
             alert(`Facility "${result.FacilityName}" added successfully!`);
@@ -259,7 +256,7 @@ export class Recruitmentattributemaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger
+
     this.RecruitmentAttributeServices.deleteRecruitmentAttribute(value.RecruitmentAttributeId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);

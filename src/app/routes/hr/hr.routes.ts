@@ -10,6 +10,18 @@ import { Profitcentermaster } from './profitcentermaster/profitcentermaster';
 import { Qualificationmaster } from './qualificationmaster/qualificationmaster';
 import { Recruitmentattributemaster } from './recruitmentattributemaster/recruitmentattributemaster';
 import { employeetypemaster } from './employeetypemaster/employeetypemaster';
+import { Component } from '@angular/core';
+import { Companyentitytypemaster } from './companyentitytypemaster/companyentitytypemaster';
+import { Petrolallowancemaster } from './petrolallowancemaster/petrolallowancemaster';
+import { Employeemasterupdationformaster } from './employeemasterupdationformaster/employeemasterupdationformaster';
+import { Qualificationtypemaster } from './qualificationtypemaster/qualificationtypemaster';
+import { AddEditHoliday } from './holidaymaster/add-edit-holiday/add-edit-holiday';
+import { Holidaymaster } from './holidaymaster/holidaymaster';
+import { Departmentmaster } from './departmentmaster/departmentmaster';
+import { Rolesmaster } from './rolesmaster/rolesmaster';
+import { Rolesdetails } from './rolesdetails/rolesdetails';
+import { Locationmaster } from './locationmaster/locationmaster';
+import { Classoftravelmaster } from './classoftravelmaster/classoftravelmaster';
 
 
 export const routes: Routes = [
@@ -57,5 +69,45 @@ export const routes: Routes = [
   {
     path: 'employeetypemaster',
     component: employeetypemaster,
+  },
+  {
+    path: 'companyentitytype',
+    component: Companyentitytypemaster,
+  },
+  {
+    path: 'petrolallowancemaster',
+    component: Petrolallowancemaster,
+  },
+  {
+    path: 'employeeupdationfor',
+    component: Employeemasterupdationformaster,
+  },
+  {
+    path: 'qualificationtype',
+    component: Qualificationtypemaster,
+  },
+  {
+    path: 'holidaymaster',
+    component: Holidaymaster,
+  },
+  {
+    path: 'departmentmaster',
+    component: Departmentmaster,
+  },
+  {
+    path: 'rolesmaster',
+    component: Rolesmaster,
+  },
+  {
+    path: 'rolesdetails',
+    component: Rolesdetails,
+  },
+  {
+    path: 'location',
+    component: Locationmaster
+  },
+    {
+    path: 'classoftravel',
+    component: Classoftravelmaster
   },
 ];

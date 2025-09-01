@@ -10,7 +10,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { HrService } from '../hr.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,7 +23,8 @@ import { AddEditCurrency } from '../currencymaster/add-edit-currency/add-edit-cu
 import { id } from 'date-fns/locale';
 import { AddEditProfitcenter } from './add-edit-profitcenter/add-edit-profitcenter';
 import { profitcenterservices } from '@shared/services/hr/profitcenter/profitcenterservices';
-import { Iprofitcentermaster } from '@shared/interfaces/hr/Iprofitcenter';
+import { Iprofitcentermaster } from '@shared/interfaces/hr/profitcenter';
+
 
 @Component({
   selector: 'app-profitcentermaster',
@@ -198,7 +198,7 @@ export class Profitcentermaster implements OnInit {
       if (result) {
         console.log('Qualification Updated:', result);
         console.log('Original record CreatedBy:', record.CreatedBy);
-        debugger
+
         const updatePayload: Iprofitcentermaster = {
           ProfitCenterId: record.ProfitCenterId,
           ProfitCenterCode: result.ProfitCenterCode,
@@ -286,7 +286,7 @@ export class Profitcentermaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger
+
     this.profitCenterServices.deleteProfitcenter(value.ProfitCenterId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);

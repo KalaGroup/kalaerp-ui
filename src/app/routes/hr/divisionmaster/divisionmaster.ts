@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { HrService } from '../hr.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -35,7 +34,7 @@ export class Divisionmaster implements OnInit {
    private readonly translate = inject(TranslateService);
    @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
     dialogRef!: MatDialogRef<any>;
-  
+
   division: IDivision[] = [];
   showForm = false;
   divisionModel: any = {};
@@ -53,10 +52,11 @@ export class Divisionmaster implements OnInit {
   showPaginator = true;
   expandable = false;
   columnResizable = false;
- 
+
   isLoading = false;
   list: IDivision[] = [];
   isConfigExpanded: boolean = false;
+    divisionForm: any;
 
 
   constructor(private fb: FormBuilder,private divisionService: Divisionservice,private dialog: MatDialog,private toastService:Toastservice) {}
@@ -196,14 +196,14 @@ edit(record: any) {
         DivisionIsDiscard: result.DivisionIsDiscard,
         DivisionIsActive: result.DivisionIsActive,
         CreatedBy: '1', // or use actual user ID
-        CreatedDate: result.CreatedDate,       
-     }; 
+        CreatedDate: result.CreatedDate,
+     };
           console.log('Update payload:', updatePayload);
           this.divisionService.updateDivision(updatePayload).subscribe({
             next: (response) => {
               console.log('Division updated successfully:', response);
               alert(`Division "${result.DivisionName}" updated successfully!`);
-              this.getAllDivision(); 
+              this.getAllDivision();
             },
             error: (err) => {
               console.error('Error updating Division:', err);
@@ -214,51 +214,50 @@ edit(record: any) {
 }
 
  openAddDialog() {
-  const dialogRef = this.dialog.open(AddEditDivision, {
-    width: '60%',
-    height: '60%',
-    maxWidth: '100vw',
-    maxHeight: '100vh',
-    data: {} // empty for add
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      debugger;
-      console.log('Added Division:', result);
-      const payload: IDivision = {
-        DivisionId: 0,
-        DivisionCode: result.DivisionCode,
-        DivisionName: result.DivisionName,
-        DivisionShortName: result.DivisionShortName,
-        DivisionMailId: result.DivisionMailId,
-        DivisionRemark: result.DivisionRemark,
-        DivisionAuthRemark: result.DivisionAuthRemark,
-        DivisionAuth: result.DivisionAuth,
-        DivisionIsActive: result.DivisionIsActive,
-        DivisionIsDiscard: result.DivisionIsDiscard,
-      CreatedBy: result.CreatedBy, // or use actual user ID
-      CreatedDate: new Date().toISOString()
-      };
-      console.log('Payload for adding Division:', payload);
-      // Call the service to insert the Division
-      this.divisionService.insertDivision(payload).subscribe({
-        next: (response) => {
-          debugger;
-
-          console.log('Line 229');
-         this.toastService.showSuccess('Division added successfully:', response);  
-          this.getAllDivision(); 
-          alert(`Division "${result.DivisionName}" added successfully!`);
-        },
-        error: (err) => {
-          console.error('Error while adding Division:', err);
-          this.toastService.showError('Failed to add Division. Please verify Division details and try again.');
-        }   
-      });
-    }
+   const dialogRef = this.dialog.open(AddEditDivision, {
+     width: '60%',
+     height: '60%',
+     maxWidth: '100vw',
+     maxHeight: '100vh',
+     data: {}, // empty for add
    });
-}
+
+   dialogRef.afterClosed().subscribe(result => {
+     if (result) {
+       debugger;
+       console.log('Added Division:', result);
+       const payload: IDivision = {
+         DivisionId: 0,
+         DivisionCode: result.DivisionCode,
+         DivisionName: result.DivisionName,
+         DivisionShortName: result.DivisionShortName,
+         DivisionMailId: result.DivisionMailId,
+         DivisionRemark: result.DivisionRemark,
+         DivisionAuthRemark: result.DivisionAuthRemark,
+         DivisionAuth: result.DivisionAuth,
+         DivisionIsActive: result.DivisionIsActive,
+         DivisionIsDiscard: result.DivisionIsDiscard,
+         CreatedBy: result.CreatedBy, // or use actual user ID
+         CreatedDate: new Date().toISOString(),
+       };
+       console.log('Payload for adding state:', payload);
+       // Call the service to insert the state
+       this.divisionService.insertDivision(payload).subscribe({
+         next: response => {
+           this.toastService.showSuccess('Division added successfully:', response);
+           this.getAllDivision();
+           alert(`Division "${result.DivisionName}" added successfully!`);
+         },
+         error: err => {
+           console.error('Error while adding Division:', err);
+           this.toastService.showError(
+             'Failed to add Division. Please verify Division details and try again.'
+           );
+         },
+       });
+     }
+   });
+ }
 
   closeDialog(): void {
     this.dialogRef.close();
@@ -273,7 +272,10 @@ edit(record: any) {
    debugger;
     this.divisionService.deleteDivision(value.divisionId).subscribe({
       next: (response) => {
-        console.log('Division deleted successfully:', response); 
+         this.toastService.showSuccess('Division Deleted successfully:', response);
+
+        console.log('Division deleted successfully:', response);
+
         alert(`You have deleted ${value.DivisionName}..!`);
         this.getAllDivision();
       },

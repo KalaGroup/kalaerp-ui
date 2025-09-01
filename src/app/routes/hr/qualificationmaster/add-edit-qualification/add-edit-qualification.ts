@@ -11,7 +11,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { qualificationservices } from '@shared/services/hr/qualification/qualificationservices';
+import { qualificationservices } from '@shared/services/hr/qualification/qualificationservice';
 
 @Component({
   selector: 'app-add-edit-qualification',
@@ -62,10 +62,10 @@ export class AddEditQualification {
       QualificationCode: [''],
       QualificationName: ['', [Validators.required]],
       MasterQualificationTypeID: ['', [Validators.required]],
-      QualificationAuth: [true],
+      QualificationAuth: [{ value: true, disabled: !this.isEditMode }],
       QualificationRemark: [''],
-      QualificationIsActive: [true],
-      QualificationIsDiscard: [true],
+      QualificationIsActive: [{ value: true, disabled: !this.isEditMode }],
+      QualificationIsDiscard: [false],
       CreatedBy: ['1'],
     });
 
@@ -138,7 +138,10 @@ export class AddEditQualification {
 
 
   onSubmit(): void {
+
     if (this.qualificationForm.valid) {
+      this.qualificationForm.enable(); // Enable the form to include disabled fields
+      console.log('Form Value:', this.qualificationForm.value);
       this.dialogRef.close(this.qualificationForm.value);
     } else {
       this.qualificationForm.markAllAsTouched();
