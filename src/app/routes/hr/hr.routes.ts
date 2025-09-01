@@ -19,6 +19,7 @@ import { Holidaymaster } from './holidaymaster/holidaymaster';
 import { Departmentmaster } from './departmentmaster/departmentmaster';
 import { Rolesmaster } from './rolesmaster/rolesmaster';
 import { Rolesdetails } from './rolesdetails/rolesdetails';
+import { Locationmaster } from './locationmaster/locationmaster';
 
 
 
@@ -95,5 +96,9 @@ export const routes: Routes = [
   {
     path: 'rolesdetails',
     component: Rolesdetails,
-  }
+  },
+    {
+    path: 'location',
+    component: Locationmaster
+  },
 ];
