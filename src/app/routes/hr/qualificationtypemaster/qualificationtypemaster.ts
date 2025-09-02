@@ -22,6 +22,8 @@ import { Country, Currency } from '@shared/interfaces/hr';
 import { AddEditCurrency } from '../currencymaster/add-edit-currency/add-edit-currency';
 import { id } from 'date-fns/locale';
 import { AddEditQualificationtype } from './add-edit-qualificationtype/add-edit-qualificationtype';
+import { IQualificationtype } from '@shared/interfaces/hr/qualificationtype';
+import { Qualificationtypeservice } from '@shared/services/hr/qualificationtype/qualificationtypeservice';
 
 @Component({
   selector: 'app-qualificationtypemaster',
@@ -45,12 +47,15 @@ import { AddEditQualificationtype } from './add-edit-qualificationtype/add-edit-
   styleUrl: './qualificationtypemaster.scss'
 })
 export class Qualificationtypemaster implements OnInit {
-  expandable: any;
   private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
-  // Grid settings
+  workstations: IQualificationtype[] = [];
+  showForm = false;
+  stateModel: any = {};
+  editIndex: number | null = null;
+
   multiSelectable = true;
   rowSelectable = true;
   hideRowSelectionCheckbox = false;
@@ -61,15 +66,22 @@ export class Qualificationtypemaster implements OnInit {
   rowHover = false;
   rowStriped = false;
   showPaginator = true;
+  expandable = false;
   columnResizable = false;
 
   isLoading = false;
-  isConfigExpanded = false;
-  list: [] = []; // Add your list type here (Interface)
+  list: any[] = [];
+  isConfigExpanded: boolean = false;
+  qualificationtypeForm: any;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private fb: FormBuilder,
+    private qualificationtypeService: Qualificationtypeservice,
+    private dialog: MatDialog,
+    private toastService: Toastservice
+  ) {}
   ngOnInit(): void {
-
+    this.loadAllQualificationtype();
   }
 
   toggleConfigSection(): void {
@@ -109,7 +121,7 @@ export class Qualificationtypemaster implements OnInit {
 
     {
       header: this.translate.stream('Is Active'),
-      field: 'IsActive',
+      field: 'QualificationTypeIsActive',
       sortable: true,
       minWidth: 100,
       width: '100px',
@@ -144,56 +156,142 @@ export class Qualificationtypemaster implements OnInit {
     },
   ];
 
+    loadAllQualificationtype() {
+    debugger;
+    this.qualificationtypeService.getAllQualificationtype().subscribe({
+      next: data => {
+        this.list = data.map((item: any, index: number) => ({
+          ...item,
+          SNo: index + 1,
+        }));
+        console.log('Fetched Workstation with S.No:', this.list);
+      },
+      error: err => {
+        console.error('Error fetching Workstation:', err);
+      },
+    });
+  }
+
+    openAddDialog() {
+      const dialogRef = this.dialog.open(AddEditQualificationtype, {
+        width: '70%',
+        height: '55%',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        data: {},
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          debugger;
+          console.log('Added Qualificationtype:', result);
+          const payload: IQualificationtype = {
+            QualificationTypeId: 0,
+            QualificationTypeCode: result.QualificationTypeCode,
+            QualificationTypeName: result.QualificationTypeName,
+            QualificationTypeRemark: result.QualificationTypeRemark,
+            QualificationTypeAuth: result.QualificationTypeAuth,
+            QualificationTypeIsDiscard: result.QualificationTypeIsDiscard,
+            QualificationTypeIsActive: result.QualificationTypeIsActive,
+            CreatedBy: result.CreatedBy,
+            CreatedDate: new Date().toISOString(),
+          };
+          console.log('Payload for adding Qualificationtype:', payload);
+          // Call the service to insert the Workstation
+          this.qualificationtypeService.insertQualificationtype(payload).subscribe({
+            next: response => {
+              this.toastService.showSuccess('Qualificationtype added successfully:', response);
+              this.loadAllQualificationtype();
+              alert(`Qualificationtype "${result.QualificationTypeName}" added successfully!`);
+            },
+            error: err => {
+              if (err.status === 400 && err.error) {
+                // Validation errors from FluentValidation
+                err.error.forEach((validationErr: any) => {
+                  const field = validationErr.PropertyName;
+                  const message = validationErr.ErrorMessage;
+  
+                  // Mark field error in form
+                  if (this.qualificationtypeForm.get(field)) {
+                    this.qualificationtypeForm.get(field)?.setErrors({ serverError: message });
+                  }
+                  // Optionally show toast
+                  this.toastService.showError(message);
+                });
+              } else {
+                this.toastService.showError(
+                  'Failed to add Qualificationtype. Please verify Qualificationtype details and try again.'
+                );
+              }
+            },
+          });
+        }
+      });
+    }
+
   edit(record: any) {
+    debugger;
     this.dialog
       .open(AddEditQualificationtype, {
         width: '80%',
         height: '70%',
         maxWidth: '100vw',
         maxHeight: '100vh',
-        data: { City: record },
+        data: { qualificationtype: record },
       })
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          console.log('City Updated:', result);
+          debugger;
+          console.log('Qualificationtype Updated:', result);
+          // Create update payload as per your reqirements
           const updatePayload = {
-            // Add your update payload here
+            QualificationTypeId: result.QualificationTypeId,
+            QualificationTypeCode: result.QualificationTypeCode,
+            QualificationTypeName: result.QualificationTypeName,
+            QualificationTypeRemark: result.QualificationTypeRemark,
+            QualificationTypeAuth: result.QualificationTypeAuth,
+            QualificationTypeIsDiscard: result.QualificationTypeIsDiscard,
+            QualificationTypeIsActive: result.QualificationTypeIsActive,
+            CreatedBy: result.CreatedBy,
+            WorkStationAuth: false,
           };
+         console.log('Update payload:', updatePayload);
+          this.qualificationtypeService.updateQualificationtype(updatePayload).subscribe({
+            next: (response) => {
+              this.toastService.showSuccess('Qualificationtype updated successfully:', response);
+              alert(`Qualificationtype "${result.QualificationTypeName}" updated successfully!`);
+              this.loadAllQualificationtype(); 
+            },
+            error: (err) => {
+              console.error('Error updating Qualificationtype:', err);
+            }
+          });
         }
       });
+}
+
+  closeDialog(): void {
+    this.dialogRef.close();
   }
 
-  openAddDialog() {
-    const dialogRef = this.dialog.open(AddEditQualificationtype, {
-      width: '70%',
-      height: '50%',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      data: {},
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Added Company Entity:', result);
-        const cityData = {
-          // Change as per your reqirements Change FormControls
-          CompEntityTypeID: 0,
-          CompanyEntityTypeName: result.CompanyEntityTypeName,
-          CompanyEntityTypeShortName: result.CompanyEntityTypeShortName,
-          CompanyEntityTypeRemark: result.CompanyEntityTypeRemark,
-          CompanyEntityTypeAuth: result.CompanyEntityTypeAuth,
-          CompanyEntityTypeIsDiscard: result.CompanyEntityTypeIsDiscard,
-          CompanyEntityTypeIsActive: result.CompanyEntityTypeIsActive,
-          CreatedBy: result.CreatedBy,
-          CreatedDate: new Date().toISOString(),
-        };
-      }
-    });
+  save(record: any): void {
+    console.log('Saving record:', record);
+    this.closeDialog();
   }
 
   delete(value: any) {
-
+    debugger;
+    this.qualificationtypeService.deleteQualificationtype(value.QualificationTypeId).subscribe({
+      next: response => {
+        this.toastService.showSuccess('Qualificationtype deleted successfully:', response);
+        alert(`You have deleted ${value.QualificationTypeName} successfully!`);
+        this.loadAllQualificationtype();
+      },
+      error: err => {
+        console.error('Error deleting Qualificationtype:', err);
+      },
+    });
   }
 
   changeSelect(e: any) {
@@ -204,19 +302,14 @@ export class Qualificationtypemaster implements OnInit {
     console.log(e);
   }
 
-  enableRowExpandable() {
-    //this.columns[0].showExpand = this.expandable;
-  }
-
   updateCell() {
-    // this.list = this.list.map(item => {
-    //   (item as any).RandomValue = Math.round(Math.random() * 1000) / 100;
-    //   return item;
-    // });
+    this.list = this.list.map(item => {
+      item.weight = Math.round(Math.random() * 1000) / 100;
+      return item;
+    });
   }
 
   updateList() {
-    //this.list = this.list.splice(-1).concat(this.list);
+    this.list = this.list.splice(-1).concat(this.list);
   }
-
 }

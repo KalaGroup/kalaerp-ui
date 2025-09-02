@@ -3,7 +3,7 @@
 
   <!-- Please Note Change Form control as per your Requirements  -->
   <mat-card-content>
-    <form [formGroup]="QualificationTypeForm" class="form-field-full">
+    <form [formGroup]="qualificationtypeForm" class="form-field-full">
       <div class="row mb-3">
         <div class="col-sm-4 col-xl-3">
 
@@ -30,7 +30,7 @@
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Qualification Code</mat-label>
             <input matInput formControlName="QualificationTypeCode" placeholder="Enter Company Entity Type Name" />
-            @if (QualificationTypeForm.get('QualificationTypeCode')?.invalid && QualificationTypeForm.get('QualificationTypeCode')?.touched) {
+            @if (qualificationtypeForm.get('QualificationTypeCode')?.invalid && qualificationtypeForm.get('QualificationTypeCode')?.touched) {
               <mat-error>Qualification Code is required</mat-error>
             }
           </mat-form-field>
@@ -39,7 +39,7 @@
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="QualificationTypeRemark" placeholder="Enter remark..." />
-            @if (QualificationTypeForm.get('QualificationTypeRemark')?.invalid && QualificationTypeForm.get('QualificationTypeRemark')?.touched) {
+            @if (qualificationtypeForm.get('QualificationTypeRemark')?.invalid && qualificationtypeForm.get('QualificationTypeRemark')?.touched) {
               <mat-error>Remark is required</mat-error>
             }
           </mat-form-field>
@@ -51,7 +51,7 @@
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Qualification Name</mat-label>
             <input matInput formControlName="QualificationTypeName" placeholder="Enter Company Entity Type Short Name" />
-            @if (QualificationTypeForm.get('QualificationTypeName')?.invalid && QualificationTypeForm.get('QualificationTypeName')?.touched) {
+            @if (qualificationtypeForm.get('QualificationTypeName')?.invalid && qualificationtypeForm.get('QualificationTypeName')?.touched) {
               <mat-error>Qualification Name is required</mat-error>
             }
           </mat-form-field>
@@ -67,7 +67,7 @@
               mat-flat-button
               color="primary"
               class="btn-primary px-4"
-              [disabled]="QualificationTypeForm.invalid"
+              [disabled]="qualificationtypeForm.invalid"
               (click)="onSubmit()"
             >
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
