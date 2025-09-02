@@ -199,8 +199,8 @@ edit(record: any) {
 
  openAddDialog() {
   const dialogRef = this.dialog.open(AddEditState, {
-    width: '60%',
-    height: '50%',
+    width: '80%',
+    height: '90%',
     maxWidth: '100vw',
     maxHeight: '100vh',
     data: {} // empty for add

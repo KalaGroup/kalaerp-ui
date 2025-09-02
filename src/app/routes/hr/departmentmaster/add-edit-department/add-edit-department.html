@@ -4,7 +4,7 @@
   </mat-card-title>
 
   <mat-card-content>
-    <form [formGroup]="DepartmentForm" class="form-field-full">
+    <form [formGroup]="departmentForm" class="form-field-full">
       <div class="row mb-3">
         <div class="col-sm-4 col-xl-3"></div>
 
@@ -29,8 +29,8 @@
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Department Code</mat-label>
             <input matInput formControlName="DepartmentCode" placeholder="Enter Department Code" />
-            @if (DepartmentForm.get('DepartmentCode')?.invalid &&
-            DepartmentForm.get('DepartmentCode')?.touched) {
+            @if (departmentForm.get('DepartmentCode')?.invalid &&
+            departmentForm.get('DepartmentCode')?.touched) {
             <mat-error>Department Code is required</mat-error>
             }
           </mat-form-field>
@@ -38,17 +38,17 @@
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Department Name</mat-label>
             <input matInput formControlName="DepartmentName" placeholder="Enter Department Name" />
-            @if (DepartmentForm.get('DepartmentName')?.invalid &&
-            DepartmentForm.get('DepartmentName')?.touched) {
+            @if (departmentForm.get('DepartmentName')?.invalid &&
+            departmentForm.get('DepartmentName')?.touched) {
             <mat-error>Department Name is required</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Short Name</mat-label>
-            <input matInput formControlName="DepartmentShortName" placeholder="Enter Short Name" />
-            @if (DepartmentForm.get('DepartmentShortName')?.invalid &&
-            DepartmentForm.get('DepartmentShortName')?.touched) {
+            <input matInput formControlName="DepartmentShortName" placeholder="Enter Short Name" (input)="toUpperCase($event)" />
+            @if (departmentForm.get('DepartmentShortName')?.invalid &&
+            departmentForm.get('DepartmentShortName')?.touched) {
             <mat-error>Department Short Name is required</mat-error>
             }
           </mat-form-field>
@@ -63,15 +63,15 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Division</mat-label>
-            <mat-select formControlName="DepartmentDivisionID" placeholder="Select Division">
+            <mat-select formControlName="DepartmentDivisionId" placeholder="Select Division">
               <mat-option value="">Select Division</mat-option>
-              @for (div of filteredDivisionList; track div.DivisionId) {
+              @for (div of filtereddivisionList; track div.DivisionId) {
               <mat-option [value]="div.DivisionId">{{ div.DivisionName }}</mat-option>
               }
               <!-- edit as per your DivisionName text field -->
             </mat-select>
-            @if (DepartmentForm.get('DepartmentDivisionID')?.invalid &&
-            DepartmentForm.get('DepartmentDivisionID')?.touched) {
+            @if (departmentForm.get('DepartmentDivisionId')?.invalid &&
+            departmentForm.get('DepartmentDivisionId')?.touched) {
             <mat-error style="margin-top: -3.5px">Division is required</mat-error>
             }
           </mat-form-field>
@@ -79,17 +79,17 @@
 
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Parent Department</mat-label>
-            <mat-select formControlName="ParentDepartmentID" placeholder="Select Parent Department">
+            <mat-select formControlName="ParentDepartmentId" placeholder="Select Parent Department">
               <mat-option value="">None</mat-option>
-              @for (dept of filteredParentDepartmentList; track dept.DepartmentId) {
-              <mat-option [value]="dept.DepartmentId">
-                {{ dept.DepartmentName }}
+              @for (department of filtereddepartmentList; track department.DepartmentId) {
+              <mat-option [value]="department.DepartmentId">
+                {{ department.DepartmentName }}
                 <!-- edit as per your DepartmentName text field -->
               </mat-option>
               }
             </mat-select>
-            @if (DepartmentForm.get('ParentDepartmentID')?.invalid &&
-            DepartmentForm.get('ParentDepartmentID')?.touched) {
+            @if (departmentForm.get('ParentDepartmentId')?.invalid &&
+            departmentForm.get('ParentDepartmentId')?.touched) {
             <mat-error style="margin-top: -3.5px">Parent Department is required</mat-error>
             }
           </mat-form-field>
@@ -98,17 +98,17 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Profit Center</mat-label>
             <mat-select
-              formControlName="DepartmentProfitcenterID"
+              formControlName="DepartmentProfitcenterId"
               placeholder="Select Profit Center"
             >
               <mat-option value="">Select Profit Center</mat-option>
-              @for (pc of filteredProfitCenterList; track pc.PCId) {
-              <mat-option [value]="pc.PCId">{{ pc.PCName }}</mat-option>
+              @for (profitcenter of filteredprofitcenterList; track profitcenter.ProfitCenterId) {
+              <mat-option [value]="profitcenter.ProfitCenterId">{{ profitcenter.ProfitCenterName }}</mat-option>
               <!-- edit as per your pcname text field -->
               }
             </mat-select>
-            @if (DepartmentForm.get('DepartmentProfitcenterID')?.invalid &&
-            DepartmentForm.get('DepartmentProfitcenterID')?.touched) {
+            @if (departmentForm.get('DepartmentProfitcenterID')?.invalid &&
+            departmentForm.get('DepartmentProfitcenterID')?.touched) {
             <mat-error style="margin-top: -3.5px">Profit Center is required</mat-error>
             }
           </mat-form-field>
@@ -128,7 +128,7 @@
               mat-flat-button
               color="primary"
               class="btn-primary px-4"
-              [disabled]="DepartmentForm.invalid"
+              [disabled]="departmentForm.invalid"
               (click)="onSubmit()"
             >
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
