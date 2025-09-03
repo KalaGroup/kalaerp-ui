@@ -85,6 +85,11 @@
           "route": "holidaymaster",
           "name": "holidaymaster",
           "type": "link"
+        },
+        {
+          "route": "responsibilitiesmaster",
+          "name": "responsibilitiesmaster",
+          "type": "link"
         }
       ]
     },

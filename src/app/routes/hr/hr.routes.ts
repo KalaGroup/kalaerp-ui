@@ -16,6 +16,7 @@ import { Employeemasterupdationformaster } from './employeemasterupdationformast
 import { Qualificationtypemaster } from './qualificationtypemaster/qualificationtypemaster';
 import { AddEditHoliday } from './holidaymaster/add-edit-holiday/add-edit-holiday';
 import { Holidaymaster } from './holidaymaster/holidaymaster';
+import { Responsibilitiesmaster } from './responsibilitiesmaster/responsibilitiesmaster';
 
 
 
@@ -80,5 +81,9 @@ export const routes: Routes = [
   {
     path: 'holidaymaster',
     component: Holidaymaster,
+  },
+  {
+    path: 'responsibilitiesmaster',
+    component: Responsibilitiesmaster,
   }
 ];

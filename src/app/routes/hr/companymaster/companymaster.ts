@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-//import { companyService } from '../hr.service';
 import { Companyservice } from '@shared/services/hr/company/companyservice';
 import { ICompany } from '@shared/interfaces/hr/company';
 import { ICountry } from '@shared/interfaces/hr/country';
