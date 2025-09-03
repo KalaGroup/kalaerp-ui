@@ -92,6 +92,11 @@
           "type": "link"
         },
         {
+          "route": "responsibilitiesmaster",
+          "name": "responsibilitiesmaster",
+          "type": "link"
+        },
+        {
           "route": "departmentmaster",
           "name": "departmentmaster",
           "type": "link"

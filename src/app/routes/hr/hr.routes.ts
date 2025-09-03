@@ -17,13 +17,13 @@ import { Employeemasterupdationformaster } from './employeemasterupdationformast
 import { Qualificationtypemaster } from './qualificationtypemaster/qualificationtypemaster';
 import { AddEditHoliday } from './holidaymaster/add-edit-holiday/add-edit-holiday';
 import { Holidaymaster } from './holidaymaster/holidaymaster';
+import { Responsibilitiesmaster } from './responsibilitiesmaster/responsibilitiesmaster';
 import { Departmentmaster } from './departmentmaster/departmentmaster';
 import { Rolesmaster } from './rolesmaster/rolesmaster';
 import { Rolesdetails } from './rolesdetails/rolesdetails';
 import { Locationmaster } from './locationmaster/locationmaster';
 import { Classoftravelmaster } from './classoftravelmaster/classoftravelmaster';
 import { Facilitymaster } from './facilitymaster/facilitymaster';
-
 
 export const routes: Routes = [
   {
@@ -92,6 +92,9 @@ export const routes: Routes = [
     component: Holidaymaster,
   },
   {
+    path: 'responsibilitiesmaster',
+    component: Responsibilitiesmaster,
+  },
     path: 'departmentmaster',
     component: Departmentmaster,
   },
