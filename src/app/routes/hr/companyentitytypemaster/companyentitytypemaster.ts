@@ -22,6 +22,8 @@ import { Country, Currency } from '@shared/interfaces/hr';
 import { AddEditCurrency } from '../currencymaster/add-edit-currency/add-edit-currency';
 import { id } from 'date-fns/locale';
 import { AddEditCompanyentitytype } from './add-edit-companyentitytype/add-edit-companyentitytype';
+import { ICompanyentitytype } from '@shared/interfaces/hr/companyentitytype';
+import { Companyentitytypeservice } from '@shared/services/hr/companyentitytype/companyentitytypeservice';
 
 @Component({
   selector: 'app-companyentitytypemaster',
@@ -45,12 +47,15 @@ import { AddEditCompanyentitytype } from './add-edit-companyentitytype/add-edit-
   styleUrl: './companyentitytypemaster.scss',
 })
 export class Companyentitytypemaster implements OnInit {
-  expandable: any;
   private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
-  // Grid settings
+  workstations: ICompanyentitytype[] = [];
+  showForm = false;
+  stateModel: any = {};
+  editIndex: number | null = null;
+
   multiSelectable = true;
   rowSelectable = true;
   hideRowSelectionCheckbox = false;
@@ -61,17 +66,22 @@ export class Companyentitytypemaster implements OnInit {
   rowHover = false;
   rowStriped = false;
   showPaginator = true;
+  expandable = false;
   columnResizable = false;
 
   isLoading = false;
-  isConfigExpanded = false;
-  list: [] = []; // Add your list type here (Interface)
+  list: any[] = [];
+  isConfigExpanded: boolean = false;
+  companyentitytypeForm: any;
 
-  constructor(private dialog: MatDialog) {}
-  ngOnInit(): void {}
-
-  toggleConfigSection(): void {
-    this.isConfigExpanded = !this.isConfigExpanded;
+  constructor(
+    private fb: FormBuilder,
+    private companyentitytypeService: Companyentitytypeservice,
+    private dialog: MatDialog,
+    private toastService: Toastservice
+  ) {}
+  ngOnInit(): void {
+    this.loadAllCompanyentitytype();
   }
 
   CompanyEntityColumns: MtxGridColumn[] = [
@@ -81,13 +91,6 @@ export class Companyentitytypemaster implements OnInit {
       sortable: true,
       minWidth: 80,
       width: '80px',
-    },
-    {
-      header: this.translate.stream('CompEntityType ID'),
-      field: 'CompEntityTypeID',
-      sortable: true,
-      minWidth: 120,
-      width: '120px',
     },
     {
       header: this.translate.stream('CompanyEntityType Name'),
@@ -113,7 +116,7 @@ export class Companyentitytypemaster implements OnInit {
 
     {
       header: this.translate.stream('Is Active'),
-      field: 'IsActive',
+      field: 'CompanyEntityTypeIsActive',
       sortable: true,
       minWidth: 100,
       width: '100px',
@@ -148,30 +151,26 @@ export class Companyentitytypemaster implements OnInit {
     },
   ];
 
-  edit(record: any) {
-    this.dialog
-      .open(AddEditCompanyentitytype, {
-        width: '80%',
-        height: '70%',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        data: { City: record },
-      })
-      .afterClosed()
-      .subscribe(result => {
-        if (result) {
-          console.log('City Updated:', result);
-          const updatePayload = {
-            // Add your update payload here
-          };
-        }
-      });
+  loadAllCompanyentitytype() {
+    debugger;
+    this.companyentitytypeService.getAllCompanyentitytype().subscribe({
+      next: data => {
+        this.list = data.map((item: any, index: number) => ({
+          ...item,
+          SNo: index + 1,
+        }));
+        console.log('Fetched Companyentitytype with S.No:', this.list);
+      },
+      error: err => {
+        console.error('Error fetching Companyentitytype:', err);
+      },
+    });
   }
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditCompanyentitytype, {
       width: '70%',
-      height: '50%',
+      height: '55%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {},
@@ -179,24 +178,116 @@ export class Companyentitytypemaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Added Company Entity:', result);
-        const cityData = {
-          // Create Date as per your reqirements Change FormControls
-          CompEntityTypeID: 0,
+        debugger;
+        console.log('Added Companyentitytype:', result);
+        const payload: ICompanyentitytype = {
+          CompEntityTypeId: 0,
           CompanyEntityTypeName: result.CompanyEntityTypeName,
           CompanyEntityTypeShortName: result.CompanyEntityTypeShortName,
           CompanyEntityTypeRemark: result.CompanyEntityTypeRemark,
+          WorkStationAuthRemark: result.WorkStationAuthRemark,
           CompanyEntityTypeAuth: result.CompanyEntityTypeAuth,
           CompanyEntityTypeIsDiscard: result.CompanyEntityTypeIsDiscard,
           CompanyEntityTypeIsActive: result.CompanyEntityTypeIsActive,
           CreatedBy: result.CreatedBy,
           CreatedDate: new Date().toISOString(),
         };
+        console.log('Payload for adding Companyentitytype:', payload);
+        // Call the service to insert the Companyentitytype
+        this.companyentitytypeService.insertCompanyentitytype(payload).subscribe({
+          next: response => {
+            this.toastService.showSuccess('Companyentitytype added successfully:', response);
+            this.loadAllCompanyentitytype();
+            alert(`Companyentitytype "${result.CompanyEntityTypeName}" added successfully!`);
+          },
+          error: err => {
+            if (err.status === 400 && err.error) {
+              // Validation errors from FluentValidation
+              err.error.forEach((validationErr: any) => {
+                const field = validationErr.PropertyName;
+                const message = validationErr.ErrorMessage;
+
+                // Mark field error in form
+                if (this.companyentitytypeForm.get(field)) {
+                  this.companyentitytypeForm.get(field)?.setErrors({ serverError: message });
+                }
+                // Optionally show toast
+                this.toastService.showError(message);
+              });
+            } else {
+              this.toastService.showError(
+                'Failed to add Companyentitytype. Please verify Workstation details and try again.'
+              );
+            }
+          },
+        });
       }
     });
   }
 
-  delete(value: any) {}
+  edit(record: any) {
+    debugger;
+    this.dialog
+      .open(AddEditCompanyentitytype, {
+        width: '80%',
+        height: '70%',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        data: { companyentitytype: record },
+      })
+      .afterClosed()
+      .subscribe(result => {
+        if (result) {
+          debugger;
+          console.log('Companyentitytype Updated:', result);
+          const updatePayload = {
+          CompEntityTypeId: result.CompEntityTypeId,
+          CompanyEntityTypeName: result.CompanyEntityTypeName,
+          CompanyEntityTypeShortName: result.CompanyEntityTypeShortName,
+          CompanyEntityTypeRemark: result.CompanyEntityTypeRemark,
+          WorkStationAuthRemark: result.WorkStationAuthRemark,
+          CompanyEntityTypeAuth: result.CompanyEntityTypeAuth,
+          CompanyEntityTypeIsDiscard: result.CompanyEntityTypeIsDiscard,
+          CompanyEntityTypeIsActive: result.CompanyEntityTypeIsActive,
+          CreatedBy: result.CreatedBy,
+          };
+          console.log('Update payload:', updatePayload);
+          this.companyentitytypeService.updateCompanyentitytype(updatePayload).subscribe({
+            next: response => {
+              this.toastService.showSuccess('Companyentitytype updated successfully:', response);
+              alert(`Companyentitytype "${result.CompanyEntityTypeName}" updated successfully!`);
+              this.loadAllCompanyentitytype();
+            },
+            error: err => {
+              console.error('Error updating Companyentitytype:', err);
+            },
+          });
+        }
+      });
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  save(record: any): void {
+    console.log('Saving record:', record);
+    this.closeDialog();
+  }
+
+  delete(value: any) {
+    debugger;
+    this.companyentitytypeService.deleteCompanyentitytype(value.CompEntityTypeId).subscribe({
+      next: response => {
+        this.toastService.showSuccess('Companyentitytype deleted successfully:', response);
+        alert(`You have deleted ${value.CompanyEntityTypeName} successfully!`);
+        this.loadAllCompanyentitytype();
+      },
+      error: err => {
+        console.error('Error deleting Companyentitytype:', err);
+      },
+    });
+  }
 
   changeSelect(e: any) {
     console.log(e);
@@ -206,18 +297,14 @@ export class Companyentitytypemaster implements OnInit {
     console.log(e);
   }
 
-  enableRowExpandable() {
-    //this.columns[0].showExpand = this.expandable;
-  }
-
   updateCell() {
-    // this.list = this.list.map(item => {
-    //   (item as any).RandomValue = Math.round(Math.random() * 1000) / 100;
-    //   return item;
-    // });
+    this.list = this.list.map(item => {
+      item.weight = Math.round(Math.random() * 1000) / 100;
+      return item;
+    });
   }
 
   updateList() {
-    //this.list = this.list.splice(-1).concat(this.list);
+    this.list = this.list.splice(-1).concat(this.list);
   }
 }
