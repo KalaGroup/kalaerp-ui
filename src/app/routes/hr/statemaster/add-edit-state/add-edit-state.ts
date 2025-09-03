@@ -95,8 +95,7 @@ export class AddEditState {
       console.log('Form values after patch:', this.stateForm.value);
     }
   }
-  
-  loadAllCountries(): void {
+    loadAllCountries(): void {
     this.countryService.getAllCountries().subscribe({
       next: res => {
         this.countrieslist = res;

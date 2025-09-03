@@ -222,7 +222,7 @@ export class Qualificationmaster implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log(' Qualification data:', result);
-
+        debugger
         const payload: IQualification = {
           QualificationId: 0,
           QualificationCode: result.QualificationCode,
@@ -242,6 +242,7 @@ export class Qualificationmaster implements OnInit {
           next: (response) => {
             console.log('Qualification added successfully:', response);
             this.loadAllQualification();
+            this.toastService.showSuccess;
             alert(`Qualification added successfully!`);
 
           },

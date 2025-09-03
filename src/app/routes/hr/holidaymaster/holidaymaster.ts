@@ -22,10 +22,12 @@ import { Country, Currency } from '@shared/interfaces/hr';
 import { AddEditCurrency } from '../currencymaster/add-edit-currency/add-edit-currency';
 import { id } from 'date-fns/locale';
 import { AddEditHoliday } from './add-edit-holiday/add-edit-holiday';
+import { IHoliday } from '@shared/interfaces/hr/holiday';
+import { Holidayservice } from '@shared/services/hr/holiday/holidayservice';
 
 @Component({
   selector: 'app-holidaymaster',
- imports: [
+  imports: [
     CommonModule,
     MatTableModule,
     MatCardModule,
@@ -42,7 +44,7 @@ import { AddEditHoliday } from './add-edit-holiday/add-edit-holiday';
     MatDialogModule,
   ],
   templateUrl: './holidaymaster.html',
-  styleUrl: './holidaymaster.scss'
+  styleUrl: './holidaymaster.scss',
 })
 export class Holidaymaster implements OnInit {
   expandable: any;
@@ -50,7 +52,11 @@ export class Holidaymaster implements OnInit {
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
-  // Grid settings
+  workstations: IHoliday[] = [];
+  showForm = false;
+  stateModel: any = {};
+  editIndex: number | null = null;
+
   multiSelectable = true;
   rowSelectable = true;
   hideRowSelectionCheckbox = false;
@@ -64,12 +70,18 @@ export class Holidaymaster implements OnInit {
   columnResizable = false;
 
   isLoading = false;
-  isConfigExpanded = false;
-  list: [] = []; // Add your list type here (Interface)
+  list: any[] = [];
+  isConfigExpanded: boolean = false;
+  holidayForm: any;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(
+    private fb: FormBuilder,
+    private holidayService: Holidayservice,
+    private dialog: MatDialog,
+    private toastService: Toastservice
+  ) {}
   ngOnInit(): void {
-
+    this.loadAllHoliday();
   }
 
   toggleConfigSection(): void {
@@ -86,7 +98,7 @@ export class Holidaymaster implements OnInit {
     },
     {
       header: this.translate.stream('Holiday FY'),
-      field: 'HolidayFY',
+      field: 'HolidayFy',
       sortable: true,
       minWidth: 120,
       width: '120px',
@@ -96,7 +108,7 @@ export class Holidaymaster implements OnInit {
       field: 'HolidayDate',
       sortable: true,
       minWidth: 150,
-      width: '150px',
+      width: '250px',
     },
     {
       header: this.translate.stream('Holiday For'),
@@ -107,19 +119,19 @@ export class Holidaymaster implements OnInit {
     },
     {
       header: this.translate.stream('HolidayCompany'),
-      field: 'HolidayCompanyId',
+      field: 'CompanyName',
       sortable: true,
       minWidth: 150,
       width: '150px',
     },
-        {
+    {
       header: this.translate.stream('Remark'),
       field: 'HolidayRemark',
       sortable: true,
       minWidth: 150,
       width: '150px',
     },
-            {
+    {
       header: this.translate.stream('AuthRemark'),
       field: 'HolidayAuthRemark',
       sortable: true,
@@ -134,13 +146,12 @@ export class Holidaymaster implements OnInit {
       minWidth: 100,
       width: '100px',
     },
-        {
+    {
       header: this.translate.stream('Auth'),
       field: 'HolidayAuth',
       sortable: true,
       minWidth: 100,
       width: '100px',
-
     },
     {
       header: this.translate.stream('Action'),
@@ -172,30 +183,26 @@ export class Holidaymaster implements OnInit {
     },
   ];
 
-  edit(record: any) {
-    this.dialog
-      .open(AddEditHoliday, {
-        width: '80%',
-        height: '70%',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        data: { City: record },
-      })
-      .afterClosed()
-      .subscribe(result => {
-        if (result) {
-          console.log('City Updated:', result);
-          const updatePayload = {
-            // Add your update payload here
-          };
-        }
-      });
+  loadAllHoliday() {
+    debugger;
+    this.holidayService.getAllHoliday().subscribe({
+      next: data => {
+        this.list = data.map((item: any, index: number) => ({
+          ...item,
+          SNo: index + 1,
+        }));
+        console.log('Fetched Holiday with S.No:', this.list);
+      },
+      error: err => {
+        console.error('Error fetching Holiday:', err);
+      },
+    });
   }
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditHoliday, {
       width: '70%',
-      height: '60%',
+      height: '55%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {},
@@ -203,24 +210,121 @@ export class Holidaymaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Added Company Entity:', result);
-        const cityData = {
-          // Create Date as per your reqirements Change FormControls
-          CompEntityTypeID: 0,
-          CompanyEntityTypeName: result.CompanyEntityTypeName,
-          CompanyEntityTypeShortName: result.CompanyEntityTypeShortName,
-          CompanyEntityTypeRemark: result.CompanyEntityTypeRemark,
-          CompanyEntityTypeAuth: result.CompanyEntityTypeAuth,
-          CompanyEntityTypeIsDiscard: result.CompanyEntityTypeIsDiscard,
-          CompanyEntityTypeIsActive: result.CompanyEntityTypeIsActive,
+        debugger;
+        console.log('Added Holiday:', result);
+        const payload: IHoliday = {
+          HolidayId: 0,
+          HolidayFy: result.HolidayFy,
+          HolidayDate: result.HolidayDate,
+          HolidayFor: result.HolidayFor,
+          HolidayCompanyId: result.HolidayCompanyId,
+          HolidayRemark: result.HolidayRemark,
+          HolidayAuthRemark: result.HolidayAuthRemark,
+          HolidayAuth: result.HolidayAuth,
+          HolidayIsDiscard: result.HolidayIsDiscard,
+          HolidayIsActive: result.HolidayIsActive,
           CreatedBy: result.CreatedBy,
           CreatedDate: new Date().toISOString(),
         };
+        console.log('Payload for adding Holiday:', payload);
+        // Call the service to insert the Workstation
+        this.holidayService.insertHoliday(payload).subscribe({
+          next: response => {
+            this.toastService.showSuccess('Holiday added successfully:', response);
+            this.loadAllHoliday();
+            alert(`Holiday "${result.HolidayFor}" added successfully!`);
+          },
+          error: err => {
+            if (err.status === 400 && err.error) {
+              // Validation errors from FluentValidation
+              err.error.forEach((validationErr: any) => {
+                const field = validationErr.PropertyName;
+                const message = validationErr.ErrorMessage;
+
+                // Mark field error in form
+                if (this.holidayForm.get(field)) {
+                  this.holidayForm.get(field)?.setErrors({ serverError: message });
+                }
+                // Optionally show toast
+                this.toastService.showError(message);
+              });
+            } else {
+              this.toastService.showError(
+                'Failed to add Holiday. Please verify Holiday details and try again.'
+              );
+            }
+          },
+        });
       }
     });
   }
 
-  delete(value: any) {}
+  edit(record: any) {
+    debugger;
+    this.dialog
+      .open(AddEditHoliday, {
+        width: '80%',
+        height: '70%',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        data: { holiday: record },
+      })
+      .afterClosed()
+      .subscribe(result => {
+        if (result) {
+          debugger;
+          console.log('Holiday Updated:', result);
+          // Create update payload as per your reqirements
+          const updatePayload = {
+            HolidayId: result.HolidayId,
+            HolidayFy: result.HolidayFy,
+            HolidayDate: result.HolidayDate,
+            HolidayFor: result.HolidayFor,
+            HolidayCompanyId: result.HolidayCompanyId,
+            HolidayRemark: result.HolidayRemark,
+            HolidayAuthRemark: result.HolidayAuthRemark,
+            HolidayAuth: result.HolidayAuth,
+            HolidayIsDiscard: result.HolidayIsDiscard,
+            HolidayIsActive: result.HolidayIsActive,
+            CreatedBy: result.CreatedBy,
+          };
+          console.log('Update payload:', updatePayload);
+          this.holidayService.updateHoliday(updatePayload).subscribe({
+            next: response => {
+              this.toastService.showSuccess('Holiday updated successfully:', response);
+              alert(`Holiday "${result.HolidayFor}" updated successfully!`);
+              this.loadAllHoliday();
+            },
+            error: err => {
+              console.error('Error updating Holiday:', err);
+            },
+          });
+        }
+      });
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  save(record: any): void {
+    console.log('Saving record:', record);
+    this.closeDialog();
+  }
+
+  delete(value: any) {
+    debugger;
+    this.holidayService.deleteHoliday(value.HolidayId).subscribe({
+      next: response => {
+        console.log('Holiday deleted successfully:', response);
+        alert(`You have deleted ${value.HolidayFor} successfully!`);
+        this.loadAllHoliday();
+      },
+      error: err => {
+        console.error('Error deleting Holiday:', err);
+      },
+    });
+  }
 
   changeSelect(e: any) {
     console.log(e);
@@ -230,19 +334,14 @@ export class Holidaymaster implements OnInit {
     console.log(e);
   }
 
-  enableRowExpandable() {
-    //this.columns[0].showExpand = this.expandable;
-  }
-
   updateCell() {
-    // this.list = this.list.map(item => {
-    //   (item as any).RandomValue = Math.round(Math.random() * 1000) / 100;
-    //   return item;
-    // });
+    this.list = this.list.map(item => {
+      item.weight = Math.round(Math.random() * 1000) / 100;
+      return item;
+    });
   }
 
   updateList() {
-    //this.list = this.list.splice(-1).concat(this.list);
+    this.list = this.list.splice(-1).concat(this.list);
   }
-
 }
