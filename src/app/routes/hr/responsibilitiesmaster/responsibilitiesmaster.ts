@@ -2,7 +2,7 @@ import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCheckboxModule }   from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,7 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
 import { Responsibilitiesmstservice } from '@shared/services/hr/ResponsibilitiesMaster/responsibilitiesmstservice';
-import { IResponsibilities } from '@shared/interfaces/hr/responsibilitiesmaster';
+import{IResponsibilities} from '@shared/interfaces/hr/responsibilitiesmaster';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -61,10 +61,10 @@ export class Responsibilitiesmaster {
   showPaginator = true;
   expandable = false;
   columnResizable = false;
+
   isLoading = false;
-  isConfigExpanded: boolean = false;
   list: any[] = [];
-  responsibilities: IResponsibilities[] = [];
+  isConfigExpanded: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -73,8 +73,6 @@ export class Responsibilitiesmaster {
     private toastService: Toastservice
   ) {}
   ngOnInit(): void {
-
-
      this.loadAllResponsibilities();
   }
 
@@ -119,6 +117,13 @@ export class Responsibilitiesmaster {
       width: '140px',
     },
      {
+      header: this.translate.stream('Responsibilities Type'),
+      field: 'ResponsibilitiesType',
+      sortable: true,
+      minWidth: 140,
+      width: '140px',
+    },
+    {
       header: this.translate.stream('IsActive'),
       field: 'ResponsibilitiesIsActive',
       sortable: true,
@@ -171,32 +176,29 @@ export class Responsibilitiesmaster {
 
   loadAllResponsibilities() {
     this.responsibilitiesmstService.getAllResponsibilities().subscribe({
-      next: data => {
+      next: (data) => {
         this.list = data.map((item: any, index: number) => ({
           ...item,
-          SNo: index + 1,
+          SNo: index + 1
         }));
         console.log('Fetched responsibilities with S.No:', this.list);
       },
-      error: err => {
+      error: (err) => {
         console.error('Error fetching responsibilities:', err);
-      },
+      }
     });
   }
 
   edit(record: any) {
     debugger
     // Open dialog, pass in the record
-    this.dialog
-      .open(AddEditResponsibilities, {
-        width: '100%',
-        height: '100%',
+    this.dialog.open(AddEditResponsibilities, {
+      width: '75%',
+      height: '80%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: { responsibilities: record },
-      })
-      .afterClosed()
-      .subscribe(result => {
+    }).afterClosed().subscribe(result => {
       if (result) {
         debugger
         const payload = {
@@ -210,19 +212,18 @@ export class Responsibilitiesmaster {
           ResposibilitiesIsActive: result.responsibilitiesIsActive,
           ResposibilitiesAuth: result.responsibilitiesAuth,
           ResposibilitiesIsDiscard: result.responsibilitiesIsDiscard,
-            descriptions: result.descriptions,
         };
         this.responsibilitiesmstService.updateResponsibilities(payload).subscribe({
-            next: res => {
+          next: (res) => {
             console.log('Responsibilities updated successfully:', res);
             this.toastService.showSuccess(`Responsibilities updated successfully!`);
             this.loadAllResponsibilities();
           },
-            error: err => {
+          error: (err) => {
             console.error('Error updating responsibilities:', err);
             this.toastService.showError('Failed to update responsibilities. Please try again.');
              this.loadAllResponsibilities();
-            },
+          }
         });
       }
     });
@@ -230,16 +231,16 @@ export class Responsibilitiesmaster {
 
    openAddDialog() {
     const dialogRef = this.dialog.open(AddEditResponsibilities, {
-      width: '100%',
-      height: '100%',
+      width: '75%',
+      height: '80%',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: {}, // empty for add
+      data: {} // empty for add
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.table('result', result);
+        debugger
        const payload = {
           ResposibilitiesGradeId: result.GradeID,
           ResposibilitiesDesignationId: result.DesignationID,
@@ -250,20 +251,18 @@ export class Responsibilitiesmaster {
           ResposibilitiesIsActive: result.responsibilitiesIsActive,
           ResposibilitiesAuth: result.responsibilitiesAuth,
           ResposibilitiesIsDiscard: result.responsibilitiesIsDiscard,
-          //Desc details
-          descriptions: result.descriptions,
       };
         this.responsibilitiesmstService.insertResponsibilities(payload).subscribe({
-          next: res => {
+          next: (res) => {
             console.log('Responsibilities added successfully:', res);
             this.toastService.showSuccess(`Responsibilities added successfully!`);
             this.loadAllResponsibilities();
           },
-          error: err => {
+          error: (err) => {
             console.error('Error adding responsibilities:', err);
             this.toastService.showError('Failed to add responsibilities. Please try again.');
              this.loadAllResponsibilities();
-          },
+          }
         });
     }
     });
@@ -282,16 +281,16 @@ export class Responsibilitiesmaster {
      debugger
       console.log('Deleting record:', value);
       this.responsibilitiesmstService.deleteResponsibilities(value.ResponsibilitiesId).subscribe({
-      next: res => {
+        next: (res) => {
           console.log('Responsibilities deleted successfully:', res);
           this.toastService.showSuccess(`Responsibilities deleted successfully!`);
           this.loadAllResponsibilities();
         },
-      error: err => {
+        error: (err) => {
           console.error('Error deleting responsibilities:', err);
           this.toastService.showError('Failed to delete responsibilities. Please try again.');
            this.loadAllResponsibilities();
-      },
+        }
       });
     }
 

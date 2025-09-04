@@ -1,68 +1,9 @@
-<!-- <page-header class="bg-green-50" />
-
-<div class="data-grid-options">
-  <mat-checkbox [(ngModel)]="rowSelectable">Row Selectable</mat-checkbox>
-  <mat-checkbox [(ngModel)]="hideRowSelectionCheckbox">Hide checkbox</mat-checkbox>
-  <mat-radio-group [(ngModel)]="multiSelectable">
-    <mat-radio-button [value]="false">Single Selectable</mat-radio-button>
-    <mat-radio-button [value]="true">Multiple Selectable</mat-radio-button>
-  </mat-radio-group>
-  <mat-checkbox [(ngModel)]="showToolbar">Show Toolbar</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnHideable">Column Hiding</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnSortable">Column Sorting</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnPinnable">Column Pinning</mat-checkbox>
-  <mat-checkbox [(ngModel)]="rowHover">Hover</mat-checkbox>
-  <mat-checkbox [(ngModel)]="rowStriped">Striped</mat-checkbox>
-  <mat-checkbox [(ngModel)]="expandable" (change)="enableRowExpandable()">
-    Row Expandable
-  </mat-checkbox>
-  <mat-checkbox [(ngModel)]="showPaginator">Show Paginator</mat-checkbox>
-  <mat-checkbox [(ngModel)]="isLoading">Loading Status</mat-checkbox>
-  <mat-checkbox [(ngModel)]="columnResizable">Column Resizable</mat-checkbox>
-</div>
-<div class="m-y-8">
-  <button mat-button (click)="updateCell()">Update cell</button>
-  <button mat-button (click)="updateList()">Update list</button>
-  <button mat-raised-button color="primary" (click)="openAddDialog()"><mat-icon>add</mat-icon>Add New</button>
-</div>
-
-<mtx-grid
-  [data]="list"
-  [columns]="columns"
-  [loading]="isLoading"
-  [columnResizable]="columnResizable"
-  [multiSelectable]="multiSelectable"
-  [rowSelectable]="rowSelectable"
-  [hideRowSelectionCheckbox]="hideRowSelectionCheckbox"
-  [rowHover]="rowHover"
-  [rowStriped]="rowStriped"
-  [showToolbar]="showToolbar"
-  [toolbarTitle]="'Data Grid Toolbar'"
-  [columnHideable]="columnHideable"
-  [columnSortable]="columnSortable"
-  [columnPinnable]="columnPinnable"
-  [expandable]="expandable"
-  [expansionTemplate]="expansionTpl"
-  [pageOnFront]="showPaginator"
-  [showPaginator]="showPaginator"
-  [pageSizeOptions]="[5, 10, 50, 100]"
-  [pageIndex]="0"
-  [pageSize]="5"
-  (sortChange)="changeSort($event)"
-  (selectionChange)="changeSelect($event)"
-/>
-<ng-template #expansionTpl let-row>
-  {{ row.name }}
-</ng-template>
-
- -->
-
 <page-header class="bg-green-50" />
 
 <div class="container-fluid">
   <!-- Control Panel Card -->
   <mat-card class="mb-4 shadow-lg border-0 rounded-3 overflow-hidden">
-    <div class="config-header d-flex justify-content-between align-items-center p-4 bg-gradient cursor-pointer position-relative" 
+    <div class="config-header d-flex justify-content-between align-items-center p-4 bg-gradient cursor-pointer position-relative"
          (click)="toggleConfigSection()">
       <div class="d-flex align-items-center">
         <div class="settings-icon-wrapper me-3">
@@ -74,7 +15,7 @@
         </div>
       </div>
       <div class="toggle-wrapper">
-        <mat-icon class="toggle-arrow text-white transition-transform" 
+        <mat-icon class="toggle-arrow text-white transition-transform"
                   [class.rotate-180]="!isConfigExpanded">
           keyboard_arrow_down
         </mat-icon>

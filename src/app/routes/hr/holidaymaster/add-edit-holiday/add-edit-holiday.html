@@ -1,0 +1,140 @@
+<mat-card>
+  <mat-card-title>{{ isEditMode ? 'Edit Holiday Master' : 'Add Holiday Master' }}</mat-card-title>
+
+  <!-- Please Note Change Form control as per your Requirements  -->
+  <mat-card-content>
+    <form [formGroup]="holidayForm" class="form-field-full">
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-3"></div>
+
+        <div class="col-sm-4 col-xl-3">
+          <div class="d-flex align-items-center justify-content-end" style="height: 56px">
+            <mat-checkbox formControlName="HolidayAuth" color="primary" [disabled]="!isEditMode">
+              Auth
+            </mat-checkbox>
+            <mat-checkbox
+              formControlName="HolidayIsActive"
+              color="primary"
+              [disabled]="!isEditMode"
+            >
+              Active
+            </mat-checkbox>
+            <mat-checkbox
+              formControlName="HolidayIsDiscard"
+              color="primary"
+              [disabled]="!isEditMode"
+              *ngIf="isEditMode"
+            >
+              Discard
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <!-- Left side  -->
+        <div class="col-sm-6 col-xl-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Holiday FY</mat-label>
+            <mat-select formControlName="HolidayFy" placeholder="Select Holiday FY">
+              <mat-option>
+                <input
+                  matInput
+                  placeholder="Search Holiday FY..."
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+
+              <mat-option value="">Select Holiday FY</mat-option>
+
+              @for (holiday of filteredHolidayFYList; track holiday.HolidayFy) {
+              <mat-option [value]="holiday.HolidayFy">{{ holiday.HolidayFy }}</mat-option>
+              }
+            </mat-select>
+
+            @if (holidayForm.get('HolidayFy')?.invalid && holidayForm.get('HolidayFy')?.touched) {
+            <mat-error>Holiday FY is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Holiday For</mat-label>
+            <input matInput formControlName="HolidayFor" placeholder="Enter Holiday For..." />
+            @if (holidayForm.get('HolidayFor')?.invalid && holidayForm.get('HolidayFor')?.touched) {
+            <mat-error>Holiday For is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Remark</mat-label>
+            <input matInput formControlName="HolidayRemark" placeholder="Enter Remark" />
+          </mat-form-field>
+        </div>
+
+        <!-- Right side  -->
+
+        <div class="col-sm-6 col-xl-6">
+          <mat-form-field>
+            <mat-label>Holiday Date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="birthdayPicker"
+              formControlName="HolidayDate"
+              required
+            />
+            <mat-datepicker-toggle matSuffix [for]="birthdayPicker" />
+            <mat-datepicker #birthdayPicker startView="year" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Company</mat-label>
+            <mat-select formControlName="HolidayCompanyId" placeholder="Select Company">
+              <mat-option>
+                <input
+                  matInput
+                  placeholder="Search Company..."
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+              <mat-option value="">Select Company</mat-option>
+              @for (Company of filteredCompaniesList; track Company.CompanyName) {
+              <mat-option [value]="Company.CompanyId">
+                {{ Company.CompanyName }}
+                <!-- bind with your text field -->
+              </mat-option>
+              }
+            </mat-select>
+
+            @if (holidayForm.get('HolidayCompanyId')?.invalid &&
+            holidayForm.get('HolidayCompanyId')?.touched) {
+            <mat-error>Company is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <button
+              mat-flat-button
+              color="primary"
+              class="btn-primary px-4"
+              [disabled]="holidayForm.invalid"
+              (click)="onSubmit()"
+            >
+              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+
+            <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
+              <mat-icon>close</mat-icon>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

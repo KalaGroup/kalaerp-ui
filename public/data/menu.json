@@ -30,6 +30,101 @@
           "route": "company",
           "name": "company",
           "type": "link"
+        },
+        {
+          "route": "state",
+          "name": "state",
+          "type": "link"
+        },
+        {
+          "route": "division",
+          "name": "division",
+          "type": "link"
+        },
+        {
+          "route": "workstation",
+          "name": "workstation",
+          "type": "link"
+        },
+        {
+          "route": "profitcenter",
+          "name": "profitcenter",
+          "type": "link"
+        },
+        {
+          "route": "qualification",
+          "name": "qualification",
+          "type": "link"
+        },
+        {
+          "route": "recruitmentattributemaster",
+          "name": "recruitmentattributemaster",
+          "type": "link"
+        },
+        {
+          "route": "employeetypemaster",
+          "name": "employeetypemaster",
+          "type":"link" 
+        },
+        {
+          "route": "companyentitytype",
+          "name": "companyentitytype",
+          "type": "link"
+        },
+        {
+          "route": "petrolallowancemaster",
+          "name": "petrolallowancemaster",
+          "type": "link"
+        },
+        {
+          "route": "employeeupdationfor",
+          "name": "employeeupdationfor",
+          "type": "link"
+        },
+        {
+          "route": "qualificationtype",
+          "name": "qualificationtype",
+          "type": "link"
+        },
+        {
+          "route": "holidaymaster",
+          "name": "holidaymaster",
+          "type": "link"
+        },
+        {
+          "route": "responsibilitiesmaster",
+          "name": "responsibilitiesmaster",
+          "type": "link"
+        },
+        {
+          "route": "departmentmaster",
+          "name": "departmentmaster",
+          "type": "link"
+        },
+        {
+          "route": "rolesmaster",
+          "name": "rolesmaster",
+          "type": "link"
+        },
+        {
+          "route": "rolesdetails",
+          "name": "rolesdetails",
+          "type": "link"
+        },
+        {
+          "route": "location",
+          "name": "location",
+          "type": "link"
+        },
+        {
+          "route": "classoftravel",
+          "name": "classoftravel",
+          "type": "link"
+        },
+        {
+          "route": "facility",
+          "name": "facility",
+          "type": "link"
         }
       ]
     },
