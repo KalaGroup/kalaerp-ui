@@ -6,6 +6,7 @@
   <mat-card-content>
     <form [formGroup]="responsibilitiesMstForm" class="form-field-full">
 
+      <!-- Auto-generated fields and status row -->
       <div class="row mb-3">
         <div class="col-sm-4 col-xl-3">
           <mat-form-field appearance="fill">
@@ -36,6 +37,7 @@
         </div>
       </div>
 
+      <!-- Main dropdowns row -->
       <div class="row mb-3">
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
@@ -103,22 +105,31 @@
         </div>
       </div>
 
+      <!-- Type and Remarks row -->
       <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Responsibilities Type</mat-label>
+            <input matInput formControlName="responsibilitiesType" placeholder="Enter responsibilities type" />
+          </mat-form-field>
+        </div>
+
         <div class="col-sm-8 col-xl-8">
           <mat-form-field appearance="outline">
             <mat-label>Responsibilities Remark</mat-label>
             <textarea matInput formControlName="responsibilitiesRemark" placeholder="Enter responsibilities remark"
-              rows="2" maxlength="500"></textarea>
+                     rows="2" maxlength="500"></textarea>
           </mat-form-field>
         </div>
       </div>
 
+      <!-- Auth Remark row -->
       <div class="row mb-3">
         <div class="col-sm-12 col-xl-12">
           <mat-form-field appearance="outline">
             <mat-label>Authorization Remark</mat-label>
             <textarea matInput formControlName="responsibilitiesAuthRemark" placeholder="Enter authorization remark"
-              rows="2" maxlength="500"></textarea>
+                     rows="2" maxlength="500"></textarea>
           </mat-form-field>
         </div>
       </div>
@@ -195,28 +206,37 @@
                     }
                   </tbody>
                 </table>
-              </div>
+        </div>
             </form>
           </mat-card-content>
         </mat-card>
       </div>
     </form>
 
-    <div class="row">
-      <div class="col-12">
-        <div class="d-flex justify-content-center gap-3 mt-4">
-          <button mat-flat-button color="primary" class="btn-primary px-4"
+      <!-- Action buttons -->
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <button mat-flat-button color="primary" class="btn-primary px-4"
             [disabled]="responsibilitiesMstForm.invalid && description.length === 0" (click)="onSubmit()">
-            <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
-            {{ isEditMode ? 'Update' : 'Save' }}
-          </button>
+              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
 
-          <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
-            <mat-icon>close</mat-icon>
-            Cancel
-          </button>
+            <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
+              <mat-icon>close</mat-icon>
+              Cancel
+            </button>
+            @if (!isEditMode) {
+            <button mat-button type="button" class="btn-outline px-4" (click)="onReset()">
+              <mat-icon>refresh</mat-icon>
+              Reset
+            </button>
+            }
+          </div>
         </div>
       </div>
-    </div>
+
+    </form>
   </mat-card-content>
 </mat-card>

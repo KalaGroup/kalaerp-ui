@@ -1,3 +1,4 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -16,7 +17,7 @@ export class Responsibilitiesmstservice {
   private getDivisionListUrl = 'https://localhost:7019/api/DivisionMaster/getdivisionidandname';
   private insertResponsibilitiesUrl =
     'https://localhost:7019/api/ResposibilitiesMaster/addresponsibilities';
-  private updateResponsibilitiesUrl =
+    private updateResponsibilitiesUrl =
     'https://localhost:7019/api/ResposibilitiesMaster/updateresposibilities';
   private deleteResponsibilitiesUrl =
     'https://localhost:7019/api/ResposibilitiesMaster/deleteresposibilities';
@@ -69,3 +70,4 @@ export class Responsibilitiesmstservice {
     return this.http.delete<any>(`${this.deleteResponsibilitiesUrl}/${responsibilitiesId}`);
   }
 }
+

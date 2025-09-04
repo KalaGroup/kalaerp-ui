@@ -19,6 +19,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
 import { AddEditResponsibilities } from './add-edit-responsibilities/add-edit-responsibilities';
 import { Toastservice } from 'app/routes/toastservice';
+
 @Component({
   selector: 'app-responsibilitiesmaster',
   imports: [
@@ -44,6 +45,9 @@ export class Responsibilitiesmaster {
   private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
+
+  responsibilities: IResponsibilities[] = [];
+  editIndex: number | null = null;
 
   multiSelectable = true;
   rowSelectable = true;
@@ -71,7 +75,7 @@ export class Responsibilitiesmaster {
   ngOnInit(): void {
 
 
-    this.loadAllResponsibilities();
+     this.loadAllResponsibilities();
   }
 
   toggleConfigSection(): void {
@@ -114,14 +118,14 @@ export class Responsibilitiesmaster {
       minWidth: 140,
       width: '140px',
     },
-    {
+     {
       header: this.translate.stream('IsActive'),
       field: 'ResponsibilitiesIsActive',
       sortable: true,
       minWidth: 100,
       width: '100px',
     },
-    {
+     {
       header: this.translate.stream('IsAuth'),
       field: 'ResponsibilitiesAuth',
       sortable: true,
@@ -181,47 +185,50 @@ export class Responsibilitiesmaster {
   }
 
   edit(record: any) {
+    debugger
     // Open dialog, pass in the record
     this.dialog
       .open(AddEditResponsibilities, {
         width: '100%',
         height: '100%',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        data: { responsibilities: record },
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: { responsibilities: record },
       })
       .afterClosed()
       .subscribe(result => {
-        if (result) {
-          const payload = {
-            ResposibilitiesId: record.ResponsibilitiesId,
-            ResposibilitiesGradeId: result.GradeID,
-            ResposibilitiesDesignationId: result.DesignationID,
-            ResponsibilitiesDivisionId: result.DivisionID,
-            ResposibilitiesRemark: result.responsibilitiesRemark,
-            ResposibilitiesAuthRemark: result.responsibilitiesAuthRemark,
-            ResposibilitiesIsActive: result.responsibilitiesIsActive,
-            ResposibilitiesAuth: result.responsibilitiesAuth,
-            ResposibilitiesIsDiscard: result.responsibilitiesIsDiscard,
+      if (result) {
+        debugger
+        const payload = {
+          ResposibilitiesId: record.ResponsibilitiesId,
+          ResposibilitiesGradeId: result.GradeID,
+          ResposibilitiesDesignationId: result.DesignationID,
+          ResponsibilitiesDivisionId: result.DivisionID,
+          ResposibilitiesRemark: result.responsibilitiesRemark,
+          ResposibilitiesType: result.responsibilitiesType,
+          ResposibilitiesAuthRemark: result.responsibilitiesAuthRemark,
+          ResposibilitiesIsActive: result.responsibilitiesIsActive,
+          ResposibilitiesAuth: result.responsibilitiesAuth,
+          ResposibilitiesIsDiscard: result.responsibilitiesIsDiscard,
             descriptions: result.descriptions,
-          };
-          this.responsibilitiesmstService.updateResponsibilities(payload).subscribe({
+        };
+        this.responsibilitiesmstService.updateResponsibilities(payload).subscribe({
             next: res => {
-              console.log('Responsibilities updated successfully:', res);
-              this.toastService.showSuccess(`Responsibilities updated successfully!`);
-              this.loadAllResponsibilities();
-            },
+            console.log('Responsibilities updated successfully:', res);
+            this.toastService.showSuccess(`Responsibilities updated successfully!`);
+            this.loadAllResponsibilities();
+          },
             error: err => {
-              console.error('Error updating responsibilities:', err);
-              this.toastService.showError('Failed to update responsibilities. Please try again.');
-              this.loadAllResponsibilities();
+            console.error('Error updating responsibilities:', err);
+            this.toastService.showError('Failed to update responsibilities. Please try again.');
+             this.loadAllResponsibilities();
             },
-          });
-        }
-      });
+        });
+      }
+    });
   }
 
-  openAddDialog() {
+   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditResponsibilities, {
       width: '100%',
       height: '100%',
@@ -233,18 +240,19 @@ export class Responsibilitiesmaster {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.table('result', result);
-        const payload = {
+       const payload = {
           ResposibilitiesGradeId: result.GradeID,
           ResposibilitiesDesignationId: result.DesignationID,
           ResponsibilitiesDivisionId: result.DivisionID,
           ResposibilitiesRemark: result.responsibilitiesRemark,
+          ResposibilitiesType: result.responsibilitiesType,
           ResposibilitiesAuthRemark: result.responsibilitiesAuthRemark,
           ResposibilitiesIsActive: result.responsibilitiesIsActive,
           ResposibilitiesAuth: result.responsibilitiesAuth,
           ResposibilitiesIsDiscard: result.responsibilitiesIsDiscard,
           //Desc details
           descriptions: result.descriptions,
-        };
+      };
         this.responsibilitiesmstService.insertResponsibilities(payload).subscribe({
           next: res => {
             console.log('Responsibilities added successfully:', res);
@@ -254,58 +262,61 @@ export class Responsibilitiesmaster {
           error: err => {
             console.error('Error adding responsibilities:', err);
             this.toastService.showError('Failed to add responsibilities. Please try again.');
-            this.loadAllResponsibilities();
+             this.loadAllResponsibilities();
           },
         });
-      }
+    }
     });
   }
 
-  closeDialog(): void {
-    this.dialogRef.close();
-  }
+    closeDialog(): void {
+      this.dialogRef.close();
+    }
 
-  save(record: any): void {
-    console.log('Saving record:', record);
-    this.closeDialog();
-  }
+    save(record: any): void {
+      console.log('Saving record:', record);
+      this.closeDialog();
+    }
 
-  delete(value: any) {
-    console.log('Deleting record:', value);
-    this.responsibilitiesmstService.deleteResponsibilities(value.ResponsibilitiesId).subscribe({
+     delete(value: any) {
+     debugger
+      console.log('Deleting record:', value);
+      this.responsibilitiesmstService.deleteResponsibilities(value.ResponsibilitiesId).subscribe({
       next: res => {
-        console.log('Responsibilities deleted successfully:', res);
-        this.toastService.showSuccess(`Responsibilities deleted successfully!`);
-        this.loadAllResponsibilities();
-      },
+          console.log('Responsibilities deleted successfully:', res);
+          this.toastService.showSuccess(`Responsibilities deleted successfully!`);
+          this.loadAllResponsibilities();
+        },
       error: err => {
-        console.error('Error deleting responsibilities:', err);
-        this.toastService.showError('Failed to delete responsibilities. Please try again.');
-        this.loadAllResponsibilities();
+          console.error('Error deleting responsibilities:', err);
+          this.toastService.showError('Failed to delete responsibilities. Please try again.');
+           this.loadAllResponsibilities();
       },
-    });
-  }
+      });
+    }
 
-  changeSelect(e: any) {
-    console.log(e);
-  }
+     changeSelect(e: any) {
+      console.log(e);
+    }
 
-  changeSort(e: any) {
-    console.log(e);
-  }
+    changeSort(e: any) {
+      console.log(e);
+    }
 
-  enableRowExpandable() {
-    this.columns[0].showExpand = this.expandable;
-  }
+     enableRowExpandable() {
+      this.columns[0].showExpand = this.expandable;
+    }
 
-  updateCell() {
-    this.list = this.list.map(item => {
-      item.weight = Math.round(Math.random() * 1000) / 100;
-      return item;
-    });
-  }
+     updateCell() {
+      this.list = this.list.map(item => {
+        item.weight = Math.round(Math.random() * 1000) / 100;
+        return item;
+      });
+    }
 
-  updateList() {
-    this.list = this.list.splice(-1).concat(this.list);
-  }
+    updateList() {
+      this.list = this.list.splice(-1).concat(this.list);
+    }
+
+
 }

@@ -74,10 +74,15 @@ export class AddEditResponsibilities {
   editIndex: number | null = null;
   newDescription: string = '';
 
+  filteredGradeList: any[] = [];
+  filteredDesignationList: any[] = [];
+  filteredDivisionList: any[] = [];
+
   constructor(
     private responsibilitiesService: Responsibilitiesmstservice,
     private dialogRef: MatDialogRef<AddEditResponsibilities>,
     private fb: FormBuilder,
+    public dialogRef: MatDialogRef<AddEditResponsibilities>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.isEditMode = !!this.data && !!this.data.responsibilities;
@@ -99,6 +104,8 @@ export class AddEditResponsibilities {
       GradeID: ['', [Validators.required]],
       DesignationID: ['', [Validators.required]],
       DivisionID: ['', [Validators.required]],
+      // Text input fields
+      responsibilitiesType: ['', [Validators.maxLength(100)]],
       responsibilitiesRemark: ['', [Validators.maxLength(500)]],
       responsibilitiesAuthRemark: ['', [Validators.maxLength(500)]],
 
@@ -111,8 +118,11 @@ export class AddEditResponsibilities {
     if (this.isEditMode && this.data.responsibilities) {
       this.loadAllDescriptions();
       this.responsibilitiesMstForm.patchValue({
+        // Text input fields
+        responsibilitiesType: this.data.responsibilities.ResponsibilitiesType || '',
         responsibilitiesRemark: this.data.responsibilities.ResponsibilitiesRemark || '',
         responsibilitiesAuthRemark: this.data.responsibilities.ResponsibilitiesAuthRemark || '',
+
         // Status fields
         responsibilitiesAuth: this.data.responsibilities.ResponsibilitiesAuth ?? true,
         responsibilitiesIsDiscard: this.data.responsibilities.ResponsibilitiesIsDiscard ?? false,
@@ -166,6 +176,7 @@ export class AddEditResponsibilities {
   private setGradeForEdit(): void {
     let gradeId = null;
     const gradeData = this.data.responsibilities;
+    // Find company entity type by name (trim whitespace for comparison)
     if (gradeData?.ResponsibilitiesGradeName) {
       const _gradeData = this.gradeList.find(
         c => c.GradeName.trim() === gradeData.ResponsibilitiesGradeName.trim()
@@ -208,6 +219,7 @@ export class AddEditResponsibilities {
   private setDesignationForEdit(): void {
     let designationId = null;
     const designationData = this.data.responsibilities;
+    // Find designation by name (trim whitespace for comparison)
     if (designationData?.ResponsibilitiesDesignationName) {
       const designation = this.designationList.find(
         c => c.DesignationName.trim() === designationData.ResponsibilitiesDesignationName.trim()
@@ -257,6 +269,7 @@ export class AddEditResponsibilities {
   private setDivisionForEdit(): void {
     let divisionId = null;
     const divisionData = this.data.responsibilities;
+    // Find division by name (trim whitespace for comparison)
     if (divisionData?.ResponsibilitiesDivisionName) {
       const division = this.divisionList.find(
         c => c.DivisionName.trim() === divisionData.ResponsibilitiesDivisionName.trim()
@@ -313,7 +326,7 @@ export class AddEditResponsibilities {
     if (this.newDescription.trim() == undefined || this.newDescription.trim() == '') {
       alert('Please Add Description.');
       return;
-    }
+  }
 
     if (desc !== '') {
       // check if already exists

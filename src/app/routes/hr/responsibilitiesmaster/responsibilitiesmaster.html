@@ -1,3 +1,4 @@
+
 <page-header class="bg-green-50" />
 
 <div class="container-fluid">
@@ -5,7 +6,7 @@
   <mat-card class="mb-4 shadow-lg border-0 rounded-3 overflow-hidden">
     <div
       class="config-header d-flex justify-content-between align-items-center p-4 bg-gradient cursor-pointer position-relative"
-      (click)="toggleConfigSection()">
+         (click)="toggleConfigSection()">
       <div class="d-flex align-items-center">
         <div class="settings-icon-wrapper me-3">
           <mat-icon class="settings-icon text-white">settings</mat-icon>
@@ -87,24 +88,24 @@
   <!-- Action Buttons Card -->
   <mat-card class="mb-4">
     <mat-card-content>
-      <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-        <!-- Left side - Action Buttons -->
-        <div class="d-flex flex-wrap gap-2 align-items-center">
-          <button mat-button class="action-btn" (click)="updateCell()">
-            <mat-icon>edit</mat-icon>
-            Update Cell
-          </button>
-          <button mat-button class="action-btn" (click)="updateList()">
-            <mat-icon>refresh</mat-icon>
-            Update List
-          </button>
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <!-- Left side - Action Buttons -->
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+      <button mat-button class="action-btn" (click)="updateCell()">
+        <mat-icon>edit</mat-icon>
+        Update Cell
+      </button>
+      <button mat-button class="action-btn" (click)="updateList()">
+        <mat-icon>refresh</mat-icon>
+        Update List
+      </button>
           <button mat-raised-button class="primary-btn" (click)="openAddDialog()">
-            <mat-icon>add</mat-icon>
-            Add New
-          </button>
-        </div>
-      </div>
-    </mat-card-content>
+        <mat-icon>add</mat-icon>
+        Add New
+      </button>
+    </div>
+  </div>
+</mat-card-content>
   </mat-card>
 
   <!-- Data Grid Card -->
