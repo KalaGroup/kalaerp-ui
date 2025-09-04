@@ -1,0 +1,222 @@
+<mat-card>
+  <mat-card-title>
+    {{ isEditMode ? 'Edit Responsibilities' : 'Add Responsibilities' }}
+  </mat-card-title>
+
+  <mat-card-content>
+    <form [formGroup]="responsibilitiesMstForm" class="form-field-full">
+
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-3">
+          <mat-form-field appearance="fill">
+            <mat-label>Created Date</mat-label>
+            <input matInput formControlName="CreatedDate" readonly placeholder="Auto-generated" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3 col-xl-2">
+          <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
+            <mat-checkbox formControlName="responsibilitiesIsActive" color="primary" [disabled]="!isEditMode">
+              Active
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xl-2">
+          <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
+            <mat-checkbox formControlName="responsibilitiesAuth" color="primary" [disabled]="!isEditMode">
+              Authorized
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="col-sm-2 col-xl-2">
+          <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
+            <mat-checkbox formControlName="responsibilitiesIsDiscard" color="warn" [disabled]="!isEditMode">
+              Discarded
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Grade Name</mat-label>
+            <mat-select formControlName="GradeID" placeholder="Select grade">
+              <mat-option>
+                <input matInput placeholder="Search grade..." [formControl]="GradeSearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+              <mat-option value="">Select Grade</mat-option>
+              @for (grade of filteredGradeList; track grade.GradeId) {
+              <mat-option [value]="grade.GradeId">
+                {{ grade.GradeName }}
+              </mat-option>
+              }
+            </mat-select>
+            @if (responsibilitiesMstForm.get('GradeID')?.invalid && responsibilitiesMstForm.get('GradeID')?.touched) {
+            <mat-error>Grade Name is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Division Name</mat-label>
+            <mat-select formControlName="DivisionID" placeholder="Select division">
+              <mat-option>
+                <input matInput placeholder="Search division..." [formControl]="DivisionSearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+              <mat-option value="">Select Division</mat-option>
+              @for (division of filteredDivisionList; track division.DivisionId) {
+              <mat-option [value]="division.DivisionId">
+                {{ division.DivisionName }}
+              </mat-option>
+              }
+            </mat-select>
+            @if (responsibilitiesMstForm.get('DivisionID')?.invalid &&
+            responsibilitiesMstForm.get('DivisionID')?.touched) {
+            <mat-error>Division Name is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Designation Name</mat-label>
+            <mat-select formControlName="DesignationID" placeholder="Select designation">
+              <mat-option>
+                <input matInput placeholder="Search designation..." [formControl]="DesignationSearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+              <mat-option value="">Select Designation</mat-option>
+              @for (designation of filteredDesignationList; track designation.DesignationId) {
+              <mat-option [value]="designation.DesignationId">
+                {{ designation.DesignationName }}
+              </mat-option>
+              }
+            </mat-select>
+            @if (responsibilitiesMstForm.get('DesignationID')?.invalid &&
+            responsibilitiesMstForm.get('DesignationID')?.touched) {
+            <mat-error>Designation Name is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-sm-8 col-xl-8">
+          <mat-form-field appearance="outline">
+            <mat-label>Responsibilities Remark</mat-label>
+            <textarea matInput formControlName="responsibilitiesRemark" placeholder="Enter responsibilities remark"
+              rows="2" maxlength="500"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-sm-12 col-xl-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Authorization Remark</mat-label>
+            <textarea matInput formControlName="responsibilitiesAuthRemark" placeholder="Enter authorization remark"
+              rows="2" maxlength="500"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="container mt-3">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title style="font-size: 20px; font-weight: bold; color: #007bff;">
+              Responsibilities Details
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <form>
+              <div class="table-container">
+                <table class="custom-table">
+                  <thead>
+                    <tr class="table-header">
+                      <th class="sr-no-column">Sr.No</th>
+                      <th class="description-column">Description</th>
+                      <th class="action-column">Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <!-- Input row -->
+                    <tr class="input-row">
+                      <td class="sr-no-cell"></td>
+                      <td class="description-cell">
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <mat-label>Enter description</mat-label>
+                          <input matInput [(ngModel)]="newDescription" name="newDescription"
+                            placeholder="Enter description" />
+                        </mat-form-field>
+                      </td>
+                      <td class="action-cell">
+                        <button mat-raised-button color="primary" (click)="addRow()" type="button" class="add-button">
+                          <mat-icon>add</mat-icon>
+                          ADD
+                        </button>
+                      </td>
+                    </tr>
+
+                    <!-- Dynamic rows -->
+                    @for (part of description; track $index; let i = $index) {
+                    <tr class="data-row" [class.editing]="editIndex === i">
+                      <td class="sr-no-cell">{{ part.srno }}</td>
+                      <td class="description-cell">
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <input matInput [(ngModel)]="part.desc" [readonly]="editIndex !== i" name="desc{{i}}"
+                            [class.readonly-input]="editIndex !== i" />
+                        </mat-form-field>
+                      </td>
+                      <td class="action-cell">
+                        <div class="action-buttons">
+                          <button mat-raised-button color="warn" (click)="deleteRow(i)" type="button"
+                            class="delete-button" matTooltip="Delete row">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+
+                          @if (editIndex !== i) {
+                          <button mat-raised-button color="accent" (click)="editRow(i)" type="button"
+                            class="edit-button" matTooltip="Edit row">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                          } @else {
+                          <button mat-raised-button color="primary" (click)="updateRow(i)" type="button"
+                            class="update-button" matTooltip="Save changes">
+                            <mat-icon>save</mat-icon>
+                          </button>
+                          }
+                        </div>
+                      </td>
+                    </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </form>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <button mat-flat-button color="primary" class="btn-primary px-4"
+            [disabled]="responsibilitiesMstForm.invalid && description.length === 0" (click)="onSubmit()">
+            <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+
+          <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
+            <mat-icon>close</mat-icon>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

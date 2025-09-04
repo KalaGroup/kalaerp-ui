@@ -1,0 +1,503 @@
+mat-card {
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background-color: #f0efefec;
+}
+
+mat-card-title {
+  font-size: 22px;
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+mat-checkbox {
+  font-size: 15px;
+  color: #333;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Make readonly fields look disabled but still accessible */
+input[readonly] {
+  //  background-color: #f8f9fa !important;
+  color: #6c757d !important;
+  cursor: default !important;
+}
+
+/* Make checkbox look readonly but still show checked state */
+.readonly-checkbox {
+  pointer-events: none;
+}
+
+.readonly-checkbox .mat-checkbox-inner-container {
+  background-color: #f8f9fa;
+}
+
+/* Styles to match hand-drawn design */
+
+.full-width-table {
+  width: 100%;
+  border: 1px solid #ddd;
+
+  .mat-mdc-header-row {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #ddd;
+    height: 48px;
+
+    .mat-mdc-header-cell {
+      font-weight: 600;
+      color: #333;
+      border-right: 1px solid #ddd;
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+  }
+
+  .mat-mdc-row {
+    border-bottom: 1px solid #eee;
+    height: auto;
+    min-height: 48px;
+
+    &:hover:not(.editing-row) {
+      background-color: #f5f5f5;
+    }
+
+    &.editing-row {
+      background-color: #fff8e1;
+    }
+
+    .mat-mdc-cell {
+      border-right: 1px solid #eee;
+      padding: 12px 16px;
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+  }
+}
+
+.sr-no-column {
+  width: 80px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.description-column {
+  min-width: 200px;
+
+  .editable-content {
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+    min-height: 24px;
+    display: block;
+
+    &:hover {
+      background-color: #e3f2fd;
+      border-color: #2196f3;
+    }
+
+    &:empty::before {
+      content: 'Click to add description...';
+      color: #999;
+      font-style: italic;
+    }
+  }
+
+  .mat-mdc-form-field {
+    width: 100%;
+    margin: 0;
+
+    .mdc-text-field {
+      background: white;
+    }
+  }
+}
+
+.action-column {
+  width: 120px;
+  text-align: center;
+
+  .mat-mdc-icon-button {
+    width: 36px;
+    height: 36px;
+    margin: 0 2px;
+
+    .mat-icon {
+      font-size: 20px;
+    }
+  }
+}
+
+.add-row-btn {
+  height: 36px;
+  font-size: 14px;
+  font-weight: 500;
+
+  .mat-icon {
+    font-size: 18px;
+    margin-right: 4px;
+  }
+}
+
+.no-data-message {
+  padding: 60px 20px;
+  text-align: center;
+  color: #666;
+  border-top: 1px solid #eee;
+
+  .large-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+    color: #bbb;
+  }
+
+  p {
+    font-size: 14px;
+    margin: 8px 0 0 0;
+  }
+}
+
+.mat-mdc-card {
+  .mat-mdc-card-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #eee;
+    background-color: #fafafa;
+
+    .mat-mdc-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+      margin: 0;
+    }
+  }
+
+  .mat-mdc-card-content {
+    padding: 0;
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sr-no-column {
+    width: 60px;
+  }
+
+  .action-column {
+    width: 100px;
+
+    .mat-mdc-icon-button {
+      width: 32px;
+      height: 32px;
+
+      .mat-icon {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .add-row-btn {
+    font-size: 12px;
+    height: 32px;
+
+    .mat-icon {
+      font-size: 16px;
+    }
+  }
+}
+
+/* Additional styles for the fixed table */
+
+.editing-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+
+  .mat-mdc-form-field {
+    flex: 1;
+    margin: 0;
+  }
+
+  .edit-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 4px;
+
+    .mat-mdc-icon-button {
+      width: 32px;
+      height: 32px;
+
+      .mat-icon {
+        font-size: 18px;
+      }
+    }
+  }
+}
+
+.placeholder-text {
+  color: #999;
+  font-style: italic;
+}
+
+.editing-indicator {
+  font-size: 12px;
+  color: #666;
+  font-style: italic;
+}
+
+.editable-content {
+  min-height: 24px;
+  display: flex;
+  align-items: center;
+}
+
+/* Ensure proper row spacing when editing */
+.editing-row {
+  .mat-mdc-cell {
+    vertical-align: top;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+}
+
+// add new
+.erp-panel {
+  margin: 10px;
+}
+.erp-header {
+  background-color: #f4f6f8;
+}
+.table {
+  width: 100%;
+}
+
+// Table Container
+.table-container {
+  margin: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+}
+
+// Custom Table
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  // Header Styling
+  .table-header {
+    background: linear-gradient(135deg, #007bff, #0056b3);
+    color: white;
+
+    th {
+      padding: 16px 12px;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      border: none;
+
+      &.sr-no-column {
+        width: 80px;
+        min-width: 80px;
+      }
+
+      &.description-column {
+        text-align: left;
+        padding-left: 20px;
+      }
+
+      &.action-column {
+        width: 220px;
+        min-width: 220px;
+      }
+    }
+  }
+
+  // Row Styling
+  tbody tr {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid #e9ecef;
+
+    &:hover {
+      background-color: #f8f9fa;
+    }
+
+    &.input-row {
+      background-color: #f0f8ff;
+      border-top: 2px solid #007bff;
+
+      &:hover {
+        background-color: #e6f3ff;
+      }
+    }
+
+    &.data-row.editing {
+      background-color: #fff3cd;
+      border-left: 4px solid #ffc107;
+
+      &:hover {
+        background-color: #ffeaa7;
+      }
+    }
+  }
+
+  // Cell Styling
+  td {
+    padding: 12px;
+    vertical-align: middle;
+
+    &.sr-no-cell {
+      text-align: center;
+      font-weight: 600;
+      color: #495057;
+      font-size: 14px;
+    }
+
+    &.description-cell {
+      padding: 8px 12px;
+    }
+
+    &.action-cell {
+      text-align: center;
+      padding: 8px;
+    }
+  }
+}
+
+// Form Field Styling
+.full-width-field {
+  width: 100%;
+
+  .mat-mdc-form-field-wrapper {
+    padding-bottom: 0;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    border-radius: 6px;
+  }
+
+  input {
+    font-size: 14px;
+
+    &.readonly-input {
+      background-color: transparent;
+      cursor: default;
+    }
+  }
+}
+
+// Button Styling
+.add-button {
+  padding: 8px 20px;
+  font-weight: 600;
+  border-radius: 6px;
+
+  mat-icon {
+    margin-right: 4px;
+    font-size: 18px;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+
+  button {
+    min-width: auto;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .delete-button {
+    &:hover {
+      background-color: #dc3545;
+      color: white;
+    }
+  }
+
+  .edit-button {
+    &:hover {
+      background-color: #6f42c1;
+      color: white;
+    }
+  }
+
+  .update-button {
+    &:hover {
+      background-color: #198754;
+      color: white;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .table-container {
+    margin: 10px;
+    font-size: 12px;
+  }
+
+  .custom-table {
+    th,
+    td {
+      padding: 8px 6px;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+      gap: 4px;
+
+      button {
+        width: 100%;
+        font-size: 10px;
+      }
+    }
+
+    .sr-no-column,
+    .action-column {
+      width: auto;
+      min-width: auto;
+    }
+  }
+}
+
+// Animation for row additions/deletions
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.data-row {
+  animation: slideIn 0.3s ease-out;
+}
