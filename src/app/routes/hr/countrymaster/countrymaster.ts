@@ -9,11 +9,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
+//import { countryService } from '../hr.service';
 import { Countryservice } from '@shared/services/hr/country/countryservice';
 import { ICountry } from '@shared/interfaces/hr/country';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
+import { MtxDialog } from '@ng-matero/extensions/dialog';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
@@ -35,6 +37,8 @@ export class Countrymaster implements OnInit {
     dialogRef!: MatDialogRef<any>;
 
   countries: ICountry[] = [];
+  showForm = false;
+  countryModel: any = {};
   editIndex: number | null = null;
 
   multiSelectable = true;

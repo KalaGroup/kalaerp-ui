@@ -31,8 +31,12 @@
 }
 
 @keyframes rotate-settings {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .config-header:hover .settings-icon {
@@ -96,12 +100,14 @@
   margin-bottom: 0;
 }
 
-.custom-checkbox, .custom-radio {
+.custom-checkbox,
+.custom-radio {
   font-size: 14px;
   transition: all 0.2s ease;
 }
 
-.custom-checkbox:hover, .custom-radio:hover {
+.custom-checkbox:hover,
+.custom-radio:hover {
   transform: translateX(4px);
 }
 

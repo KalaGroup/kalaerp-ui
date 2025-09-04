@@ -33,15 +33,3 @@ input[readonly] {
 .readonly-checkbox .mat-checkbox-inner-container {
   background-color: #f8f9fa;
 }
-
-.preview-image {
-  max-width: 50px;
-  max-height: 50px;
-  width: auto;
-  height: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  object-fit: contain;
-  margin-top: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}

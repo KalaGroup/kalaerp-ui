@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+//import { countryService } from '../../hr.service';
 import { Countryservice } from '@shared/services/hr/country/countryservice';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -53,10 +54,15 @@ export class AddEditCountry {
   }
 
   private initializeForm(): void {
+    //  const currentDate = new Date().toLocaleDateString('en-US', {
+    //     year: 'numeric',
+    //     month: 'long',
+    //     day: 'numeric'
+    // });
     const currentDate = new Date().toLocaleDateString('en-GB'); // dd/mm/yyyy format
     this.countryForm = this.fb.group({
-      CreatedDate: [{ value: currentDate, disabled: true }],
-      code: [{ value: '', disabled: !this.isEditMode }],
+       CreatedDate: [{ value: currentDate, disabled: true }],
+       code: [{ value: '', disabled: !this.isEditMode }],
       CountryCode: ['', [Validators.required]],
       CountryName: ['', [Validators.required]],
       CountryShortName: ['', [Validators.required]],

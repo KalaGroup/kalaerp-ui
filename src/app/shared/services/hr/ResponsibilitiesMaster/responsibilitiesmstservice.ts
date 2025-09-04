@@ -19,10 +19,18 @@ export class Responsibilitiesmstservice {
     'https://localhost:7019/api/ResposibilitiesMaster/addresponsibilities';
     private updateResponsibilitiesUrl =
     'https://localhost:7019/api/ResposibilitiesMaster/updateresposibilities';
-    private deleteResponsibilitiesUrl = 'https://localhost:7019/api/ResposibilitiesMaster/deleteresposibilities';
+  private deleteResponsibilitiesUrl =
+    'https://localhost:7019/api/ResposibilitiesMaster/deleteresposibilities';
+
+  private getAllResponsibilitiesDts =
+    'https://localhost:7019/api/ResposibilitiesDetail/getresponsibilitiesdetail';
+
+  private getAllResponsibilityDetailsbyMstId =
+    'https://localhost:7019/api/ResposibilitiesMaster/getallresponsibilitiesdetailsbymasterid';
 
   constructor(private http: HttpClient) {}
 
+  //GET Method
   getAllResponsibilities(): Observable<IResponsibilities[]> {
     return this.http.get<IResponsibilities[]>(`${this.getAllResponsibilitiesUrl}`);
   }
@@ -39,6 +47,17 @@ export class Responsibilitiesmstservice {
     return this.http.get<any[]>(`${this.getDivisionListUrl}`);
   }
 
+  getResponsibilityDetails(): Observable<any> {
+    return this.http.get<any>(`${this.getAllResponsibilitiesDts}`);
+  }
+
+  getResponsibilitiesDetailsByMstId(responsibilitiesMstId: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.getAllResponsibilityDetailsbyMstId}/${responsibilitiesMstId}`
+    );
+  }
+
+  //insert
   insertResponsibilities(responsibilities: any): Observable<any> {
     return this.http.post<any>(`${this.insertResponsibilitiesUrl}`, responsibilities);
   }

@@ -9,6 +9,15 @@
       <!-- Auto-generated fields row -->
       <div class="row mb-3">
         <div class="col-sm-3 col-xl-3">
+          <!-- <mat-form-field appearance="outline">
+            <mat-label>Company Code</mat-label>
+            <input matInput formControlName="CompanyCode"
+                   [placeholder]="isEditMode ? 'Enter company code' : 'Auto-generated'"
+                   maxlength="20"/>
+            @if (companyForm.get('CompanyCode')?.invalid && companyForm.get('CompanyCode')?.touched) {
+              <mat-error>Company Code is required</mat-error>
+            }
+          </mat-form-field> -->
           <mat-form-field appearance="outline">
             <mat-label>Company Code</mat-label>
             <input matInput formControlName="CompanyCode"
@@ -91,6 +100,18 @@
           </mat-form-field>
         </div>
         <div class="col-sm-4 col-xl-4">
+            <!-- <mat-form-field appearance="outline">
+              <mat-label>Established Date</mat-label>
+              <input matInput [matDatepicker]="establishedDatePicker" formControlName="EstablishedDate"
+                [max]="maxDate" [min]="minDate" readonly>
+              <mat-datepicker-toggle matIconSuffix [for]="establishedDatePicker">
+                <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker #establishedDatePicker></mat-datepicker>
+              <mat-error *ngIf="companyForm.get('EstablishedDate')?.hasError('required')">
+                Established date is required
+              </mat-error>
+            </mat-form-field> -->
             <mat-form-field appearance="outline">
               <mat-label>Established Date</mat-label>
               <input matInput [matDatepicker]="establishedDatePicker" formControlName="EstablishedDate"
@@ -146,21 +167,12 @@
           <mat-form-field appearance="outline">
             <mat-label>Parent Company</mat-label>
             <mat-select formControlName="ParentCompanyId" placeholder="Select parent company">
-              <mat-option>
-                <input matInput placeholder="Search parent company..." [formControl]="parentCompanySearchControl"
-                  (click)="$event.stopPropagation()" />
-              </mat-option>
-              <mat-option value="">Select Parent Company</mat-option>
-              @for (parentComp of filteredParentCompanyList; track parentComp.ParentCompanyId) {
-              <mat-option [value]="parentComp.ParentCompanyId">
-                {{ parentComp.ParentCompanyName }}
-              </mat-option>
-              }
+              <mat-option value="">No Parent Company</mat-option>
+              <!-- <mat-option *ngFor="let company of parentCompanies" [value]="company.CompanyID">
+                {{company.CompanyName}}
+              </mat-option> -->
+              <mat-option value="">Kala Group</mat-option>
             </mat-select>
-            @if (companyForm.get('ParentCompanyId')?.invalid &&
-            companyForm.get('ParentCompanyId')?.touched) {
-            <mat-error>Parent company is required</mat-error>
-            }
           </mat-form-field>
         </div>
         <div class="col-sm-4 col-xl-4">
@@ -221,13 +233,15 @@
         <div class="col-sm-6 col-xl-6">
           <div class="file-upload-container">
             <label class="file-upload-label">Logo</label>
-            <input type="file" class="file-upload-input" accept="image/*" (change)="onLogoSelect($event)" #fileInput
-              style="display: none;" />
+            <input type="file" class="file-upload-input" accept="image/*" (change)="onLogoSelect($event)"
+              #fileInput />
             <button mat-button type="button" class="file-upload-button" (click)="fileInput.click()">
               <mat-icon>cloud_upload</mat-icon>
               Choose Logo File
             </button>
-             <!-- Show selected file name -->
+            <div class="file-upload-hint">Upload company logo (image files only)</div>
+
+            <!-- Show selected file name -->
             @if (selectedLogoFile) {
             <div class="selected-file">
               <mat-icon>image</mat-icon>
@@ -235,15 +249,15 @@
               <button mat-icon-button (click)="clearLogo()" class="clear-file-btn">
                 <mat-icon>close</mat-icon>
               </button>
-               @if (logoPreview) {
+            </div>
+            }
+
+            <!-- Logo preview -->
+            @if (logoPreview) {
             <div class="logo-preview">
               <img [src]="logoPreview" alt="Logo preview" class="preview-image">
             </div>
             }
-            </div>
-            }
-            <div class="file-upload-hint">Upload company logo (image files only)</div>
-
           </div>
        </div>
       </div>
@@ -626,7 +640,7 @@
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
             <button mat-flat-button color="primary" class="btn-primary px-4"
-               [disabled]="!isEditMode && companyForm.invalid" (click)="onSubmit()">
+              [disabled]="companyForm.invalid" (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>
