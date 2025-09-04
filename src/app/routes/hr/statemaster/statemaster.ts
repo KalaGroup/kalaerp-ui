@@ -173,14 +173,14 @@ export class Statemaster implements OnInit {
     });
   }
 
-  openAddDialog() {
-    const dialogRef = this.dialog.open(AddEditState, {
-      width: '60%',
-      height: '50%',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      data: {}, // empty for add
-    });
+ openAddDialog() {
+  const dialogRef = this.dialog.open(AddEditState, {
+    width: '80%',
+    height: '90%',
+    maxWidth: '100vw',
+    maxHeight: '100vh',
+    data: {} // empty for add
+  });
 
     dialogRef.afterClosed().subscribe(result => {
       debugger;
