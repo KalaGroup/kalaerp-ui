@@ -95,6 +95,7 @@ export const routes: Routes = [
     path: 'responsibilitiesmaster',
     component: Responsibilitiesmaster,
   },
+  {
     path: 'departmentmaster',
     component: Departmentmaster,
   },
@@ -108,14 +109,14 @@ export const routes: Routes = [
   },
   {
     path: 'location',
-    component: Locationmaster
+    component: Locationmaster,
   },
     {
     path: 'classoftravel',
-    component: Classoftravelmaster
+    component: Classoftravelmaster,
   },
    {
     path: 'facility',
-    component: Facilitymaster
+    component: Facilitymaster,
   },
 ];

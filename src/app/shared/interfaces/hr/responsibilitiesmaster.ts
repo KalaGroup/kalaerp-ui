@@ -4,7 +4,6 @@ export interface IResponsibilities {
   responsibilitiesDesignationName: string;
   responsibilitiesDivisionName: string;
   responsibilitiesRemark?: string;
-  responsibilitiesType?: string;
   responsibilitiesAuthRemark?: string;
   responsibilitiesAuth: boolean;
   responsibilitiesIsDiscard: boolean;
