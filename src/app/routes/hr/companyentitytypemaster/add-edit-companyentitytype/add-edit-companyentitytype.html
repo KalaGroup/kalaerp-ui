@@ -1,0 +1,94 @@
+<mat-card>
+  <mat-card-title>{{ isEditMode ? 'Edit Company Entity Type' : 'Add Company Entity Type' }}</mat-card-title>
+
+  <!-- Please Note Change Form control as per your Requirements  -->
+  <mat-card-content>
+    <form [formGroup]="companyentitytypeForm" class="form-field-full">
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-3">
+          <mat-form-field *ngIf="isEditMode" appearance="fill">
+            <mat-label>CompEntityType ID</mat-label>
+            <input
+              matInput
+              formControlName="CompEntityTypeId"
+              [readonly]="true"
+              placeholder="Enter Company Entity Type ID"
+            />
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-xl-3">
+          <div class="d-flex align-items-center justify-content-end" style="height: 56px">
+            <mat-checkbox formControlName="CompanyEntityTypeAuth" color="primary" [disabled]="!isEditMode">
+              Auth
+            </mat-checkbox>
+            <mat-checkbox formControlName="CompanyEntityTypeIsActive" color="primary" [disabled]="!isEditMode">
+              Active
+            </mat-checkbox>
+            <mat-checkbox formControlName="CompanyEntityTypeIsDiscard" color="primary" [disabled]="!isEditMode" *ngIf="isEditMode">
+              Discard
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <!-- Left side  -->
+        <div class="col-sm-6 col-xl-6">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="CompanyEntityTypeName" placeholder="Enter Company EntityType Name" />
+            @if (companyentitytypeForm.get('CompanyEntityTypeName')?.invalid && companyentitytypeForm.get('CompanyEntityTypeName')?.touched) {
+              <mat-error>Company Name is required</mat-error>
+            }
+          </mat-form-field>
+
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Remark</mat-label>
+            <input matInput formControlName="CompanyEntityTypeRemark" placeholder="Enter remark..." />
+            @if (companyentitytypeForm.get('CompanyEntityTypeRemark')?.invalid && companyentitytypeForm.get('CompanyEntityTypeRemark')?.touched) {
+              <mat-error>Remark is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <!-- Right side  -->
+
+        <div class="col-sm-6 col-xl-6">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Short Name</mat-label>
+            <input matInput formControlName="CompanyEntityTypeShortName" placeholder="Enter Company Entity Type Short Name" (input)="toUpperCase($event)" />
+            @if (companyentitytypeForm.get('CompanyEntityTypeShortName')?.invalid && companyentitytypeForm.get('CompanyEntityTypeShortName')?.touched) {
+              <mat-error>Company Short Name is required</mat-error>
+            }
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <button
+              mat-flat-button
+              color="primary"
+              class="btn-primary px-4"
+              [disabled]="companyentitytypeForm.invalid"
+              (click)="onSubmit()"
+            >
+              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+
+            <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
+              <mat-icon>close</mat-icon>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

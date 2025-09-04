@@ -1,0 +1,137 @@
+<mat-card>
+    <mat-card-title>
+        {{ isEditMode ? 'Edit Class of Travel' : 'Add Class of Travel' }}
+    </mat-card-title>
+
+    <mat-card-content>
+        <form [formGroup]="classoftravelForm" class="form-field-full">
+
+            <!-- Auto-generated Fields -->
+            <div class="row mb-3">
+
+                <div class="col-md-4">
+                    <!-- Class of Travel ID -->
+                    <!-- <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Class of Travel ID</mat-label>
+                        <input matInput formControlName="ClassOfTravelId" readonly
+                            [placeholder]="isEditMode ? 'Enter ID' : 'Auto-generated'" />
+                    </mat-form-field> -->
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Checkboxes -->
+                    <div class="d-flex gap-3 align-items-center mt-2">
+                        <mat-checkbox formControlName="ClassOfTravelIsAuth" color="primary">Auth</mat-checkbox>
+                        <mat-checkbox formControlName="ClassOfTravelIsActive" color="primary">Active</mat-checkbox>
+                        <mat-checkbox formControlName="ClassOfTravelIsDiscard" color="primary">Discard</mat-checkbox>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Fields -->
+            <div class="row mb-3">
+                <!-- Left Column -->
+                <div class="col-md-6">
+                    <!-- Travel Class Code -->
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Travel Class Code</mat-label>
+                        <input matInput formControlName="ClassOfTravelCode" placeholder="Enter travel class code" />
+                        <mat-error
+                            *ngIf="classoftravelForm.get('ClassOfTravelCode')?.invalid && classoftravelForm.get('ClassOfTravelCode')?.touched">
+                            Travel Class Code is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Travel Class Name -->
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Travel Class Name</mat-label>
+                        <input matInput formControlName="ClassOfTravelName" placeholder="Enter travel class name" />
+                        <mat-error
+                            *ngIf="classoftravelForm.get('ClassOfTravelName')?.invalid && classoftravelForm.get('ClassOfTravelName')?.touched">
+                            Travel Class Name is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- DA Food Allowance Per Day -->
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>DA Food Allowance Per Day</mat-label>
+                        <input matInput type="number" formControlName="DafoodAllowancePerday"
+                            placeholder="Enter daily allowance amount" />
+                        <mat-error
+                            *ngIf="classoftravelForm.get('DafoodAllowancePerday')?.invalid && classoftravelForm.get('DafoodAllowancePerday')?.touched">
+                            DA Food Allowance is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Created By -->
+                    <!-- <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Created By</mat-label>
+                        <input matInput formControlName="CreatedBy" placeholder="Enter creator's ID or name" />
+                        <mat-error
+                            *ngIf="classoftravelForm.get('CreatedBy')?.invalid && classoftravelForm.get('CreatedBy')?.touched">
+                            Created By is required
+                        </mat-error>
+                    </mat-form-field> -->
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Grade </mat-label>
+                        <mat-select formControlName="ClassOfTravelGradeId" placeholder="Select Grade">
+                            <mat-option *ngFor="let grade of filteredclassoftravelList" [value]="grade.GradeId">
+                                {{ grade.GradeName }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="classoftravelForm.get('ClassOfTravelGradeId')?.invalid && classoftravelForm.get('ClassOfTravelGradeId')?.touched">
+                            Grade is required
+                        </mat-error>
+                    </mat-form-field>
+
+
+
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Travel Tier Type</mat-label>
+                        <mat-select formControlName="ClassOfTravelTierType" placeholder="Select Travel Tier">
+                            <mat-option *ngFor="let tier of travelTierTypes" [value]="tier.id">
+                                {{ tier.name }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="classoftravelForm.get('ClassOfTravelTierType')?.invalid && classoftravelForm.get('ClassOfTravelTierType')?.touched">
+                            Travel Tier Type is required
+                        </mat-error>
+                    </mat-form-field>
+
+
+                    <!-- Travel Class Remark -->
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Travel Class Remark</mat-label>
+                        <textarea matInput formControlName="ClassOfTravelRemark" rows="3"
+                            placeholder="Enter remarks about this travel class..."></textarea>
+                        <mat-error
+                            *ngIf="classoftravelForm.get('ClassOfTravelRemark')?.invalid && classoftravelForm.get('ClassOfTravelRemark')?.touched">
+                            Travel Class Remark is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row">
+                <div class="col-12 text-center mt-4">
+                    <button mat-flat-button color="primary" [disabled]="classoftravelForm.invalid" (click)="onSubmit()">
+                        <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+                        {{ isEditMode ? 'Update' : 'Save' }}
+                    </button>
+
+                    <button mat-stroked-button type="button" class="ms-3" (click)="onCancel()">
+                        <mat-icon>close</mat-icon>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

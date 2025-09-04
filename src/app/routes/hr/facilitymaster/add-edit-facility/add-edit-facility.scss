@@ -1,0 +1,30 @@
+.facility-card {
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background-color: #f0efefec;
+}
+
+mat-card-title {
+    font-size: 22px;
+    margin: 0;
+}
+
+mat-checkbox {
+    font-size: 15px;
+    color: #333;
+    margin: 0;
+}
+
+/* Readonly input fields */
+input[readonly] {
+    background-color: #f8f9fa !important;
+    color: #6c757d !important;
+    cursor: not-allowed !important;
+}
+
+/* Checkbox readonly effect */
+.readonly-checkbox {
+    pointer-events: none;
+    opacity: 0.7;
+}
