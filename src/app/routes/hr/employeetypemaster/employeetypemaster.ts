@@ -112,8 +112,8 @@ export class employeetypemaster implements OnInit {
     width: '100px',
   },
   {
-    header: this.translate.stream('EmployeeTypeAuth'),
-    field: 'EmployeeTypeAuth',
+    header: this.translate.stream('Action'),
+    field: 'Action',
     minWidth: 140,
     width: '140px',
     pinned: 'right',

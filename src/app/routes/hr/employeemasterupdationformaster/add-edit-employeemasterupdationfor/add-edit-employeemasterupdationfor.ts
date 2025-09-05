@@ -17,11 +17,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { Country } from '@shared/interfaces/hr';
+//import { Country } from '@shared/interfaces/hr';
+//import { Employeetypeservice } from '@shared/services/hr/employeetype/employeetypeservice';
+import { Empmstupdationforservice } from '@shared/services/hr/empmstupdationfor/empmstupdationforservice';
 
 @Component({
   selector: 'app-add-edit-employeemasterupdationfor',
-   imports: [
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     MatCardModule,
@@ -38,63 +40,76 @@ import { Country } from '@shared/interfaces/hr';
 })
 export class AddEditEmployeemasterupdationfor {
 
-    EmployeeMasterUpdationForForm!: FormGroup;
+  EmployeeMasterUpdationForForm!: FormGroup;
   isEditMode = false;
 
 
-  constructor(
+  constructor(private empmstupdationforservice: Empmstupdationforservice,
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<AddEditEmployeemasterupdationfor>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.isEditMode = !!this.data && !!this.data.City; // Edit mode  with your Data Name
+    this.isEditMode = !!this.data && !!this.data.employeemasterupdationfor; // Edit mode  with your Data Name
 
     console.log('Edit mode:', this.isEditMode);
     console.log('Data received:', this.data);
   }
 
   ngOnInit(): void {
- this.initializeForm();
+    this.initializeForm();
   }
 
   private initializeForm(): void {
+    
     const currentDate = new Date().toLocaleDateString('en-GB');
     this.EmployeeMasterUpdationForForm = this.fb.group({
-      //EmployeeMasterUpdationForId: [''],
+      EmployeeMasterUpdationForId: [''],
       EmployeeMasterUpdationForName: ['', Validators.required],
       EmployeeMasterUpdationForRemark: ['', Validators.required],
-      EmployeeMasterUpdationForAuth: [{ value: true, disabled:true }],
+      EmployeeMasterUpdationForAuth: [{ value: true, disabled: true }],
       EmployeeMasterUpdationForIsActive: [{ value: true, disabled: !this.isEditMode }],
       EmployeeMasterUpdationForIsDiscard: [{ value: false, disabled: !this.isEditMode }],
-      EmployeeMasterUpdationForAuthRemark: ['NIL',Validators.required],
+      EmployeeMasterUpdationForAuthRemark: ['NIL', Validators.required],
       CreatedBy: ['10'],
       CreatedDate: [{ value: currentDate, disabled: true }],
 
     });
 
     // If editing, pre-fill form with available data
-    if (this.isEditMode && this.data.City) {
-      console.log('Patching form with Company Entity Type data:', this.data.City);
-
+   if (this.isEditMode) {
+      
+      console.log('Patching form with employeemasterupdationfor data:', this.data.employeemasterupdationfor);
       this.EmployeeMasterUpdationForForm.patchValue({
-        // Add your form fields here
+        //CreatedDate: currentDate, tommorow dicuss with Umar
+        code: this.data.employeemasterupdationfor.code,
+        EmployeeMasterUpdationForId: this.data.employeemasterupdationfor.EmployeeMasterUpdationForId,
+        EmployeeMasterUpdationForName: this.data.employeemasterupdationfor.EmployeeMasterUpdationForName,
+        EmployeeMasterUpdationForRemark: this.data.employeemasterupdationfor.EmployeeMasterUpdationForRemark,
+        EmployeeMasterUpdationForAuth: this.data.employeemasterupdationfor.EmployeeMasterUpdationForAuth,
+        EmployeeMasterUpdationForIsActive: this.data.employeemasterupdationfor.EmployeeMasterUpdationForIsActive,
+        EmployeeMasterUpdationForIsDiscard: this.data.employeemasterupdationfor.EmployeeMasterUpdationForIsDiscard,
+        EmployeeMasterUpdationForAuthRemark: this.data.employeemasterupdationfor.EmployeeMasterUpdationForAuthRemark,
+        CreatedBy: this.data.employeemasterupdationfor.CreatedBy
+
       });
-
-      this.EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForIsActive')?.enable();
-      this.EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForIsDiscard')?.enable();
-      this.EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForAuth')?.enable();
-
+       this.EmployeeMasterUpdationForForm.get('code')?.enable();
+      this.EmployeeMasterUpdationForForm.get('CreatedDate')?.disable();
+      this.EmployeeMasterUpdationForForm.get('IsActive')?.enable();
       console.log('Form values after patch:', this.EmployeeMasterUpdationForForm.value);
     }
   }
 
 
 
-onSubmit(): void {
-// Add your default Submit logic here
+   onSubmit(): void {
+        this.EmployeeMasterUpdationForForm.enable();//important for active boolean
+        if (this.EmployeeMasterUpdationForForm.valid) {
+      this.dialogRef.close(this.EmployeeMasterUpdationForForm.value);
+    } else {
+      this.EmployeeMasterUpdationForForm.markAllAsTouched();
+    }
 }
   onCancel(): void {
     this.dialogRef.close();
   }
-
 }
