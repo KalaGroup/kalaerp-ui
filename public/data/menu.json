@@ -135,6 +135,25 @@
           "route": "authoritiesmaster",
           "name": "authoritiesmaster",
           "type": "link"
+        },
+          "route":"recruitmentstagestatusmaster",
+          "name":"recruitmentstagestatusmaster",
+          "type":"link"
+        },
+        {
+          "route": "activity",
+          "name": "activity",
+          "type": "link"
+        },
+        {
+          "route": "kpa",
+          "name": "kpa",
+          "type": "link"
+        },
+        {
+          "route": "citymaster",
+          "name": "citymaster",
+          "type": "link"
         }
       ]
     },

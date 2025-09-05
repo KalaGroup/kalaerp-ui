@@ -26,6 +26,10 @@ import { Classoftravelmaster } from './classoftravelmaster/classoftravelmaster';
 import { Facilitymaster } from './facilitymaster/facilitymaster';
 import { Ctcmaster } from './ctcmaster/ctcmaster';
 import { Authoritiesmaster } from './authoritiesmaster/authoritiesmaster';
+import { Recruitmentstagestatusmaster } from './recruitmentstagestatusmaster/recruitmentstagestatusmaster';
+import { Activitymaster } from './activitymaster/activitymaster';
+import { Kpamaster } from './kpamaster/kpamaster';
+import { CitymasterComponent } from './citymaster/citymaster';
 
 export const routes: Routes = [
   {
@@ -113,11 +117,11 @@ export const routes: Routes = [
     path: 'location',
     component: Locationmaster,
   },
-    {
+  {
     path: 'classoftravel',
     component: Classoftravelmaster,
   },
-   {
+  {
     path: 'facility',
     component: Facilitymaster,
   },
@@ -125,8 +129,24 @@ export const routes: Routes = [
     path: 'ctcmaster',
     component: Ctcmaster,
   },
-      {
+  {
     path: 'authoritiesmaster',
     component: Authoritiesmaster,
+   },
+  {
+    path: 'recruitmentstagestatusmaster',
+    component: Recruitmentstagestatusmaster
+  },
+  {
+    path: 'activity',
+    component: Activitymaster
+  },
+   {
+    path: 'kpa',
+    component: Kpamaster
+  },
+  {
+    path: 'citymaster',
+    component: CitymasterComponent
   }
 ];

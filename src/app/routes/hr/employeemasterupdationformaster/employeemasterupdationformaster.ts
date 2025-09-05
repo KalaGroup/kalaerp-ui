@@ -10,6 +10,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
+import { Empmstupdationforservice } from '@shared/services/hr/empmstupdationfor/empmstupdationforservice';
+import { IEmpmstforupdationmst } from '@shared/interfaces/hr/empmstupdationformst';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,14 +20,14 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
 import { Toastservice } from 'app/routes/toastservice';
-import { Country, Currency } from '@shared/interfaces/hr';
-import { AddEditCurrency } from '../currencymaster/add-edit-currency/add-edit-currency';
-import { id } from 'date-fns/locale';
+//import { Country, Currency } from '@shared/interfaces/hr';
+//import { AddEditCurrency } from '../currencymaster/add-edit-currency/add-edit-currency';
+//import { id } from 'date-fns/locale';
 import { AddEditEmployeemasterupdationfor } from './add-edit-employeemasterupdationfor/add-edit-employeemasterupdationfor';
 
 @Component({
   selector: 'app-employeemasterupdationformaster',
-   imports: [
+  imports: [
     CommonModule,
     MatTableModule,
     MatCardModule,
@@ -45,12 +47,15 @@ import { AddEditEmployeemasterupdationfor } from './add-edit-employeemasterupdat
   styleUrl: './employeemasterupdationformaster.scss'
 })
 export class Employeemasterupdationformaster implements OnInit {
-  expandable: any;
   private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
-  // Grid settings
+  states: IEmpmstforupdationmst[] = [];
+  showForm = false;
+  stateModel: any = {};
+  editIndex: number | null = null;
+
   multiSelectable = true;
   rowSelectable = true;
   hideRowSelectionCheckbox = false;
@@ -61,21 +66,24 @@ export class Employeemasterupdationformaster implements OnInit {
   rowHover = false;
   rowStriped = false;
   showPaginator = true;
+  expandable = false;
   columnResizable = false;
 
   isLoading = false;
-  isConfigExpanded = false;
-  list: [] = []; // Add your list type here (Interface)
+  list: any[] = [];
+  isConfigExpanded: boolean = false;
+  stateForm: any;
+  EmployeeMasterUpdationForForm: any;
+  columns: any;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private fb: FormBuilder, private empmstupdationforservice: Empmstupdationforservice, private dialog: MatDialog, private toastService: Toastservice) { }
   ngOnInit(): void {
-
+    this.loadAllemployeemasterupdationfor();
   }
 
   toggleConfigSection(): void {
     this.isConfigExpanded = !this.isConfigExpanded;
   }
-
   EmployeeupdationColumns: MtxGridColumn[] = [
     {
       header: this.translate.stream('SNo'),
@@ -108,7 +116,7 @@ export class Employeemasterupdationformaster implements OnInit {
 
     {
       header: this.translate.stream('Is Active'),
-      field: 'IsActive',
+      field: 'EmployeeMasterUpdationForIsActive',
       sortable: true,
       minWidth: 100,
       width: '100px',
@@ -142,60 +150,146 @@ export class Employeemasterupdationformaster implements OnInit {
       ],
     },
   ];
-
-  edit(record: any) {
-    this.dialog
-      .open(AddEditEmployeemasterupdationfor, {
-        width: '80%',
-        height: '70%',
-        maxWidth: '100vw',
-        maxHeight: '100vh',
-        data: { City: record },
-      })
-      .afterClosed()
-      .subscribe(result => {
-        if (result) {
-          console.log('City Updated:', result);
-          const updatePayload = {
-            // Add your update payload here
-          };
-        }
-      });
-  }
-
-  openAddDialog() {
-    const dialogRef = this.dialog.open(AddEditEmployeemasterupdationfor, {
-      width: '70%',
-      height: '50%',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      data: {},
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Added Employee Master Updation:', result);
-        const EmployeeMasterUpdationForData = {
-          // Change as per your reqirements Change FormControls
-          EmployeeMasterUpdationForId: 0,
-          EmployeeMasterUpdationForName: result.EmployeeMasterUpdationForName,
-          EmployeeMasterUpdationForAuthRemark: result.EmployeeMasterUpdationForAuthRemark,
-          EmployeeMasterUpdationForRemark: result.EmployeeMasterUpdationForRemark,
-          EmployeeMasterUpdationForAuth: result.EmployeeMasterUpdationForAuth,
-          EmployeeMasterUpdationForIsDiscard: result.EmployeeMasterUpdationForIsDiscard,
-          EmployeeMasterUpdationForIsActive: result.EmployeeMasterUpdationForIsActive,
-          CreatedBy: result.CreatedBy,
-          CreatedDate: new Date().toISOString(),
-        };
+  loadAllemployeemasterupdationfor() {
+    this.empmstupdationforservice.getAllemployeeMasterUpdationFor().subscribe({
+      next: (data) => {
+        this.list = data.map((item: any, index: number) => ({
+          ...item,
+          SNo: index + 1
+        }));
+        console.log('Fetched employeemasterupdation for  with S.No:', this.list);
+      },
+      error: (err) => {
+        console.error('Error fetching employeemasterupdation for :', err);
       }
     });
   }
 
-  delete(value: any) {
+  edit(record: any) {
 
+    // Open dialog, pass in the record
+    this.dialog.open(AddEditEmployeemasterupdationfor, {
+      width: '60%',
+      height: '50%',
+      maxWidth: '70vw',
+      maxHeight: '60vh',
+      data: { employeemasterupdationfor: record },
+    }).afterClosed().subscribe(result => {
+      
+      if (result) {
+        console.log('Employeemasterupdationfor Updated:', result);
+        // Create update payload
+        const updatePayload: IEmpmstforupdationmst = {
+          EmployeeMasterUpdationForId: result.EmployeeMasterUpdationForId,
+          EmployeeMasterUpdationForName: result.EmployeeMasterUpdationForName,
+          EmployeeMasterUpdationForRemark: result.EmployeeMasterUpdationForRemark,
+          EmployeeMasterUpdationForAuthRemark: result.EmployeeMasterUpdationForAuthRemark,
+          EmployeeMasterUpdationForAuth: result.EmployeeMasterUpdationForAuth,
+          EmployeeMasterUpdationForIsDiscard: result.EmployeeMasterUpdationForIsDiscard,
+          EmployeeMasterUpdationForIsActive: result.EmployeeMasterUpdationForIsActive,
+          CreatedBy: '1',
+
+
+
+        };
+        console.log('Update payload:', updatePayload);
+        this.empmstupdationforservice.updateemployeeMasterUpdationFor(updatePayload).subscribe({
+          next: (response) => {
+            console.log('Employeemasterupdationfor updated successfully:', response);
+           // alert(`Employeemasterupdationfor "${result.EmployeeMasterUpdationForName}" updated successfully!`);
+            this.toastService.showSuccess('Employeemasterupdationfor updated successfully:', response);
+            this.loadAllemployeemasterupdationfor();
+          },
+          error: (err) => {
+            console.error('Error updating Employeemasterupdationfor:', err);
+          }
+        });
+      }
+    });
   }
 
-  changeSelect(e: any) {
+   openAddDialog() {
+    const dialogRef = this.dialog.open(AddEditEmployeemasterupdationfor, {
+      width: '60%',
+      height: '50%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: {} // empty for add
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      
+      if (result) {
+        console.log('Added Employeemasterupdationfor:', result);
+        const payload: IEmpmstforupdationmst = {
+          EmployeeMasterUpdationForId: 0,
+          EmployeeMasterUpdationForName: result.EmployeeMasterUpdationForName,
+          EmployeeMasterUpdationForRemark: result.EmployeeMasterUpdationForRemark,
+          EmployeeMasterUpdationForAuthRemark: result.EmployeeMasterUpdationForAuthRemark,
+          EmployeeMasterUpdationForAuth: result.EmployeeMasterUpdationForAuth,
+          EmployeeMasterUpdationForIsDiscard: result.EmployeeMasterUpdationForIsDiscard,
+          EmployeeMasterUpdationForIsActive: result.EmployeeMasterUpdationForIsActive,
+          CreatedBy: result.CreatedBy, // or use actual user ID
+          CreatedDate: new Date().toISOString()
+        };
+        console.log('Payload for adding Employeemasterupdationfor:', payload);
+        // Call the service to insert the state
+        this.empmstupdationforservice.insertemployeeMasterUpdationFor(payload).subscribe({
+          next: (response) => {
+          
+  
+            console.log('Employeemasterupdationfor type added successfully:', response);
+           this.toastService.showSuccess('Employeemasterupdationfor added successfully:', response);
+            this.loadAllemployeemasterupdationfor();
+            //alert(`Employeemasterupdationfor "${result.EmployeeMasterUpdationForName}" added successfully!`);
+          },
+          error: (err) => {
+           if (err.status === 400 && err.error) {
+        // Validation errors from FluentValidation
+        err.error.forEach((validationErr: any) => {
+          const field = validationErr.PropertyName;
+          const message = validationErr.ErrorMessage;
+  
+          // Mark field error in form
+          if (this.EmployeeMasterUpdationForForm.get(field)) {
+            this.EmployeeMasterUpdationForForm.get(field)?.setErrors({ serverError: message });
+          }
+          // Optionally show toast
+          this.toastService.showError(message);
+        });
+        } else {
+        this.toastService.showError('Failed to add Employeemasterupdationfor. Please verify Employeemasterupdationfor details and try again.');
+      }
+          }
+        });
+      }
+    })
+  }
+
+    closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  save(record: any): void {
+    console.log('Saving record:', record);
+    this.closeDialog();
+  }
+
+    delete(value: any) {
+    this.empmstupdationforservice.deleteemployeeMasterUpdationFor(value.EmployeeMasterUpdationForId).subscribe({
+      next: (response) => {
+        console.log('Employeemasterupdationfor deleted successfully:', response);
+        this.toastService.showSuccess('Employeemasterupdationfor deleted successfully:', response);
+       // alert(`You have deleted ${value.EmployeeMasterUpdationForName} successfully!`);
+        this.loadAllemployeemasterupdationfor();
+      },
+      error: (err) => {
+        console.error('Error deleting Employeemasterupdationfor:', err);
+      }
+    });
+  }
+
+   changeSelect(e: any) {
     console.log(e);
   }
 
@@ -203,19 +297,21 @@ export class Employeemasterupdationformaster implements OnInit {
     console.log(e);
   }
 
-  enableRowExpandable() {
-    //this.columns[0].showExpand = this.expandable;
+   enableRowExpandable() {
+    this.columns[0].showExpand = this.expandable;
   }
 
-  updateCell() {
-    // this.list = this.list.map(item => {
-    //   (item as any).RandomValue = Math.round(Math.random() * 1000) / 100;
-    //   return item;
-    // });
+   updateCell() {
+    this.list = this.list.map(item => {
+      item.weight = Math.round(Math.random() * 1000) / 100;
+      return item;
+    });
   }
 
   updateList() {
-    //this.list = this.list.splice(-1).concat(this.list);
+    this.list = this.list.splice(-1).concat(this.list);
   }
 
 }
+
+

@@ -8,19 +8,6 @@
 
       <!-- Auto-generated fields row -->
       <div class="row mb-3">
-        <!--div class="col-sm-3 col-xl-2">
-          <mat-form-field appearance="fill">
-            <mat-label>Country Code</mat-label>
-            <input matInput formControlName="code" [readonly]="!isEditMode" 
-                   [placeholder]="isEditMode ? 'Enter country code' : 'Auto-generated'"/>
-          </mat-form-field>
-        </div>
-        <div class="col-sm-4 col-xl-3">
-          <mat-form-field appearance="fill">
-            <mat-label>Created Date</mat-label>
-            <input matInput formControlName="CreatedDate" readonly placeholder="Auto-generated" />
-          </mat-form-field>
-        </div-->
         <div class="col-sm-4 col-xl-2">
           <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
             <mat-checkbox formControlName="EmployeeTypeIsActive" color="primary" [disabled]="!isEditMode">
@@ -37,7 +24,7 @@
         </div>
       </div>
 
-      <!-- Main country information -->
+      <!-- Main employee type information -->
       <div class="row mb-3">
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
@@ -59,7 +46,7 @@
         </div>
       </div>
 
-      <!-- Code and Currency row -->
+      <!-- Employee desciption and remark row -->
       <div class="row mb-3">
         <div class="col-sm-4 col-xl-3">
           <mat-form-field appearance="outline">

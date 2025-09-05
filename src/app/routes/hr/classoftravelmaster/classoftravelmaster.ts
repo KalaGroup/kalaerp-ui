@@ -215,7 +215,7 @@ export class Classoftravelmaster implements OnInit {
 
         this.ClassofTravelService.updateClassOftravel(updatePayload).subscribe({
           next: (response) => {
-            console.log('class updated successfully:', response);
+            this.toastService.showSuccess('class added successfully:', response);
             alert(`class "${result.ClassOfTravelName}" updated successfully!`);
             this.loadAllClassoftravel();
           },
@@ -262,7 +262,7 @@ export class Classoftravelmaster implements OnInit {
           next: (response) => {
             console.log('class added successfully:', response);
             this.loadAllClassoftravel();
-            this.toastService.showSuccess;
+            this.toastService.showSuccess('class added successfully:');
             alert(`class added successfully!`);
 
           },
@@ -289,7 +289,7 @@ export class Classoftravelmaster implements OnInit {
         console.log('Delete success:', response);
         console.log('class deleted successfully:', response);
         this.loadAllClassoftravel();
-        this.toastService.showSuccess;
+        this.toastService.showSuccess('class delete successfully:');
         alert(`class deleted successfully!`);
       },
       error: (err) => {

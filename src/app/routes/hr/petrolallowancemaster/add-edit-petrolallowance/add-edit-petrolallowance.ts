@@ -66,7 +66,7 @@ export class AddEditPetrolallowance {
     });
 
     if (this.isEditMode && this.data.petrolallowance) {
-      console.log('Patching form with facility data:', this.data.petrolallowance);
+      console.log('Patching form with petrolallowance data:', this.data.petrolallowance);
       this.petrolForm.patchValue({
         PetrolAllowanceId: this.data.petrolallowance.PetrolAllowanceId,
         TwoWheelerPerKm: this.data.petrolallowance.TwoWheelerPerKm,
