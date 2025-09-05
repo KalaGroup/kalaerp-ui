@@ -27,6 +27,7 @@ import { Facilitymaster } from './facilitymaster/facilitymaster';
 import { Recruitmentstagestatusmaster } from './recruitmentstagestatusmaster/recruitmentstagestatusmaster';
 import { Activitymaster } from './activitymaster/activitymaster';
 import { Kpamaster } from './kpamaster/kpamaster';
+import { CitymasterComponent } from './citymaster/citymaster';
 
 export const routes: Routes = [
   {
@@ -133,5 +134,9 @@ export const routes: Routes = [
    {
     path: 'kpa',
     component: Kpamaster
+  },
+  {
+    path: 'citymaster',
+    component: CitymasterComponent
   }
 ];
