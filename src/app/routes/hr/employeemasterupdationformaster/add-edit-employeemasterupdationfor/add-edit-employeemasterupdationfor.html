@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-card-title>{{ isEditMode ? 'Edit Employee Master Updation For Master' : 'Add Employee Master Updation For Master' }}</mat-card-title>
+  <mat-card-title>{{ isEditMode ? 'Edit Employee Master Updation For' : 'Add Employee Master Updation For' }}</mat-card-title>
 
   <!-- Please Note Change Form control as per your Requirements  -->
   <mat-card-content>
@@ -17,7 +17,7 @@
           </mat-form-field> -->
         </div>
 
-        <div class="col-sm-5 col-xl-5">
+        <div class="col-sm-5 col-xl-7">
           <div class="d-flex align-items-center justify-content-end" style="height: 56px">
             <mat-checkbox formControlName="EmployeeMasterUpdationForAuth" color="primary" [disabled]="!isEditMode">
               Auth
@@ -25,9 +25,9 @@
             <mat-checkbox formControlName="EmployeeMasterUpdationForIsActive" color="primary" [disabled]="!isEditMode">
               Active
             </mat-checkbox>
-            <mat-checkbox formControlName="EmployeeMasterUpdationForIsDiscard" color="primary" [disabled]="!isEditMode" *ngIf="isEditMode">
+            <!--mat-checkbox formControlName="EmployeeMasterUpdationForIsDiscard" color="primary" [disabled]="!isEditMode" *ngIf="isEditMode">
               Discard
-            </mat-checkbox>
+            </mat-checkbox-->
           </div>
         </div>
       </div>
@@ -65,17 +65,11 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="EmployeeMasterUpdationForForm.invalid"
-              (click)="onSubmit()"
-            >
+            <button mat-flat-button color="primary" class="btn-primary px-4"
+              [disabled]="EmployeeMasterUpdationForForm.invalid" (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>
-
             <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
               <mat-icon>close</mat-icon>
               Cancel

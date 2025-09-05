@@ -12,34 +12,32 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
-import { MtxDialog } from '@ng-matero/extensions/dialog';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
-
+import { Activityservcie } from '@shared/services/hr/ActivityMaster/activityservice';
+import { IActivity } from '@shared/interfaces/hr/activity';
+import { IKPA } from '@shared/interfaces/hr/kpa';
+import { kpaservice } from '@shared/services/hr/KPA/kpaservice';
 import { Toastservice } from 'app/routes/toastservice';
-import { AddEditFacility } from './add-edit-facility/add-edit-facility';
-
-import { IFacilityMaster } from '@shared/interfaces/hr/facility';
-import { facilityservices } from '@shared/services/hr/facilityservice.ts/facilityservice';
+import { AddEditKpa } from './add-edit-kpa/add-edit-kpa';
 
 @Component({
-  selector: 'app-facilitymaster',
+  selector: 'app-kpamaster',
   imports: [CommonModule, MatTableModule, MatCardModule, MatDividerModule, MatButtonModule, MatIconModule,
     ReactiveFormsModule, FormsModule, MatFormFieldModule, MatCheckboxModule, MatRadioModule, MtxGridModule,
     PageHeader, MatDialogModule],
-  templateUrl: './facilitymaster.html',
-  styleUrl: './facilitymaster.scss'
+  templateUrl: './kpamaster.html',
+  styleUrl: './kpamaster.scss'
 })
-export class Facilitymaster implements OnInit {
+export class Kpamaster implements OnInit {
   private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
-  Facility: IFacilityMaster[] = [];
+  kpa: IKPA[] = [];
   showForm = false;
-  facilityModel: any = {};
+  kpaModel: any = {};
   editIndex: number | null = null;
-
   multiSelectable = true;
   rowSelectable = true;
   hideRowSelectionCheckbox = false;
@@ -53,22 +51,24 @@ export class Facilitymaster implements OnInit {
   expandable = false;
   columnResizable = false;
 
+
   isLoading = false;
   list: any[] = [];
   isConfigExpanded: boolean = false;
   constructor(
     private fb: FormBuilder,
-    private Facilityservices: facilityservices,
+    private KPAservice: kpaservice,
     private dialog: MatDialog,
     private toastService: Toastservice
   ) { }
-  ngOnInit(): void {
-    this.getAllFacility();
-  }
 
+  ngOnInit(): void {
+    this.loadAllKPA();
+  }
   toggleConfigSection(): void {
     this.isConfigExpanded = !this.isConfigExpanded;
   }
+
   columns: MtxGridColumn[] = [
     {
       header: this.translate.stream('SNo'),
@@ -77,40 +77,68 @@ export class Facilitymaster implements OnInit {
       width: '80px',
     },
     {
-      header: this.translate.stream('Facility Code'),
-      field: 'FaciltyCode',
+      header: this.translate.stream('Grade ID'),
+      field: 'GradeName',
+      sortable: true,
+      minWidth: 100,
+    },
+    {
+      header: this.translate.stream('Designation ID'),
+      field: 'DesignationName',
       sortable: true,
       minWidth: 120,
     },
     {
-      header: this.translate.stream('Facility Name'),
-      field: 'FacilityName',
+      header: this.translate.stream('Division ID'),
+      field: 'DivisionName',
       sortable: true,
-      minWidth: 150,
+      minWidth: 120,
     },
     {
       header: this.translate.stream('Remark'),
-      field: 'FacilityRemark',
+      field: 'Kparemark',
+      sortable: true,
+      minWidth: 150,
+    },
+
+    {
+      header: this.translate.stream('Auth Remark'),
+      field: 'KpaauthRemark',
       sortable: true,
       minWidth: 150,
     },
     {
       header: this.translate.stream('Authorized'),
-      field: 'FacilityAuth',
+      field: 'Kpaauth',
       sortable: true,
       minWidth: 100,
+      type: 'tag',
+      tag: {
+        true: { text: 'Yes', color: 'primary' },
+        false: { text: 'No', color: 'warn' }
+      }
     },
     {
       header: this.translate.stream('Discarded'),
-      field: 'FacilityIsDiscard',
+      field: 'KpaisDiscard',
       sortable: true,
       minWidth: 100,
+      type: 'tag',
+      tag: {
+        true: { text: 'Yes', color: 'warn' },
+        false: { text: 'No', color: 'primary' }
+      }
     },
     {
       header: this.translate.stream('Active'),
-      field: 'FacilityIsActive',
+      field: 'KpaisActive',
       sortable: true,
       minWidth: 100,
+      type: 'tag',
+      tag: {
+        true: { text: 'Yes', color: 'primary' },
+        false: { text: 'No', color: 'warn' }
+      }
     },
     {
       header: this.translate.stream('Action'),
@@ -135,70 +163,78 @@ export class Facilitymaster implements OnInit {
             closeText: this.translate.stream('close'),
             okText: this.translate.stream('ok'),
           },
-          click: record => this.delete(record),
+          click: (record: any) => this.delete(record),
         },
       ],
     },
   ];
 
-  getAllFacility() {
-    this.Facilityservices.getAllFacility().subscribe({
+
+  loadAllKPA() {
+    debugger
+    this.KPAservice.getAllKpa().subscribe({
       next: (data) => {
         this.list = data.map((item: any, index: number) => ({
+
           ...item,
           SNo: index + 1
         }));
+        console.log("list", this.list)
       },
       error: (err) => {
-        console.error('Error fetching facilities:', err);
+        console.error('Error fetching kpa:', err);
       }
     });
   }
 
-
-
-  edit(record: IFacilityMaster) {
-    this.dialog.open(AddEditFacility, {
-      width: '80%',
-      height: '70%',
+  edit(record: any) {
+    this.dialog.open(AddEditKpa, {
+      width: '100%',
+      height: '100%',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: { facility: record },
+      data: { kpa: record },
     })
       .afterClosed()
       .subscribe(result => {
         if (!result) {
-          console.log('facility Updated:', result);
+          console.log('No update performed');
           return;
         }
         debugger
-        const updatePayload: IFacilityMaster = {
-          FacilityId: record.FacilityId,
-          FaciltyCode: result.FaciltyCode,
-          FacilityName: result.FacilityName,
-          FacilityRemark: result.FacilityRemark,
-          FacilityAuth: result.FacilityAuth,
-          FacilityIsDiscard: false,
-          FacilityIsActive: result.FacilityIsActive,
+        const updatePayload = {
+          Kpaid: record.Kpaid,
+          KpagradeId: result.KpagradeId,
+          KpadesignationId: result.KpadesignationId,
+          KpadivisionId: result.KpadivisionId,
+          Kparemark: result.Kparemark,
+          KpaauthRemark: result.KpaauthRemark,
+          Kpaauth: result.Kpaauth,
+          KpaisDiscard: result.KpaisDiscard,
+          KpaisActive: result.KpaisActive,
           CreatedBy: record.CreatedBy ?? 1,
-          CreatedDate: new Date()
+          CreatedDate: new Date(),
+          descriptions: result.descriptions,
         };
+
         console.log('Update payload:', updatePayload);
-        this.Facilityservices.updateFacility(updatePayload).subscribe({
+        this.KPAservice.updateKPA(updatePayload).subscribe({
           next: () => {
-            alert(`Facility "${result.FacilityName}" updated successfully!`);
-            this.getAllFacility();
+            alert(`kpa updated successfully!`);
+            this.loadAllKPA();
           },
           error: (err) => {
-            console.error('Error updating facility:', err);
+            console.error('Error updating kpa:', err);
           }
         });
       });
   }
+
+
   openAddDialog() {
-    const dialogRef = this.dialog.open(AddEditFacility, {
-      width: '60%',
-      height: '60%',
+    const dialogRef = this.dialog.open(AddEditKpa, {
+      width: '100%',
+      height: '100%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {}
@@ -206,56 +242,54 @@ export class Facilitymaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const payload: IFacilityMaster = {
-          FacilityId: 0,
-          FaciltyCode: result.FaciltyCode,
-          FacilityName: result.FacilityName,
-          FacilityRemark: result.FacilityRemark,
-          FacilityAuth: result.FacilityAuth,
-          FacilityIsDiscard: false,
-          FacilityIsActive: result.FacilityIsActive,
-          CreatedBy: 1, // Set appropriately
-          CreatedDate: new Date()
+        debugger
+        const payload = {
+          Kpaid: 0, // New entry
+          KpagradeId: result.KpagradeId,
+          KpadesignationId: result.KpadesignationId,
+          KpadivisionId: result.KpadivisionId,
+          Kparemark: result.Kparemark,
+          KpaauthRemark: result.KpaauthRemark,
+          Kpaauth: result.Kpaauth,
+          KpaisDiscard: result.KpaisDiscard,
+          KpaisActive: result.KpaisActive,
+          CreatedBy: 1,
+          CreatedDate: new Date(),
+          descriptions: result.descriptions,
         };
 
-        this.Facilityservices.insertFacility(payload).subscribe({
+        this.KPAservice.insertKPA(payload).subscribe({
           next: () => {
-            alert(`Facility "${result.FacilityName}" added successfully!`);
-            this.getAllFacility();
+            this.toastService.showSuccess('kpa added successfully:');
+            alert(`kpa added successfully!`);
+            this.loadAllKPA();
           },
           error: (err) => {
-            console.error('Error while adding facility:', err);
-            this.toastService.showError('Failed to add facility. Please check inputs.');
+            console.error('Error while adding kpa:', err);
+            this.toastService.showError('Failed to add kpa. Please check inputs.');
           }
         });
       }
     });
   }
-
   delete(value: any) {
-    debugger
-    this.Facilityservices.deleteFacility(value.FacilityId).subscribe({
+    this.KPAservice.deleteKPA(value.Kpaid).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-        this.toastService.showSuccess;
-        alert(`You have deleted ${value.FacilityName}..!`);
-        this.getAllFacility();
+        this.toastService.showSuccess('Delete  successfully:');
+        alert(`deleted successfully!`);
+        this.loadAllKPA();
       },
       error: (err) => {
-        console.error('Error deleting Faciltiy:', err);
+        console.error('Error deleting Petrol:', err);
       }
     });
   }
-
   changeSelect(e: any) {
     console.log(e);
   }
   changeSort(e: any) {
     console.log(e);
-  }
-
-  enableRowExpandable() {
-    this.columns[0].showExpand = this.expandable;
   }
   updateCell() {
     this.list = this.list.map(item => {
@@ -266,6 +300,4 @@ export class Facilitymaster implements OnInit {
   updateList() {
     this.list = this.list.splice(-1).concat(this.list);
   }
-
-
 }
