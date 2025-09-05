@@ -24,6 +24,8 @@
     "hr.location": "Location Master",
     "hr.classoftravel": "ClassOfTravel",
     "hr.facility": "Facility Master",
+    "hr.recruitmentstagestatusmaster": "Recruitment Stage Status Master",
+
     "design": "Design",
     "design.colors": "Color System",
     "design.icons": "Material Icons",
