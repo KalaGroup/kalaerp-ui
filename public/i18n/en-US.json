@@ -24,6 +24,8 @@
     "hr.location": "Location Master",
     "hr.classoftravel": "ClassOfTravel",
     "hr.facility": "Facility Master",
+    "hr.activity": "Activity Master",
+    "hr.kpa": "KPA Master",
     "design": "Design",
     "design.colors": "Color System",
     "design.icons": "Material Icons",

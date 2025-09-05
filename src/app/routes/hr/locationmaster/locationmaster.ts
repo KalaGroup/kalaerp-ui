@@ -162,10 +162,10 @@ export class Locationmaster implements OnInit {
           ...item,
           SNo: index + 1
         }));
-        console.log('Fetched qualification with S.No:', this.list);
+        console.log('Fetched location with S.No:', this.list);
       },
       error: (err) => {
-        console.error('Error fetching qualification:', err);
+        console.error('Error fetching location:', err);
       }
     });
   }
@@ -180,7 +180,7 @@ export class Locationmaster implements OnInit {
       data: { location: record },
     }).afterClosed().subscribe(result => {
       if (result) {
-        console.log('Qualification Updated:', result);
+        console.log('location Updated:', result);
         console.log('Original record CreatedBy:', record.CreatedBy);
 
         const updatePayload: Ilocationmaster = {
@@ -204,14 +204,14 @@ export class Locationmaster implements OnInit {
 
         this.LocationServices.updateLocation(updatePayload).subscribe({
           next: (response) => {
-            console.log('Qualification updated successfully:', response);
-            alert(`Qualification "${result.LocationName}" updated successfully!`);
+            console.log('location updated successfully:', response);
+            alert(`location "${result.LocationName}" updated successfully!`);
             this.toastService.showSuccess;
             this.loadAllLocation();
           },
           error: (err) => {
-            console.error('Error updating Qualification:', err);
-            alert('Error updating qualification. Please try again.');
+            console.error('Error updating location:', err);
+            alert('Error updating location. Please try again.');
           }
         });
       }
@@ -230,7 +230,7 @@ export class Locationmaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log(' Qualification data:', result);
+        console.log(' location data:', result);
         debugger
         const payload: Ilocationmaster = {
           LocationId: 0,
