@@ -1,0 +1,88 @@
+<mat-card>
+  <mat-card-title>
+    {{ isEditMode ? 'Edit Recruitment Stage Status' : 'Add Recruitment Stage Status' }}
+  </mat-card-title>
+
+  <mat-card-content>
+    <form [formGroup]="RecruitmentStageStatusForm" class="form-field-full">
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-3"></div>
+
+        <div class="col-sm-4 col-xl-3">
+          <div class="d-flex align-items-center justify-content-end" style="height: 56px">
+            <mat-checkbox formControlName="RecruitmentStageStatusAuth" color="primary" [disabled]="!isEditMode">
+              Auth
+            </mat-checkbox>
+            <mat-checkbox formControlName="RecruitmentStageStatusIsActive" color="primary" [disabled]="!isEditMode">
+              Active
+            </mat-checkbox>
+            <mat-checkbox
+              formControlName="RecruitmentStageStatusIsDiscard"
+              color="primary"
+              [disabled]="!isEditMode"
+              *ngIf="isEditMode"
+            >
+              Discard
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <!-- Left side -->
+        <div class="col-sm-6 col-xl-6">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Recruitment Stage Status Name</mat-label>
+            <input
+              matInput
+              formControlName="RecruitmentStageStatusName"
+              placeholder="Enter Recruitment Stage Status Name"
+            />
+            @if (RecruitmentStageStatusForm.get('RecruitmentStageStatusName')?.invalid &&
+            RecruitmentStageStatusForm.get('RecruitmentStageStatusName')?.touched) {
+              <mat-error>Recruitment Stage Status Name is required</mat-error>
+            }
+          </mat-form-field>
+
+
+        </div>
+
+        <!-- Right side -->
+        <div class="col-sm-6 col-xl-6">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Remark</mat-label>
+            <input
+              matInput
+              formControlName="RecruitmentStageStatusRemark"
+              placeholder="Enter remark..."
+            />
+
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <button
+              mat-flat-button
+              color="primary"
+              class="btn-primary px-4"
+              [disabled]="RecruitmentStageStatusForm.invalid"
+              (click)="onSubmit()"
+            >
+              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+
+            <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
+              <mat-icon>close</mat-icon>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
