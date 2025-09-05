@@ -64,7 +64,7 @@
         {
           "route": "employeetypemaster",
           "name": "employeetypemaster",
-          "type":"link" 
+          "type": "link"
         },
         {
           "route": "companyentitytype",
@@ -125,6 +125,16 @@
           "route": "facility",
           "name": "facility",
           "type": "link"
+        },
+        {
+          "route": "ctcmaster",
+          "name": "ctcmaster",
+          "type": "link"
+        },
+        {
+          "route": "authoritiesmaster",
+          "name": "authoritiesmaster",
+          "type": "link"
         }
       ]
     },
@@ -152,10 +162,7 @@
         }
       ],
       "permissions": {
-        "only": [
-          "ADMIN",
-          "MANAGER"
-        ]
+        "only": ["ADMIN", "MANAGER"]
       }
     },
     {
@@ -383,10 +390,7 @@
         }
       ],
       "permissions": {
-        "except": [
-          "MANAGER",
-          "GUEST"
-        ]
+        "except": ["MANAGER", "GUEST"]
       }
     },
     {

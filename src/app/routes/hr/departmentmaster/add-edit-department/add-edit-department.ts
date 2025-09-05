@@ -195,7 +195,6 @@ export class AddEditDepartment implements OnInit {
   }
 
   private setDepartmentForEdit(): void {
-    debugger;
     let DepartmentId: number | null = null;
     const departmentData = this.data.department;
 
@@ -227,9 +226,7 @@ export class AddEditDepartment implements OnInit {
   }
 
   loadAllProfitcenter(): void {
-          debugger;
     this.profitcenterServices.getAllProfitcenter().subscribe({
-
       next: res => {
         this.profitcenterlist = res;
         console.log('Profitcenter loaded:', res);
@@ -252,7 +249,6 @@ export class AddEditDepartment implements OnInit {
   }
 
   private setProfitcenterForEdit(): void {
-    debugger;
     let ProfitCenterId: number | null = null;
     const profitcenterData = this.data.profitcenter;
 

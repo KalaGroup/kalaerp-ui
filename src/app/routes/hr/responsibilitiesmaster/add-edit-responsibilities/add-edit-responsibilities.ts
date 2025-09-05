@@ -298,6 +298,7 @@ export class AddEditResponsibilities {
   }
 
   onSubmit(): void {
+    debugger;
     if (this.responsibilitiesMstForm.valid && this.description.length > 0) {
       this.responsibilitiesMstForm.enable();
       const descriptionString = this.description.map(item => ({
@@ -316,6 +317,7 @@ export class AddEditResponsibilities {
   }
 
   addRow() {
+    debugger;
     const desc = this.newDescription.trim();
 
     if (this.newDescription.trim() == undefined || this.newDescription.trim() == '') {

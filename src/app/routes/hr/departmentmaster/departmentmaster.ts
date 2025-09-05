@@ -184,7 +184,6 @@ export class Departmentmaster implements OnInit {
   ];
 
   loadAllDepartment() {
-    debugger;
     this.departmentService.getAllDepartment().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
@@ -209,7 +208,6 @@ export class Departmentmaster implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      debugger;
       if (result) {
         console.log('Added state:', result);
         const payload: IDepartment = {
@@ -233,9 +231,6 @@ export class Departmentmaster implements OnInit {
         // Call the service to insert the state
         this.departmentService.insertDepartment(payload).subscribe({
           next: response => {
-            debugger;
-
-            console.log('Line 229');
             this.toastService.showSuccess('Department added successfully:', response);
             this.loadAllDepartment();
             alert(`Department "${result.DepartmentName}" added successfully!`);

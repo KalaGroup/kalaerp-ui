@@ -1,0 +1,264 @@
+<mat-card>
+  <mat-card-title>{{ isEditMode ? 'Edit CTC' : 'Add CTC' }}</mat-card-title>
+
+  <!-- Please Note Change Form control as per your Requirements  -->
+  <mat-card-content>
+    <form [formGroup]="ctcForm" class="form-field-full">
+      <!-- 1st Column -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Grade</mat-label>
+            <mat-select formControlName="CtcmasterGradeId" placeholder="Select Grade">
+
+              <mat-option>
+                <input matInput placeholder="Search Grade..." [formControl]="GradeSearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+
+              <mat-option value="">Select Grade</mat-option>
+
+              @for (grade of filteredGradeList; track grade.GradeId) {
+              <mat-option [value]="grade.GradeId">
+                {{ grade.GradeName}}
+              </mat-option>
+              }
+            </mat-select>
+
+            @if (ctcForm.get('GradeId')?.invalid && ctcForm.get('GradeId')?.touched) {
+            <mat-error>Grade is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>HRA</mat-label>
+            <input matInput formControlName="CtcmasterHra" placeholder="Select HRA" />
+            @if (ctcForm.get('CtcmasterHra')?.invalid && ctcForm.get('CtcmasterHra')?.touched) {
+            <mat-error>HRA is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Leave Travel Allowance</mat-label>
+            <input
+              matInput
+              formControlName="CtcmasterLeaveTravelAllowance"
+              placeholder="Select HRA"
+            />
+            @if (ctcForm.get('CtcmasterLeaveTravelAllowance')?.invalid &&
+            ctcForm.get('CtcmasterLeaveTravelAllowance')?.touched) {
+            <mat-error>Leave Travel Allowance is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Driver Allowance</mat-label>
+            <input
+              matInput
+              formControlName="CtcmasterDriverAllowance"
+              placeholder="Enter Driver Allowance"
+            />
+            @if (ctcForm.get('CtcmasterDriverAllowance')?.invalid &&
+            ctcForm.get('CtcmasterDriverAllowance')?.touched) {
+            <mat-error>Driver Allowance is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Pf employee</mat-label>
+            <input matInput formControlName="CtcmasterPfemployee" placeholder="Enter Pf employee" />
+            @if (ctcForm.get('CtcmasterPfemployee')?.invalid &&
+            ctcForm.get('CtcmasterPfemployee')?.touched) {
+            <mat-error>Pf employee is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Pf Employer</mat-label>
+            <input matInput formControlName="CtcmasterPfemployer" placeholder="Enter Pf Employer" />
+            @if (ctcForm.get('CtcmasterPfemployer')?.invalid &&
+            ctcForm.get('CtcmasterPfemployer')?.touched) {
+            <mat-error>Pf Employer is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Graduity</mat-label>
+            <input matInput formControlName="CtcmasterGraduity" placeholder="Enter Graduity" />
+            @if (ctcForm.get('CtcmasterGraduity')?.invalid && ctcForm.get('CtcmasterGraduity')?.touched) {
+            <mat-error>Graduity is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <!-- 2nd Column -->
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>CTC Basic</mat-label>
+            <input matInput formControlName="CtcmasterBasic" placeholder="Select Basic" />
+            @if (ctcForm.get('CtcmasterBasic')?.invalid && ctcForm.get('CtcmasterBasic')?.touched) {
+            <mat-error>Basic is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Conv Allowance</mat-label>
+            <input
+              matInput
+              formControlName="CtcmasterConvAllowance"
+              placeholder="Enter ConvAllowance"
+            />
+            @if (ctcForm.get('CtcmasterConvAllowance')?.invalid &&
+            ctcForm.get('CtcmasterConvAllowance')?.touched){
+            <mat-error>ConvAllowance is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Car Allowance</mat-label>
+            <input
+              matInput
+              formControlName="CtcmasterCarAllowance"
+              placeholder="Enter Car Allowance"
+            />
+            @if (ctcForm.get('CtcmasterCarAllowance')?.invalid &&
+            ctcForm.get('CtcmasterCarAllowance')?.touched){
+            <mat-error>Car Allowance is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Misc Allowance</mat-label>
+            <input
+              matInput
+              formControlName="CtcmasterMiscAllowance"
+              placeholder="Enter Misc Allowance"
+            />
+            @if (ctcForm.get('CtcmasterMiscAllowance')?.invalid &&
+            ctcForm.get('CtcmasterMiscAllowance')?.touched){
+            <mat-error>Misc Allowance is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Personal Tax</mat-label>
+            <input matInput formControlName="CtcmasterPt" placeholder="Enter Personal Tax" />
+            @if (ctcForm.get('CtcmasterPt')?.invalid && ctcForm.get('CtcmasterPt')?.touched){
+            <mat-error>Personal Tax is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Medical Insurance</mat-label>
+            <input matInput formControlName="CtcmasterMedicalInsurance" placeholder="Enter Medical Insurance"/>
+            @if (ctcForm.get('CtcmasterMedicalInsurance')?.invalid && ctcForm.get('CtcmasterMedicalInsurance')?.touched){
+            <mat-error>Medical Insurance is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Bonus</mat-label>
+            <input matInput formControlName="CtcmasterBonus" placeholder="Enter Bonus"/>
+            @if (ctcForm.get('CtcmasterBonus')?.invalid && ctcForm.get('CtcmasterBonus')?.touched){
+            <mat-error>Bonus is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <!-- 3rd Column -->
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>CTC DA</mat-label>
+            <input matInput formControlName="CtcmasterDa" placeholder="Select Basic" />
+            @if (ctcForm.get('CtcmasterDa')?.invalid && ctcForm.get('CtcmasterDa')?.touched) {
+            <mat-error>DA is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>City Compensatory Alowance</mat-label>
+            <input
+              matInput
+              formControlName="CtcmasterCityCompensatoryAlowance"
+              placeholder="Enter CityCompensatoryAlowance"
+            />
+            @if (ctcForm.get('CtcmasterCityCompensatoryAlowance')?.invalid &&
+            ctcForm.get('CtcmasterCityCompensatoryAlowance')?.touched) {
+            <mat-error>CityCompensatoryAlowance is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Fuel Allowance</mat-label>
+            <input
+              matInput
+              formControlName="CtcmasterFuelAllowance"
+              placeholder="Enter Fuel Allowance"
+            />
+            @if (ctcForm.get('CtcmasterFuelAllowance')?.invalid &&
+            ctcForm.get('CtcmasterFuelAllowance')?.touched) {
+            <mat-error>Fuel Allowance is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Gross</mat-label>
+            <input matInput formControlName="CtcmasterGross" placeholder="Enter Gross" />
+            @if (ctcForm.get('CtcmasterGross')?.invalid && ctcForm.get('CtcmasterGross')?.touched) {
+            <mat-error>Gross is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Esic</mat-label>
+            <input matInput formControlName="CtcmasterEsic" placeholder="Enter Esic" />
+            @if (ctcForm.get('CtcmasterEsic')?.invalid && ctcForm.get('CtcmasterEsic')?.touched) {
+            <mat-error>Esic is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Performance KPA</mat-label>
+            <input matInput formControlName="CtcmasterPerformanceKpa" placeholder="Enter Performance KPA" />
+            @if (ctcForm.get('CtcmasterPerformanceKpa')?.invalid && ctcForm.get('CtcmasterPerformanceKpa')?.touched) {
+            <mat-error>Performance KPA is required</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Mlwf</mat-label>
+            <input matInput formControlName="CtcmasterMlwf" placeholder="Enter Mlwf" />
+            @if (ctcForm.get('CtcmasterMlwf')?.invalid && ctcForm.get('CtcmasterMlwf')?.touched) {
+            <mat-error>Mlwf is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <button
+              mat-flat-button
+              color="primary"
+              class="btn-primary px-4"
+              [disabled]="ctcForm.invalid"
+              (click)="onSubmit()"
+            >
+              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+
+            <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
+              <mat-icon>close</mat-icon>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

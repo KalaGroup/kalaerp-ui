@@ -21,7 +21,6 @@ export class Departmentservice {
   }
 
   insertDepartment(insertDepartment: IDepartment): Observable<any> {
-    debugger;
     return this.http.post(this.insertDepartmentUrl, insertDepartment);
   }
   updateDepartment(updateDepartment: IDepartment): Observable<any> {
