@@ -1,0 +1,175 @@
+<mat-card>
+    <mat-card-title>
+        {{ isEditMode ? 'Edit KPA' : 'Add KPA' }}
+    </mat-card-title>
+
+    <mat-card-content>
+        <form [formGroup]="KPAForm" class="form-field-full">
+
+            <!-- Checkbox row -->
+            <div class="row mb-3">
+                <div class="col-sm-4 col-xl-3"></div>
+                <div class="col-sm-8 col-xl-9">
+                    <div class="d-flex checkbox-group">
+                        <mat-checkbox formControlName="Kpaauth" color="primary" [disabled]="!isEditMode">
+                            Auth
+                        </mat-checkbox>
+                        <mat-checkbox formControlName="KpaisActive" color="primary" [disabled]="!isEditMode">
+                            Active
+                        </mat-checkbox>
+                        <mat-checkbox formControlName="KpaisDiscard" color="primary" [disabled]="!isEditMode"
+                            *ngIf="isEditMode">
+                            Discard
+                        </mat-checkbox>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form fields row -->
+            <div class="row mb-3">
+                <!-- Left -->
+                <div class="col-sm-6 col-xl-6">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Grade</mat-label>
+                        <mat-select formControlName="KpagradeId">
+                            <mat-option *ngFor="let grade of gradeList" [value]="grade.GradeId">
+                                {{ grade.GradeName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Division</mat-label>
+                        <mat-select formControlName="KpadivisionId">
+                            <mat-option *ngFor="let div of divisionList" [value]="div.DivisionId">
+                                {{ div.DivisionName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Auth Remark</mat-label>
+                        <input matInput formControlName="KpaauthRemark" placeholder="Enter Authorization Remark..." />
+                    </mat-form-field>
+                </div>
+
+                <!-- Right -->
+                <div class="col-sm-6 col-xl-6">
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Designation</mat-label>
+                        <mat-select formControlName="KpadesignationId">
+                            <mat-option *ngFor="let desig of designationList" [value]="desig.DesignationId">
+                                {{ desig.DesignationName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Remark</mat-label>
+                        <input matInput formControlName="Kparemark" placeholder="Enter Remark..." />
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="container mt-3">
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title style="font-size: 20px; font-weight: bold; color: #007bff;">
+                            KPA Details
+                        </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                        <form>
+                            <div class="table-container">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr class="table-header">
+                                            <th class="sr-no-column">Sr.No</th>
+                                            <th class="description-column">Description</th>
+                                            <th class="action-column">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr class="input-row">
+                                            <td class="sr-no-cell"></td>
+                                            <td class="description-cell">
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-label>Enter description</mat-label>
+                                                    <input matInput [(ngModel)]="newDescription" name="newDescription"
+                                                        placeholder="Enter description" />
+                                                </mat-form-field>
+                                            </td>
+                                            <td class="action-cell">
+                                                <button mat-raised-button color="primary" (click)="addRow()"
+                                                    type="button" class="add-button">
+                                                    <mat-icon>add</mat-icon>
+                                                    ADD
+                                                </button>
+                                            </td>
+                                        </tr>
+
+
+                                        @for (part of description; track $index; let i = $index) {
+                                        <tr class="data-row" [class.editing]="editIndex === i">
+                                            <td class="sr-no-cell">{{ part.srno }}</td>
+                                            <td class="description-cell">
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <input matInput [(ngModel)]="part.desc" [readonly]="editIndex !== i"
+                                                        name="desc{{i}}" [class.readonly-input]="editIndex !== i" />
+                                                </mat-form-field>
+                                            </td>
+                                            <td class="action-cell">
+                                                <div class="action-buttons">
+                                                    <button mat-raised-button color="warn" (click)="deleteRow(i)"
+                                                        type="button" class="delete-button" matTooltip="Delete row">
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+
+                                                    @if (editIndex !== i) {
+                                                    <button mat-raised-button color="accent" (click)="editRow(i)"
+                                                        type="button" class="edit-button" matTooltip="Edit row">
+                                                        <mat-icon>edit</mat-icon>
+                                                    </button>
+                                                    } @else {
+                                                    <button mat-raised-button color="primary" (click)="updateRow(i)"
+                                                        type="button" class="update-button" matTooltip="Save changes">
+                                                        <mat-icon>save</mat-icon>
+                                                    </button>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+
+
+
+            <!-- Action buttons -->
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <button mat-flat-button color="primary" class="primary-btn" [disabled]="KPAForm.invalid"
+                            type="submit" (click)="onSubmit()">
+                            <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+                            {{ isEditMode ? 'Update' : 'Save' }}
+                        </button>
+
+                        <button mat-stroked-button color="warn" class="action-btn" type="button" (click)="onCancel()">
+                            <mat-icon>close</mat-icon>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

@@ -8,7 +8,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -61,7 +60,6 @@ export class AddEditClass {
   }
 
   private initializeForm(): void {
-
     const currentDate = new Date().toLocaleDateString('en-GB'); // dd/mm/yyyy format
     this.classoftravelForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
@@ -129,7 +127,7 @@ export class AddEditClass {
       );
       GradeId = classtype ? classtype.GradeId : null;
 
-      console.log('Found QualificationType by name:', GradeId, 'for name:', classoftravelData.GradeName);
+      console.log('Found classoftravel by name:', GradeId, 'for name:', classoftravelData.GradeName);
     }
 
     // Patch all fields

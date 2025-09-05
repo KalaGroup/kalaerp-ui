@@ -71,7 +71,7 @@ export class AddEditLocation {
     });
 
     if (this.isEditMode && this.data.location) {
-      console.log('Patching form with qualification data:', this.data.location);
+      console.log('Patching form with location data:', this.data.location);
       this.locationForm.patchValue({
         LocationId: this.data.location.LocationId || '',
         LocationCode: this.data.location.LocationCode || '',
@@ -101,14 +101,14 @@ export class AddEditLocation {
           );
         });
 
-        console.log('Loaded qualification:', res);
+        console.log('Loaded location:', res);
 
         // Now that the list is loaded, call the edit setup
         if (this.isEditMode && this.data) {
           this.setlocationForEdit();
         }
       },
-      error: (err: any) => console.error('Error loading qualification', err)
+      error: (err: any) => console.error('Error loading location', err)
     });
   }
   private setlocationForEdit(): void {
@@ -123,7 +123,7 @@ export class AddEditLocation {
       );
       ProfitCenterId = qualificationType ? qualificationType.ProfitCenterId : null;
 
-      console.log('Found QualificationType by name:', ProfitCenterId, 'for name:', locationData.ProfitCenterName);
+      console.log('Found location by name:', ProfitCenterId, 'for name:', locationData.ProfitCenterName);
     }
 
     if (ProfitCenterId) {
@@ -132,7 +132,7 @@ export class AddEditLocation {
       });
       console.log('QualificationType set in form:', ProfitCenterId);
     } else {
-      console.log('No QualificationType ID found for name:', locationData?.ProfitCenterName);
+      console.log('No location ID found for name:', locationData?.ProfitCenterName);
     }
   }
 
