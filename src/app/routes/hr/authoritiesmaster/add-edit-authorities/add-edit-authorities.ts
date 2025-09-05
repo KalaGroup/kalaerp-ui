@@ -1,4 +1,3 @@
-/* eslint-disable @angular-eslint/prefer-inject */
 import { Component, Inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -6,8 +5,8 @@ import {
   Validators,
   ReactiveFormsModule,
   FormControl,
-  FormsModule,
 } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,8 +23,8 @@ import { Designationservice } from '@shared/services/hr/designation/designations
 import { IGrade } from '@shared/interfaces/hr/grade';
 import { IDesignation } from '@shared/interfaces/hr/designation';
 import { Gradeservice } from '@shared/services/hr/grade/gradeservice';
+import { Authoritiesservice } from '@shared/services/hr/authorities/authoritiesservice';
 import { MatTableDataSource } from '@angular/material/table';
-import { Roleservice } from '@shared/services/hr/role/roleservice';
 
 interface Row {
   description: string;
@@ -33,7 +32,7 @@ interface Row {
 }
 
 @Component({
-  selector: 'app-add-edit-role',
+  selector: 'app-add-edit-authorities',
   standalone: true,
   imports: [
     FormsModule,
@@ -48,18 +47,19 @@ interface Row {
     MatCheckboxModule,
     MatIconModule,
   ],
-  templateUrl: './add-edit-role.html',
-  styleUrl: './add-edit-role.scss',
+  templateUrl: './add-edit-authorities.html',
+  styleUrl: './add-edit-authorities.scss',
 })
-export class AddEditRole implements OnInit {
-  roleForm!: FormGroup;
+export class AddEditAuthorities {
+  authoritiesForm!: FormGroup;
   isEditMode = false;
-  roleDetailsDataSource = new MatTableDataSource<any>([]);
-  newroleDetail: string = '';
+  authoritiesDetailsDataSource = new MatTableDataSource<any>([]);
+  newauthoritiesDetail: string = '';
   descriptionDetails: any[] = [];
   description: { srno: number; desc: string }[] = [];
   editIndex: number | null = null;
   newDescription: string = '';
+
   //Grade
   filteredgradeList: IGrade[] = [];
   gradeList: any[] = [];
@@ -76,12 +76,12 @@ export class AddEditRole implements OnInit {
   designationSearchControl = new FormControl('');
 
   constructor(
-    private roleService: Roleservice,
+    private authoritiesService: Authoritiesservice,
     private fb: FormBuilder,
-    public dialogRef: MatDialogRef<AddEditRole>,
+    public dialogRef: MatDialogRef<AddEditAuthorities>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.isEditMode = !!this.data && !!this.data.role;
+    this.isEditMode = !!this.data && !!this.data.authorities;
     console.log('Edit mode:', this.isEditMode);
     console.log('Data received:', this.data);
   }
@@ -96,63 +96,61 @@ export class AddEditRole implements OnInit {
 
   private initializeForm(): void {
     const currentDate = new Date();
-    this.roleForm = this.fb.group({
-      RolesId: [''],
-      RolesGradeId: ['', [Validators.required]],
-      RolesDesignationId: ['', [Validators.required]],
-      RolesDivisionId: ['', [Validators.required]],
-      RolesRemark: [''],
-      RolesAuthRemark: [''],
-      RolesAuth: [{ value: true, disabled: !this.isEditMode }],
-      RolesIsDiscard: [{ value: false, disabled: !this.isEditMode }],
-      RolesIsActive: [{ value: true, disabled: !this.isEditMode }],
+    this.authoritiesForm = this.fb.group({
+      AuthoritiesId: [''],
+      AuthoritiesGradeId: ['', [Validators.required]],
+      AuthoritiesDesignationId: ['', [Validators.required]],
+      AuthoritiesDivisionId: ['', [Validators.required]],
+      AuthoritiesRemark: [''],
+      AuthoritiesAuthRemark: [''],
+      AuthoritiesAuth: [{ value: true, disabled: !this.isEditMode }],
+      AuthoritiesIsDiscard: [{ value: false, disabled: !this.isEditMode }],
+      AuthoritiesIsActive: [{ value: true, disabled: !this.isEditMode }],
       CreatedBy: ['1'],
       CreatedDate: [{ value: currentDate, disabled: true }],
     });
-    if (this.isEditMode && this.data.role) {
-      console.log('this.data.role', this.data.role);
+    if (this.isEditMode && this.data.authorities) {
       this.loadAllDescriptions();
-      this.roleForm.patchValue({
+      this.authoritiesForm.patchValue({
         //CreatedDate: currentDate, tommorow dicuss with Umar
-        // code: this.data.role.code,
-        RolesId: this.data.role.RolesId,
-        RolesGradeId: this.data.role.RolesGradeId,
-        RolesDesignationId: this.data.role.RolesDesignationId,
-        RolesDivisionId: this.data.role.RolesDivisionId,
-        RolesRemark: this.data.role.RolesRemark,
-        RolesAuthRemark: this.data.role.RolesAuthRemark,
-        RolesAuth: this.data.role.RolesAuth,
-        RolesIsDiscard: this.data.role.RolesIsDiscard,
-        RolesIsActive: this.data.role.RolesIsActive,
-        CreatedBy: this.data.role.CreatedBy,
+        code: this.data.authorities.code,
+        AuthoritiesId: this.data.authorities.AuthoritiesId,
+        AuthoritiesGradeId: this.data.authorities.AuthoritiesGradeId,
+        AuthoritiesDesignationId: this.data.authorities.AuthoritiesDesignationId,
+        AuthoritiesDivisionId: this.data.authorities.AuthoritiesDivisionId,
+        AuthoritiesRemark: this.data.authorities.AuthoritiesRemark,
+        AuthoritiesAuthRemark: this.data.authorities.AuthoritiesAuthRemark,
+        AuthoritiesAuth: this.data.authorities.AuthoritiesAuth,
+        AuthoritiesIsDiscard: this.data.authorities.AuthoritiesIsDiscard,
+        AuthoritiesIsActive: this.data.authorities.AuthoritiesIsActive,
+        CreatedBy: this.data.authorities.CreatedBy,
       });
-      this.roleForm.get('code')?.enable();
-      this.roleForm.get('CreatedDate')?.disable();
-      this.roleForm.get('IsActive')?.enable();
-      console.log('Form values after patch:', this.roleForm.value);
+      this.authoritiesForm.get('code')?.enable();
+      this.authoritiesForm.get('CreatedDate')?.disable();
+      this.authoritiesForm.get('IsActive')?.enable();
+      console.log('Form values after patch:', this.authoritiesForm.value);
     }
   }
 
   loadAllDescriptions(): void {
-    debugger;
-    const roleMstId = this.data.role.RolesId;
-    this.roleService.getRolesDetailsByMstId(roleMstId).subscribe({
+    const authoritiesMstId = this.data.authorities.AuthoritiesId;
+    this.authoritiesService.getAuthoritiesDetailsByMstId(authoritiesMstId).subscribe({
       next: res => {
-        console.log('Role Details Fetched successfully:', res);
+        console.log('Authorities Details Fetched successfully:', res);
         this.descriptionDetails = res;
         this.description = res.map((d: any) => ({
           srno: d.SrNo,
-          desc: d.RolesDetailsDescription,
+          desc: d.AuthoritiesDetailsDescription,
         }));
       },
       error: err => {
-        console.error('Error fetch Role details:', err);
+        console.error('Error fetch Authorities details:', err);
       },
     });
   }
 
   loadAllGrade(): void {
-    this.roleService.getGradeList().subscribe({
+    this.authoritiesService.getGradeList().subscribe({
       next: res => {
         this.gradeList = res;
         console.log('Grade loaded:', res);
@@ -175,8 +173,9 @@ export class AddEditRole implements OnInit {
   }
 
   private setGradeForEdit(): void {
+
     let GradeId: number | null = null;
-    const gradeData = this.data.role;
+    const gradeData = this.data.authorities;
 
     if (gradeData?.GradeName) {
       const Grade = this.gradeList.find(
@@ -189,8 +188,8 @@ export class AddEditRole implements OnInit {
     }
 
     if (GradeId) {
-      this.roleForm.patchValue({
-        RolesGradeId: GradeId,
+      this.authoritiesForm.patchValue({
+        AuthoritiesGradeId: GradeId,
       });
       console.log('Grade set in form:', GradeId);
     } else {
@@ -199,7 +198,7 @@ export class AddEditRole implements OnInit {
   }
 
   loadAllDivision(): void {
-    this.roleService.getDivisionList().subscribe({
+    this.authoritiesService.getDivisionList().subscribe({
       next: res => {
         this.divisionList = res;
         console.log('Grade loaded:', res);
@@ -223,7 +222,7 @@ export class AddEditRole implements OnInit {
 
   private setDivisionForEdit(): void {
     let DivisionId: number | null = null;
-    const divisionData = this.data.role;
+    const divisionData = this.data.authorities;
 
     if (divisionData?.DivisionName) {
       const Division = this.divisionList.find(
@@ -241,8 +240,8 @@ export class AddEditRole implements OnInit {
     }
 
     if (DivisionId) {
-      this.roleForm.patchValue({
-        RolesDivisionId: DivisionId,
+      this.authoritiesForm.patchValue({
+        AuthoritiesDivisionId: DivisionId,
       });
       console.log('Division set in form:', DivisionId);
     } else {
@@ -251,7 +250,7 @@ export class AddEditRole implements OnInit {
   }
 
   loadAllDesignation(): void {
-    this.roleService.getDesignationList().subscribe({
+    this.authoritiesService.getDesignationList().subscribe({
       next: res => {
         this.designationList = res;
         console.log('Designation loaded:', res);
@@ -275,7 +274,7 @@ export class AddEditRole implements OnInit {
 
   private setDesignationForEdit(): void {
     let DesignationId: number | null = null;
-    const designationData = this.data.role;
+    const designationData = this.data.authorities;
 
     if (designationData?.DesignationName) {
       const Designation = this.designationList.find(
@@ -295,8 +294,8 @@ export class AddEditRole implements OnInit {
     }
 
     if (DesignationId) {
-      this.roleForm.patchValue({
-        RolesDesignationId: DesignationId,
+      this.authoritiesForm.patchValue({
+        AuthoritiesDesignationId: DesignationId,
       });
       console.log('Designation set in form:', DesignationId);
     } else {
@@ -306,30 +305,28 @@ export class AddEditRole implements OnInit {
       );
     }
   }
-
   onReset(): void {
-    this.roleForm.reset();
-    this.roleDetailsDataSource.data = [];
-    this.newroleDetail = '';
+    this.authoritiesForm.reset();
+    this.authoritiesDetailsDataSource.data = [];
+    this.newauthoritiesDetail = '';
     console.log('Reset all data');
   }
 
   onSubmit(): void {
-    debugger;
-    if (this.roleForm.valid && this.description.length > 0) {
-      this.roleForm.enable(); //important for active boolean
+    if (this.authoritiesForm.valid && this.description.length > 0) {
+      this.authoritiesForm.enable(); //important for active boolean
       const descriptionString = this.description.map(item => ({
         srno: item.srno,
         desc: item.desc,
       }));
       const payload = {
-        ...this.roleForm.value,
+        ...this.authoritiesForm.value,
         descriptions: descriptionString,
       };
       console.log('Form submitted with values:', payload);
       this.dialogRef?.close(payload);
     } else {
-      this.roleForm.markAllAsTouched();
+      this.authoritiesForm.markAllAsTouched();
     }
   }
 

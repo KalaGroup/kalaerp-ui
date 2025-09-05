@@ -1,21 +1,31 @@
 <mat-card>
-  <mat-card-title>{{ isEditMode ? 'Edit Roles Master' : 'Add Roles Master' }}</mat-card-title>
+  <mat-card-title>
+    {{ isEditMode ? 'Edit Authorities Master' : 'Add Authorities Master' }}
+  </mat-card-title>
 
   <mat-card-content>
-    <form [formGroup]="roleForm" class="form-field-full">
+    <form [formGroup]="authoritiesForm" class="form-field-full">
       <div class="row mb-3">
         <div class="col-sm-4 col-xl-3"></div>
 
         <div class="col-sm-4 col-xl-3">
           <div class="d-flex align-items-center justify-content-end" style="height: 56px">
-            <mat-checkbox formControlName="RolesAuth" color="primary" [disabled]="!isEditMode">
+            <mat-checkbox
+              formControlName="AuthoritiesAuth"
+              color="primary"
+              [disabled]="!isEditMode"
+            >
               Auth
             </mat-checkbox>
-            <mat-checkbox formControlName="RolesIsActive" color="primary" [disabled]="!isEditMode">
+            <mat-checkbox
+              formControlName="AuthoritiesIsActive"
+              color="primary"
+              [disabled]="!isEditMode"
+            >
               Active
             </mat-checkbox>
             <mat-checkbox
-              formControlName="RolesIsDiscard"
+              formControlName="AuthoritiesIsDiscard"
               color="primary"
               [disabled]="!isEditMode"
               *ngIf="isEditMode"
@@ -31,27 +41,28 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Grade</mat-label>
-            <mat-select formControlName="RolesGradeId" placeholder="Select Grade">
+            <mat-select formControlName="AuthoritiesGradeId" placeholder="Select Grade">
               <mat-option value="">Select Grade</mat-option>
               @for (grade of filteredgradeList; track grade.GradeId) {
               <mat-option [value]="grade.GradeId">{{ grade.GradeName }}</mat-option>
               }
             </mat-select>
-            @if (roleForm.get('RolesGradeId')?.invalid && roleForm.get('RolesGradeId')?.touched) {
+            @if (authoritiesForm.get('AuthoritiesGradeId')?.invalid &&
+            authoritiesForm.get('AuthoritiesGradeId')?.touched) {
             <mat-error>Grade is required</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Designation</mat-label>
-            <mat-select formControlName="RolesDesignationId" placeholder="Select Designation">
+            <mat-select formControlName="AuthoritiesDesignationId" placeholder="Select Designation">
               <mat-option value="">Select Designation</mat-option>
               @for (desg of filtereddesignationList; track desg.DesignationId) {
               <mat-option [value]="desg.DesignationId">{{ desg.DesignationName }}</mat-option>
               }
             </mat-select>
-            @if (roleForm.get('RolesDesignationId')?.invalid &&
-            roleForm.get('RolesDesignationId')?.touched) {
+            @if (authoritiesForm.get('AuthoritiesDesignationId')?.invalid &&
+            authoritiesForm.get('AuthoritiesDesignationId')?.touched) {
             <mat-error>Designation is required</mat-error>
             }
           </mat-form-field>
@@ -61,31 +72,31 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Division</mat-label>
-            <mat-select formControlName="RolesDivisionId" placeholder="Select Division">
+            <mat-select formControlName="AuthoritiesDivisionId" placeholder="Select Division">
               <mat-option value="">Select Division</mat-option>
               @for (div of filtereddivisionList; track div.DivisionId) {
               <mat-option [value]="div.DivisionId">{{ div.DivisionName }}</mat-option>
               }
             </mat-select>
-            @if (roleForm.get('RolesDivisionId')?.invalid &&
-            roleForm.get('RolesDivisionId')?.touched) {
+            @if (authoritiesForm.get('AuthoritiesDivisionId')?.invalid &&
+            authoritiesForm.get('AuthoritiesDivisionId')?.touched) {
             <mat-error>Division is required</mat-error>
             }
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Remark</mat-label>
-            <input matInput formControlName="RolesRemark" placeholder="Enter Remark" />
+            <input matInput formControlName="AuthoritiesRemark" placeholder="Enter Remark" />
           </mat-form-field>
           <br />
         </div>
       </div>
 
-            <div class="container mt-3">
+      <div class="container mt-3">
         <mat-card>
           <mat-card-header>
             <mat-card-title style="font-size: 20px; font-weight: bold; color: #007bff">
-              Role Master Details
+              Authorities Details
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>
@@ -137,7 +148,7 @@
                         <mat-form-field appearance="outline" class="full-width-field">
                           <input
                             matInput
-                           [(ngModel)]="part.desc"
+                            [(ngModel)]="part.desc"
                             [readonly]="editIndex !== i"
                             name="desc{{i}}"
                             [class.readonly-input]="editIndex !== i"
@@ -191,29 +202,30 @@
           </mat-card-content>
         </mat-card>
       </div>
+
       <!-- Action buttons -->
-
     </form>
-          <div class="row">
-        <div class="col-12">
-          <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="roleForm.invalid"
-              (click)="onSubmit()"
-            >
-              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
-              {{ isEditMode ? 'Update' : 'Save' }}
-            </button>
 
-            <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
-              <mat-icon>close</mat-icon>
-              Cancel
-            </button>
-          </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <button
+            mat-flat-button
+            color="primary"
+            class="btn-primary px-4"
+            [disabled]="authoritiesForm.invalid"
+            (click)="onSubmit()"
+          >
+            <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+
+          <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
+            <mat-icon>close</mat-icon>
+            Cancel
+          </button>
         </div>
       </div>
+    </div>
   </mat-card-content>
 </mat-card>

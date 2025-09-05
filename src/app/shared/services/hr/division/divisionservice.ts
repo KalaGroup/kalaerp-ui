@@ -20,7 +20,6 @@ export class Divisionservice {
     return this.http.get<any[]>(this.divisionUrl)
   }
   insertDivision(insertDivision: IDivision): Observable<any> {
-    debugger;
     return this.http.post(this.insertDivisionUrl, insertDivision);
   }
   updateDivision(updateDivision: IDivision): Observable<any> {

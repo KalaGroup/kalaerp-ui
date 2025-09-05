@@ -24,6 +24,8 @@
     "hr.location": "Location Master",
     "hr.classoftravel": "ClassOfTravel",
     "hr.facility": "Facility Master",
+    "hr.ctcmaster": "CTC Master",
+    "hr.authoritiesmaster": "Authorities Master",
     "hr.recruitmentstagestatusmaster": "Recruitment Stage Status Master",
     "hr.activity": "Activity Master",
     "hr.kpa": "KPA Master",

@@ -24,6 +24,8 @@ import { Rolesdetails } from './rolesdetails/rolesdetails';
 import { Locationmaster } from './locationmaster/locationmaster';
 import { Classoftravelmaster } from './classoftravelmaster/classoftravelmaster';
 import { Facilitymaster } from './facilitymaster/facilitymaster';
+import { Ctcmaster } from './ctcmaster/ctcmaster';
+import { Authoritiesmaster } from './authoritiesmaster/authoritiesmaster';
 import { Recruitmentstagestatusmaster } from './recruitmentstagestatusmaster/recruitmentstagestatusmaster';
 import { Activitymaster } from './activitymaster/activitymaster';
 import { Kpamaster } from './kpamaster/kpamaster';
@@ -123,6 +125,14 @@ export const routes: Routes = [
     path: 'facility',
     component: Facilitymaster,
   },
+    {
+    path: 'ctcmaster',
+    component: Ctcmaster,
+  },
+  {
+    path: 'authoritiesmaster',
+    component: Authoritiesmaster,
+   },
   {
     path: 'recruitmentstagestatusmaster',
     component: Recruitmentstagestatusmaster

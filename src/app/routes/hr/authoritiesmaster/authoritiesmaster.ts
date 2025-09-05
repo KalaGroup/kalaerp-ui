@@ -1,4 +1,3 @@
-/* eslint-disable @angular-eslint/prefer-inject */
 import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormBuilder } from '@angular/forms';
 import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -14,13 +13,15 @@ import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
 import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
-import { AddEditRole } from './add-edit-role/add-edit-role';
 import { IRole } from '@shared/interfaces/hr/role';
 import { Roleservice } from '@shared/services/hr/role/roleservice';
 import { Toastservice } from 'app/routes/toastservice';
+import { AddEditAuthorities } from './add-edit-authorities/add-edit-authorities';
+import { Authoritiesservice } from '@shared/services/hr/authorities/authoritiesservice';
+import { IAuthorities } from '@shared/interfaces/hr/authorities';
 
 @Component({
-  selector: 'app-rolesmaster',
+  selector: 'app-authoritiesmaster',
   imports: [
     CommonModule,
     MatTableModule,
@@ -37,15 +38,15 @@ import { Toastservice } from 'app/routes/toastservice';
     PageHeader,
     MatDialogModule,
   ],
-  templateUrl: './rolesmaster.html',
-  styleUrls: ['./rolesmaster.scss'],
+  templateUrl: './authoritiesmaster.html',
+  styleUrl: './authoritiesmaster.scss',
 })
-export class Rolesmaster {
+export class Authoritiesmaster {
   private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
-  role: IRole[] = [];
+  authorities: IAuthorities[] = [];
   showForm = false;
   stateModel: any = {};
   editIndex: number | null = null;
@@ -66,23 +67,22 @@ export class Rolesmaster {
   isLoading = false;
   list: any[] = [];
   isConfigExpanded: boolean = false;
-  roleForm: any;
+  authoritiesForm: any;
 
   constructor(
     private fb: FormBuilder,
-    private roleService: Roleservice,
+    private authoritiesService: Authoritiesservice,
     private dialog: MatDialog,
     private toastService: Toastservice
   ) {}
   ngOnInit(): void {
-    this.loadAllRole();
+    this.loadAllAuthorities();
   }
 
   toggleConfigSection(): void {
     this.isConfigExpanded = !this.isConfigExpanded;
   }
-
-  RoleColumns: MtxGridColumn[] = [
+  columns: MtxGridColumn[] = [
     {
       header: this.translate.stream('SNo'),
       field: 'SNo',
@@ -110,19 +110,19 @@ export class Rolesmaster {
     },
     {
       header: this.translate.stream('Remark'),
-      field: 'RolesRemark',
+      field: 'AuthoritiesRemark',
       sortable: true,
       minWidth: 150,
     },
     {
       header: this.translate.stream('Auth Remark'),
-      field: 'RolesAuthRemark',
+      field: 'AuthoritiesAuthRemark',
       sortable: true,
       minWidth: 150,
     },
     {
       header: this.translate.stream('Is Active'),
-      field: 'RolesIsActive',
+      field: 'AuthoritiesIsActive',
       width: '120px',
       type: 'tag',
       tag: {
@@ -132,7 +132,7 @@ export class Rolesmaster {
     },
     {
       header: this.translate.stream('Is Discard'),
-      field: 'RolesIsDiscard',
+      field: 'AuthoritiesIsDiscard',
       width: '130px',
       type: 'tag',
       tag: {
@@ -142,7 +142,7 @@ export class Rolesmaster {
     },
     {
       header: this.translate.stream('Auth'),
-      field: 'RolesAuth',
+      field: 'AuthoritiesAuth',
       width: '140px',
       type: 'tag',
       tag: {
@@ -180,25 +180,24 @@ export class Rolesmaster {
     },
   ];
 
-  loadAllRole() {
-    debugger;
-    this.roleService.getAllRole().subscribe({
+  loadAllAuthorities() {
+    this.authoritiesService.getAllAuthorities().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
           ...item,
           SNo: index + 1,
         }));
-        console.log('Fetched Role with S.No:', this.list);
+        console.log('Fetched Authorities with S.No:', this.list);
       },
       error: err => {
-        console.error('Error fetching Role:', err);
+        console.error('Error fetching Authorities:', err);
       },
     });
   }
 
   openAddDialog() {
-    const dialogRef = this.dialog.open(AddEditRole, {
-      width: '70%',
+    const dialogRef = this.dialog.open(AddEditAuthorities, {
+      width: '100%',
       height: '80%',
       maxWidth: '100vw',
       maxHeight: '100vh',
@@ -207,28 +206,28 @@ export class Rolesmaster {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Added Role:', result);
-        const payload: IRole = {
-          RolesId: 0,
-          RolesGradeId: result.RolesGradeId,
-          RolesDesignationId: result.RolesDesignationId,
-          RolesDivisionId: result.RolesDivisionId,
-          RolesRemark: result.RolesRemark,
-          RolesAuthRemark: result.RolesAuthRemark,
-          RolesAuth: result.RolesAuth,
-          RolesIsDiscard: result.RolesIsDiscard,
-          RolesIsActive: result.RolesIsActive,
+        console.log('Added Authorities:', result);
+        const payload: IAuthorities = {
+          AuthoritiesId: 0,
+          AuthoritiesGradeId: result.AuthoritiesGradeId,
+          AuthoritiesDesignationId: result.AuthoritiesDesignationId,
+          AuthoritiesDivisionId: result.AuthoritiesDivisionId,
+          AuthoritiesRemark: result.AuthoritiesRemark,
+          AuthoritiesAuthRemark: result.AuthoritiesAuthRemark,
+          AuthoritiesAuth: result.AuthoritiesAuth,
+          AuthoritiesIsDiscard: result.AuthoritiesIsDiscard,
+          AuthoritiesIsActive: result.AuthoritiesIsActive,
           CreatedBy: result.CreatedBy,
           CreatedDate: new Date().toISOString(),
           descriptions: result.descriptions,
         };
         console.log('Payload for adding Role:', payload);
         // Call the service to insert the Workstation
-        this.roleService.insertRole(payload).subscribe({
+        this.authoritiesService.insertAuthorities(payload).subscribe({
           next: response => {
-            this.toastService.showSuccess('Role  added successfully:', response);
-            this.loadAllRole();
-            alert(`Role "${result.RolesGradeId}" added successfully!`);
+            this.toastService.showSuccess('Authorities  added successfully:', response);
+            this.loadAllAuthorities();
+            alert(`Authorities "${result.GradeID}" added successfully!`);
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -238,15 +237,15 @@ export class Rolesmaster {
                 const message = validationErr.ErrorMessage;
 
                 // Mark field error in form
-                if (this.roleForm.get(field)) {
-                  this.roleForm.get(field)?.setErrors({ serverError: message });
+                if (this.authoritiesForm.get(field)) {
+                  this.authoritiesForm.get(field)?.setErrors({ serverError: message });
                 }
                 // Optionally show toast
                 this.toastService.showError(message);
               });
             } else {
               this.toastService.showError(
-                'Failed to add Role. Please verify Role details and try again.'
+                'Failed to add Authorities. Please verify Authorities details and try again.'
               );
             }
           },
@@ -256,44 +255,42 @@ export class Rolesmaster {
   }
 
   edit(record: any) {
-    debugger;
     this.dialog
-      .open(AddEditRole, {
+      .open(AddEditAuthorities, {
         width: '80%',
         height: '70%',
         maxWidth: '100vw',
         maxHeight: '100vh',
-        data: { role: record },
+        data: { authorities: record },
       })
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          console.log('Role Updated:', result);
+          console.log('Authorities Updated:', result);
           // Create update payload as per your reqirements
           const updatePayload = {
-            RolesId: result.RolesId,
-            RolesGradeId: result.RolesGradeId,
-            RolesDesignationId: result.RolesDesignationId,
-            RolesDivisionId: result.RolesDivisionId,
-            RolesRemark: result.RolesRemark,
-            RolesAuthRemark: result.RolesAuthRemark,
-            RolesAuth: result.RolesAuth,
-            RolesIsDiscard: result.RolesIsDiscard,
-            RolesIsActive: result.RolesIsActive,
+            AuthoritiesId: result.AuthoritiesId,
+            AuthoritiesGradeId: result.AuthoritiesGradeId,
+            AuthoritiesDesignationId: result.AuthoritiesDesignationId,
+            AuthoritiesDivisionId: result.AuthoritiesDivisionId,
+            AuthoritiesRemark: result.AuthoritiesRemark,
+            AuthoritiesAuthRemark: result.AuthoritiesAuthRemark,
+            AuthoritiesAuth: result.AuthoritiesAuth,
+            AuthoritiesIsDiscard: result.AuthoritiesIsDiscard,
+            AuthoritiesIsActive: result.AuthoritiesIsActive,
             CreatedBy: result.CreatedBy,
             descriptions: result.descriptions,
           };
-          debugger;
           console.log('Update payload:', updatePayload);
-          this.roleService.updateRole(updatePayload).subscribe({
+          this.authoritiesService.updateAuthorities(updatePayload).subscribe({
             next: response => {
-              this.toastService.showSuccess('Role updated successfully:', response);
-              alert(`Role "${result.RolesGradeId}" updated successfully!`);
-              this.loadAllRole();
+              this.toastService.showSuccess('Authorities updated successfully:', response);
+              alert(`Authorities "${result.AuthoritiesId}" updated successfully!`);
+              this.loadAllAuthorities();
             },
             error: err => {
-              console.error('Error updating Role:', err);
-              this.loadAllRole();
+              console.error('Error updating Authorities:', err);
+              this.loadAllAuthorities();
             },
           });
         }
@@ -305,21 +302,20 @@ export class Rolesmaster {
   }
 
   save(record: any): void {
-    debugger
     console.log('Saving record:', record);
     this.closeDialog();
   }
 
   delete(value: any) {
-    this.roleService.deleteRole(value.RolesId).subscribe({
+    this.authoritiesService.deleteAuthorities(value.AuthoritiesId).subscribe({
       next: response => {
-        this.toastService.showSuccess('Role deleted successfully:', response);
-        alert(`You have deleted ${value.RolesGradeId} successfully!`);
-        this.loadAllRole();
+        this.toastService.showSuccess('Authorities deleted successfully:', response);
+        alert(`You have deleted ${value.AuthoritiesId} successfully!`);
+        this.loadAllAuthorities();
       },
       error: err => {
-        console.error('Error deleting Role:', err);
-        this.loadAllRole();
+        console.error('Error deleting Authorities:', err);
+        this.loadAllAuthorities();
       },
     });
   }
@@ -330,6 +326,10 @@ export class Rolesmaster {
 
   changeSort(e: any) {
     console.log(e);
+  }
+
+  enableRowExpandable() {
+    this.columns[0].showExpand = this.expandable;
   }
 
   updateCell() {
