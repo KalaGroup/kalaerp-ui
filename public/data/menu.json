@@ -140,6 +140,11 @@
           "route": "kpa",
           "name": "kpa",
           "type": "link"
+        },
+        {
+          "route": "citymaster",
+          "name": "citymaster",
+          "type": "link"
         }
       ]
     },
