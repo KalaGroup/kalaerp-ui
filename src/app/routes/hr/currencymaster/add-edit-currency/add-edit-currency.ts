@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule,FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -11,11 +11,12 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 //import { currencyService } from '../../hr.service';
 import { Currencyservice } from '@shared/services/hr/currency/currencyservice';
 import { MatIconModule } from '@angular/material/icon';
+import { create } from 'domain';
 
 
 @Component({
   selector: 'app-add-edit-currency',
-   imports: [
+  imports: [
     ReactiveFormsModule,
     MatCardModule,
     MatDialogModule,
@@ -30,10 +31,10 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './add-edit-currency.scss'
 })
 export class AddEditCurrency {
-currencyForm!: FormGroup;
+  currencyForm!: FormGroup;
   isEditMode: boolean = false;
   currencyList: any[] = [];
-  CurrencyId: string ='';
+  CurrencyId: string = '';
   currencySearchControl = new FormControl('');
   filteredCurrencyList: any[] = [];
 
@@ -57,13 +58,15 @@ currencyForm!: FormGroup;
     const currentDate = new Date().toLocaleDateString('en-GB'); // dd/mm/yyyy format
     this.currencyForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
-      CurrencyId: [{ value: '', disabled: !this.isEditMode }],
+      CurrencyId: 0,
       CurrencyAuth: [{ value: true, disabled: !this.isEditMode }],
       CurrencyDiscard: [{ value: true, disabled: !this.isEditMode }],
       CurrencyIsActive: [{ value: true, disabled: !this.isEditMode }],
       CurrencyName: ['', [Validators.required]],
       CurrencySymbol: ['', [Validators.required]],
       CurrencyRemark: ['', [Validators.required]],
+      CreateBy:0
+    
     });
 
     // If editing, pre-fill form with available data
@@ -77,7 +80,7 @@ currencyForm!: FormGroup;
         CurrencyDiscard: this.data.currency.CurrencyIsDiscard ?? false,
         CurrencyAuth: this.data.currency.CurrencyAuth ?? false
       });
-       this.currencyForm.get('CurrencyIsActive')?.enable();
+      this.currencyForm.get('CurrencyIsActive')?.enable();
       this.currencyForm.get('CurrencyDiscard')?.enable();
       this.currencyForm.get('CurrencyAuth')?.enable();
       console.log('Form values after patch:', this.currencyForm.value);
@@ -89,13 +92,13 @@ currencyForm!: FormGroup;
       next: (res) => {
         this.currencyList = res;
         console.log('Loaded currencies:', res);
-         this.filteredCurrencyList = [...this.currencyList];
-         this.currencySearchControl.valueChanges.subscribe(value => {
-        const filterValue = (value || '').toLowerCase();
-        this.filteredCurrencyList = this.currencyList.filter(currency =>
-          currency.CurrencyName.toLowerCase().includes(filterValue)
-        );
-      });
+        this.filteredCurrencyList = [...this.currencyList];
+        this.currencySearchControl.valueChanges.subscribe(value => {
+          const filterValue = (value || '').toLowerCase();
+          this.filteredCurrencyList = this.currencyList.filter(currency =>
+            currency.CurrencyName.toLowerCase().includes(filterValue)
+          );
+        });
         // Handle currency selection for edit mode
         if (this.isEditMode && this.data) {
           this.setCurrencyForEdit();
@@ -107,7 +110,7 @@ currencyForm!: FormGroup;
     });
   }
 
-   private setCurrencyForEdit(): void {
+  private setCurrencyForEdit(): void {
     let currencyId = null;
     const countryData = this.data.country;
     // Find currency by name (trim whitespace for comparison)

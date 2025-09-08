@@ -29,33 +29,22 @@
     {{ isEditMode ? 'Edit Currency' : 'Add Currency' }}
   </mat-card-title>
 
-<mat-card-content>
+  <mat-card-content>
     <form [formGroup]="currencyForm" class="form-field-full">
 
       <!-- Auto-generated fields row -->
       <div class="row mb-3">
-        <div class="col-sm-4 col-xl-3">
-          <mat-form-field appearance="fill">
-            <mat-label>Currency ID</mat-label>
-            <input matInput formControlName="CurrencyId" [readonly]="!isEditMode" 
-                   [placeholder]="isEditMode ? 'Enter currency code' : 'Auto-generated'"/>
-          </mat-form-field>
-        </div>
-        <div class="col-sm-4 col-xl-3">
-          <mat-form-field appearance="fill">
-            <mat-label>Created Date</mat-label>
-            <input matInput formControlName="CreatedDate" readonly placeholder="Auto-generated" />
-          </mat-form-field>
-        </div>
+
+
         <div class="col-sm-4 col-xl-3">
           <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
             <mat-checkbox formControlName="CurrencyAuth" color="primary" [disabled]="!isEditMode">
               Auth
             </mat-checkbox>
-             <mat-checkbox formControlName="CurrencyIsActive" color="primary" [disabled]="!isEditMode">
+            <mat-checkbox formControlName="CurrencyIsActive" color="primary" [disabled]="!isEditMode">
               Active
             </mat-checkbox>
-              <mat-checkbox formControlName="CurrencyDiscard" color="primary" [disabled]="!isEditMode">
+            <mat-checkbox formControlName="CurrencyDiscard" color="primary" [disabled]="!isEditMode">
               Discard
             </mat-checkbox>
           </div>
@@ -68,16 +57,27 @@
             <mat-label>Currency Name</mat-label>
             <input matInput formControlName="CurrencyName" placeholder="Enter full currency name" />
             @if (currencyForm.get('CurrencyName')?.invalid && currencyForm.get('CurrencyName')?.touched) {
-              <mat-error>Currency Name is required</mat-error>
+            <mat-error>Currency Name is required</mat-error>
             }
           </mat-form-field>
         </div>
+
+        <div class="col-sm-8 col-xl-8">
+          <mat-form-field appearance="fill">
+            <mat-label>Currency Symbol</mat-label>
+            <input matInput formControlName="CurrencySymbol" placeholder="e.g., USA, UK, IND" />
+            @if (currencyForm.get('CurrencySymbol')?.invalid && currencyForm.get('CurrencySymbol')?.touched) {
+            <mat-error>Currency Symbol is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
         <div class="col-sm-8 col-xl-8">
           <mat-form-field appearance="fill">
             <mat-label>Currency Remark</mat-label>
             <input matInput formControlName="CurrencyRemark" placeholder="e.g., USA, UK, IND" />
             @if (currencyForm.get('CurrencyRemark')?.invalid && currencyForm.get('CurrencyRemark')?.touched) {
-              <mat-error>Currency Remark is required</mat-error>
+            <mat-error>Currency Remark is required</mat-error>
             }
           </mat-form-field>
         </div>
@@ -87,8 +87,8 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button mat-flat-button color="primary" class="btn-primary px-4"
-              [disabled]="currencyForm.invalid" (click)="onSubmit()">
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="currencyForm.invalid"
+              (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>
