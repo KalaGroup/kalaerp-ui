@@ -30,6 +30,7 @@ import { Recruitmentstagestatusmaster } from './recruitmentstagestatusmaster/rec
 import { Activitymaster } from './activitymaster/activitymaster';
 import { Kpamaster } from './kpamaster/kpamaster';
 import { CitymasterComponent } from './citymaster/citymaster';
+import { Gradedesignationfacilityassignment } from './gradedesignationfacilityassignment/gradedesignationfacilityassignment/gradedesignationfacilityassignment';
 
 export const routes: Routes = [
   {
@@ -148,5 +149,9 @@ export const routes: Routes = [
   {
     path: 'citymaster',
     component: CitymasterComponent
+  },
+  {
+    path: 'gradedesignationfacilityassignment',
+    component: Gradedesignationfacilityassignment,
   }
 ];
