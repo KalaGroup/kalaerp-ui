@@ -136,9 +136,10 @@
           "name": "authoritiesmaster",
           "type": "link"
         },
-          "route":"recruitmentstagestatusmaster",
-          "name":"recruitmentstagestatusmaster",
-          "type":"link"
+        {
+          "route": "recruitmentstagestatusmaster",
+          "name": "recruitmentstagestatusmaster",
+          "type": "link"
         },
         {
           "route": "activity",
@@ -181,7 +182,10 @@
         }
       ],
       "permissions": {
-        "only": ["ADMIN", "MANAGER"]
+        "only": [
+          "ADMIN",
+          "MANAGER"
+        ]
       }
     },
     {
@@ -409,7 +413,10 @@
         }
       ],
       "permissions": {
-        "except": ["MANAGER", "GUEST"]
+        "except": [
+          "MANAGER",
+          "GUEST"
+        ]
       }
     },
     {

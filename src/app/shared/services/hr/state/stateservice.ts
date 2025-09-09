@@ -8,15 +8,16 @@ import { IState } from '@shared/interfaces/hr/state';
   providedIn: 'root',
 })
 export class Stateservice {
-    private stateUrl = 'https://localhost:7019/api/StateMaster/GetAllState';
+  private stateUrl = 'https://localhost:7019/api/StateMaster/GetAllState';
   private insertStateUrl = 'https://localhost:7019/api/StateMaster/CreateState';
   private updateStateUrl = 'https://localhost:7019/api/StateMaster/UpdateState';
   private deleteStateUrl = 'https://localhost:7019/api/StateMaster/deletestate';
   private getStateByIdUrl = 'https://localhost:7019/api/StateMaster/getstatebyid';
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-    getAllState(): Observable<any[]> {
+  getAllState(): Observable<any[]> {
+    debugger
     return this.http.get<any[]>(this.stateUrl)
   }
 
