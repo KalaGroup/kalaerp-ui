@@ -1,14 +1,14 @@
 export interface IEmployeetype {
   EmployeeTypeId?: number;
-  EmployeeTypeCode?:number;
+  //  EmployeeTypeCode?:number;
   EmployeeTypeName: string;
   EmployeeTypeDescription: string;
   EmployeeTypeRemark: string;
-  EmployeeTypeAuthRemark?:string;
+  EmployeeTypeAuthRemark?: string;
   EmployeeTypeAuth: boolean;
   EmployeeTypeIsDiscard?: boolean;
   EmployeeTypeIsActive: boolean;
   CreatedBy?: string;
-  CreatedDate?: string; 
+  CreatedDate?: string;
   [key: string]: any;
 }

@@ -187,6 +187,7 @@ export class Facilitymaster implements OnInit {
         this.Facilityservices.updateFacility(updatePayload).subscribe({
           next: () => {
             alert(`Facility "${result.FacilityName}" updated successfully!`);
+            this.toastService.showSuccess("updating facility");
             this.getAllFacility();
           },
           error: (err) => {
@@ -221,6 +222,7 @@ export class Facilitymaster implements OnInit {
         this.Facilityservices.insertFacility(payload).subscribe({
           next: () => {
             alert(`Facility "${result.FacilityName}" added successfully!`);
+            this.toastService.showSuccess("added facility");
             this.getAllFacility();
           },
           error: (err) => {
@@ -239,6 +241,7 @@ export class Facilitymaster implements OnInit {
         console.log('Delete success:', response);
         this.toastService.showSuccess;
         alert(`You have deleted ${value.FacilityName}..!`);
+        this.toastService.showSuccess("delete facility");
         this.getAllFacility();
       },
       error: (err) => {

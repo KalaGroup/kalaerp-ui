@@ -206,7 +206,7 @@ export class Locationmaster implements OnInit {
           next: (response) => {
             console.log('location updated successfully:', response);
             alert(`location "${result.LocationName}" updated successfully!`);
-            this.toastService.showSuccess;
+            this.toastService.showSuccess("updated successfully");
             this.loadAllLocation();
           },
           error: (err) => {
@@ -253,7 +253,7 @@ export class Locationmaster implements OnInit {
           next: (response) => {
             console.log('Location added successfully:', response);
             this.loadAllLocation();
-            this.toastService.showSuccess;
+            this.toastService.showSuccess("added successfully");
             alert(`Location added successfully!`);
 
           },
@@ -281,7 +281,7 @@ export class Locationmaster implements OnInit {
         console.log('Delete success:', response);
         console.log('Location deleted successfully:', response);
         this.loadAllLocation();
-        this.toastService.showSuccess;
+        this.toastService.showSuccess("delete successfully");
         alert(`Location deleted successfully!`);
       },
       error: (err) => {

@@ -107,11 +107,6 @@
           "type": "link"
         },
         {
-          "route": "rolesdetails",
-          "name": "rolesdetails",
-          "type": "link"
-        },
-        {
           "route": "location",
           "name": "location",
           "type": "link"

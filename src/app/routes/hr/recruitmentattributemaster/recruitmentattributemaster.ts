@@ -206,11 +206,12 @@ export class Recruitmentattributemaster implements OnInit {
         console.log('Update payload:', updatePayload);
         this.RecruitmentAttributeServices.updateRecruitmentAttribute(updatePayload).subscribe({
           next: () => {
-            alert(`Facility "${result.FacilityName}" updated successfully!`);
+            alert(`recruitment updated successfully!`);
+            this.toastService.showSuccess("updated successfully");
             this.getAllRecruitmentAttribute();
           },
           error: (err) => {
-            console.error('Error updating facility:', err);
+            console.error('Error updating recruitment:', err);
           }
         });
       });
@@ -243,12 +244,13 @@ export class Recruitmentattributemaster implements OnInit {
 
         this.RecruitmentAttributeServices.insertRecruitmentAttribute(payload).subscribe({
           next: () => {
-            alert(`Facility "${result.FacilityName}" added successfully!`);
+            alert(`recruitment  added successfully!`);
+            this.toastService.showSuccess("recruitment added successfully ");
             this.getAllRecruitmentAttribute();
           },
           error: (err) => {
-            console.error('Error while adding facility:', err);
-            this.toastService.showError('Failed to add facility. Please check inputs.');
+            console.error('Error while adding recruitment:', err);
+            this.toastService.showError('Failed to add recruitment. Please check inputs.');
           }
         });
       }
@@ -260,11 +262,12 @@ export class Recruitmentattributemaster implements OnInit {
     this.RecruitmentAttributeServices.deleteRecruitmentAttribute(value.RecruitmentAttributeId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-        alert(`You have deleted ${value.FacilityName}..!`);
+        alert(`You have deleted..!`);
+        this.toastService.showSuccess("delete success ");
         this.getAllRecruitmentAttribute();
       },
       error: (err) => {
-        console.error('Error deleting Qualification:', err);
+        console.error('Error deleting recruitment:', err);
       }
     });
   }

@@ -3,7 +3,7 @@ import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule }   from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -44,8 +44,8 @@ import { CitymasterService } from '@shared/services/hr/Citymaster/citymaster-ser
   styleUrl: './citymaster.scss'
 })
 export class CitymasterComponent implements OnInit {
-expandable: any;
-private readonly translate = inject(TranslateService);
+  expandable: any;
+  private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
@@ -140,101 +140,101 @@ private readonly translate = inject(TranslateService);
     });
   }
 
-edit(record: any) {
+  edit(record: any) {
 
-  this.dialog.open(AddEditCityComponent, {
-    width: '80%',
-    height: '70%',
-    maxWidth: '100vw',
-    maxHeight: '100vh',
-    data: { City: record },
-  }).afterClosed().subscribe(result => {
-    debugger; 
-    if (result) {
-       console.log('City Updated:', result);
+    this.dialog.open(AddEditCityComponent, {
+      width: '80%',
+      height: '70%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: { City: record },
+    }).afterClosed().subscribe(result => {
+      debugger;
+      if (result) {
+        console.log('City Updated:', result);
         // Create update payload
-      const updatePayload: ICity = {
-        CityId: result.CityId,
-        CityCode: result.CityCode,
-        CityName: result.CityName,
-        CityShortName: result.CityShortName,
-        CityLatitude: result.CityLatitude,
-        CityLongitude: result.CityLongitude,
-        CityRemark: result.CityRemark,
-        CityAuth: result.CityAuth,
-        CityIsDiscard: result.CityIsDiscard,
-        CityIsActive: result.CityIsActive,
-        CityCountryID: result.CityCountryID,
-        CityStateID: result.CityStateID,
-        CityDistrictID: result.CityDistrictID,
-        CityTierTypeID: result.CityTierTypeID,
-        CreatedBy: result.CreatedBy,
-        CreatedDate: result.CreatedDate
-      };
+        const updatePayload: ICity = {
+          CityId: result.CityId,
+          CityCode: result.CityCode,
+          CityName: result.CityName,
+          CityShortName: result.CityShortName,
+          CityLatitude: result.CityLatitude,
+          CityLongitude: result.CityLongitude,
+          CityRemark: result.CityRemark,
+          CityAuth: result.CityAuth,
+          CityIsDiscard: result.CityIsDiscard,
+          CityIsActive: result.CityIsActive,
+          CityCountryID: result.CityCountryID,
+          CityStateID: result.CityStateID,
+          CityDistrictID: result.CityDistrictID,
+          CityTierTypeID: result.CityTierTypeID,
+          CreatedBy: result.CreatedBy,
+          CreatedDate: result.CreatedDate
+        };
 
-      console.log('Update payload:', updatePayload);
-      this.hrService.updateCity(updatePayload).subscribe({
-        next: (response) => {
-          console.log('City updated successfully:', response);
-          this.loadAllCities();
-          this.toastService.showError('City updated successfully!');
-        },
-        error: (err) => {
-          console.error('Error updating City:', err);
-        }
-      });
-    }
-  });
-}
+        console.log('Update payload:', updatePayload);
+        this.hrService.updateCity(updatePayload).subscribe({
+          next: (response) => {
+            console.log('City updated successfully:', response);
+            this.loadAllCities();
+            this.toastService.showError('City updated successfully!');
+          },
+          error: (err) => {
+            console.error('Error updating City:', err);
+          }
+        });
+      }
+    });
+  }
 
- openAddDialog() {
-  const dialogRef = this.dialog.open(AddEditCityComponent, {
-    width: '90%',
-    height: '90%',
-    maxWidth: '100vw',
-    maxHeight: '100vh',
-    data: {}
-  });
+  openAddDialog() {
+    const dialogRef = this.dialog.open(AddEditCityComponent, {
+      width: '90%',
+      height: '90%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: {}
+    });
+    debugger
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Added City:', result);
+        const cityData: ICity = {
+          CityId: 0,
+          CityCode: result.CityCode,
+          CityName: result.CityName,
+          CityShortName: result.CityShortName,
+          CityLatitude: result.CityLatitude,
+          CityLongitude: result.CityLongitude,
+          CityRemark: result.CityRemark,
+          CityAuth: result.CityAuth,
+          CityIsDiscard: result.CityIsDiscard,
+          CityIsActive: result.CityIsActive,
+          CityCountryID: result.CityCountryID,
+          CityStateID: result.CityStateID,
+          CityDistrictID: result.CityDistrictID,
+          CityTierTypeID: result.CityTierTypeID,
+          CreatedBy: result.CreatedBy,
+          CreatedDate: new Date().toISOString()
+        };
+        console.log('Payload for adding City:', cityData);
+        // Call the service to insert the country
+        this.hrService.AddCity(cityData).subscribe({
+          next: (response) => {
+            console.log('City added successfully:', response);
+            this.toastService.showError('City added successfully!');
+            this.loadAllCities();
+          },
+          error: (err) => {
+            console.error('Error while adding country:', err);
+            this.toastService.showError('Failed to add country. Please verify country details and try again.');
+          }
+        });
+      }
+    });
+  }
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      console.log('Added City:', result);
-      const cityData: ICity = {
-        CityId: 0,
-        CityCode: result.CityCode,
-        CityName: result.CityName,
-        CityShortName: result.CityShortName,
-        CityLatitude: result.CityLatitude,
-        CityLongitude: result.CityLongitude,
-        CityRemark: result.CityRemark,
-        CityAuth: result.CityAuth,
-        CityIsDiscard: result.CityIsDiscard,
-        CityIsActive: result.CityIsActive,
-        CityCountryID: result.CityCountryID,
-        CityStateID: result.CityStateID,
-        CityDistrictID: result.CityDistrictID,
-        CityTierTypeID: result.CityTierTypeID,
-        CreatedBy: result.CreatedBy,
-        CreatedDate: new Date().toISOString()
-      };
-      console.log('Payload for adding City:', cityData);
-      // Call the service to insert the country
-      this.hrService.AddCity(cityData).subscribe({
-        next: (response) => {
-          console.log('City added successfully:', response);
-          this.toastService.showError('City added successfully!');
-          this.loadAllCities();
-        },
-        error: (err) => {
-          console.error('Error while adding country:', err);
-          this.toastService.showError('Failed to add country. Please verify country details and try again.');
-        }
-      });
-    }
-  });
-}
-
-   delete(value: any) {
+  delete(value: any) {
     this.hrService.deleteCountry(value.CityId).subscribe({
       next: (response) => {
         console.log('Country deleted successfully:', response);

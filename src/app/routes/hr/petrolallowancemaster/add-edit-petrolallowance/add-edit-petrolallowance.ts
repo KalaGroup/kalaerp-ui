@@ -10,7 +10,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { tr } from 'date-fns/locale';
 import { PetrolAllowanceservice } from '@shared/services/hr/PetrolAllowanceMaster/PetrolAllowanceservice';
 
 @Component({
@@ -76,7 +75,6 @@ export class AddEditPetrolallowance {
         PetrolAllowanceIsAuth: this.data.petrolallowance.PetrolAllowanceIsAuth,
         PetrolAllowanceIsDiscard: this.data.petrolallowance.PetrolAllowanceIsDiscard,
         PetrolAllowanceIsActive: this.data.petrolallowance.PetrolAllowanceIsActive,
-
         CreatedBy: this.data.petrolallowance.CreatedBy ?? 0
       });
 

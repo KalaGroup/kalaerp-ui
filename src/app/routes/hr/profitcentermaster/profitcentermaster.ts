@@ -218,13 +218,14 @@ export class Profitcentermaster implements OnInit {
 
         this.profitCenterServices.updateProfitcenter(updatePayload).subscribe({
           next: (response) => {
-            console.log('Qualification updated successfully:', response);
-            alert(`Qualification "${result.ProfitCenterName}" updated successfully!`);
+            this.toastService.showSuccess("updated successfully!");
+            alert(`profit "${result.ProfitCenterName}" updated successfully!`);
+
             this.loadAllProfitcenter();
           },
           error: (err) => {
-            console.error('Error updating Qualification:', err);
-            alert('Error updating qualification. Please try again.');
+            console.error('Error updating profit:', err);
+            alert('Error updating profit. Please try again.');
           }
         });
       }
@@ -264,6 +265,7 @@ export class Profitcentermaster implements OnInit {
         this.profitCenterServices.insertProfitcenter(payload).subscribe({
           next: (response) => {
             console.log('profitcenter added successfully:', response);
+            this.toastService.showSuccess("profitcenter added successfully");
             this.loadAllProfitcenter();
             alert(`profitcenter added successfully!`);
 
@@ -291,6 +293,7 @@ export class Profitcentermaster implements OnInit {
       next: (response) => {
         console.log('Delete success:', response);
         console.log('profitcenter deleted successfully:', response);
+        this.toastService.showSuccess('profitcenter deleted successfully');
         this.loadAllProfitcenter();
         alert(`profitcenter deleted successfully!`);
       },

@@ -221,6 +221,7 @@ export class Kpamaster implements OnInit {
         this.KPAservice.updateKPA(updatePayload).subscribe({
           next: () => {
             alert(`kpa updated successfully!`);
+            this.toastService.showSuccess("kpa updated successfully!");
             this.loadAllKPA();
           },
           error: (err) => {
@@ -262,6 +263,8 @@ export class Kpamaster implements OnInit {
           next: () => {
             this.toastService.showSuccess('kpa added successfully:');
             alert(`kpa added successfully!`);
+            this.toastService.showSuccess("kpa added successfully!");
+
             this.loadAllKPA();
           },
           error: (err) => {

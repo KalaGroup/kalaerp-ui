@@ -270,7 +270,7 @@ edit(record: any) {
 
     delete(value: any) {
    debugger;
-    this.divisionService.deleteDivision(value.divisionId).subscribe({
+    this.divisionService.deleteDivision(value.DivisionId).subscribe({
       next: (response) => {
          this.toastService.showSuccess('Division Deleted successfully:', response);
 

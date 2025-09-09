@@ -145,7 +145,7 @@ export class AddEditActivity {
     const activityMstId = this.data.activity.ActivityId;
     this.ActivityServices.getActivityByMstId(activityMstId).subscribe({
       next: res => {
-        console.log('Responsibilities Details Fetched successfully:', res);
+        console.log('activity Details Fetched successfully:', res);
         this.descriptionDetails = res;
         console.log("descriptionDetails", this.descriptionDetails)
         this.description = res.map((d: any) => ({
@@ -154,7 +154,7 @@ export class AddEditActivity {
         }));
       },
       error: err => {
-        console.error('Error fetch responsibilities details:', err);
+        console.error('Error fetch activity details:', err);
       },
     });
   }
