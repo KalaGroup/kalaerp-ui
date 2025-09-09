@@ -145,7 +145,7 @@ export class AddEditCtc {
   }
 
   private setGradeForEdit(): void {
-    let GradeId: number | null = null;
+    let GradeId = null;
     const gradeData = this.data.grade;
 
     if (gradeData?.GradeName) {

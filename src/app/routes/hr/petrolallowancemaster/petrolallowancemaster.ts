@@ -148,6 +148,7 @@ export class Petrolallowancemaster implements OnInit {
 
 
   getAllPetrolAllowance() {
+
     this.PetrolAllowanceservice.getAllPetrolAllowance().subscribe({
       next: (data) => {
         this.list = data.map((item: any, index: number) => ({
@@ -192,6 +193,7 @@ export class Petrolallowancemaster implements OnInit {
         this.PetrolAllowanceservice.updatePetrolAllowance(updatePayload).subscribe({
           next: () => {
             alert(`petrolallowance updated successfully!`);
+            this.toastService.showSuccess("petrolallowance updated successfully");
             this.getAllPetrolAllowance();
           },
           error: (err) => {
@@ -227,6 +229,7 @@ export class Petrolallowancemaster implements OnInit {
         this.PetrolAllowanceservice.insertPetrolAllowance(payload).subscribe({
           next: () => {
             alert(`petrolallowance added successfully!`);
+            this.toastService.showSuccess("petrolallowance added successfully");
             this.getAllPetrolAllowance();
           },
           error: (err) => {
@@ -244,6 +247,7 @@ export class Petrolallowancemaster implements OnInit {
       next: (response) => {
         console.log('Delete success:', response);
         alert(`Petrol Allowance deleted successfully!`);
+        this.toastService.showSuccess("petrolallowance delete successfully");
         this.getAllPetrolAllowance();
       },
       error: (err) => {

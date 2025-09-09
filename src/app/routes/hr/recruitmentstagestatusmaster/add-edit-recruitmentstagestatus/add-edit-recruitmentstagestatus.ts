@@ -53,43 +53,43 @@ export class AddEditRecruitmentstagestatus implements OnInit {
     this.initializeForm();
   }
 
-private initializeForm(): void {
-  const currentDate = new Date().toLocaleDateString('en-GB');
-  this.RecruitmentStageStatusForm = this.fb.group({
-    RecruitmentStageStatusId: [0],
-    RecruitmentStageStatusName: ['', Validators.required],
-    RecruitmentStageStatusRemark: ['',],
-    RecruitmentStageStatusAuthRemark: ['NIL'],
-    RecruitmentStageStatusAuth: [{ value: true, disabled: !this.isEditMode }],
-    RecruitmentStageStatusIsActive: [{ value: true, disabled: !this.isEditMode }],
-    RecruitmentStageStatusIsDiscard: [{ value: false, disabled: !this.isEditMode }],
-    CreatedBy: ['10'],
-    CreatedDate: [{ value: currentDate, disabled: true }],
-  });
-
-  if (this.isEditMode && this.data?.RecruitmentStageStatus) {
-    const record = this.data.RecruitmentStageStatus;
-    console.log('Patching form with Recruitment Stage Status data:', record);
-
-    this.RecruitmentStageStatusForm.patchValue({
-      RecruitmentStageStatusId: record.RecruitmentStageStatusId,
-      RecruitmentStageStatusName: record.RecruitmentStageStatusName,
-      RecruitmentStageStatusRemark: record.RecruitmentStageStatusRemark,
-      RecruitmentStageStatusAuthRemark: record.RecruitmentStageStatusAuthRemark,
-      RecruitmentStageStatusAuth: record.RecruitmentStageStatusAuth,
-      RecruitmentStageStatusIsActive: record.RecruitmentStageStatusIsActive,
-      RecruitmentStageStatusIsDiscard: record.RecruitmentStageStatusIsDiscard,
-      CreatedBy: record.CreatedBy,
-      CreatedDate: record.CreatedDate,
+  private initializeForm(): void {
+    const currentDate = new Date().toLocaleDateString('en-GB');
+    this.RecruitmentStageStatusForm = this.fb.group({
+      RecruitmentStageStatusId: [0],
+      RecruitmentStageStatusName: ['', Validators.required],
+      RecruitmentStageStatusRemark: ['',],
+      RecruitmentStageStatusAuthRemark: ['ok'],
+      RecruitmentStageStatusAuth: [{ value: true, disabled: !this.isEditMode }],
+      RecruitmentStageStatusIsActive: [{ value: true, disabled: !this.isEditMode }],
+      RecruitmentStageStatusIsDiscard: [{ value: false, disabled: !this.isEditMode }],
+      CreatedBy: ['10'],
+      CreatedDate: [{ value: currentDate, disabled: true }],
     });
 
-    this.RecruitmentStageStatusForm.get('RecruitmentStageStatusIsActive')?.enable();
-    this.RecruitmentStageStatusForm.get('RecruitmentStageStatusIsDiscard')?.enable();
-    this.RecruitmentStageStatusForm.get('RecruitmentStageStatusAuth')?.enable();
+    if (this.isEditMode && this.data?.RecruitmentStageStatus) {
+      const record = this.data.RecruitmentStageStatus;
+      console.log('Patching form with Recruitment Stage Status data:', record);
 
-    console.log('Form values after patch:', this.RecruitmentStageStatusForm.value);
+      this.RecruitmentStageStatusForm.patchValue({
+        RecruitmentStageStatusId: record.RecruitmentStageStatusId,
+        RecruitmentStageStatusName: record.RecruitmentStageStatusName,
+        RecruitmentStageStatusRemark: record.RecruitmentStageStatusRemark,
+        RecruitmentStageStatusAuthRemark: record.RecruitmentStageStatusAuthRemark,
+        RecruitmentStageStatusAuth: record.RecruitmentStageStatusAuth,
+        RecruitmentStageStatusIsActive: record.RecruitmentStageStatusIsActive,
+        RecruitmentStageStatusIsDiscard: record.RecruitmentStageStatusIsDiscard,
+        CreatedBy: record.CreatedBy,
+        CreatedDate: record.CreatedDate,
+      });
+
+      this.RecruitmentStageStatusForm.get('RecruitmentStageStatusIsActive')?.enable();
+      this.RecruitmentStageStatusForm.get('RecruitmentStageStatusIsDiscard')?.enable();
+      this.RecruitmentStageStatusForm.get('RecruitmentStageStatusAuth')?.enable();
+
+      console.log('Form values after patch:', this.RecruitmentStageStatusForm.value);
+    }
   }
-}
 
   onSubmit(): void {
     if (this.RecruitmentStageStatusForm.valid) {

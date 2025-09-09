@@ -60,7 +60,7 @@ export class AddEditEmployeetype {
     this.employeetypeForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
       //code: [{ value: '', disabled: !this.isEditMode }],
-      EmployeeTypeCode: ['', [Validators.required]],
+     // EmployeeTypeCode: ['', [Validators.required]],
       EmployeeTypeName: ['', [Validators.required]],
       EmployeeTypeDescription: ['', [Validators.required]],
       EmployeeTypeRemark: ['', [Validators.required]],
@@ -74,7 +74,7 @@ export class AddEditEmployeetype {
       console.log('Patching form with employeetype data:', this.data.employeetype);
       this.employeetypeForm.patchValue({
         code: this.data.employeetype.code || this.data.employeetype.EmployeeTypeCode || '',
-        EmployeeTypeCode: this.data.employeetype.EmployeeTypeCode || '',
+        //EmployeeTypeCode: this.data.employeetype.EmployeeTypeCode || '',
         EmployeeTypeName: this.data.employeetype.EmployeeTypeName || '',
         EmployeeTypeDescription: this.data.employeetype.EmployeeTypeDescription || '',
         EmployeeTypeRemark: this.data.employeetype.EmployeeTypeRemark || '',

@@ -225,6 +225,7 @@ export class Authoritiesmaster {
         // Call the service to insert the Workstation
         this.authoritiesService.insertAuthorities(payload).subscribe({
           next: response => {
+            
             this.toastService.showSuccess('Authorities  added successfully:', response);
             this.loadAllAuthorities();
             alert(`Authorities "${result.GradeID}" added successfully!`);

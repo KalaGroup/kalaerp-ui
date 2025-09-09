@@ -215,7 +215,7 @@ export class Classoftravelmaster implements OnInit {
 
         this.ClassofTravelService.updateClassOftravel(updatePayload).subscribe({
           next: (response) => {
-            this.toastService.showSuccess('class added successfully:', response);
+            this.toastService.showSuccess('class update successfully:', response);
             alert(`class "${result.ClassOfTravelName}" updated successfully!`);
             this.loadAllClassoftravel();
           },

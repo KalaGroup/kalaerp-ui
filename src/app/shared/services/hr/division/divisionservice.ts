@@ -11,10 +11,10 @@ export class Divisionservice {
   private divisionUrl = 'https://localhost:7019/api/DivisionMaster/GetAllDivision';
   private insertDivisionUrl = 'https://localhost:7019/api/DivisionMaster/CreateDivision';
   private updateDivisionUrl = 'https://localhost:7019/api/DivisionMaster/UpdateDivision';
-  private deleteDivisionUrl = 'https://localhost:7019/api/DivisionMaster/DeleteDivision'; 
+  private deleteDivisionUrl = 'https://localhost:7019/api/DivisionMaster/DeleteDivision';
   private getDivisionByIdUrl = 'https://localhost:7019/api/DivisionMaster/getDivisionbyid';
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAllDivision(): Observable<any[]> {
     return this.http.get<any[]>(this.divisionUrl)
@@ -25,10 +25,10 @@ export class Divisionservice {
   updateDivision(updateDivision: IDivision): Observable<any> {
     return this.http.put(this.updateDivisionUrl, updateDivision);
   }
-  deleteDivision(divisionId: number): Observable<any> {
-    return this.http.delete(`${this.deleteDivisionUrl}/${divisionId}`);
+  deleteDivision(DivisionId: number): Observable<any> {
+    return this.http.delete(`${this.deleteDivisionUrl}/${DivisionId}`);
   }
-  getDivisionById(divisionId: number): Observable<IDivision> {
-    return this.http.get<IDivision>(`${this.getDivisionByIdUrl}/${divisionId}`);
+  getDivisionById(DivisionId: number): Observable<IDivision> {
+    return this.http.get<IDivision>(`${this.getDivisionByIdUrl}/${DivisionId}`);
   }
 }

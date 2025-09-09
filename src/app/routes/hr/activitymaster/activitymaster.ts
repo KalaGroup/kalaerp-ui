@@ -178,7 +178,7 @@ export class Activitymaster implements OnInit {
         }));
       },
       error: (err) => {
-        console.error('Error fetching facilities:', err);
+        console.error('Error fetching activity:', err);
       }
     });
   }
@@ -219,6 +219,7 @@ export class Activitymaster implements OnInit {
         this.ActivityServices.updateActivity(updatePayload).subscribe({
           next: () => {
             alert(`Activity updated successfully!`);
+            this.toastService.showSuccess("Activity updated successfully");
             this.loadAllActivity();
           },
           error: (err) => {
@@ -259,6 +260,7 @@ export class Activitymaster implements OnInit {
           next: () => {
             this.toastService.showSuccess('Activity added successfully:');
             alert(`Activity added successfully!`);
+
             this.loadAllActivity();
           },
           error: (err) => {

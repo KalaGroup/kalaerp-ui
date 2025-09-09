@@ -80,7 +80,7 @@ export class Ctcmaster {
     private ctcstructureService: Ctcstructureservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.loadAllCTC();
   }

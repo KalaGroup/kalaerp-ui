@@ -197,6 +197,7 @@ export class Qualificationmaster implements OnInit {
           next: (response) => {
             console.log('Qualification updated successfully:', response);
             alert(`Qualification "${result.QualificationName}" updated successfully!`);
+            this.toastService.showSuccess("Qualification updated successfully");
             this.loadAllQualification();
           },
           error: (err) => {
@@ -242,7 +243,7 @@ export class Qualificationmaster implements OnInit {
           next: (response) => {
             console.log('Qualification added successfully:', response);
             this.loadAllQualification();
-            this.toastService.showSuccess;
+            this.toastService.showSuccess("Qualification added successfully");
             alert(`Qualification added successfully!`);
 
           },
@@ -269,6 +270,7 @@ export class Qualificationmaster implements OnInit {
       next: (response) => {
         console.log('Delete success:', response);
         console.log('Qualification deleted successfully:', response);
+        this.toastService.showSuccess("Qualification delete successfully")
         this.loadAllQualification();
         alert(`Qualification deleted successfully!`);
       },
