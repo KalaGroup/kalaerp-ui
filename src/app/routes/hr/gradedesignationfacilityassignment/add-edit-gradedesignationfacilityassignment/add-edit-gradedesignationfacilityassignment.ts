@@ -164,6 +164,28 @@ export class AddEditGradedesignationfacilityassignment {
 
       // Facility Assignments - Step 4 (handled separately)
       facilityAssignments: [[]],
+
+       // CTC Structure - Step 5
+      CTCMasterBasic: ['', [Validators.required, Validators.min(0)]],
+      CTCMasterDA: ['', [Validators.required, Validators.min(0)]],
+      CTCMasterHRA: ['', [Validators.required, Validators.min(0)]],
+      CTCMasterConvAllowance: ['', [Validators.min(0)]],
+      CTCMasterCityCompensatoryAlowance: ['', [Validators.min(0)]], // Note: keeping original field name with typo
+      CTCMasterLeaveTravelAllowance: ['', [Validators.min(0)]],
+      CTCMasterCarAllowance: ['', [Validators.min(0)]],
+      CTCMasterFuelAllowance: ['', [Validators.min(0)]],
+      CTCMasterDriverAllowance: ['', [Validators.min(0)]],
+      CTCMasterMiscAllowance: ['', [Validators.min(0)]], // Using MiscAllowance instead of Misc.Allowance for form control
+      CTCMasterGross: [{ value: '', disabled: true }], // Auto-calculated
+      CTCMasterPFEmployee: ['', [Validators.required, Validators.min(0)]],
+      CTCMasterPT: ['', [Validators.required, Validators.min(0)]],
+      CTCMasterEsic: ['', [Validators.required, Validators.min(0)]],
+      CTCMasterPFEmployer: ['', [Validators.required, Validators.min(0)]],
+      CTCMasterMedicalInsurance: ['', [Validators.required, Validators.min(0)]],
+      CTCMasterPerformanceKPA: ['', [Validators.required, Validators.min(0)]],
+      CTCMasterGraduity: ['', [Validators.required, Validators.min(0)]],
+      CTCMasterBonus: ['', [Validators.required, Validators.min(0)]],
+      CTCMasterMLWF: ['', [Validators.required, Validators.min(0)]],
     });
 
     // Add custom validator for salary range
@@ -207,6 +229,28 @@ export class AddEditGradedesignationfacilityassignment {
     }
     return null;
   };
+
+   // Calculate Gross Salary
+  calculateGross(): void {
+    const basic = parseFloat(this.gradeForm.get('CTCMasterBasic')?.value) || 0;
+    const da = parseFloat(this.gradeForm.get('CTCMasterDA')?.value) || 0;
+    const hra = parseFloat(this.gradeForm.get('CTCMasterHRA')?.value) || 0;
+    const convAllowance = parseFloat(this.gradeForm.get('CTCMasterConvAllowance')?.value) || 0;
+    const cityCompAllowance = parseFloat(this.gradeForm.get('CTCMasterCityCompensatoryAlowance')?.value) || 0;
+    const lta = parseFloat(this.gradeForm.get('CTCMasterLeaveTravelAllowance')?.value) || 0;
+    const carAllowance = parseFloat(this.gradeForm.get('CTCMasterCarAllowance')?.value) || 0;
+    const fuelAllowance = parseFloat(this.gradeForm.get('CTCMasterFuelAllowance')?.value) || 0;
+    const driverAllowance = parseFloat(this.gradeForm.get('CTCMasterDriverAllowance')?.value) || 0;
+    const miscAllowance = parseFloat(this.gradeForm.get('CTCMasterMiscAllowance')?.value) || 0;
+
+    const gross = basic + da + hra + convAllowance + cityCompAllowance + lta +
+                  carAllowance + fuelAllowance + driverAllowance + miscAllowance;
+
+    this.gradeForm.patchValue({
+      CTCMasterGross: gross
+    });
+  }
+
 
   // FormArray getters
   get designations(): FormArray {
@@ -273,6 +317,8 @@ export class AddEditGradedesignationfacilityassignment {
         return this.isStep3Valid();
       case 4:
         return true; // Facility assignment is optional
+      case 5:
+        return this.isStep5Valid(); // CTC Structure validation
       default:
         return false;
     }
@@ -313,36 +359,26 @@ export class AddEditGradedesignationfacilityassignment {
     return this.designations.controls.every(designation => designation.valid);
   }
 
-  // Get step control for mat-stepper
-  // getStepControl(step: number): AbstractControl {
-  //   switch (step) {
-  //     case 1:
-  //       // Return a custom FormGroup with only step 1 fields for validation
-  //       return this.fb.group({
-  //         GradeName: this.gradeForm.get('GradeName'),
-  //         GradeLevel: this.gradeForm.get('GradeLevel'),
-  //         GradeDescription: this.gradeForm.get('GradeDescription'),
-  //         MinSalCTC: this.gradeForm.get('MinSalCTC'),
-  //         MaxSalCTC: this.gradeForm.get('MaxSalCTC'),
-  //         GradeCurrencyId: this.gradeForm.get('GradeCurrencyId'),
-  //       });
-  //     case 2:
-  //       return this.fb.group({
-  //         LeaveEntitlementAnnual: this.gradeForm.get('LeaveEntitlementAnnual'),
-  //         ProbationPeriod: this.gradeForm.get('ProbationPeriod'),
-  //         NoticePeriod: this.gradeForm.get('NoticePeriod'),
-  //         ExperiencedRequired: this.gradeForm.get('ExperiencedRequired'),
-  //         ExperiencedRemark: this.gradeForm.get('ExperiencedRemark'),
-  //         GradeRemark: this.gradeForm.get('GradeRemark'),
-  //       });
-  //     case 3:
-  //       return this.designations;
-  //     case 4:
-  //       return this.gradeForm; // Step 4 is optional, so return main form
-  //     default:
-  //       return this.gradeForm;
-  //   }
-  // }
+   private isStep5Valid(): boolean {
+    const step5Fields = [
+      'CTCMasterBasic',
+      'CTCMasterDA',
+      'CTCMasterHRA',
+      'CTCMasterPFEmployee',
+      'CTCMasterPT',
+      'CTCMasterEsic',
+      'CTCMasterPFEmployer',
+      'CTCMasterMedicalInsurance',
+      'CTCMasterPerformanceKPA',
+      'CTCMasterGraduity',
+      'CTCMasterBonus',
+      'CTCMasterMLWF',
+    ];
+    return step5Fields.every(field => {
+      const control = this.gradeForm.get(field);
+      return control?.valid ?? false;
+    });
+  }
 
   getStepControl(step: number): AbstractControl {
   return this.fb.control('', []);
@@ -435,6 +471,29 @@ export class AddEditGradedesignationfacilityassignment {
        // AssignmentGradeId: null, // Will be set after grade is saved
         AssignmentFacilityId: facilityId,
       })),
+        // CTC Structure data
+      ctcStructure: {
+        CTCMasterBasic: formValue.CTCMasterBasic,
+        CTCMasterDA: formValue.CTCMasterDA,
+        CTCMasterHRA: formValue.CTCMasterHRA,
+        CTCMasterConvAllowance: formValue.CTCMasterConvAllowance,
+        'CTCMasterCityCompensatoryAlowance': formValue.CTCMasterCityCompensatoryAlowance, // Note: keeping original field name
+        CTCMasterLeaveTravelAllowance: formValue.CTCMasterLeaveTravelAllowance,
+        CTCMasterCarAllowance: formValue.CTCMasterCarAllowance,
+        CTCMasterFuelAllowance: formValue.CTCMasterFuelAllowance,
+        CTCMasterDriverAllowance: formValue.CTCMasterDriverAllowance,
+        'CTCMasterMisc.Allowance': formValue.CTCMasterMiscAllowance, // Mapping to database field name
+        CTCMasterGross: formValue.CTCMasterGross,
+        CTCMasterPFEmployee: formValue.CTCMasterPFEmployee,
+        CTCMasterPT: formValue.CTCMasterPT,
+        CTCMasterEsic: formValue.CTCMasterEsic,
+        CTCMasterPFEmployer: formValue.CTCMasterPFEmployer,
+        CTCMasterMedicalInsurance: formValue.CTCMasterMedicalInsurance,
+        CTCMasterPerformanceKPA: formValue.CTCMasterPerformanceKPA,
+        CTCMasterGraduity: formValue.CTCMasterGraduity,
+        CTCMasterBonus: formValue.CTCMasterBonus,
+        CTCMasterMLWF: formValue.CTCMasterMLWF,
+      },
     };
   }
 
@@ -463,6 +522,33 @@ export class AddEditGradedesignationfacilityassignment {
       CreatedBy: gradeData.CreatedBy || '',
       CreatedDate: gradeData.CreatedDate || '',
     });
+
+    // Patch CTC Structure if available
+    if (gradeData.ctcStructure) {
+      const ctc = gradeData.ctcStructure;
+      this.gradeForm.patchValue({
+        CTCMasterBasic: ctc.CTCMasterBasic || '',
+        CTCMasterDA: ctc.CTCMasterDA || '',
+        CTCMasterHRA: ctc.CTCMasterHRA || '',
+        CTCMasterConvAllowance: ctc.CTCMasterConvAllowance || '',
+        CTCMasterCityCompensatoryAlowance: ctc.CTCMasterCityCompensatoryAlowance || '',
+        CTCMasterLeaveTravelAllowance: ctc.CTCMasterLeaveTravelAllowance || '',
+        CTCMasterCarAllowance: ctc.CTCMasterCarAllowance || '',
+        CTCMasterFuelAllowance: ctc.CTCMasterFuelAllowance || '',
+        CTCMasterDriverAllowance: ctc.CTCMasterDriverAllowance || '',
+        CTCMasterMiscAllowance: ctc['CTCMasterMisc.Allowance'] || '',
+        CTCMasterGross: ctc.CTCMasterGross || '',
+        CTCMasterPFEmployee: ctc.CTCMasterPFEmployee || '',
+        CTCMasterPT: ctc.CTCMasterPT || '',
+        CTCMasterEsic: ctc.CTCMasterEsic || '',
+        CTCMasterPFEmployer: ctc.CTCMasterPFEmployer || '',
+        CTCMasterMedicalInsurance: ctc.CTCMasterMedicalInsurance || '',
+        CTCMasterPerformanceKPA: ctc.CTCMasterPerformanceKPA || '',
+        CTCMasterGraduity: ctc.CTCMasterGraduity || '',
+        CTCMasterBonus: ctc.CTCMasterBonus || '',
+        CTCMasterMLWF: ctc.CTCMasterMLWF || '',
+      });
+    }
 
     // Patch designations if available
     if (gradeData.designations && gradeData.designations.length > 0) {
@@ -567,6 +653,8 @@ export class AddEditGradedesignationfacilityassignment {
         return 'Designations';
       case 4:
         return 'Facility Assignment';
+      case 5:
+        return 'CTC Structure';
       default:
         return '';
     }

@@ -14,14 +14,6 @@
           <!-- Auto-generated fields row -->
           <div class="row mb-3">
             <div class="col-sm-3 col-xl-3">
-              <!-- <mat-form-field appearance="outline">
-                <mat-label>Grade Code</mat-label>
-                <input matInput formControlName="GradeCode"
-                  [placeholder]="isEditMode ? 'Enter grade code' : 'Auto-generated'" maxlength="10" />
-                @if (gradeForm.get('GradeCode')?.invalid && gradeForm.get('GradeCode')?.touched && isEditMode) {
-                <mat-error>Grade Code is required</mat-error>
-                }
-              </mat-form-field> -->
               <mat-form-field appearance="outline">
                 <mat-label>Grade Code</mat-label>
                 <input matInput formControlName="GradeCode"
@@ -416,12 +408,250 @@
             </div>
           </div>
 
-          <!-- <div mat-dialog-actions align="end">
+          <div mat-dialog-actions align="end">
             <button mat-button matStepperPrevious>Back</button>
-            <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="gradeForm.invalid">
-              {{ isEditMode ? 'Update' : 'Save' }}
-            </button>
-          </div> -->
+            <button mat-button matStepperNext [disabled]="!isStepValid(4)">Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Step 5: CTC Structure -->
+      <mat-step [stepControl]="getStepControl(5)" label="CTC Structure">
+        <form [formGroup]="gradeForm">
+          <h4 class="section-header mb-3">CTC Structure Configuration</h4>
+
+          <!-- Basic Salary Components -->
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Basic Salary Components</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Basic Salary</mat-label>
+                <input matInput formControlName="CTCMasterBasic" type="number"
+                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <mat-hint>Basic salary component</mat-hint>
+                @if (gradeForm.get('CTCMasterBasic')?.invalid && gradeForm.get('CTCMasterBasic')?.touched) {
+                <mat-error>Basic Salary is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Dearness Allowance (DA)</mat-label>
+                <input matInput formControlName="CTCMasterDA" type="number"
+                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <mat-hint>Dearness allowance component</mat-hint>
+                @if (gradeForm.get('CTCMasterDA')?.invalid && gradeForm.get('CTCMasterDA')?.touched) {
+                <mat-error>DA is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>House Rent Allowance (HRA)</mat-label>
+                <input matInput formControlName="CTCMasterHRA" type="number"
+                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <mat-hint>House rent allowance component</mat-hint>
+                @if (gradeForm.get('CTCMasterHRA')?.invalid && gradeForm.get('CTCMasterHRA')?.touched) {
+                <mat-error>HRA is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Allowances -->
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Allowances</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Conveyance Allowance</mat-label>
+                <input matInput formControlName="CTCMasterConvAllowance" type="number"
+                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <mat-hint>Conveyance allowance</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>City Compensatory Allowance</mat-label>
+                <input matInput formControlName="CTCMasterCityCompensatoryAlowance" type="number"
+                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <mat-hint>City compensatory allowance</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Leave Travel Allowance (LTA)</mat-label>
+                <input matInput formControlName="CTCMasterLeaveTravelAllowance" type="number"
+                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <mat-hint>Leave travel allowance</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Car Allowance</mat-label>
+                <input matInput formControlName="CTCMasterCarAllowance" type="number"
+                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <mat-hint>Car allowance</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Fuel Allowance</mat-label>
+                <input matInput formControlName="CTCMasterFuelAllowance" type="number"
+                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <mat-hint>Fuel allowance</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Driver Allowance</mat-label>
+                <input matInput formControlName="CTCMasterDriverAllowance" type="number"
+                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <mat-hint>Driver allowance</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Miscellaneous Allowance</mat-label>
+                <input matInput formControlName="CTCMasterMiscAllowance" type="number"
+                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <mat-hint>Miscellaneous allowance</mat-hint>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Gross Salary</mat-label>
+                <input matInput formControlName="CTCMasterGross" type="number"
+                       placeholder="0" readonly class="readonly-normal"/>
+                <mat-hint>Auto-calculated gross salary</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Employee Deductions -->
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Employee Deductions</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>PF Employee Contribution</mat-label>
+                <input matInput formControlName="CTCMasterPFEmployee" type="number"
+                       placeholder="0" min="0"/>
+                <mat-hint>Employee PF contribution</mat-hint>
+                @if (gradeForm.get('CTCMasterPFEmployee')?.invalid && gradeForm.get('CTCMasterPFEmployee')?.touched) {
+                <mat-error>PF Employee Contribution is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Professional Tax (PT)</mat-label>
+                <input matInput formControlName="CTCMasterPT" type="number"
+                       placeholder="0" min="0"/>
+                <mat-hint>Professional tax deduction</mat-hint>
+                @if (gradeForm.get('CTCMasterPT')?.invalid && gradeForm.get('CTCMasterPT')?.touched) {
+                <mat-error>Professional Tax is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>ESIC Employee Contribution</mat-label>
+                <input matInput formControlName="CTCMasterEsic" type="number"
+                       placeholder="0" min="0"/>
+                <mat-hint>Employee ESIC contribution</mat-hint>
+                @if (gradeForm.get('CTCMasterEsic')?.invalid && gradeForm.get('CTCMasterEsic')?.touched) {
+                <mat-error>ESIC is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Employer Contributions -->
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Employer Contributions</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>PF Employer Contribution</mat-label>
+                <input matInput formControlName="CTCMasterPFEmployer" type="number"
+                       placeholder="0" min="0"/>
+                <mat-hint>Employer PF contribution</mat-hint>
+                @if (gradeForm.get('CTCMasterPFEmployer')?.invalid && gradeForm.get('CTCMasterPFEmployer')?.touched) {
+                <mat-error>PF Employer Contribution is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Medical Insurance</mat-label>
+                <input matInput formControlName="CTCMasterMedicalInsurance" type="number"
+                       placeholder="0" min="0"/>
+                <mat-hint>Medical insurance premium</mat-hint>
+                @if (gradeForm.get('CTCMasterMedicalInsurance')?.invalid && gradeForm.get('CTCMasterMedicalInsurance')?.touched) {
+                <mat-error>Medical Insurance is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Gratuity</mat-label>
+                <input matInput formControlName="CTCMasterGraduity" type="number"
+                       placeholder="0" min="0"/>
+                <mat-hint>Gratuity provision</mat-hint>
+                @if (gradeForm.get('CTCMasterGraduity')?.invalid && gradeForm.get('CTCMasterGraduity')?.touched) {
+                <mat-error>Gratuity is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Performance KPA</mat-label>
+                <input matInput formControlName="CTCMasterPerformanceKPA" type="number"
+                       placeholder="0" min="0"/>
+                <mat-hint>Performance KPA component</mat-hint>
+                @if (gradeForm.get('CTCMasterPerformanceKPA')?.invalid && gradeForm.get('CTCMasterPerformanceKPA')?.touched) {
+                <mat-error>Performance KPA is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Bonus</mat-label>
+                <input matInput formControlName="CTCMasterBonus" type="number"
+                       placeholder="0" min="0"/>
+                <mat-hint>Annual bonus component</mat-hint>
+                @if (gradeForm.get('CTCMasterBonus')?.invalid && gradeForm.get('CTCMasterBonus')?.touched) {
+                <mat-error>Bonus is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>MLWF (Labour Welfare Fund)</mat-label>
+                <input matInput formControlName="CTCMasterMLWF" type="number"
+                       placeholder="0" min="0"/>
+                <mat-hint>Labour welfare fund contribution</mat-hint>
+                @if (gradeForm.get('CTCMasterMLWF')?.invalid && gradeForm.get('CTCMasterMLWF')?.touched) {
+                <mat-error>MLWF is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
 
           <div mat-dialog-actions align="end">
             <button mat-button matStepperPrevious>Back</button>
