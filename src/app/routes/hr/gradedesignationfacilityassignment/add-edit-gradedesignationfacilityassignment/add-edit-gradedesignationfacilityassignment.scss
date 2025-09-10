@@ -224,3 +224,9 @@ mat-card {
             cursor: pointer;
             margin-bottom: 16px;
         }
+
+        .readonly-normal[readonly] {
+  color: rgba(0, 0, 0, 0.87) !important;
+  opacity: 1 !important;
+  background-color: #f8f9fa;
+}
