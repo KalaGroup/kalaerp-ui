@@ -31,6 +31,8 @@ import { Activitymaster } from './activitymaster/activitymaster';
 import { Kpamaster } from './kpamaster/kpamaster';
 import { CitymasterComponent } from './citymaster/citymaster';
 import { Gradedesignationfacilityassignment } from './gradedesignationfacilityassignment/gradedesignationfacilityassignment/gradedesignationfacilityassignment';
+import { Recruitmentreferencemasterservice } from '@shared/services/hr/RecruitmentReferenceMaster/recruitmentreferencemaster';
+import { Recruitmentreferencemaster } from './recruitmentreferencemaster/recruitmentreferencemaster';
 
 export const routes: Routes = [
   {
@@ -126,14 +128,14 @@ export const routes: Routes = [
     path: 'facility',
     component: Facilitymaster,
   },
-    {
+  {
     path: 'ctcmaster',
     component: Ctcmaster,
   },
   {
     path: 'authoritiesmaster',
     component: Authoritiesmaster,
-   },
+  },
   {
     path: 'recruitmentstagestatusmaster',
     component: Recruitmentstagestatusmaster
@@ -142,7 +144,7 @@ export const routes: Routes = [
     path: 'activity',
     component: Activitymaster
   },
-   {
+  {
     path: 'kpa',
     component: Kpamaster
   },
@@ -153,5 +155,11 @@ export const routes: Routes = [
   {
     path: 'gradedesignationfacilityassignment',
     component: Gradedesignationfacilityassignment,
+  },
+  {
+    path: 'recruitmentreferencemaster',
+    component: Recruitmentreferencemaster
+
+
   }
 ];
