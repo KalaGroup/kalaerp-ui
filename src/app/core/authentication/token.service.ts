@@ -67,6 +67,10 @@ export class TokenService implements OnDestroy {
     this.clearRefresh();
   }
 
+  get(): Token | undefined {
+    return this._token ? this._token['attributes'] : undefined;
+  }
+
   private save(token?: Token) {
     this._token = undefined;
 

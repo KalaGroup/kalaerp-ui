@@ -36,7 +36,7 @@ export class Login {
   private readonly auth = inject(AuthService);
 
   isSubmitting = false;
-  
+
   loginForm = this.fb.nonNullable.group({
     // username: ['ng-matero', [Validators.required]],
     // password: ['ng-matero', [Validators.required]],
@@ -57,28 +57,63 @@ export class Login {
     return this.loginForm.get('rememberMe')!;
   }
 
-  login() {
-    this.isSubmitting = true;
-     debugger
-    this.auth
-      .login(this.username.value, this.password.value, this.rememberMe.value)
-      .pipe(filter(authenticated => authenticated))
-      .subscribe({
-        next: () => {
+  // login() {
+  //   this.isSubmitting = true;
+  //    debugger
+  //   this.auth
+  //     .login(this.username.value, this.password.value, this.rememberMe.value)
+  //     .pipe(filter(authenticated => authenticated))
+  //     .subscribe({
+  //       next: () => {
+  //         this.router.navigateByUrl('/');
+  //       },
+  //       error: (errorRes: HttpErrorResponse) => {
+  //         if (errorRes.status === 422) {
+  //           const form = this.loginForm;
+  //           const errors = errorRes.error.errors;
+  //           Object.keys(errors).forEach(key => {
+  //             form.get(key === 'email' ? 'username' : key)?.setErrors({
+  //               remote: errors[key][0],
+  //             });
+  //           });
+  //         }
+  //         this.isSubmitting = false;
+  //       },
+  //     });
+  // }
+
+   login() {
+  this.isSubmitting = true;
+  debugger;
+
+  this.auth
+    .login(this.username.value, this.password.value, this.rememberMe.value)
+    .subscribe({
+      next: (res: any) => {
+        if (res?.AccessToken) {
+          // navigate on success
           this.router.navigateByUrl('/');
-        },
-        error: (errorRes: HttpErrorResponse) => {
-          if (errorRes.status === 422) {
-            const form = this.loginForm;
-            const errors = errorRes.error.errors;
-            Object.keys(errors).forEach(key => {
-              form.get(key === 'email' ? 'username' : key)?.setErrors({
-                remote: errors[key][0],
-              });
+        } else {
+          console.warn('Login failed: No AccessToken in response');
+        }
+
+        this.isSubmitting = false;
+      },
+      error: (errorRes: HttpErrorResponse) => {
+        if (errorRes.status === 422) {
+          const form = this.loginForm;
+          const errors = errorRes.error.errors;
+          Object.keys(errors).forEach(key => {
+            form.get(key === 'email' ? 'username' : key)?.setErrors({
+              remote: errors[key][0],
             });
-          }
-          this.isSubmitting = false;
-        },
-      });
-  }
+          });
+        }
+        this.isSubmitting = false;
+      },
+    });
+}
+
+
+
 }
