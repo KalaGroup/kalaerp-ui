@@ -145,6 +145,11 @@
           "route": "gradedesignationfacilityassignment",
           "name": "gradedesignationfacilityassignment",
           "type": "link"
+        },
+        {
+          "route": "recruitmentreferencemaster",
+          "name": "recruitmentreferencemaster",
+          "type": "link"
         }
       ]
     }
