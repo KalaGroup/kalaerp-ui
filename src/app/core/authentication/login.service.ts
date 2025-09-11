@@ -11,8 +11,13 @@ import { Token, User } from './interface';
 export class LoginService {
   protected readonly http = inject(HttpClient);
 
+  // login(username: string, password: string, rememberMe = false) {
+  //   return this.http.post<Token>('/auth/login', { username, password, rememberMe });
+  // }
+
+   // change this endpoint to real API
   login(username: string, password: string, rememberMe = false) {
-    return this.http.post<Token>('/auth/login', { username, password, rememberMe });
+    return this.http.post<Token>('https://localhost:7019/api/UserLogin/login', { username, password, rememberMe }, { observe: 'body' });
   }
 
   refresh(params: Record<string, any>) {

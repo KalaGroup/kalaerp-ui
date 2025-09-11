@@ -33,12 +33,41 @@ export class AuthService {
     return this.tokenService.valid();
   }
 
+  // login(username: string, password: string, rememberMe = false) {
+  //   debugger
+  //   return this.loginService.login(username, password, rememberMe).pipe(
+  //     tap(token => this.tokenService.set(token)),
+  //     map(() => this.check())
+  //   );
+  // }
+
   login(username: string, password: string, rememberMe = false) {
-    return this.loginService.login(username, password, rememberMe).pipe(
-      tap(token => this.tokenService.set(token)),
-      map(() => this.check())
-    );
-  }
+  return this.loginService.login(username, password, rememberMe).pipe(
+    tap((res: any) => {
+      // Map backend PascalCase response into the internal token shape the TokenService/Token model expects
+      const now = Math.floor(Date.now() / 1000); // seconds
+      const internalToken: any = {
+        access_token: res?.AccessToken,
+        token_type: res?.TokenType ?? 'bearer',
+        expires_in: res?.ExpiresIn,
+        exp: now + (res?.ExpiresIn ?? 0),
+        // if backend provides refresh token, include it:
+        refresh_token: (res as any).RefreshToken ?? undefined,
+        // keep original user info if needed
+        UserId: res?.UserId,
+        EmployeeId: res?.EmployeeId,
+        FullName: res?.FullName,
+        Email: res?.Email,
+        ProfilePictureURL: res?.ProfilePictureURL
+      };
+
+      // store mapped token (TokenService.set should accept this shape)
+      this.tokenService.set(internalToken);
+    }),
+    // return backend response object to the caller (component)
+    map(res => res)
+  );
+}
 
   refresh() {
     return this.loginService
@@ -65,15 +94,39 @@ export class AuthService {
     return iif(() => this.check(), this.loginService.menu(), of([]));
   }
 
+  // private assignUser() {
+  //   if (!this.check()) {
+  //     return of({}).pipe(tap(user => this.user$.next(user)));
+  //   }
+
+  //   if (!isEmptyObject(this.user$.getValue())) {
+  //     return of(this.user$.getValue());
+  //   }
+
+  //   return this.loginService.user().pipe(tap(user => this.user$.next(user)));
+  // }
+
   private assignUser() {
-    if (!this.check()) {
-      return of({}).pipe(tap(user => this.user$.next(user)));
-    }
-
-    if (!isEmptyObject(this.user$.getValue())) {
-      return of(this.user$.getValue());
-    }
-
-    return this.loginService.user().pipe(tap(user => this.user$.next(user)));
+  if (!this.check()) {
+    return of({}).pipe(tap(user => this.user$.next(user)));
   }
+
+  if (!isEmptyObject(this.user$.getValue())) {
+    return of(this.user$.getValue());
+  }
+
+  // Map User from stored token
+  const token = this.tokenService.get(); // get() should return stored token
+  const user: User = {
+    id: token?.UserId,
+    employeeId: token?.EmployeeId,
+    name: token?.FullName,
+    email: token?.Email,
+    avatar: token?.ProfilePictureURL
+  };
+
+  this.user$.next(user);
+  return of(user);
+}
+
 }

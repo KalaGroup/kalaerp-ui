@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpRequest } from '@angular/common/http';
 import { InMemoryDbService, RequestInfo, STATUS } from 'angular-in-memory-web-api';
-import { from, Observable } from 'rxjs';
+import { from, Observable, of, throwError } from 'rxjs';
 import { ajax } from 'rxjs/ajax';
-import { find, map, switchMap } from 'rxjs/operators';
+import { find, map, switchMap,catchError } from 'rxjs/operators';
 import { environment } from '@env/environment';
 import { base64, currentTimestamp, filterObject, User } from '@core/authentication';
+
 
 class JWT {
   generate(user: User) {
@@ -191,6 +192,45 @@ export class InMemDataService implements InMemoryDbService {
       switchMap(response => reqInfo.utils.createResponse$(() => response))
     );
   }
+
+// private login(reqInfo: RequestInfo) {
+//   const req = reqInfo.req as HttpRequest<any>;
+//   const { username, password } = req.body;
+
+//   const apiBase = 'https://localhost:7019/api/UserLogin/login';
+
+//   return ajax({
+//     url: apiBase,
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: { username, password },
+//     responseType: 'json'
+//   }).pipe(
+//     map((ajaxResp: any) => {
+//       console.log('AJAX raw response:', ajaxResp);
+
+//       // unwrap JSON body from backend
+//       const data = ajaxResp.response ?? ajaxResp;
+//       console.log('Unwrapped data:', data);
+
+//       return data; // <-- send directly
+//     }),
+//     catchError((err: any) => {
+//       console.error('Login API error:', err);
+//       return of(err.response || { message: err.message || 'Server error' });
+//     }),
+//     switchMap(data =>
+//       reqInfo.utils.createResponse$(() => ({
+//         status: STATUS.OK,
+//         body: data // <-- NOT wrapped inside { body: {...} }
+//       }))
+//     )
+//   );
+// }
+
+
+
+
 
   private refresh(reqInfo: RequestInfo) {
     const { headers, url } = reqInfo;
