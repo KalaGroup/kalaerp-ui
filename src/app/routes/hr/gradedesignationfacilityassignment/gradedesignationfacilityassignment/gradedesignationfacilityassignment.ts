@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,7 +23,7 @@ import { Toastservice } from 'app/routes/toastservice';
 
 @Component({
   selector: 'app-gradedesignationfacilityassignment',
-    imports: [
+  imports: [
     CommonModule,
     MatTableModule,
     MatCardModule,
@@ -37,272 +38,333 @@ import { Toastservice } from 'app/routes/toastservice';
     MtxGridModule,
     PageHeader,
     MatDialogModule,
+    MatTooltipModule,
   ],
   templateUrl: './gradedesignationfacilityassignment.html',
-  styleUrl: './gradedesignationfacilityassignment.scss'
+  styleUrl: './gradedesignationfacilityassignment.scss',
 })
 export class Gradedesignationfacilityassignment {
-   private readonly translate = inject(TranslateService);
-     @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
-     dialogRef!: MatDialogRef<any>;
+  private readonly translate = inject(TranslateService);
+  @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
+  @ViewChild('facilityTooltipTemplate', { static: true })
+  facilityTooltipTemplate!: TemplateRef<any>;
+  dialogRef!: MatDialogRef<any>;
 
-     responsibilities: IResponsibilities[] = [];
-     editIndex: number | null = null;
+  responsibilities: IResponsibilities[] = [];
+  editIndex: number | null = null;
 
-     multiSelectable = true;
-     rowSelectable = true;
-     hideRowSelectionCheckbox = false;
-     showToolbar = true;
-     columnHideable = true;
-     columnSortable = true;
-     columnPinnable = true;
-     rowHover = false;
-     rowStriped = false;
-     showPaginator = true;
-     expandable = false;
-     columnResizable = false;
-     isLoading = false;
-     isConfigExpanded: boolean = false;
-     list: any[] = [];
+  multiSelectable = true;
+  rowSelectable = true;
+  hideRowSelectionCheckbox = false;
+  showToolbar = true;
+  columnHideable = true;
+  columnSortable = true;
+  columnPinnable = true;
+  rowHover = false;
+  rowStriped = false;
+  showPaginator = true;
+  expandable = false;
+  columnResizable = false;
+  isLoading = false;
+  isConfigExpanded: boolean = false;
+  list: any[] = [];
 
-     constructor(
-       private fb: FormBuilder,
-       private gradeDesignationFacilityService: Gradectcdesignationfacilityservice,
-       private dialog: MatDialog,
-       private toastService: Toastservice
-     ) {}
-     ngOnInit(): void {
+  constructor(
+    private fb: FormBuilder,
+    private gradeDesignationFacilityService: Gradectcdesignationfacilityservice,
+    private dialog: MatDialog,
+    private toastService: Toastservice
+  ) {}
+  ngOnInit(): void {
+    this.loadAllGradeCtcDesignationFacility();
+  }
 
+  toggleConfigSection(): void {
+    this.isConfigExpanded = !this.isConfigExpanded;
+  }
 
-        //this.loadAllResponsibilities();
-     }
+  columns: MtxGridColumn[] = [
+    // --- Top-level Grade fields ---
+    { header: 'SNo', field: 'SNo' },
+    { header: 'Grade Code', field: 'GradeCode' },
+    { header: 'Grade Name', field: 'GradeName' },
+    { header: 'Grade Level', field: 'GradeLevel' },
+    { header: 'Min CTC', field: 'MinSalCTC' },
+    { header: 'Max CTC', field: 'MaxSalCTC' },
+    { header: 'Currency Name', field: 'CurrencyName' },
+    //{ header: 'Grade Description', field: 'GradeDescription', minWidth: 350, width: '350px' },
+    {
+      header: 'Grade Description',
+      field: 'GradeDescription',
+      minWidth: 200,
+      width: '200px',
+      formatter: (row: any) => {
+        const text = row.GradeDescription || '';
+        return text.length > 35 ? text.substring(0, 35) + '...' : text;
+      },
+      class: 'description-cell', // Add CSS class
+    },
+    { header: 'Leave Entitlement Annual', field: 'LeaveEntitlementAnnual' },
+    { header: 'Probation Period', field: 'ProbationPeriod' },
+    { header: 'Notice Period', field: 'NoticePeriod' },
+    { header: 'Grade Remark', field: 'GradeRemark', minWidth: 250, width: '250px' },
+    { header: 'Grade Auth', field: 'GradeAuth' },
+    { header: 'Grade Is Discard', field: 'GradeIsDiscard' },
+    { header: 'Grade Is Active', field: 'GradeIsActive' },
+    { header: 'Experienced Required', field: 'ExperiencedRequired' },
+    { header: 'Experienced Remark', field: 'ExperiencedRemark', minWidth: 250, width: '250px' },
 
-     toggleConfigSection(): void {
-       this.isConfigExpanded = !this.isConfigExpanded;
-     }
+    // --- CTC Structure (flattened) ---
+    { header: 'Basic', field: 'CTCStructure.CTCMasterBasic' },
+    { header: 'Bonus', field: 'CTCStructure.CTCMasterBonus' },
+    { header: 'Car Allowance', field: 'CTCStructure.CTCMasterCarAllowance' },
+    {
+      header: 'City Compensatory Allowance',
+      field: 'CTCStructure.CTCMasterCityCompensatoryAlowance',
+    },
+    { header: 'Conv Allowance', field: 'CTCStructure.CTCMasterConvAllowance' },
+    { header: 'DA', field: 'CTCStructure.CTCMasterDA' },
+    { header: 'Driver Allowance', field: 'CTCStructure.CTCMasterDriverAllowance' },
+    { header: 'ESIC', field: 'CTCStructure.CTCMasterEsic' },
+    { header: 'Fuel Allowance', field: 'CTCStructure.CTCMasterFuelAllowance' },
+    { header: 'Gratuity', field: 'CTCStructure.CTCMasterGraduity' },
+    { header: 'Gross', field: 'CTCStructure.CTCMasterGross' },
+    { header: 'HRA', field: 'CTCStructure.CTCMasterHRA' },
+    { header: 'Leave Travel Allowance', field: 'CTCStructure.CTCMasterLeaveTravelAllowance' },
+    { header: 'MLWF', field: 'CTCStructure.CTCMasterMLWF' },
+    { header: 'Medical Insurance', field: 'CTCStructure.CTCMasterMedicalInsurance' },
+    { header: 'Misc Allowance', field: 'CTCStructure.CTCMasterMiscAllowance' },
+    { header: 'PF Employee', field: 'CTCStructure.CTCMasterPFEmployee' },
+    { header: 'PF Employer', field: 'CTCStructure.CTCMasterPFEmployer' },
+    { header: 'PT', field: 'CTCStructure.CTCMasterPT' },
+    { header: 'Performance KPA', field: 'CTCStructure.CTCMasterPerformanceKPA' },
 
-     columns: MtxGridColumn[] = [
-       {
-         header: this.translate.stream('SNo'),
-         field: 'SNo',
-         sortable: true,
-         minWidth: 80,
-         width: '80px',
-       },
-       {
-         header: this.translate.stream('Responsibilities Grade Name'),
-         field: 'ResponsibilitiesGradeName',
-         sortable: true,
-         minWidth: 120,
-         width: '120px',
-       },
-       {
-         header: this.translate.stream('Responsibilities Designation Name'),
-         field: 'ResponsibilitiesDesignationName',
-         sortable: true,
-         minWidth: 150,
-         width: '150px',
-       },
-       {
-         header: this.translate.stream('Responsibilities Division Name'),
-         field: 'ResponsibilitiesDivisionName',
-         sortable: true,
-         minWidth: 150,
-         width: '150px',
-       },
-       {
-         header: this.translate.stream('Responsibilities Remark'),
-         field: 'ResponsibilitiesRemark',
-         sortable: true,
-         minWidth: 140,
-         width: '140px',
-       },
+    // --- Designations (CORRECTED - using flattened fields) ---
+    { header: 'Designation Code', field: 'DesignationCode' },
+    { header: 'Designation Name', field: 'DesignationName' },
+    { header: 'Qualification Name', field: 'QualificationName' },
+    {
+      header: 'Designation Description',
+      field: 'DesignationDescription',
+      minWidth: 350,
+      width: '350px',
+    },
+    {
+      header: 'Grade Qualification Remark',
+      field: 'GradeQualificationRemark',
+      minWidth: 350,
+      width: '350px',
+    },
+    { header: 'Required Skills', field: 'RequiredSkills', minWidth: 350, width: '350px' },
+    { header: 'Designation Remark', field: 'DesignationRemark', minWidth: 350, width: '350px' },
+
+    // --- Facility Assignments (array, show facility names joined) ---
+    {
+      header: 'Facility Names',
+      field: 'FacilityAssignments',
+      minWidth: 450,
+      width: '450px',
+      formatter: (row: any) => row.FacilityAssignments?.map((f: any) => f.FacilityName).join(', '),
+    },
+
+    // --- Action buttons (Edit/Delete) ---
+    {
+      header: 'Actions',
+      field: 'action',
+      minWidth: 140,
+      width: '140px',
+      pinned: 'right',
+      type: 'button',
+      buttons: [
         {
-         header: this.translate.stream('IsActive'),
-         field: 'ResponsibilitiesIsActive',
-         sortable: true,
-         minWidth: 100,
-         width: '100px',
-       },
+          type: 'icon',
+          icon: 'edit',
+          tooltip: this.translate.stream('edit'),
+          click: (record: any) => this.edit(record),
+        },
         {
-         header: this.translate.stream('IsAuth'),
-         field: 'ResponsibilitiesAuth',
-         sortable: true,
-         minWidth: 100,
-         width: '100px',
-       },
-       {
-         header: this.translate.stream('IsDiscard'),
-         field: 'ResponsibilitiesIsDiscard',
-         sortable: true,
-         minWidth: 100,
-         width: '100px',
-       },
-       {
-         header: this.translate.stream('Action'),
-         field: 'action',
-         minWidth: 140,
-         width: '140px',
-         pinned: 'right',
-         type: 'button',
-         buttons: [
-           {
-             type: 'icon',
-             icon: 'edit',
-             tooltip: this.translate.stream('edit'),
-             click: (record: IResponsibilities) => this.edit(record),
-           },
-           {
-             type: 'icon',
-             color: 'warn',
-             icon: 'delete',
-             tooltip: this.translate.stream('delete'),
-             pop: {
-               title: this.translate.stream('confirm_delete'),
-               closeText: this.translate.stream('close'),
-               okText: this.translate.stream('ok'),
-             },
-             click: record => this.delete(record),
-           },
-         ],
-       },
-     ];
+          type: 'icon',
+          color: 'warn',
+          icon: 'delete',
+          tooltip: this.translate.stream('confirm_delete'),
+          pop: {
+            title: this.translate.stream('confirm_delete'),
+            closeText: this.translate.stream('close'),
+            okText: this.translate.stream('ok'),
+          },
+          click: (record: any) => this.delete(record),
+        },
+      ],
+    },
+  ];
 
-     loadAllResponsibilities() {
-      //  this.responsibilitiesmstService.getAllResponsibilities().subscribe({
-      //    next: data => {
-      //      this.list = data.map((item: any, index: number) => ({
-      //        ...item,
-      //        SNo: index + 1,
-      //      }));
-      //      console.log('Fetched responsibilities with S.No:', this.list);
-      //    },
-      //    error: err => {
-      //      console.error('Error fetching responsibilities:', err);
-      //    },
-      //  });
-     }
+  // getFacilityNames(row: any): string {
+  //   return row?.FacilityAssignments
+  //     ? row.FacilityAssignments.map((f: any) => f.FacilityName).join(', ')
+  //     : '';
+  // }
 
-     edit(record: any) {
-       debugger
-       // Open dialog, pass in the record
-       this.dialog
-         .open(AddEditGradedesignationfacilityassignment, {
-           width: '100%',
-           height: '100%',
-         maxWidth: '100vw',
-         maxHeight: '100vh',
-         data: { responsibilities: record },
-         })
-         .afterClosed()
-         .subscribe(result => {
-        //  if (result) {
-        //    debugger
-        //    const payload = {
-        //      ResposibilitiesId: record.ResponsibilitiesId,
-        //      ResposibilitiesGradeId: result.GradeID,
-        //      ResposibilitiesDesignationId: result.DesignationID,
-        //      ResponsibilitiesDivisionId: result.DivisionID,
-        //      ResposibilitiesRemark: result.responsibilitiesRemark,
-        //      ResposibilitiesType: result.responsibilitiesType,
-        //      ResposibilitiesAuthRemark: result.responsibilitiesAuthRemark,
-        //      ResposibilitiesIsActive: result.responsibilitiesIsActive,
-        //      ResposibilitiesAuth: result.responsibilitiesAuth,
-        //      ResposibilitiesIsDiscard: result.responsibilitiesIsDiscard,
-        //        descriptions: result.descriptions,
-        //    };
-        //    this.gradeDesignationFacilityService.updateResponsibilities(payload).subscribe({
-        //        next: res => {
-        //        console.log('Responsibilities updated successfully:', res);
-        //        this.toastService.showSuccess(`Responsibilities updated successfully!`);
-        //        this.loadAllResponsibilities();
-        //      },
-        //        error: err => {
-        //        console.error('Error updating responsibilities:', err);
-        //        this.toastService.showError('Failed to update responsibilities. Please try again.');
-        //         this.loadAllResponsibilities();
-        //        },
-        //    });
-        //  }
-       });
-     }
+  loadAllGradeCtcDesignationFacility(): void {
+    this.gradeDesignationFacilityService.getAllGradeCtcDesignationFacility().subscribe({
+      next: (data: any) => {
+        console.log('Grade Designation Facility Ctc details', data);
+        const records = Array.isArray(data) ? data : [data];
+        let expandedList: any[] = [];
+        let snoCounter = 1;
 
-      openAddDialog() {
-       const dialogRef = this.dialog.open(AddEditGradedesignationfacilityassignment, {
-         width: '100%',
-         height: '100%',
-         maxWidth: '100vw',
-         maxHeight: '100vh',
-         data: {}, // empty for add
-       });
+        records.forEach((item: any) => {
+          const designations = item.Designations || [];
 
-       dialogRef.afterClosed().subscribe(result => {
-         if (result) {
-          debugger
-           console.table('result', result);
-           this.gradeDesignationFacilityService.creatGradeDesignationFacility(result.data).subscribe({
-             next: res => {
-               console.log('Responsibilities added successfully:', res);
-               this.toastService.showSuccess(`Responsibilities added successfully!`);
-               this.loadAllResponsibilities();
-             },
-             error: err => {
-               console.error('Error adding responsibilities:', err);
-               this.toastService.showError('Failed to add responsibilities. Please try again.');
-                this.loadAllResponsibilities();
-             },
-           });
-       }
-       });
-     }
+          if (designations.length === 0) {
+            // No designations - add row with empty designation fields
+            expandedList.push({
+              ...item,
+              SNo: snoCounter++,
+              DesignationCode: '',
+              DesignationName: '',
+              QualificationName: '',
+              DesignationDescription: '',
+              RequiredSkills: '',
+              GradeQualificationRemark: '',
+              DesignationRemark: '',
+            });
+          } else {
+            // Multiple designations - create separate row for each
+            designations.forEach((designation: any, designationIndex: number) => {
+              expandedList.push({
+                ...item,
+                SNo: snoCounter++,
+                // Add designation indicator for multiple designations
+                GradeName:
+                  designationIndex > 0
+                    ? `${item.GradeName} (${designationIndex + 1})`
+                    : item.GradeName,
 
-       closeDialog(): void {
-         this.dialogRef.close();
-       }
+                // Flatten designation fields
+                DesignationCode: designation.DesignationCode || '',
+                DesignationName: designation.DesignationName || '',
+                QualificationName: designation.QualificationName || '',
+                DesignationDescription: designation.DesignationDescription || '',
+                RequiredSkills: designation.RequiredSkills || '',
+                GradeQualificationRemark: designation.GradeQualificationRemark || '',
+                DesignationRemark: designation.DesignationRemark || '',
+              });
+            });
+          }
+        });
 
-       save(record: any): void {
-         console.log('Saving record:', record);
-         this.closeDialog();
-       }
+        this.list = expandedList;
+      },
+    });
+  }
 
-        delete(value: any) {
-        debugger
-         console.log('Deleting record:', value);
-        //  this.responsibilitiesmstService.deleteResponsibilities(value.ResponsibilitiesId).subscribe({
-        //  next: res => {
-        //      console.log('Responsibilities deleted successfully:', res);
-        //      this.toastService.showSuccess(`Responsibilities deleted successfully!`);
-        //      this.loadAllResponsibilities();
-        //    },
-        //  error: err => {
-        //      console.error('Error deleting responsibilities:', err);
-        //      this.toastService.showError('Failed to delete responsibilities. Please try again.');
-        //       this.loadAllResponsibilities();
-        //  },
-        //  });
-       }
+  edit(record: any) {
+    console.log('Edit Grade', record);
+    // Open dialog, pass in the record
+    this.dialog
+      .open(AddEditGradedesignationfacilityassignment, {
+        width: '100%',
+        height: '100%',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        data: { grade: record },
+      })
+      .afterClosed()
+      .subscribe(result => {
+        if (result) {
+          debugger;
+          console.table('result', result);
+          this.gradeDesignationFacilityService
+            .updateAllGradeCtcDesignationFacility(result.data)
+            .subscribe({
+              next: res => {
+                console.log('Grade and its details updated successfully', res);
+                this.toastService.showSuccess(`Grade and its details updated successfully`);
+                this.loadAllGradeCtcDesignationFacility();
+              },
+              error: err => {
+                console.error('Error adding grade details:', err);
+                this.toastService.showError('Failed to add grade details. Please try again.');
+                //this.loadAllGradeCtcDesignationFacility();
+              },
+            });
+        }
+      });
+  }
 
-        changeSelect(e: any) {
-         console.log(e);
-       }
+  openAddDialog() {
+    const dialogRef = this.dialog.open(AddEditGradedesignationfacilityassignment, {
+      width: '100%',
+      height: '100%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: {}, // empty for add
+    });
 
-       changeSort(e: any) {
-         console.log(e);
-       }
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        debugger;
+        console.table('result', result);
+        this.gradeDesignationFacilityService.creatGradeDesignationFacility(result.data).subscribe({
+          next: res => {
+            console.log('Grade and its details added successfully:', res);
+            this.toastService.showSuccess(`Grade and its details added successfully!`);
+            this.loadAllGradeCtcDesignationFacility();
+          },
+          error: err => {
+            this.toastService.showError('Failed to add Grade and its details. Please try again.');
+          },
+        });
+      }
+    });
+  }
 
-        enableRowExpandable() {
-         this.columns[0].showExpand = this.expandable;
-       }
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
 
-        updateCell() {
-         this.list = this.list.map(item => {
-           item.weight = Math.round(Math.random() * 1000) / 100;
-           return item;
-         });
-       }
+  save(record: any): void {
+    console.log('Saving record:', record);
+    this.closeDialog();
+  }
 
-       updateList() {
-         this.list = this.list.splice(-1).concat(this.list);
-       }
+  delete(value: any) {
+    debugger;
+    console.log('Deleting record:', value);
+    this.gradeDesignationFacilityService.deleteGrade(value.GradeId).subscribe({
+      next: res => {
+        console.log('Grade deleted successfully:', res);
+        this.toastService.showSuccess(`Grade deleted successfully!`);
+        this.loadAllGradeCtcDesignationFacility();
+      },
+      error: err => {
+        console.error('Error deleting grade:', err);
+        this.toastService.showError('Failed to delete grade. Please try again.');
+        this.loadAllGradeCtcDesignationFacility();
+      },
+    });
+  }
 
+  changeSelect(e: any) {
+    console.log(e);
+  }
+
+  changeSort(e: any) {
+    console.log(e);
+  }
+
+  enableRowExpandable() {
+    this.columns[0].showExpand = this.expandable;
+  }
+
+  updateCell() {
+    this.list = this.list.map(item => {
+      item.weight = Math.round(Math.random() * 1000) / 100;
+      return item;
+    });
+  }
+
+  updateList() {
+    this.list = this.list.splice(-1).concat(this.list);
+  }
 }

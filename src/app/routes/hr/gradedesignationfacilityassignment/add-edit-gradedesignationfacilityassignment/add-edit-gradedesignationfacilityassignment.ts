@@ -16,8 +16,6 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialogModule } from '@angular/material/dialog';
 import { Gradectcdesignationfacilityservice } from '@shared/services/hr/gradectcdesignationfacility/gradectcdesignationfacilityservice';
-//import { Gradedesignationfacilityassignmentservice } from '@shared/services/hr/GradeDesignationFacilityAssignment/gradedesignationfacilityassignmentservice';
-
 @Component({
   selector: 'app-add-edit-gradedesignationfacilityassignment',
   imports: [
@@ -56,44 +54,8 @@ export class AddEditGradedesignationfacilityassignment {
   filteredQualificationList: any[] = [];
   // Data lists for dropdowns
   currencyList: any[] = [];
-  // currencyList: any[] = [
-  //   { CurrencyId: 1, CurrencyName: 'USD - US Dollar' },
-  //   { CurrencyId: 2, CurrencyName: 'EUR - Euro' },
-  //   { CurrencyId: 3, CurrencyName: 'INR - Indian Rupee' },
-  //   { CurrencyId: 4, CurrencyName: 'GBP - British Pound' },
-  //   { CurrencyId: 5, CurrencyName: 'JPY - Japanese Yen' },
-  //   { CurrencyId: 6, CurrencyName: 'CAD - Canadian Dollar' },
-  //   { CurrencyId: 7, CurrencyName: 'AUD - Australian Dollar' },
-  // ];
-
   qualificationList: any[] = [];
-  // qualificationList: any[] = [
-  //   { QualificationId: 1, QualificationName: 'High School' },
-  //   { QualificationId: 2, QualificationName: "Bachelor's Degree" },
-  //   { QualificationId: 3, QualificationName: "Master's Degree" },
-  //   { QualificationId: 4, QualificationName: 'PhD' },
-  //   { QualificationId: 5, QualificationName: 'Professional Certification' },
-  //   { QualificationId: 6, QualificationName: 'Diploma' },
-  //   { QualificationId: 7, QualificationName: 'Associate Degree' },
-  // ];
-
   facilityList: any[] = [];
-
-  // facilityList: any[] = [
-  //   { FacilityId: 1, FacilityName: 'Cafeteria' },
-  //   { FacilityId: 2, FacilityName: 'Gym/Fitness Center' },
-  //   { FacilityId: 3, FacilityName: 'Parking' },
-  //   { FacilityId: 4, FacilityName: 'Medical Room' },
-  //   { FacilityId: 5, FacilityName: 'Library' },
-  //   { FacilityId: 6, FacilityName: 'Conference Rooms' },
-  //   { FacilityId: 7, FacilityName: 'Recreation Area' },
-  //   { FacilityId: 8, FacilityName: 'Training Rooms' },
-  //   { FacilityId: 9, FacilityName: 'Executive Lounge' },
-  //   { FacilityId: 10, FacilityName: 'Childcare Center' },
-  //   { FacilityId: 11, FacilityName: 'Shuttle Service' },
-  //   { FacilityId: 12, FacilityName: 'Game Room' },
-  // ];
-
   gradeLevelList = [
     { value: 'Entry', label: 'Entry Level' },
     { value: 'Junior', label: 'Junior Level' },
@@ -113,7 +75,9 @@ export class AddEditGradedesignationfacilityassignment {
     public gradedesignationfacilityassignment: Gradectcdesignationfacilityservice,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.isEditMode = data?.isEdit || false;
+    this.isEditMode = !!this.data.grade || false;
+    console.log('Edit mode:', this.isEditMode);
+    console.log('Data received:', this.data.grade);
   }
 
   ngOnInit(): void {
@@ -124,13 +88,11 @@ export class AddEditGradedesignationfacilityassignment {
   }
 
   private initializeForm(): void {
+    debugger;
     const currentDate = new Date().toLocaleDateString('en-GB'); // dd/mm/yyyy format
-
     this.gradeForm = this.fb.group({
-      // Hidden/System fields
-      // CreatedBy: [{ value: '', disabled: true }],
+      GradeId: [''],
       CreatedDate: [{ value: currentDate, disabled: true }],
-
       // Basic Information - Step 1
       GradeCode: [
         {
@@ -165,17 +127,17 @@ export class AddEditGradedesignationfacilityassignment {
       // Facility Assignments - Step 4 (handled separately)
       facilityAssignments: [[]],
 
-       // CTC Structure - Step 5
+      // CTC Structure - Step 5
       CTCMasterBasic: ['', [Validators.required, Validators.min(0)]],
       CTCMasterDA: ['', [Validators.required, Validators.min(0)]],
       CTCMasterHRA: ['', [Validators.required, Validators.min(0)]],
       CTCMasterConvAllowance: ['', [Validators.min(0)]],
-      CTCMasterCityCompensatoryAlowance: ['', [Validators.min(0)]], // Note: keeping original field name with typo
+      CTCMasterCityCompensatoryAlowance: ['', [Validators.min(0)]],
       CTCMasterLeaveTravelAllowance: ['', [Validators.min(0)]],
       CTCMasterCarAllowance: ['', [Validators.min(0)]],
       CTCMasterFuelAllowance: ['', [Validators.min(0)]],
       CTCMasterDriverAllowance: ['', [Validators.min(0)]],
-      CTCMasterMiscAllowance: ['', [Validators.min(0)]], // Using MiscAllowance instead of Misc.Allowance for form control
+      CTCMasterMiscAllowance: ['', [Validators.min(0)]],
       CTCMasterGross: [{ value: '', disabled: true }], // Auto-calculated
       CTCMasterPFEmployee: ['', [Validators.required, Validators.min(0)]],
       CTCMasterPT: ['', [Validators.required, Validators.min(0)]],
@@ -192,7 +154,8 @@ export class AddEditGradedesignationfacilityassignment {
     this.gradeForm.addValidators(this.salaryRangeValidator);
 
     // If editing, pre-fill form with available data
-    if (this.isEditMode && this.data?.grade) {
+    if (this.isEditMode) {
+      debugger;
       this.patchFormData();
     }
 
@@ -209,6 +172,7 @@ export class AddEditGradedesignationfacilityassignment {
   // Create designation form group
   private createDesignationGroup(): FormGroup {
     return this.fb.group({
+      DesignationId: [''],
       DesignationCode: ['', [Validators.required, Validators.maxLength(10)]],
       DesignationName: ['', [Validators.required, Validators.maxLength(100)]],
       DesignationQualificationId: ['', [Validators.required]],
@@ -230,27 +194,36 @@ export class AddEditGradedesignationfacilityassignment {
     return null;
   };
 
-   // Calculate Gross Salary
+  // Calculate Gross Salary
   calculateGross(): void {
     const basic = parseFloat(this.gradeForm.get('CTCMasterBasic')?.value) || 0;
     const da = parseFloat(this.gradeForm.get('CTCMasterDA')?.value) || 0;
     const hra = parseFloat(this.gradeForm.get('CTCMasterHRA')?.value) || 0;
     const convAllowance = parseFloat(this.gradeForm.get('CTCMasterConvAllowance')?.value) || 0;
-    const cityCompAllowance = parseFloat(this.gradeForm.get('CTCMasterCityCompensatoryAlowance')?.value) || 0;
+    const cityCompAllowance =
+      parseFloat(this.gradeForm.get('CTCMasterCityCompensatoryAlowance')?.value) || 0;
     const lta = parseFloat(this.gradeForm.get('CTCMasterLeaveTravelAllowance')?.value) || 0;
     const carAllowance = parseFloat(this.gradeForm.get('CTCMasterCarAllowance')?.value) || 0;
     const fuelAllowance = parseFloat(this.gradeForm.get('CTCMasterFuelAllowance')?.value) || 0;
     const driverAllowance = parseFloat(this.gradeForm.get('CTCMasterDriverAllowance')?.value) || 0;
     const miscAllowance = parseFloat(this.gradeForm.get('CTCMasterMiscAllowance')?.value) || 0;
 
-    const gross = basic + da + hra + convAllowance + cityCompAllowance + lta +
-                  carAllowance + fuelAllowance + driverAllowance + miscAllowance;
+    const gross =
+      basic +
+      da +
+      hra +
+      convAllowance +
+      cityCompAllowance +
+      lta +
+      carAllowance +
+      fuelAllowance +
+      driverAllowance +
+      miscAllowance;
 
     this.gradeForm.patchValue({
-      CTCMasterGross: gross
+      CTCMasterGross: gross,
     });
   }
-
 
   // FormArray getters
   get designations(): FormArray {
@@ -359,7 +332,7 @@ export class AddEditGradedesignationfacilityassignment {
     return this.designations.controls.every(designation => designation.valid);
   }
 
-   private isStep5Valid(): boolean {
+  private isStep5Valid(): boolean {
     const step5Fields = [
       'CTCMasterBasic',
       'CTCMasterDA',
@@ -381,8 +354,8 @@ export class AddEditGradedesignationfacilityassignment {
   }
 
   getStepControl(step: number): AbstractControl {
-  return this.fb.control('', []);
-}
+    return this.fb.control('', []);
+  }
 
   // Facility management methods
   onFacilityChange(event: any): void {
@@ -442,6 +415,8 @@ export class AddEditGradedesignationfacilityassignment {
     return {
       // Grade Master data
       gradeData: {
+        //GradeId: formValue.GradeId,
+        GradeId: this.isEditMode ? formValue.GradeId || null : null,
         GradeCode: formValue.GradeCode,
         GradeName: formValue.GradeName,
         GradeLevel: formValue.GradeLevel,
@@ -458,31 +433,35 @@ export class AddEditGradedesignationfacilityassignment {
         GradeIsActive: formValue.GradeIsActive,
         ExperiencedRequired: formValue.ExperiencedRequired,
         ExperiencedRemark: formValue.ExperiencedRemark,
-        CreatedBy: formValue.CreatedBy,
-        CreatedDate: formValue.CreatedDate,
+        //CreatedBy: formValue.CreatedBy,
+        // CreatedDate: formValue.CreatedDate,
       },
       // Designations data
       designations: formValue.designations.map((designation: any, index: number) => ({
-        ...designation,
-        //DesignationGradeID: null, // Will be set after grade is saved
+        DesignationId: this.isEditMode ? designation.DesignationId || null : null,
+        DesignationCode: designation.DesignationCode,
+        DesignationName: designation.DesignationName,
+        DesignationQualificationId: designation.DesignationQualificationId,
+        DesignationDescription: designation.DesignationDescription,
+        GradeQualificationRemark: designation.GradeQualificationRemark,
+        RequiredSkills: designation.RequiredSkills,
+        DesignationRemark: designation.DesignationRemark,
       })),
       // Facility assignments
       facilityAssignments: this.selectedFacilities.map(facilityId => ({
-       // AssignmentGradeId: null, // Will be set after grade is saved
         AssignmentFacilityId: facilityId,
       })),
-        // CTC Structure data
+      // CTC Structure data
       ctcStructure: {
         CTCMasterBasic: formValue.CTCMasterBasic,
         CTCMasterDA: formValue.CTCMasterDA,
         CTCMasterHRA: formValue.CTCMasterHRA,
         CTCMasterConvAllowance: formValue.CTCMasterConvAllowance,
-        'CTCMasterCityCompensatoryAlowance': formValue.CTCMasterCityCompensatoryAlowance, // Note: keeping original field name
-        CTCMasterLeaveTravelAllowance: formValue.CTCMasterLeaveTravelAllowance,
+        CTCMasterCityCompensatoryAlowance: formValue.CTCMasterCityCompensatoryAlowance,
         CTCMasterCarAllowance: formValue.CTCMasterCarAllowance,
         CTCMasterFuelAllowance: formValue.CTCMasterFuelAllowance,
         CTCMasterDriverAllowance: formValue.CTCMasterDriverAllowance,
-        'CTCMasterMisc.Allowance': formValue.CTCMasterMiscAllowance, // Mapping to database field name
+        CTCMasterMiscAllowance: formValue.CTCMasterMiscAllowance,
         CTCMasterGross: formValue.CTCMasterGross,
         CTCMasterPFEmployee: formValue.CTCMasterPFEmployee,
         CTCMasterPT: formValue.CTCMasterPT,
@@ -503,13 +482,14 @@ export class AddEditGradedesignationfacilityassignment {
 
     // Patch basic grade information
     this.gradeForm.patchValue({
+      GradeId: gradeData.GradeId,
       GradeCode: gradeData.GradeCode || '',
       GradeName: gradeData.GradeName || '',
       GradeLevel: gradeData.GradeLevel || '',
       GradeDescription: gradeData.GradeDescription || '',
       MinSalCTC: gradeData.MinSalCTC || '',
       MaxSalCTC: gradeData.MaxSalCTC || '',
-      //GradeCurrencyId: gradeData.GradeCurrencyId || '',
+      GradeCurrencyId: gradeData.GradeCurrencyId || '',
       LeaveEntitlementAnnual: gradeData.LeaveEntitlementAnnual || '',
       ProbationPeriod: gradeData.ProbationPeriod || '',
       NoticePeriod: gradeData.NoticePeriod || '',
@@ -519,13 +499,13 @@ export class AddEditGradedesignationfacilityassignment {
       GradeAuth: gradeData.GradeAuth ?? true,
       GradeIsDiscard: gradeData.GradeIsDiscard ?? false,
       GradeIsActive: gradeData.GradeIsActive ?? true,
-      CreatedBy: gradeData.CreatedBy || '',
-      CreatedDate: gradeData.CreatedDate || '',
+      // CreatedBy: gradeData.CreatedBy || '',
+      // CreatedDate: gradeData.CreatedDate || '',
     });
 
     // Patch CTC Structure if available
-    if (gradeData.ctcStructure) {
-      const ctc = gradeData.ctcStructure;
+    if (gradeData.CTCStructure) {
+      const ctc = gradeData.CTCStructure;
       this.gradeForm.patchValue({
         CTCMasterBasic: ctc.CTCMasterBasic || '',
         CTCMasterDA: ctc.CTCMasterDA || '',
@@ -536,7 +516,7 @@ export class AddEditGradedesignationfacilityassignment {
         CTCMasterCarAllowance: ctc.CTCMasterCarAllowance || '',
         CTCMasterFuelAllowance: ctc.CTCMasterFuelAllowance || '',
         CTCMasterDriverAllowance: ctc.CTCMasterDriverAllowance || '',
-        CTCMasterMiscAllowance: ctc['CTCMasterMisc.Allowance'] || '',
+        CTCMasterMiscAllowance: ctc.CTCMasterMiscAllowance || '',
         CTCMasterGross: ctc.CTCMasterGross || '',
         CTCMasterPFEmployee: ctc.CTCMasterPFEmployee || '',
         CTCMasterPT: ctc.CTCMasterPT || '',
@@ -551,16 +531,17 @@ export class AddEditGradedesignationfacilityassignment {
     }
 
     // Patch designations if available
-    if (gradeData.designations && gradeData.designations.length > 0) {
+    if (gradeData.Designations && gradeData.Designations.length > 0) {
       // Clear existing designations
       while (this.designations.length > 0) {
         this.designations.removeAt(0);
       }
 
       // Add designations from data
-      gradeData.designations.forEach((designation: any) => {
+      gradeData.Designations.forEach((designation: any) => {
         const designationGroup = this.createDesignationGroup();
         designationGroup.patchValue({
+          DesignationId: designation.DesignationId || '',
           DesignationCode: designation.DesignationCode || '',
           DesignationName: designation.DesignationName || '',
           DesignationQualificationId: designation.DesignationQualificationId || '',
@@ -574,8 +555,8 @@ export class AddEditGradedesignationfacilityassignment {
     }
 
     // Patch facility assignments if available
-    if (gradeData.facilityAssignments && gradeData.facilityAssignments.length > 0) {
-      this.selectedFacilities = gradeData.facilityAssignments.map(
+    if (gradeData.FacilityAssignments && gradeData.FacilityAssignments.length > 0) {
+      this.selectedFacilities = gradeData.FacilityAssignments.map(
         (fa: any) => fa.AssignmentFacilityId
       );
       this.gradeForm.patchValue({
