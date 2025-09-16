@@ -178,3 +178,17 @@
   box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4) !important;
 }
 
+::ng-deep .description-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 200px;
+}
+
+::ng-deep .mtx-grid .mat-table .mat-row {
+  height: 48px !important;
+  max-height: 48px !important;
+}
+
+
+
