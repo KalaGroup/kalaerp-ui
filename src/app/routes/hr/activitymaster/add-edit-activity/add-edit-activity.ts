@@ -116,7 +116,7 @@ export class AddEditActivity {
         ActivityIsDiscard: this.data.activity.ActivityIsDiscard ?? false,
         CreatedBy: this.data.activity.CreatedBy ?? '1',
         CreatedDate: this.data.activity.CreatedDate ? new Date(this.data.activity.CreatedDate) : currentDate,
-        
+
       });
     }
   }
@@ -298,6 +298,7 @@ export class AddEditActivity {
 
 
   addRow() {
+    debugger
     const desc = this.newDescription.trim();
 
     if (this.newDescription.trim() == undefined || this.newDescription.trim() == '') {

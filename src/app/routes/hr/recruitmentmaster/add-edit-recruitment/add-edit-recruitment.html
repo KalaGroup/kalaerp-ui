@@ -1,0 +1,368 @@
+<mat-card>
+  <mat-card-title>
+    {{ isEditMode ? 'Edit RecruitmentMaster' : 'Add RecruitmentMaster' }}
+  </mat-card-title>
+
+  <mat-card-content>
+    <form [formGroup]="RecruitmentForm" class="form-field-full">
+
+      <!-- Checkbox Row -->
+      <div class="row mb-3">
+        <div class="col-sm-12 d-flex gap-3">
+          <mat-checkbox formControlName="RecruitmentMasterAuth" color="primary"
+            [disabled]="!isEditMode">Auth</mat-checkbox>
+          <mat-checkbox formControlName="RecruitmentMasterIsActive" color="primary"
+            [disabled]="!isEditMode">Active</mat-checkbox>
+          <mat-checkbox formControlName="RecruitmentMasterIsDiscard" color="primary" [disabled]="!isEditMode"
+            *ngIf="isEditMode">Discard</mat-checkbox>
+        </div>
+      </div>
+
+      <!-- Row 1 -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>RecruitmentMaster Code</mat-label>
+            <input matInput formControlName="RecruitmentMasterCode" placeholder="Enter Code" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Recruitment Reference Code</mat-label>
+            <input matInput formControlName="RecruitmentMasterReferenceCode" placeholder="Enter Reference Code" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Recruitment Reference Name</mat-label>
+            <input matInput formControlName="RecruitmentMasterReferenceName" placeholder="Enter Reference Name" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Recruitment Reference</mat-label>
+            <mat-select formControlName="RecruitmentMasterReferenceId">
+              <mat-option *ngFor="let ref of RecruitmentReferenceList" [value]="ref.RecruitmentReferenceId">
+                {{ ref.RecruitmentReferenceName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Position</mat-label>
+            <mat-select formControlName="RecruitmentMasterPositionId">
+              <mat-option *ngFor="let pos of positionList" [value]="pos.PositionMasterId">
+                {{ pos.PositionMasterName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Candidate Name</mat-label>
+            <input matInput formControlName="RecruitmentMasterNameOfCandidates" placeholder="Enter Candidate Name" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>City </mat-label>
+            <mat-select formControlName="RecruitmentMasterCityId" placeholder="Select city Name">
+              <mat-option>
+                <input matInput placeholder="Search city Name" [formControl]="CitySearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+              <mat-option value="">Select city Name</mat-option>
+              <mat-option *ngFor="let city of filteredCityList" [value]="city.CityId">
+                {{ city.CityName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Company Name</mat-label>
+            <mat-select formControlName="RecruitmentMasterCompanyId" placeholder="Select Company Name">
+              <mat-option>
+                <input matInput placeholder="Search Company Name" [formControl]="CompanySearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+              <mat-option value="">Select Company Name</mat-option>
+              <mat-option *ngFor="let companyname of filteredCompanyList" [value]="companyname.CompanyId">
+                {{ companyname.CompanyName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="RecruitmentMasterCandidateEmailId" placeholder="Enter Email" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Contact Number</mat-label>
+            <input matInput formControlName="RecruitmentMasterCandidateContactNumber" placeholder="Enter Number" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Job Role</mat-label>
+            <input matInput formControlName="RecruitmentMasterAppropriateForJobRole" placeholder="Enter Job Role" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Stage Status</mat-label>
+            <mat-select formControlName="RecruitmentMasterRecruitmentStageStatusId">
+              <mat-option *ngFor="let status of StatusStageList" [value]="status.RecruitmentStageStatusId">
+                {{ status.RecruitmentStageStatusName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Interviewer Comment</mat-label>
+            <input matInput formControlName="RecruitmentMasterInterviewerComment" placeholder="Enter Comment" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Employee</mat-label>
+            <mat-select formControlName="RecruitmentMasterInterviewerEmployeeId">
+              <mat-option *ngFor="let employee of EmployeeList" [value]="employee.EmployeeMasterId">
+                {{ employee.EmployeeMasterFullName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Grade</mat-label>
+            <mat-select formControlName="RecruitmentMasterGradeId">
+              <mat-option *ngFor="let grade of gradeList" [value]="grade.GradeId">
+                {{ grade.GradeName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+
+        </div>
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Designation</mat-label>
+            <mat-select formControlName="RecruitmentMasterDesignationId">
+              <mat-option *ngFor="let desig of designationList" [value]="desig.DesignationId">
+                {{ desig.DesignationName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Current CTC</mat-label>
+            <input matInput formControlName="RecruitmentMasterCurrentCtcpa" placeholder="Enter Current CTC" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>RecruitmentMasterOfferLetterStatus</mat-label>
+            <input matInput formControlName="RecruitmentMasterOfferLetterStatus" placeholder="Enter offer Letter " />
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Expected CTC</mat-label>
+            <input matInput formControlName="RecruitmentMasterExpectedCtcpa" placeholder="Enter Expected CTC" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Recommended CTC</mat-label>
+            <input matInput formControlName="RecruitmentMasterRecommendedCtcpa" placeholder="Enter Recommended CTC" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Expected Joining Date</mat-label>
+            <input matInput [matDatepicker]="joiningDatePicker" formControlName="RecruitmentMasterExpectedJoiningDate"
+              placeholder="Select Joining Date" />
+            <mat-datepicker-toggle matSuffix [for]="joiningDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #joiningDatePicker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>HR Comment</mat-label>
+            <input matInput formControlName="RecruitmentMasterHrcomment" placeholder="Enter HR Comment" />
+          </mat-form-field>
+        </div>
+
+
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Remark</mat-label>
+            <input matInput formControlName="RecruitmentMasterRemark" placeholder="Enter Remark" />
+          </mat-form-field>
+        </div>
+      </div>
+
+
+      <div class="container mt-3">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title style="font-size: 20px; font-weight: bold; color: #007bff;">
+              Recruitment Details
+            </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            <form>
+              <div class="table-container">
+                <table class="custom-table">
+                  <thead>
+                    <tr class="table-header">
+                      <th class="sr-no-column">Sr.No</th>
+                      <th class="round-column">Interview Round</th>
+                      <th class="marks-column">Marks Obtained</th>
+                      <th class="attribute-column">Attribute</th>
+                      <th class="action-column">Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    <tr class="input-row">
+                      <td class="sr-no-cell"></td>
+
+
+                      <td class="round-cell">
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <mat-label>Round No</mat-label>
+                          <input matInput type="number" [(ngModel)]="newRound" name="newRound"
+                            placeholder="Enter round no." />
+                        </mat-form-field>
+                      </td>
+
+
+                      <td class="marks-cell">
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <mat-label>Marks</mat-label>
+                          <input matInput type="number" [(ngModel)]="newMarks" name="newMarks"
+                            placeholder="Enter marks" />
+                        </mat-form-field>
+                      </td>
+
+
+                      <td class="marks-cell">
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <mat-label>Attribute</mat-label>
+                          <mat-select [(ngModel)]="newAttributeId" name="newAttributeId">
+                            <mat-option *ngFor="let attr of AttributeList" [value]="attr.RecruitmentAttributeId">
+                              {{ attr.RecruitmentAttributeName }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+
+
+
+                      <td class="action-cell">
+                        <button mat-raised-button color="primary" (click)="addDetailRow()" type="button"
+                          class="add-button">
+                          <mat-icon>add</mat-icon> ADD
+                        </button>
+                      </td>
+                    </tr>
+
+
+                    <tr *ngFor="let detail of Details; let i = index">
+                      <td>{{ i + 1 }}</td>
+
+                      <!-- Round -->
+                      <td>
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <input matInput type="number" [(ngModel)]="detail.newRound" [readonly]="editIndex !== i"
+                            name="round{{ i }}" />
+                        </mat-form-field>
+                      </td>
+
+                      <!-- Marks -->
+                      <td>
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <input matInput type="number" [(ngModel)]="detail.newMarks" [readonly]="editIndex !== i"
+                            name="marks{{ i }}" />
+                        </mat-form-field>
+                      </td>
+
+                      <!-- Attribute -->
+                      <td>
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <mat-select [(ngModel)]="detail.newAttributeId" [disabled]="editIndex !== i"
+                            name="attr{{ i }}">
+                            <mat-option *ngFor="let attr of AttributeList" [value]="attr.RecruitmentAttributeId">
+                              {{ attr.RecruitmentAttributeName }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+
+                      <!-- Actions -->
+                      <td>
+                        <button mat-icon-button color="warn" (click)="deleteDetailRow(i)" matTooltip="Delete">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+
+                        <button *ngIf="editIndex !== i" mat-icon-button color="accent" (click)="editDetailRow(i)"
+                          matTooltip="Edit">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+
+                        <button *ngIf="editIndex === i" mat-icon-button color="primary" (click)="updateDetailRow(i)"
+                          matTooltip="Save">
+                          <mat-icon>save</mat-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+
+
+
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="RecruitmentForm.invalid"
+              type="submit" (click)="onSubmit()">
+              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+
+            <button mat-stroked-button color="warn" class="btn-outline px-4" type="button" (click)="onCancel()">
+              <mat-icon>close</mat-icon>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>
