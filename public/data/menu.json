@@ -150,6 +150,11 @@
           "route": "recruitmentreferencemaster",
           "name": "recruitmentreferencemaster",
           "type": "link"
+        },
+        {
+          "route": "recruitmentmaster",
+          "name": "recruitmentmaster",
+          "type": "link"
         }
       ]
     }

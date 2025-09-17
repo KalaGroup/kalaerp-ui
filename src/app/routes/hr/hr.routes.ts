@@ -33,6 +33,8 @@ import { CitymasterComponent } from './citymaster/citymaster';
 import { Gradedesignationfacilityassignment } from './gradedesignationfacilityassignment/gradedesignationfacilityassignment/gradedesignationfacilityassignment';
 import { Recruitmentreferencemasterservice } from '@shared/services/hr/RecruitmentReferenceMaster/recruitmentreferencemaster';
 import { Recruitmentreferencemaster } from './recruitmentreferencemaster/recruitmentreferencemaster';
+import { Recruitmentmaster } from './recruitmentmaster/recruitmentmaster';
+
 
 export const routes: Routes = [
   {
@@ -159,7 +161,10 @@ export const routes: Routes = [
   {
     path: 'recruitmentreferencemaster',
     component: Recruitmentreferencemaster
-
-
+  },
+   {
+    path: 'recruitmentmaster',
+    component: Recruitmentmaster
   }
+  
 ];
