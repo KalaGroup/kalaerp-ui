@@ -155,6 +155,11 @@
           "route": "recruitmentmaster",
           "name": "recruitmentmaster",
           "type": "link"
+        },
+        {
+          "route": "profitcenterbudget",
+          "name": "profitcenterbudget",
+          "type": "link"
         }
       ]
     }
