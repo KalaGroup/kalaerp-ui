@@ -8,19 +8,7 @@
 
             <!-- Row: ID, Created Date -->
             <div class="row mb-3 option-section">
-                <!-- <div class="col-sm-6 col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Petrol Allowance ID</mat-label>
-                        <input matInput formControlName="PetrolAllowanceId" readonly placeholder="Auto-generated" />
-                    </mat-form-field>
-                </div> -->
 
-                <!-- <div class="col-sm-6 col-md-4">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Created By</mat-label>
-                        <input matInput formControlName="CreatedBy" readonly placeholder="Auto-filled by system" />
-                    </mat-form-field>
-                </div> -->
                 <mat-checkbox formControlName="PetrolAllowanceIsActive" color="primary" [disabled]="!isEditMode">
                     Active
                 </mat-checkbox>
@@ -69,26 +57,7 @@
                 </div>
             </div>
 
-            <!-- Row: Checkboxes -->
-            <!-- <div class="row mb-3 option-section">
-                <div class="col-sm-4 d-flex align-items-center">
-                    <mat-checkbox formControlName="PetrolAllowanceIsActive" color="primary" [disabled]="!isEditMode">
-                        Active
-                    </mat-checkbox>
-                </div>
 
-                <div class="col-sm-4 d-flex align-items-center">
-                    <mat-checkbox formControlName="PetrolAllowanceIsAuth" color="primary" [disabled]="!isEditMode">
-                        Authorized
-                    </mat-checkbox>
-                </div>
-
-                <div class="col-sm-4 d-flex align-items-center">
-                    <mat-checkbox formControlName="PetrolAllowanceIsDiscard" color="warn" [disabled]="!isEditMode">
-                        Discarded
-                    </mat-checkbox>
-                </div>
-            </div> -->
 
             <!-- Action Buttons -->
             <div class="row mt-4">

@@ -1,0 +1,119 @@
+<mat-card class="custom-card">
+    <mat-card-title class="text-center mb-3">
+        {{ isEditMode ? 'Edit Profit Center Budget' : 'Add Profit Center Budget' }}
+    </mat-card-title>
+
+    <mat-card-content>
+        <form [formGroup]="profitcenterBudgetForm" class="form-field-full">
+
+            <!-- Checkboxes -->
+            <div class="row mb-3">
+                <div class="col-12 d-flex gap-4 align-items-center justify-content-start">
+                    <mat-checkbox formControlName="ProfitCenterBudgetAuth" color="primary">Auth</mat-checkbox>
+                    <mat-checkbox formControlName="ProfitCenterBudgetIsActive" color="primary">Active</mat-checkbox>
+                    <mat-checkbox formControlName="ProfitCenterBudgetIsDiscard" color="primary">Discard</mat-checkbox>
+                </div>
+            </div>
+            <!-- Form Fields -->
+            <div class="row mb-3">
+                <!-- Left Column -->
+                <div class="col-md-6">
+                    <!-- Financial Year -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Financial Year</mat-label>
+                        <mat-select formControlName="ProfitcenterFy" placeholder="Select Financial Year">
+                            <mat-option *ngFor="let year of FinancialYearList" [value]="year.YR_VALUE">
+                                {{ year.YR_TEXT }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="profitcenterBudgetForm.get('ProfitcenterFy')?.invalid && profitcenterBudgetForm.get('ProfitcenterFy')?.touched">
+                            Financial Year is required
+                        </mat-error>
+                    </mat-form-field>
+                    <!-- Budget Amount -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Budget Amount</mat-label>
+                        <input matInput type="number" formControlName="ProfitcenterBudgetBudgetAmt"
+                            placeholder="Enter budget amount" />
+                        <mat-error
+                            *ngIf="profitcenterBudgetForm.get('ProfitcenterBudgetBudgetAmt')?.invalid && profitcenterBudgetForm.get('ProfitcenterBudgetBudgetAmt')?.touched">
+                            Budget Amount is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-6">
+                    <!-- Profit Center Dropdown -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Profit Center</mat-label>
+                        <mat-select formControlName="ProfitcenterBudgetProfitcenterId"
+                            placeholder="Select Profit Center">
+                            <mat-option *ngFor="let pc of ProfitcenterList" [value]="pc.ProfitCenterId">
+                                {{ pc.ProfitCenterName }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="profitcenterBudgetForm.get('ProfitcenterBudgetProfitcenterId')?.invalid && profitcenterBudgetForm.get('ProfitcenterBudgetProfitcenterId')?.touched">
+                            Profit Center is required
+                        </mat-error>
+                    </mat-form-field>
+
+
+
+                    <!-- Budget Head Dropdown -->
+                    <mat-form-field appearance="fill" class="w-100">
+                        <mat-label>Employee</mat-label>
+                        <mat-select formControlName="ProfitCenterBudgetHeadId">
+                            <mat-option *ngFor="let employee of EmployeeList" [value]="employee.EmployeeMasterId">
+                                {{ employee.EmployeeMasterFullName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <!-- Budget Remark -->
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Budget Remark</mat-label>
+                        <input matInput formControlName="ProfitCenterBudgetRemark" placeholder="Enter remark..." />
+                        <mat-error
+                            *ngIf="profitcenterBudgetForm.get('ProfitCenterBudgetRemark')?.invalid && profitcenterBudgetForm.get('ProfitCenterBudgetRemark')?.touched">
+                            Remark is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Auth Remark -->
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Auth Remark</mat-label>
+                        <input matInput formControlName="ProfitCenterBudgetAuthRemark"
+                            placeholder="Enter auth remark..." />
+                        <mat-error
+                            *ngIf="profitcenterBudgetForm.get('ProfitCenterBudgetAuthRemark')?.invalid && profitcenterBudgetForm.get('ProfitCenterBudgetAuthRemark')?.touched">
+                            Auth Remark is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row">
+                <div class="col-12 text-center mt-4">
+                    <button mat-flat-button color="primary" [disabled]="profitcenterBudgetForm.invalid"
+                        (click)="onSubmit()">
+                        <mat-icon class="me-1">{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+                        {{ isEditMode ? 'Update' : 'Save' }}
+                    </button>
+
+                    <button mat-stroked-button type="button" class="ms-3" (click)="onCancel()">
+                        <mat-icon class="me-1">close</mat-icon>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

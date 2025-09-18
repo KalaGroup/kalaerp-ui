@@ -34,6 +34,7 @@ import { Gradedesignationfacilityassignment } from './gradedesignationfacilityas
 import { Recruitmentreferencemasterservice } from '@shared/services/hr/RecruitmentReferenceMaster/recruitmentreferencemaster';
 import { Recruitmentreferencemaster } from './recruitmentreferencemaster/recruitmentreferencemaster';
 import { Recruitmentmaster } from './recruitmentmaster/recruitmentmaster';
+import { Profitcenterbudget } from './profitcenterbudget/profitcenterbudget';
 
 
 export const routes: Routes = [
@@ -165,6 +166,10 @@ export const routes: Routes = [
    {
     path: 'recruitmentmaster',
     component: Recruitmentmaster
+  },
+  {
+    path: 'profitcenterbudget',
+    component: Profitcenterbudget
   }
   
 ];
