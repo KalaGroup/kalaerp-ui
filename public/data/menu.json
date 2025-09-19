@@ -162,6 +162,11 @@
           "type": "link"
         },
         {
+          "route": "shiftmaster",
+          "name": "shiftmaster",
+           "type": "link"
+        },
+        {
           "route": "distictmaster",
           "name": "distictmaster",
           "type": "link"

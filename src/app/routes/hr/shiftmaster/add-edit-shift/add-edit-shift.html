@@ -1,0 +1,139 @@
+<mat-card class="custom-card">
+    <mat-card-title class="text-center mb-3">
+        {{ isEditMode ? 'Edit Shift Master' : 'Add Shift Master' }}
+    </mat-card-title>
+
+    <mat-card-content>
+        <form [formGroup]="shiftMasterForm" class="form-field-full">
+
+            <!-- Checkboxes -->
+            <div class="row mb-3">
+                <div class="col-12 d-flex gap-4 align-items-center justify-content-start">
+                    <mat-checkbox formControlName="ShiftMasterAuth" color="primary">Auth</mat-checkbox>
+                    <mat-checkbox formControlName="ShiftMasterIsActive" color="primary">Active</mat-checkbox>
+                    <mat-checkbox formControlName="ShiftMasterIsDiscard" color="primary">Discard</mat-checkbox>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <!-- Left Column -->
+                <div class="col-md-6">
+                    <!-- Company -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Company Name</mat-label>
+                        <mat-select formControlName="ShiftMasterCompanyId" placeholder="Select Company Name">
+                            <!-- Search -->
+                            <mat-option>
+                                <input matInput placeholder="Search Company Name" [formControl]="CompanySearchControl"
+                                    (click)="$event.stopPropagation()" />
+                            </mat-option>
+
+                            <mat-option [value]="null">Select Company Name</mat-option>
+                            <mat-option *ngFor="let company of filteredCompanyList" [value]="company.CompanyId">
+                                {{ company.CompanyName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Shift Name -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Shift Name</mat-label>
+                        <input matInput formControlName="ShiftMasterName" placeholder="Enter shift name" />
+                        <mat-error
+                            *ngIf="shiftMasterForm.get('ShiftMasterName')?.invalid && shiftMasterForm.get('ShiftMasterName')?.touched">
+                            Shift Name is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Start Time -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Start Time</mat-label>
+                        <input matInput type="time" formControlName="ShiftMasterStartTime" />
+                    </mat-form-field>
+                    <!-- Lunch Start -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Lunch Start Time</mat-label>
+                        <input matInput type="time" formControlName="ShiftMasterLunchStartTime" />
+                    </mat-form-field>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-6">
+                    <!-- Employee Type -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Employee Type</mat-label>
+                        <mat-select formControlName="ShiftMasterEmployeeTypeId" placeholder="Select Employee Type">
+                            <!-- Search -->
+                            <mat-option>
+                                <input matInput placeholder="Search Employee Type"
+                                    [formControl]="EmployeeTypeSearchControl" (click)="$event.stopPropagation()" />
+                            </mat-option>
+
+                            <mat-option [value]="null">Select Employee Type</mat-option>
+                            <mat-option *ngFor="let emp of filteredEmployeeTypeList" [value]="emp.EmployeeTypeId">
+                                {{ emp.EmployeeTypeName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Alias Name -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Alias Name</mat-label>
+                        <input matInput formControlName="ShiftMasterAliseName" placeholder="Enter alias name" />
+                        <mat-error
+                            *ngIf="shiftMasterForm.get('ShiftMasterAliseName')?.invalid && shiftMasterForm.get('ShiftMasterAliseName')?.touched">
+                            Alias Name is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- End Time -->
+
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>End Time</mat-label>
+                        <input matInput type="time" formControlName="ShiftMasterEndTime" />
+                    </mat-form-field>
+
+
+                    <!-- Lunch End -->
+
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Lunch End Time</mat-label>
+                        <input matInput type="time" formControlName="ShiftMasterLunchEndTime" />
+                    </mat-form-field>
+
+                </div>
+
+                <!-- Remark -->
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Remark</mat-label>
+                        <input matInput formControlName="ShiftMasterRemark" placeholder="Enter remark..." />
+                    </mat-form-field>
+                </div>
+
+                <!-- Auth Remark -->
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Auth Remark</mat-label>
+                        <input matInput formControlName="ShiftMasterAuthRemark" placeholder="Enter auth remark..." />
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row">
+                <div class="col-12 text-center mt-4">
+                    <button mat-flat-button color="primary" [disabled]="shiftMasterForm.invalid" (click)="onSubmit()">
+                        <mat-icon class="me-1">{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+                        {{ isEditMode ? 'Update' : 'Save' }}
+                    </button>
+
+                    <button mat-stroked-button type="button" class="ms-3" (click)="onCancel()">
+                        <mat-icon class="me-1">close</mat-icon>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>
