@@ -1,4 +1,4 @@
-@if (isShowAlert) {
+<!-- @if (isShowAlert) {
   <mtx-alert type="info" dismissible (closed)="onAlertDismiss()">
     🎉 Introducing
     <a [href]="introducingItem.link" target="_blank">{{ introducingItem.name }}</a>
@@ -8,7 +8,7 @@
 }
 
 <div class="row">
-  <!-- Statistics -->
+
   @for (stat of stats; track stat) {
     <div class="col-sm-6 col-md-3">
       <mat-card [class]="['text-white', 'b-0', stat.color]">
@@ -29,7 +29,7 @@
     </div>
   }
 
-  <!-- Charts -->
+
   <div class="col-md-7">
     <mat-card>
       <mat-card-header>
@@ -51,7 +51,7 @@
     </mat-card>
   </div>
 
-  <!-- Others -->
+
   <div class="col-md-6">
     <mat-card>
       <mat-tab-group>
@@ -202,4 +202,4 @@
       </mat-card-content>
     </mat-card>
   </div>
-</div>
+</div> -->
