@@ -160,6 +160,11 @@
           "route": "profitcenterbudget",
           "name": "profitcenterbudget",
           "type": "link"
+        },
+        {
+          "route": "distictmaster",
+          "name": "distictmaster",
+          "type": "link"
         }
       ]
     }

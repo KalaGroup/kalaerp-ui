@@ -35,6 +35,7 @@ import { Recruitmentreferencemasterservice } from '@shared/services/hr/Recruitme
 import { Recruitmentreferencemaster } from './recruitmentreferencemaster/recruitmentreferencemaster';
 import { Recruitmentmaster } from './recruitmentmaster/recruitmentmaster';
 import { Profitcenterbudget } from './profitcenterbudget/profitcenterbudget';
+import { Districtmaster } from './districtmaster/districtmaster';
 
 
 export const routes: Routes = [
@@ -170,6 +171,10 @@ export const routes: Routes = [
   {
     path: 'profitcenterbudget',
     component: Profitcenterbudget
+  },
+  {
+    path: 'distictmaster',
+    component: Districtmaster
   }
-  
+
 ];
