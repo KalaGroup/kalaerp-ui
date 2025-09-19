@@ -160,6 +160,11 @@
           "route": "profitcenterbudget",
           "name": "profitcenterbudget",
           "type": "link"
+        },
+        {
+          "route": "shiftmaster",
+          "name": "shiftmaster",
+          "type": "link"
         }
       ]
     }
