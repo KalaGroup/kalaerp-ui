@@ -39,6 +39,7 @@ import { Shiftmaster } from './shiftmaster/shiftmaster';
 import { Districtmaster } from './districtmaster/districtmaster';
 import { Workstationbudget } from './workstationbudget/workstationbudget';
 import { Offerletter } from './offerletter/offerletter';
+import { Employeeleavebalances } from './employeeleavebalances/employeeleavebalances';
 
 export const routes: Routes = [
   {
@@ -189,6 +190,10 @@ export const routes: Routes = [
   {
     path: 'offerletter',
     component: Offerletter
+  },
+  {
+    path: 'employeeleavebalances',
+    component: Employeeleavebalances
   }
 
 ];
