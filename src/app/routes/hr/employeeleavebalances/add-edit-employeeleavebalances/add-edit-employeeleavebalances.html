@@ -1,0 +1,150 @@
+<mat-card class="custom-card">
+  <mat-card-title class="text-center mb-3">
+    {{ isEditMode ? 'Edit Employee Leave Balances' : 'Add Employee Leave Balances' }}
+  </mat-card-title>
+
+  <mat-card-content>
+    <form [formGroup]="employeeleavebalancesForm" class="form-field-full">
+
+      <!-- Checkboxes -->
+      <div class="row mb-3">
+        <div class="col-12 d-flex flex-wrap gap-3 align-items-center">
+          <mat-checkbox formControlName="LeaveBalancesIsActive" color="primary">Active</mat-checkbox>
+          <mat-checkbox formControlName="LeaveBalancesAuth" color="primary">Auth</mat-checkbox>
+          <mat-checkbox formControlName="LeaveBalancesIsDiscard" color="primary">Discard</mat-checkbox>
+        </div>
+      </div>
+
+
+      <!-- Form Fields -->
+      <div class="row mb-3">
+        <!-- Left Column -->
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Employee ID</mat-label>
+            <mat-select formControlName="LeaveBalancesEmployeeId" placeholder="Select Employee" required="true">
+              <mat-option *ngFor="let Employee of EmployeeList" [value]="Employee.LeaveBalancesEmployeeId">
+                {{ Employee.LeaveBalancesEmployeeId }}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="employeeleavebalancesForm.get('LeaveBalancesEmployeeId')?.invalid && employeeleavebalancesForm.get('LeaveBalancesEmployeeId')?.touched">
+              Employee is required
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-md-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="LeaveBalancesTypeId" placeholder="Select Type">
+              <mat-option *ngFor="let ws of LeaveBalancesTypeList" [value]="ws.LeaveBalancesTypeId">
+                {{ ws.TypeName }}
+              </mat-option>
+            </mat-select>
+            <mat-error
+              *ngIf="employeeleavebalancesForm.get('LeaveBalancesTypeId')?.invalid && employeeleavebalancesForm.get('LeaveBalancesTypeId')?.touched">
+              Type is required
+            </mat-error>
+          </mat-form-field>
+
+
+        </div>
+      </div>
+
+      <!-- First row: Year, Opening, Credited -->
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <!-- Year -->
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Year</mat-label>
+            <input matInput type="number" formControlName="LeaveBalancesYear" placeholder="Enter Year" />
+            <mat-error
+              *ngIf="employeeleavebalancesForm.get('LeaveBalancesYear')?.hasError('required') && employeeleavebalancesForm.get('LeaveBalancesYear')?.touched">
+              Year is required
+            </mat-error>
+            <mat-error
+              *ngIf="employeeleavebalancesForm.get('LeaveBalancesYear')?.hasError('min') || employeeleavebalancesForm.get('LeaveBalancesYear')?.hasError('max')">
+              Enter a valid year between 1900 and 2100
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Opening</mat-label>
+            <input matInput type="number" formControlName="LeaveBalancesOpening" placeholder="Enter Opening" />
+            <mat-error
+              *ngIf="employeeleavebalancesForm.get('LeaveBalancesOpening')?.hasError('required') && employeeleavebalancesForm.get('LeaveBalancesOpening')?.touched">
+              Opening is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Credited</mat-label>
+            <input matInput type="number" formControlName="LeaveBalancesCredited" placeholder="Enter Credited" />
+            <mat-error
+              *ngIf="employeeleavebalancesForm.get('LeaveBalancesCredited')?.hasError('required') && employeeleavebalancesForm.get('LeaveBalancesCredited')?.touched">
+              Credited is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Second row: Utilized, Encashed, Closing -->
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Utilized</mat-label>
+            <input matInput type="number" formControlName="LeaveBalancesUtilized" placeholder="Enter Utilized" />
+            <mat-error
+              *ngIf="employeeleavebalancesForm.get('LeaveBalancesUtilized')?.hasError('required') && employeeleavebalancesForm.get('LeaveBalancesUtilized')?.touched">
+              Utilized is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Encashed</mat-label>
+            <input matInput type="number" formControlName="LeaveBalancesEncashed" placeholder="Enter Encashed" />
+            <mat-error
+              *ngIf="employeeleavebalancesForm.get('LeaveBalancesEncashed')?.hasError('required') && employeeleavebalancesForm.get('LeaveBalancesEncashed')?.touched">
+              Encashed is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="col-md-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Closing</mat-label>
+            <input matInput type="number" formControlName="LeaveBalancesClosing" placeholder="Enter Closing" />
+            <mat-error
+              *ngIf="employeeleavebalancesForm.get('LeaveBalancesClosing')?.hasError('required') && employeeleavebalancesForm.get('LeaveBalancesClosing')?.touched">
+              Closing is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+
+      <div class="row">
+        <div class="col-12 text-center mt-4">
+          <button mat-flat-button color="primary" [disabled]="employeeleavebalancesForm.invalid" (click)="onSubmit()">
+            <mat-icon class="me-1">{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+
+          <button mat-stroked-button type="button" class="ms-3" (click)="onCancel()">
+            <mat-icon class="me-1">close</mat-icon>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

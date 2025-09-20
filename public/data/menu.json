@@ -180,6 +180,11 @@
           "route": "offerletter",
           "name": "offerletter",
           "type": "link"
+        },
+        {
+          "route": "employeeleavebalances",
+          "name": "employeeleavebalances",
+          "type": "link"
         }
       ]
     }
