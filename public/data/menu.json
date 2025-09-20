@@ -164,11 +164,16 @@
         {
           "route": "shiftmaster",
           "name": "shiftmaster",
-           "type": "link"
+          "type": "link"
         },
         {
           "route": "distictmaster",
           "name": "distictmaster",
+          "type": "link"
+        },
+        {
+          "route": "workstationbudget",
+          "name": "workstationbudget",
           "type": "link"
         },
         {
