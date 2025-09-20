@@ -3,67 +3,58 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ICountry } from '@shared/interfaces/hr/country';
 import { ICompany } from '@shared/interfaces/hr/company';
+import { apiEnvironment  } from '@core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Companyservice {
-  private getAllCompnaiesUrl = 'https://localhost:7019/api/CompanyMaster';
-  private getAllCompanyEntityTypeUrl = 'https://localhost:7019/api/CompanyEntityTypeMaster';
-  private getAllRStateUrl = 'https://localhost:7019/api/StateMaster/getstatebycountryid';
-  private getAllRSistrictUrl ='https://localhost:7019/api/DistrictMaster/getdistrictdetailsbycountryid';
-  private getAllRCityUrl = 'https://localhost:7019/api/CityMaster/getcitydetailsbydistrictid';
-  private currencyUrl = 'https://localhost:7019/api/CurrencyMaster';
-  private countryUrl = 'https://localhost:7019/api/CountryMaster';
-  private parentCompanyUrl = 'https://localhost:7019/api/CompanyMaster/getparentcompanyidandname';
-  private companyCreateUrl = 'https://localhost:7019/api/CompanyMaster/addcompany';
-  private companyUpdateUrl = 'https://localhost:7019/api/CompanyMaster/updatecompany';
-  private companyDeleteUrl = 'https://localhost:7019/api/CompanyMaster/deletecompany';
 
+  baseUrl = apiEnvironment.baseUrl;
+  //baseUrl = "https://localhost:7019/api/";
   constructor(private http: HttpClient) {}
 
   getAllCompanies(): Observable<ICompany[]> {
-    return this.http.get<ICompany[]>(`${this.getAllCompnaiesUrl}/getcompany`);
+     return this.http.get<ICompany[]>(`${this.baseUrl}CompanyMaster/getcompany`);
   }
 
   getAllCompanyEntityTypes(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getAllCompanyEntityTypeUrl}/getallcompanyentitytype`);
+   return this.http.get<any[]>(`${this.baseUrl}CompanyEntityTypeMaster/getallcompanyentitytype`);
   }
 
   getRStatesByCounrtyId(countryId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getAllRStateUrl}/${countryId}`);
+    return this.http.get<any[]>(`${this.baseUrl}StateMaster/getstatebycountryid/${countryId}`);
   }
 
   getRDistrictsByStateId(stateId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getAllRSistrictUrl}/${stateId}`);
+    return this.http.get<any[]>(`${this.baseUrl}DistrictMaster/getdistrictdetailsbycountryid/${stateId}`);
   }
 
   getRCitiesByDistrictId(districtId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getAllRCityUrl}/${districtId}`);
+    return this.http.get<any[]>(`${this.baseUrl}CityMaster/getcitydetailsbydistrictid/${districtId}`);
   }
 
   getAllCurrencies(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.currencyUrl}/getallcurrency`);
+    return this.http.get<any[]>(`${this.baseUrl}CurrencyMaster/getallcurrency`);
   }
 
   getAllCountries(): Observable<ICountry[]> {
-      return this.http.get<ICountry[]>(`${this.countryUrl}/getallcountries`);
+      return this.http.get<ICountry[]>(`${this.baseUrl}CountryMaster/getallcountries`);
   }
 
   getParentCompanies(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.parentCompanyUrl}`);
+    return this.http.get<any[]>(`${this.baseUrl}CompanyMaster/getparentcompanyidandname`);
   }
 
   createCompany(companyData: any): Observable<any> {
-    return this.http.post<any>(`${this.companyCreateUrl}`, companyData);
+    return this.http.post<any>(`${this.baseUrl}CompanyMaster/addcompany`, companyData);
   }
 
   updateCompany(companyData: any): Observable<any> {
-    return this.http.put<any>(`${this.companyUpdateUrl}`, companyData);
+    return this.http.put<any>(`${this.baseUrl}CompanyMaster/updatecompany`, companyData);
   }
 
   deleteCompany(companyId: number): Observable<any> {
-    return this.http.delete<any>(`${this.companyDeleteUrl}/${companyId}`);
+    return this.http.delete<any>(`${this.baseUrl}CompanyMaster/deletecompany/${companyId}`);
   }
-
 }

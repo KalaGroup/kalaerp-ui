@@ -2,56 +2,47 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
-
+import { apiEnvironment } from '@core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Gradectcdesignationfacilityservice {
-  private getCurrencyDetails = 'https://localhost:7019/api/CurrencyMaster';
-  private getQualificationDetails = 'https://localhost:7019/api/QualificationMaster';
-  private getFacilityDetails = 'https://localhost:7019/api/FacilityMaster';
-  private creategradeDesignationFacilityUrl = 'https://localhost:7019/api/GradeMaster/creategrade';
-  private getAllGradeCtcDesignationFacilityUrl = 'https://localhost:7019/api/GradeMaster';
-  private updateAllGradeCtcDesignationFacilityUrl =
-    'https://localhost:7019/api/GradeMaster/updategrade';
-  private deleteGradeAnditsdependencyUrl = 'https://localhost:7019/api/GradeMaster/deletegrade';
+  baseUrl = apiEnvironment.baseUrl;
 
   constructor(private http: HttpClient) {}
 
   getAllCurrencies(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getCurrencyDetails}/getallcurrency`);
+    return this.http.get<any[]>(`${this.baseUrl}CurrencyMaster/getallcurrency`);
   }
 
   getAllQualificationDetails(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getQualificationDetails}/getallqualificationidandname`);
+    return this.http.get<any[]>(`${this.baseUrl}QualificationMaster/getallqualificationidandname`);
   }
 
   getAllFacilityDetails(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getFacilityDetails}/getallfacilityidandname`);
+    return this.http.get<any[]>(`${this.baseUrl}FacilityMaster/getallfacilityidandname`);
   }
 
   creatGradeDesignationFacility(gradeDesignationFacility: any): Observable<any[]> {
     return this.http.post<any[]>(
-      `${this.creategradeDesignationFacilityUrl}`,
+      `${this.baseUrl}GradeMaster/creategrade`,
       gradeDesignationFacility
     );
   }
 
   getAllGradeCtcDesignationFacility(): Observable<any[]> {
-    return this.http.get<any[]>(
-      `${this.getAllGradeCtcDesignationFacilityUrl}/getgradedesignationandfacility`
-    );
+    return this.http.get<any[]>(`${this.baseUrl}GradeMaster/getgradedesignationandfacility`);
   }
 
   updateAllGradeCtcDesignationFacility(gradeCtcDesignationFacility: any): Observable<any[]> {
     return this.http.put<any[]>(
-      `${this.updateAllGradeCtcDesignationFacilityUrl}`,
+      `${this.baseUrl}GradeMaster/updategrade`,
       gradeCtcDesignationFacility
     );
   }
 
   deleteGrade(GradeId: number): Observable<any> {
-    return this.http.delete(`${this.deleteGradeAnditsdependencyUrl}/${GradeId}`);
+    return this.http.delete(`${this.baseUrl}GradeMaster/deletegrade/${GradeId}`);
   }
 }

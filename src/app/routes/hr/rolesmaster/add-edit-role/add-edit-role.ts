@@ -23,7 +23,6 @@ import { Divisionservice } from '@shared/services/hr/division/divisionservice';
 import { Designationservice } from '@shared/services/hr/designation/designationservice';
 import { IGrade } from '@shared/interfaces/hr/grade';
 import { IDesignation } from '@shared/interfaces/hr/designation';
-import { Gradeservice } from '@shared/services/hr/grade/gradeservice';
 import { MatTableDataSource } from '@angular/material/table';
 import { Roleservice } from '@shared/services/hr/role/roleservice';
 

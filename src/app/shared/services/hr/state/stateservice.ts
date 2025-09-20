@@ -1,37 +1,41 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IState } from '@shared/interfaces/hr/state';
+import { apiEnvironment } from '@core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Stateservice {
-  private stateUrl = 'https://localhost:7019/api/StateMaster/GetAllState';
-  private insertStateUrl = 'https://localhost:7019/api/StateMaster/CreateState';
-  private updateStateUrl = 'https://localhost:7019/api/StateMaster/UpdateState';
-  private deleteStateUrl = 'https://localhost:7019/api/StateMaster/deletestate';
-  private getStateByIdUrl = 'https://localhost:7019/api/StateMaster/getstatebyid';
+  baseUrl = apiEnvironment.baseUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
+  // 🔹 GET all states
   getAllState(): Observable<any[]> {
-    debugger
-    return this.http.get<any[]>(this.stateUrl)
+    debugger;
+    return this.http.get<any[]>(`${this.baseUrl}StateMaster/GetAllState`);
   }
 
+  // 🔹 INSERT state
   insertState(insertState: IState): Observable<any> {
     debugger;
-    return this.http.post(this.insertStateUrl, insertState);
+    return this.http.post(`${this.baseUrl}StateMaster/CreateState`, insertState);
   }
+
+  // 🔹 UPDATE state
   updateState(updateState: IState): Observable<any> {
-    return this.http.put(this.updateStateUrl, updateState);
+    return this.http.put(`${this.baseUrl}StateMaster/UpdateState`, updateState);
   }
+
+  // 🔹 DELETE state
   deleteState(stateId: number): Observable<any> {
-    return this.http.delete(`${this.deleteStateUrl}/${stateId}`);
+    return this.http.delete(`${this.baseUrl}StateMaster/deletestate/${stateId}`);
   }
+
+  // 🔹 GET state by ID
   getStateById(stateId: number): Observable<IState> {
-    return this.http.get<IState>(`${this.getStateByIdUrl}/${stateId}`);
+    return this.http.get<IState>(`${this.baseUrl}StateMaster/getstatebyid/${stateId}`);
   }
 }

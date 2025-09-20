@@ -1,40 +1,39 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { apiEnvironment } from '@core';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class shiftmasterservice {
-    constructor(private http: HttpClient) { }
-    //company FK
-    private getshiftcompanyUrl = 'https://localhost:7019/api/CompanyMaster'
-    getAllShiftMasterCompany(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.getshiftcompanyUrl}/getcompany`);
-    }
-    //EmployeeType FK
-    private employeetypeUrl = 'https://localhost:7019/api/EmployeeTypeMaster';
-    getAllemployeetypes(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.employeetypeUrl}/getallEmployeetype`)
-    }
+  baseUrl = apiEnvironment.baseUrl;
+  constructor(private http: HttpClient) {}
 
+  // 🔹 Company FK
+  getAllShiftMasterCompany(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}CompanyMaster/getcompany`);
+  }
 
+  // 🔹 EmployeeType FK
+  getAllemployeetypes(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}EmployeeTypeMaster/getallEmployeetype`);
+  }
 
-    private ShiftMasterUrl = 'https://localhost:7019/api/ShiftMaster';
-    getAllShiftMaster(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.ShiftMasterUrl}/GetAllShift`);
-    }
-    private insertShiftMasterUrl = 'https://localhost:7019/api/ShiftMaster/insertshift';
-    insertShiftMaster(insertShiftMaster: any): Observable<any> {
-        return this.http.post(`${this.insertShiftMasterUrl}`, insertShiftMaster);
-    }
-    private updateShiftMasterUrl = 'https://localhost:7019/api/ShiftMaster/UpdateShift';
-    UpdateShiftMaster(ShiftMaster: any): Observable<any> {
-        return this.http.put(`${this.updateShiftMasterUrl}`, ShiftMaster);
-    }
-    private deleteShiftMasterUrl = 'https://localhost:7019/api/ShiftMaster/DeleteShift';
-    deleteShiftMaster(ShiftMasterId: number): Observable<any> {
-        return this.http.delete(`${this.deleteShiftMasterUrl}/${ShiftMasterId}`);
-    }
+  // 🔹 Shift Master
+  getAllShiftMaster(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}ShiftMaster/GetAllShift`);
+  }
+
+  insertShiftMaster(insertShiftMaster: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}ShiftMaster/insertshift`, insertShiftMaster);
+  }
+
+  UpdateShiftMaster(ShiftMaster: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}ShiftMaster/UpdateShift`, ShiftMaster);
+  }
+
+  deleteShiftMaster(ShiftMasterId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}ShiftMaster/DeleteShift/${ShiftMasterId}`);
+  }
 }

@@ -1,77 +1,47 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { IKPA } from '@shared/interfaces/hr/kpa';
+import { apiEnvironment } from '@core';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class kpaservice {
+  baseUrl = apiEnvironment.baseUrl;
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-    private KpaUrl = 'https://localhost:7019/api/KPAMaster';
-    getAllKpa(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.KpaUrl}/getallkpamaster`);
-    }
+  getAllKpa(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}KPAMaster/getallkpamaster`);
+  }
 
-    private insertKPAUrl = 'https://localhost:7019/api/KPAMaster/addkpamaster';
-    insertKPA(insertKPA: any): Observable<any> {
-        return this.http.post(`${this.insertKPAUrl}`, insertKPA);
-    }
-    private updateKPAUrl = 'https://localhost:7019/api/KPAMaster/updatekpamaster';
-    updateKPA(updateKPA: any): Observable<any> {
-        return this.http.put(`${this.updateKPAUrl}`, updateKPA);
-    }
-    private deleteKPAUrl = 'https://localhost:7019/api/KPAMaster/deletekpamaster';
-    deleteKPA(Kpaid: number): Observable<any> {
-        return this.http.delete(`${this.deleteKPAUrl}/${Kpaid}`);
-    }
+  insertKPA(insertKPA: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}KPAMaster/addkpamaster`, insertKPA);
+  }
 
+  updateKPA(updateKPA: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}KPAMaster/updatekpamaster`, updateKPA);
+  }
 
-    private gradeUrl = 'https://localhost:7019/api/GradeMaster'
-    getAllGrade(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.gradeUrl}/getgradeidandname`);
-    }
+  deleteKPA(Kpaid: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}KPAMaster/deletekpamaster/${Kpaid}`);
+  }
 
-    private designationUrl = 'https://localhost:7019/api/DesignationMaster';
-    getAllDesignations(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.designationUrl}/getdesignationidandname`);
-    }
+  getAllGrade(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}GradeMaster/getgradeidandname`);
+  }
 
-    private divisionUrl = 'https://localhost:7019/api/DivisionMaster';
-    getAllDivisions(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.divisionUrl}/getdivisionidandname`);
-    }
+  getAllDesignations(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}DesignationMaster/getdesignationidandname`);
+  }
 
-    // private KpaMstId = 'https://localhost:7019/api/DivisionMaster';
-    // getKpaByMstId(kpaMstId: number): Observable<any> {
-    //     return this.http.get<any>(
-    //         `${this.KpaMstId}/${kpaMstId}`
-    //     );
-    // }
+  getAllDivisions(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}DivisionMaster/getdivisionidandname`);
+  }
 
-
-    private KpaMstId = 'https://localhost:7019/api/KPAMaster/getkpadetailbymasterid';
-    getKpaByMstId(kpaMstId: number): Observable<any> {
-        debugger
-        return this.http.get<any>(
-            `${this.KpaMstId}/${kpaMstId}`
-        );
-    }
-
-    //     private activityMsturl = 'https://localhost:7019/api/ActivityMaster/getallactivitysdetailsbymasterid';
-    // getActivityByMstId(activityMstId: number): Observable<any> {
-    //     debugger
-    //     return this.http.get<any>(
-    //         `${this.activityMsturl}/${activityMstId}`
-    //     );
-    // }
+  getKpaByMstId(kpaMstId: number): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}KPAMaster/getkpadetailbymasterid/${kpaMstId}`);
+  }
 }
-
-
-
-
-

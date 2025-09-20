@@ -2,49 +2,51 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IRole } from '@shared/interfaces/hr/role';
-
+import { apiEnvironment } from '@core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Roleservice {
-  private RoleUrl = 'https://localhost:7019/api/RolesMaster/GetAllRoles';
-  private insertRoleUrl = 'https://localhost:7019/api/RolesMaster/AddRoles';
-  private updateRoleUrl = 'https://localhost:7019/api/RolesMaster/UpdateRoles';
-  private deleteRoleUrl = 'https://localhost:7019/api/RolesMaster/DeleteRole';
-  private getallroledetailsbymasterid ='https://localhost:7019/api/RolesMaster/getallroledetailsbymasterid';
-  private getDesignationListUrl ='https://localhost:7019/api/DesignationMaster/getdesignationidandname';
-  private getGradeListUrl = 'https://localhost:7019/api/GradeMaster/getgradeidandname';
-  private getDivisionListUrl = 'https://localhost:7019/api/DivisionMaster/getdivisionidandname';
+  baseUrl = apiEnvironment.baseUrl;
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    getAllRole(): Observable<any[]> {
-    return this.http.get<any[]>(this.RoleUrl)
+  // 🔹 GET Methods
+  getAllRole(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}RolesMaster/GetAllRoles`);
   }
 
-  insertRole(insertRole: IRole): Observable<any> {
-    return this.http.post(this.insertRoleUrl, insertRole);
-  }
-  updateRole(updateRole: IRole): Observable<any> {
-    return this.http.put(this.updateRoleUrl, updateRole);
-  }
-  deleteRole(RolesId: number): Observable<any> {
-    return this.http.delete(`${this.deleteRoleUrl}/${RolesId}`);
-  }
-    getRolesDetailsByMstId(roleMstId: number): Observable<any> {
-    return this.http.get<any>(`${this.getallroledetailsbymasterid}/${roleMstId}`);
+  getRolesDetailsByMstId(roleMstId: number): Observable<any> {
+    return this.http.get<any>(
+      `${this.baseUrl}RolesMaster/getallroledetailsbymasterid/${roleMstId}`
+    );
   }
 
   getDesignationList(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getDesignationListUrl}`);
+    return this.http.get<any[]>(`${this.baseUrl}DesignationMaster/getdesignationidandname`);
   }
 
   getGradeList(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getGradeListUrl}`);
+    return this.http.get<any[]>(`${this.baseUrl}GradeMaster/getgradeidandname`);
   }
 
   getDivisionList(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getDivisionListUrl}`);
+    return this.http.get<any[]>(`${this.baseUrl}DivisionMaster/getdivisionidandname`);
+  }
+
+  // 🔹 INSERT Method
+  insertRole(insertRole: IRole): Observable<any> {
+    return this.http.post(`${this.baseUrl}RolesMaster/AddRoles`, insertRole);
+  }
+
+  // 🔹 UPDATE Method
+  updateRole(updateRole: IRole): Observable<any> {
+    return this.http.put(`${this.baseUrl}RolesMaster/UpdateRoles`, updateRole);
+  }
+
+  // 🔹 DELETE Method
+  deleteRole(RolesId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}RolesMaster/DeleteRole/${RolesId}`);
   }
 }
