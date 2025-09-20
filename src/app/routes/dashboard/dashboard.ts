@@ -19,6 +19,7 @@ import { CHARTS, ELEMENT_DATA, MESSAGES, STATS } from './data';
   styleUrl: './dashboard.scss',
   imports: [
    // RouterLink,
+    //RouterLink,
     MatButtonModule,
     MatCardModule,
     MatChipsModule,
