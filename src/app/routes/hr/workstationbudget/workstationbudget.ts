@@ -18,26 +18,25 @@ import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
 
 import { Toastservice } from 'app/routes/toastservice';
-import { IProfitcenterBudget } from '@shared/interfaces/hr/ProfitcenterBudget';
-import { PetrolAllowanceservice } from '@shared/services/hr/PetrolAllowanceMaster/PetrolAllowanceservice';
-import { ProfitcenterBudgetservice } from '@shared/services/hr/ProfitcenterBudget/ProfitcenterBudgetservice';
+import { IWorkstationBudget } from '@shared/interfaces/hr/workstationbudget';
+import { WorkstationBudgetservice } from '@shared/services/hr/workstationbudget/workstationbudget';
 import { AddEditBudget } from './add-edit-budget/add-edit-budget';
 
 @Component({
-  selector: 'app-profitcenterbudget',
+  selector: 'app-workstationbudget',
   imports: [CommonModule, MatTableModule, MatCardModule, MatDividerModule, MatButtonModule, MatIconModule,
     ReactiveFormsModule, FormsModule, MatFormFieldModule, MatCheckboxModule, MatRadioModule, MtxGridModule,
     PageHeader, MatDialogModule],
-  templateUrl: './profitcenterbudget.html',
-  styleUrl: './profitcenterbudget.scss'
+  templateUrl: './workstationbudget.html',
+  styleUrl: './workstationbudget.scss'
 })
-export class Profitcenterbudget implements OnInit {
+export class Workstationbudget implements OnInit {
   private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
-  ProfitcenterBudget: IProfitcenterBudget[] = [];
+  WorkstationBudget: IWorkstationBudget[] = [];
   showForm = false;
-  ProfitcenterBudgetModel: any = {};
+  WorkstationBudgetModel: any = {};
   editIndex: number | null = null;
   multiSelectable = true;
   rowSelectable = true;
@@ -55,21 +54,22 @@ export class Profitcenterbudget implements OnInit {
   isLoading = false;
   list: any[] = [];
   isConfigExpanded: boolean = false;
-  profitcenterBudgetForm: any;
+  workstationBudgetForm: any;
   constructor(
     private fb: FormBuilder,
-    private Profitcenterbudgetservice: ProfitcenterBudgetservice,
+    private WorkstationBudgetservice: WorkstationBudgetservice,
     private dialog: MatDialog,
     private toastService: Toastservice
   ) { }
 
   ngOnInit(): void {
-    this.getAllProfitcenterBudget();
+    this.getAllWorkstationBudget();
   }
 
   toggleConfigSection(): void {
     this.isConfigExpanded = !this.isConfigExpanded;
   }
+
   columns: MtxGridColumn[] = [
     {
       header: this.translate.stream('SNo'),
@@ -78,56 +78,56 @@ export class Profitcenterbudget implements OnInit {
       width: '80px',
     },
     {
-      header: this.translate.stream('ProfitcenterBudgetProfitcenter Name'),
-      field: 'ProfitCenterName',
+      header: this.translate.stream('Workstation Name'),
+      field: 'WorkStationName', // replace with joined name if available
       sortable: true,
       minWidth: 150,
     },
     {
-      header: this.translate.stream(' Financial Year'),
-      field: 'ProfitcenterFy',
+      header: this.translate.stream('Financial Year'),
+      field: 'WorkstationFy',
       sortable: true,
       minWidth: 150,
     },
     {
-      header: this.translate.stream('ProfitcenterBudgetBudgetAmt'),
-      field: 'ProfitcenterBudgetBudgetAmt',
+      header: this.translate.stream('Budget Amount'),
+      field: 'WorkstationBudgetAmt',
       sortable: true,
       minWidth: 150,
     },
     {
-      header: this.translate.stream('ProfitCenterBudgetHead Name'),
-      field: 'EmployeeMasterFullName',
+      header: this.translate.stream('Budget Head Name'),
+      field: 'EmployeeMasterFullName', // replace with lookup/display value
       sortable: true,
       minWidth: 150,
     },
     {
       header: this.translate.stream('Remark'),
-      field: 'ProfitCenterBudgetRemark',
+      field: 'WorkstationBudgetRemark',
       sortable: true,
-      minWidth: 100,
+      minWidth: 120,
     },
     {
       header: this.translate.stream('Auth Remark'),
-      field: 'ProfitCenterBudgetAuthRemark',
+      field: 'WorkstationBudgetAuthRemark',
       sortable: true,
-      minWidth: 100,
+      minWidth: 120,
     },
     {
       header: this.translate.stream('Auth'),
-      field: 'ProfitCenterBudgetAuth',
+      field: 'WorkstationBudgetAuth',
       sortable: true,
       minWidth: 100,
     },
     {
       header: this.translate.stream('Discard'),
-      field: 'ProfitCenterBudgetIsDiscard',
+      field: 'WorkstationBudgetIsDiscard',
       sortable: true,
       minWidth: 100,
     },
     {
       header: this.translate.stream('Active'),
-      field: 'ProfitCenterBudgetIsActive',
+      field: 'WorkstationBudgetIsActive',
       sortable: true,
       minWidth: 100,
     },
@@ -154,15 +154,15 @@ export class Profitcenterbudget implements OnInit {
             closeText: this.translate.stream('close'),
             okText: this.translate.stream('ok'),
           },
-          click: record => this.delete(record),
+          click: (record: any) => this.delete(record),
         },
       ],
     },
   ];
 
-  getAllProfitcenterBudget() {
+  getAllWorkstationBudget() {
 
-    this.Profitcenterbudgetservice.getAllProfitcenterbudget().subscribe({
+    this.WorkstationBudgetservice.getAllWorkStationbudget().subscribe({
       next: (data) => {
         this.list = data.map((item: any, index: number) => ({
           ...item,
@@ -176,54 +176,56 @@ export class Profitcenterbudget implements OnInit {
 
   }
 
-  edit(record: IProfitcenterBudget) {
-    debugger
+  edit(record: IWorkstationBudget) {
+    debugger;
     this.dialog.open(AddEditBudget, {
       width: '80%',
       height: '70%',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: { profitcenterbudget: record },
+      data: { workstationbudget: record },
     })
       .afterClosed()
       .subscribe(result => {
         if (!result) {
-          console.log('budget Updated:', result);
+          console.log('Workstation budget update canceled:', result);
           return;
         }
-
-        const updatePayload: IProfitcenterBudget = {
-          ProfitcenterBudgetId: record.ProfitcenterBudgetId,
-          ProfitcenterBudgetProfitcenterId: result.ProfitcenterBudgetProfitcenterId,
-          ProfitcenterFy: result.ProfitcenterFy,
-          ProfitcenterBudgetBudgetAmt: result.ProfitcenterBudgetBudgetAmt,
-          ProfitCenterBudgetHeadId: result.ProfitCenterBudgetHeadId,
-          ProfitCenterBudgetRemark: result.ProfitCenterBudgetRemark,
-          ProfitCenterBudgetAuthRemark: result.ProfitCenterBudgetAuthRemark,
-          ProfitCenterBudgetAuth: result.ProfitCenterBudgetAuth ?? true,
-          ProfitCenterBudgetIsDiscard: result.ProfitCenterBudgetIsDiscard ?? false,
-          ProfitCenterBudgetIsActive: result.ProfitCenterBudgetIsActive ?? true,
+        const updatePayload: IWorkstationBudget = {
+          WorkstationBudgetId: record.WorkstationBudgetId,
+          WorkstationBudgetWorkstationId: result.WorkstationBudgetWorkstationId,
+          WorkstationFy: result.WorkstationFy,
+          WorkstationBudgetAmt: result.WorkstationBudgetAmt,
+          WorkstationBudgetHeadId: result.WorkstationBudgetHeadId,
+          WorkstationBudgetRemark: result.WorkstationBudgetRemark,
+          WorkstationBudgetAuthRemark: result.WorkstationBudgetAuthRemark,
+          WorkstationBudgetAuth: result.WorkstationBudgetAuth ?? true,
+          WorkstationBudgetIsDiscard: result.WorkstationBudgetIsDiscard ?? false,
+          WorkstationBudgetIsActive: result.WorkstationBudgetIsActive ?? true,
           CreatedBy: record.CreatedBy ?? 1,
-          CreatedDate: new Date(),
+          CreatedDate: record.CreatedDate ?? new Date(), // keep original if available
           UpdatedBy: record.UpdatedBy ?? 1,
           UpdatedDate: new Date()
         };
+
         console.log('Update payload:', updatePayload);
-        this.Profitcenterbudgetservice.updateProfitcenterbudget(updatePayload).subscribe({
+
+        this.WorkstationBudgetservice.updateworkstationbudget(updatePayload).subscribe({
           next: () => {
-            alert(`budget updated successfully!`);
-            this.toastService.showSuccess("budget updated successfully");
-            this.getAllProfitcenterBudget();
+            alert('Workstation budget updated successfully!');
+            this.toastService.showSuccess('Workstation budget updated successfully');
+            this.getAllWorkstationBudget();
           },
           error: (err) => {
-            console.error('Error updating budget:', err);
+            console.error('Error updating workstation budget:', err);
+            this.toastService.showError('Error updating workstation budget');
           }
         });
       });
   }
 
   openAddDialog() {
-    debugger
+    debugger;
     const dialogRef = this.dialog.open(AddEditBudget, {
       width: '60%',
       height: '60%',
@@ -234,29 +236,29 @@ export class Profitcenterbudget implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger
-        const payload: IProfitcenterBudget = {
-          ProfitcenterBudgetId: 0, // New entry
-          ProfitcenterBudgetProfitcenterId: result.ProfitcenterBudgetProfitcenterId,
-          ProfitcenterFy: result.ProfitcenterFy,
-          ProfitcenterBudgetBudgetAmt: result.ProfitcenterBudgetBudgetAmt,
-          ProfitCenterBudgetHeadId: result.ProfitCenterBudgetHeadId,
-          ProfitCenterBudgetRemark: result.ProfitCenterBudgetRemark,
-          ProfitCenterBudgetAuthRemark: result.ProfitCenterBudgetAuthRemark,
-          ProfitCenterBudgetAuth: result.ProfitCenterBudgetAuth ?? true,
-          ProfitCenterBudgetIsDiscard: result.ProfitCenterBudgetIsDiscard ?? false,
-          ProfitCenterBudgetIsActive: result.ProfitCenterBudgetIsActive ?? true,
+        debugger;
+        const payload: IWorkstationBudget = {
+          WorkstationBudgetId: 0, // New entry
+          WorkstationBudgetWorkstationId: result.WorkstationBudgetWorkstationId,
+          WorkstationFy: result.WorkstationFy,
+          WorkstationBudgetAmt: result.WorkstationBudgetAmt,
+          WorkstationBudgetHeadId: result.WorkstationBudgetHeadId,
+          WorkstationBudgetRemark: result.WorkstationBudgetRemark,
+          WorkstationBudgetAuthRemark: result.WorkstationBudgetAuthRemark,
+          WorkstationBudgetAuth: result.WorkstationBudgetAuth ?? true,
+          WorkstationBudgetIsDiscard: result.WorkstationBudgetIsDiscard ?? false,
+          WorkstationBudgetIsActive: result.WorkstationBudgetIsActive ?? true,
           CreatedBy: 1,
           CreatedDate: new Date(),
           UpdatedBy: 1,
           UpdatedDate: new Date()
         };
 
-        this.Profitcenterbudgetservice.insertProfitcenterbudget(payload).subscribe({
+        this.WorkstationBudgetservice.insertworkstationbudget(payload).subscribe({
           next: () => {
-            alert(`budget added successfully!`);
-            this.toastService.showSuccess("budget added successfully");
-            this.getAllProfitcenterBudget();
+            alert('Workstation budget added successfully!');
+            this.toastService.showSuccess('Workstation budget added successfully');
+            this.getAllWorkstationBudget();
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -266,15 +268,15 @@ export class Profitcenterbudget implements OnInit {
                 const message = validationErr.ErrorMessage;
 
                 // Mark field error in form
-                if (this.profitcenterBudgetForm.get(field)) {
-                  this.profitcenterBudgetForm.get(field)?.setErrors({ serverError: message });
+                if (this.workstationBudgetForm.get(field)) {
+                  this.workstationBudgetForm.get(field)?.setErrors({ serverError: message });
                 }
                 // Optionally show toast
                 this.toastService.showError(message);
               });
             } else {
-              alert(` Financial Year and profit center budegt  already exists.!`);
-              this.toastService.showError('A budget for this Financial Year and  profit center budegt already exists.');
+              alert(` Financial Year and workstation  already exists.!`);
+              this.toastService.showError('A budget for this Financial Year and workstation already exists.');
 
             }
           },
@@ -285,12 +287,12 @@ export class Profitcenterbudget implements OnInit {
 
   delete(value: any) {
     debugger
-    this.Profitcenterbudgetservice.deleteProfitcenterbudget(value.ProfitcenterBudgetId).subscribe({
+    this.WorkstationBudgetservice.deleteworkstationbudget(value.WorkstationBudgetId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-        alert(`profit center budget deleted successfully!`);
+        alert(`Petrol budget deleted successfully!`);
         this.toastService.showSuccess("budget delete successfully");
-        this.getAllProfitcenterBudget();
+        this.getAllWorkstationBudget();
       },
       error: (err) => {
         console.error('Error deleting Petrol:', err);
@@ -313,4 +315,5 @@ export class Profitcenterbudget implements OnInit {
   updateList() {
     this.list = this.list.splice(-1).concat(this.list);
   }
+
 }
