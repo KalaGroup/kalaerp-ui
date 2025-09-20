@@ -2,36 +2,53 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IEmpmstforupdationmst } from '@shared/interfaces/hr/empmstupdationformst';
+import { apiEnvironment } from '@core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class Empmstupdationforservice {
-  private employeeMasterUpdationFor = 'https://localhost:7019/api/EmployeeMasterUpdationForMaster/GetEmployeeMasterUpdationForDetails';
-  private insertemployeeMasterUpdationForUrl = 'https://localhost:7019/api/EmployeeMasterUpdationForMaster/CreateEmployeeMasterUpdationFor';
-  private updateemployeeMasterUpdationForUrl = 'https://localhost:7019/api/EmployeeMasterUpdationForMaster/UpdateEmployeeMasterUpdationFor';
-  private deleteemployeeMasterUpdationForUrl = 'https://localhost:7019/api/EmployeeMasterUpdationForMaster/DeleteEmployeeMasterUpdationFor';
-  private getemployeeMasterUpdationForUrl = 'https://localhost:7019/api/EmployeeMasterUpdationForMaster/GetEmployeeMasterUpdationForById';
+  baseUrl = apiEnvironment.baseUrl;
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    getAllemployeeMasterUpdationFor(): Observable<any[]> {
-    return this.http.get<any[]>(this.employeeMasterUpdationFor)
+  getAllemployeeMasterUpdationFor(): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.baseUrl}EmployeeMasterUpdationForMaster/GetEmployeeMasterUpdationForDetails`
+    );
   }
 
-  insertemployeeMasterUpdationFor(insertemployeeMasterUpdationFor: IEmpmstforupdationmst): Observable<any> {
+  insertemployeeMasterUpdationFor(
+    insertemployeeMasterUpdationFor: IEmpmstforupdationmst
+  ): Observable<any> {
     debugger;
-    return this.http.post(this.insertemployeeMasterUpdationForUrl, insertemployeeMasterUpdationFor);
+    return this.http.post(
+      `${this.baseUrl}EmployeeMasterUpdationForMaster/CreateEmployeeMasterUpdationFor`,
+      insertemployeeMasterUpdationFor
+    );
   }
-  updateemployeeMasterUpdationFor(updateemployeeMasterUpdationFor: IEmpmstforupdationmst): Observable<any> {
-    return this.http.put(this.updateemployeeMasterUpdationForUrl, updateemployeeMasterUpdationFor);
+
+  updateemployeeMasterUpdationFor(
+    updateemployeeMasterUpdationFor: IEmpmstforupdationmst
+  ): Observable<any> {
+    return this.http.put(
+      `${this.baseUrl}EmployeeMasterUpdationForMaster/UpdateEmployeeMasterUpdationFor`,
+      updateemployeeMasterUpdationFor
+    );
   }
+
   deleteemployeeMasterUpdationFor(EmployeeMasterUpdationForId: number): Observable<any> {
     debugger;
-    return this.http.delete(`${this.deleteemployeeMasterUpdationForUrl}/${EmployeeMasterUpdationForId}`);
+    return this.http.delete(
+      `${this.baseUrl}EmployeeMasterUpdationForMaster/DeleteEmployeeMasterUpdationFor/${EmployeeMasterUpdationForId}`
+    );
   }
-  getemployeeMasterUpdationForByID(EmployeeMasterUpdationForId: number): Observable<IEmpmstforupdationmst> {
-    return this.http.get<IEmpmstforupdationmst>(`${this.getemployeeMasterUpdationForUrl}/${EmployeeMasterUpdationForId}`);
+
+  getemployeeMasterUpdationForByID(
+    EmployeeMasterUpdationForId: number
+  ): Observable<IEmpmstforupdationmst> {
+    return this.http.get<IEmpmstforupdationmst>(
+      `${this.baseUrl}EmployeeMasterUpdationForMaster/GetEmployeeMasterUpdationForById/${EmployeeMasterUpdationForId}`
+    );
   }
 }
-

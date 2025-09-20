@@ -2,49 +2,47 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IAuthorities } from '@shared/interfaces/hr/authorities';
+import { apiEnvironment  } from '@core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Authoritiesservice {
-  private AuthoritiesUrl = 'https://localhost:7019/api/AuthoritieMaster/getallauthorities';
-  private insertAuthoritiesUrl = 'https://localhost:7019/api/AuthoritieMaster/addauthoritie';
-  private updateAuthoritiesUrl = 'https://localhost:7019/api/AuthoritieMaster/updateauthoritie';
-  private deleteAuthoritiesUrl = 'https://localhost:7019/api/AuthoritieMaster/deleteauthoritie';
-  private getallauthoritiesdetailsbymasterid ='https://localhost:7019/api/AuthoritieMaster/getallauthoritiesdetailsbymasterid';
-  private getDesignationListUrl ='https://localhost:7019/api/DesignationMaster/getdesignationidandname';
-  private getGradeListUrl = 'https://localhost:7019/api/GradeMaster/getgradeidandname';
-  private getDivisionListUrl = 'https://localhost:7019/api/DivisionMaster/getdivisionidandname';
+
+ baseUrl = apiEnvironment.baseUrl;
 
   constructor(private http: HttpClient) {}
 
   getAllAuthorities(): Observable<any[]> {
-    return this.http.get<any[]>(this.AuthoritiesUrl);
+    return this.http.get<any[]>(`${this.baseUrl}AuthoritieMaster/getallauthorities`);
   }
 
   insertAuthorities(insertAuthorities: IAuthorities): Observable<any> {
-    return this.http.post(this.insertAuthoritiesUrl, insertAuthorities);
+    return this.http.post(`${this.baseUrl}AuthoritieMaster/addauthoritie`, insertAuthorities);
   }
+
   updateAuthorities(updateAuthorities: IAuthorities): Observable<any> {
-    return this.http.put(this.updateAuthoritiesUrl, updateAuthorities);
+    return this.http.put(`${this.baseUrl}AuthoritieMaster/updateauthoritie`, updateAuthorities);
   }
+
   deleteAuthorities(AuthoritiessId: number): Observable<any> {
-    return this.http.delete(`${this.deleteAuthoritiesUrl}/${AuthoritiessId}`);
+    return this.http.delete(`${this.baseUrl}AuthoritieMaster/deleteauthoritie/${AuthoritiessId}`);
   }
 
   getAuthoritiesDetailsByMstId(authoritiesMstId: number): Observable<any> {
-    return this.http.get<any>(`${this.getallauthoritiesdetailsbymasterid}/${authoritiesMstId}`);
+    return this.http.get<any>(`${this.baseUrl}AuthoritieMaster/getallauthoritiesdetailsbymasterid/${authoritiesMstId}`);
   }
 
   getDesignationList(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getDesignationListUrl}`);
+    return this.http.get<any[]>(`${this.baseUrl}DesignationMaster/getdesignationidandname`);
   }
 
   getGradeList(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getGradeListUrl}`);
+    return this.http.get<any[]>(`${this.baseUrl}GradeMaster/getgradeidandname`);
   }
 
   getDivisionList(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.getDivisionListUrl}`);
+    return this.http.get<any[]>(`${this.baseUrl}DivisionMaster/getdivisionidandname`);
   }
+
 }

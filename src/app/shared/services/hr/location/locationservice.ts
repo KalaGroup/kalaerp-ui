@@ -3,40 +3,33 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { Ilocationmaster } from '@shared/interfaces/hr/location';
-
+import { apiEnvironment } from '@core';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
+export class locationservices {
+  baseUrl = apiEnvironment.baseUrl;
 
-export class locationservices{
-    
-    
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient) { }
-
-    private locationUrl = 'https://localhost:7019/api/LocationMaster';
   getAllLocation(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.locationUrl}/GetAllLocation`);
+    return this.http.get<any[]>(`${this.baseUrl}LocationMaster/GetAllLocation`);
   }
-  private profitcenterLocation = 'https://localhost:7019/api/ProfitcenterMaster';
+
   getAllLocationProfitcenter(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.profitcenterLocation}/getallprofitcenter`);
+    return this.http.get<any[]>(`${this.baseUrl}ProfitcenterMaster/getallprofitcenter`);
   }
 
-
-  private insertlocationUrl = 'https://localhost:7019/api/LocationMaster/CreateLocation';
   insertLocation(insertLocation: Ilocationmaster): Observable<any> {
-    return this.http.post(`${this.insertlocationUrl}`, insertLocation);
+    return this.http.post(`${this.baseUrl}LocationMaster/CreateLocation`, insertLocation);
   }
 
-  private updatelocationUrl = 'https://localhost:7019/api/LocationMaster/UpdateLocation';
   updateLocation(updateLocation: Ilocationmaster): Observable<any> {
-    return this.http.put(`${this.updatelocationUrl}`, updateLocation);
+    return this.http.put(`${this.baseUrl}LocationMaster/UpdateLocation`, updateLocation);
   }
 
-  private deletelocationUrl = 'https://localhost:7019/api/LocationMaster/DeleteLocation';
   deleteLocation(LocationId: number): Observable<any> {
-    return this.http.delete(`${this.deletelocationUrl}/${LocationId}`);
+    return this.http.delete(`${this.baseUrl}LocationMaster/DeleteLocation/${LocationId}`);
   }
 }

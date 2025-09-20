@@ -23,3 +23,9 @@ export const defaults: AppSettings = {
   sidenavCollapsed: false,
   language: 'auto',
 };
+
+
+export const apiEnvironment = {
+  //baseUrl: 'http://2.240.123.216:8080/api/'
+  baseUrl: 'http://localhost:7019/api/'
+};
