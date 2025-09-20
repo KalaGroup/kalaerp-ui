@@ -37,6 +37,7 @@ import { Recruitmentmaster } from './recruitmentmaster/recruitmentmaster';
 import { Profitcenterbudget } from './profitcenterbudget/profitcenterbudget';
 import { Shiftmaster } from './shiftmaster/shiftmaster';
 import { Districtmaster } from './districtmaster/districtmaster';
+import { Workstationbudget } from './workstationbudget/workstationbudget';
 
 
 export const routes: Routes = [
@@ -180,6 +181,10 @@ export const routes: Routes = [
   {
     path: 'distictmaster',
     component: Districtmaster
+  },
+  {
+    path: 'workstationbudget',
+    component: Workstationbudget
   }
 
 ];
