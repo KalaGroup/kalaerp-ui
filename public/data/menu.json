@@ -170,6 +170,11 @@
           "route": "distictmaster",
           "name": "distictmaster",
           "type": "link"
+        },
+        {
+          "route": "offerletter",
+          "name": "offerletter",
+          "type": "link"
         }
       ]
     }

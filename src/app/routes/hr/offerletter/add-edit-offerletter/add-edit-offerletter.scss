@@ -1,0 +1,286 @@
+mat-card {
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  background-color: #f0efefec;
+}
+
+mat-card-title {
+  font-size: 22px;
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+mat-checkbox {
+  font-size: 15px;
+  color: #333;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Make readonly fields look disabled but still accessible */
+input[readonly] {
+//  background-color: #f8f9fa !important;
+  color: #6c757d !important;
+  cursor: default !important;
+}
+
+/* Make checkbox look readonly but still show checked state */
+.readonly-checkbox {
+  pointer-events: none;
+}
+
+.readonly-checkbox .mat-checkbox-inner-container {
+  background-color: #f8f9fa;
+}
+
+
+
+// Offer Letter Form Styles
+.form-field-full {
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+
+  &.mb-3 {
+    margin-bottom: 24px;
+  }
+}
+
+.col-sm-3,
+.col-sm-4,
+.col-sm-6,
+.col-sm-8,
+.col-sm-12 {
+  flex: 1;
+  min-width: 200px;
+
+  &.col-xl-3 {
+    flex: 0 0 calc(25% - 12px);
+  }
+
+  &.col-xl-4 {
+    flex: 0 0 calc(33.333% - 11px);
+  }
+
+  &.col-xl-6 {
+    flex: 0 0 calc(50% - 8px);
+  }
+
+  &.col-xl-8 {
+    flex: 0 0 calc(66.666% - 5px);
+  }
+
+  &.col-xl-12 {
+    flex: 0 0 100%;
+  }
+}
+
+// Section Headers
+.section-header {
+  color: #333;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #3f51b5;
+  display: inline-block;
+
+  &.mt-4 {
+    margin-top: 32px;
+  }
+
+  &.mb-3 {
+    margin-bottom: 24px;
+  }
+}
+
+// Button Styles
+.btn-primary {
+  background-color: #3f51b5;
+  color: white;
+  border: none;
+
+  &:hover {
+    background-color: #303f9f;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    color: #666;
+  }
+}
+
+.btn-outline {
+  background-color: white;
+  color: #3f51b5;
+  border: 1px solid #3f51b5;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
+
+.px-4 {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.gap-3 {
+  gap: 12px;
+}
+
+.mt-4 {
+  margin-top: 32px;
+}
+
+// CTC Summary Card
+.ctc-summary-card {
+  background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+  border: 2px solid #4caf50;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  margin-top: 16px;
+
+  h5 {
+    color: #2e7d32;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 8px 0;
+  }
+
+  p {
+    color: #388e3c;
+    margin: 0;
+    font-size: 14px;
+  }
+}
+
+// Flex utilities
+.d-flex {
+  display: flex;
+
+  &.align-items-center {
+    align-items: center;
+  }
+
+  &.justify-content-start {
+    justify-content: flex-start;
+  }
+
+  &.justify-content-center {
+    justify-content: center;
+  }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .col-xl-3,
+  .col-xl-4,
+  .col-xl-6,
+  .col-xl-8 {
+    flex: 1;
+    min-width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .col-sm-3,
+  .col-sm-4,
+  .col-sm-6,
+  .col-sm-8,
+  .col-sm-12 {
+    flex: 1;
+    min-width: auto;
+    width: 100%;
+  }
+
+  .d-flex.justify-content-center {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+      margin-bottom: 8px;
+    }
+  }
+
+  .section-header {
+    font-size: 16px;
+  }
+}
+
+// Material Form Field Customizations
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+// Custom checkbox alignment
+.mat-mdc-checkbox {
+  margin-right: 8px;
+}
+
+// Ensure proper spacing for authorization section
+.authorization-row {
+  align-items: flex-start;
+
+  .checkbox-col {
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+  }
+
+  .remark-col {
+    flex: 1;
+  }
+}
+
+// CTC calculation highlight
+.calculated-field {
+  background-color: #f5f5f5;
+
+  .mat-mdc-input-element:disabled {
+    color: #666;
+  }
+}
+
+// Loading state
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+// Form validation
+.mat-mdc-form-field.mat-form-field-invalid {
+  .mat-mdc-text-field-wrapper {
+    border-color: #f44336;
+  }
+}
+
+// Improved focus states
+.mat-mdc-input-element:focus {
+  outline: none;
+}
+
+.mat-mdc-select:focus {
+  outline: none;
+}
+
+// Better spacing for long forms
+.form-section {
+  margin-bottom: 32px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}

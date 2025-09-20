@@ -1,0 +1,395 @@
+<mat-card>
+  <mat-card-title>
+    {{ isEditMode ? 'Edit Offer Letter' : 'Add Offer Letter' }}
+  </mat-card-title>
+
+  <mat-card-content>
+    <form [formGroup]="offerLetterForm" class="form-field-full">
+
+      <!-- Auto-generated fields row -->
+      <div class="row mb-3">
+        <div class="col-sm-3 col-xl-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Offer Letter ID</mat-label>
+            <input matInput formControlName="OfferLetterId"
+              [placeholder]="isEditMode ? 'Enter offer letter ID' : 'Auto-generated'" readonly />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3 col-xl-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Created Date</mat-label>
+            <input matInput formControlName="CreatedDate" readonly placeholder="Auto-generated" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3 col-xl-3">
+          <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
+            <mat-checkbox formControlName="OfferLetterIsActive" color="primary">
+              Active
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="col-sm-3 col-xl-3">
+          <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
+            <mat-checkbox formControlName="OfferLetterIsDiscard" color="warn">
+              Discarded
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic Offer Letter Information -->
+      <mat-divider></mat-divider>
+      <h4 class="section-header mt-4 mb-3">Basic Information</h4>
+
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Position</mat-label>
+            <mat-select formControlName="OfferLetterPositionId" placeholder="Select position">
+              <mat-option>
+                <input matInput placeholder="Search position..." [formControl]="positionSearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+              <mat-option value="">Select Position</mat-option>
+              @for (position of filteredPositionList; track position.PositionMasterId) {
+              <mat-option [value]="position.PositionMasterId">
+                {{ position.PositionName }}
+              </mat-option>
+              }
+            </mat-select>
+            @if (offerLetterForm.get('OfferLetterPositionId')?.invalid &&
+            offerLetterForm.get('OfferLetterPositionId')?.touched) {
+            <mat-error>Position is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Recruitment</mat-label>
+            <mat-select formControlName="OfferLetterRecruitmentId" placeholder="Select candidate">
+              <mat-option>
+                <input matInput placeholder="Search candidate..." [formControl]="recruitmentSearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+              <mat-option value="">Select Candidate</mat-option>
+              @for (recruitment of filteredRecruitmentList; track recruitment.RecruitmentMasterId) {
+              <mat-option [value]="recruitment.RecruitmentMasterId">
+                {{ recruitment.CandidateName }}
+              </mat-option>
+              }
+            </mat-select>
+            @if (offerLetterForm.get('OfferLetterRecruitmentId')?.invalid &&
+            offerLetterForm.get('OfferLetterRecruitmentId')?.touched) {
+            <mat-error>Recruitment selection is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Joining Date</mat-label>
+            <input matInput [matDatepicker]="joiningDatePicker" formControlName="OfferLetterJoinindate"
+              [min]="minDate" readonly>
+            <mat-datepicker-toggle matIconSuffix [for]="joiningDatePicker">
+              <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #joiningDatePicker></mat-datepicker>
+            @if (offerLetterForm.get('OfferLetterJoinindate')?.invalid &&
+            offerLetterForm.get('OfferLetterJoinindate')?.touched) {
+            <mat-error>Joining date is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-sm-12 col-xl-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Offer Letter Remarks</mat-label>
+            <textarea matInput formControlName="OfferLetterRemark"
+                     placeholder="Enter any remarks about this offer letter"
+                     rows="2" maxlength="200"></textarea>
+            <mat-hint>Maximum 200 characters</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Authorization Section -->
+      <mat-divider></mat-divider>
+      <h4 class="section-header mt-4 mb-3">Authorization Workflow</h4>
+
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
+            <mat-checkbox formControlName="OfferLetterAuth1" color="primary">
+              Level 1 Authorization
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="col-sm-8 col-xl-8">
+          <mat-form-field appearance="outline">
+            <mat-label>Authorization 1 Remarks</mat-label>
+            <textarea matInput formControlName="OfferLetterAuth1Remark"
+                     placeholder="Remarks for Level 1 authorization"
+                     rows="1" maxlength="200"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
+            <mat-checkbox formControlName="OfferLetterAuth2" color="primary">
+              Level 2 Authorization
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="col-sm-8 col-xl-8">
+          <mat-form-field appearance="outline">
+            <mat-label>Authorization 2 Remarks</mat-label>
+            <textarea matInput formControlName="OfferLetterAuth2Remark"
+                     placeholder="Remarks for Level 2 authorization"
+                     rows="1" maxlength="200"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
+            <mat-checkbox formControlName="OfferLetterAuth3" color="primary">
+              Level 3 Authorization
+            </mat-checkbox>
+          </div>
+        </div>
+        <div class="col-sm-8 col-xl-8">
+          <mat-form-field appearance="outline">
+            <mat-label>Authorization 3 Remarks</mat-label>
+            <textarea matInput formControlName="OfferLetterAuth3Remark"
+                     placeholder="Remarks for Level 3 authorization"
+                     rows="1" maxlength="200"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- CTC Details Section -->
+      <mat-divider></mat-divider>
+      <h4 class="section-header mt-4 mb-3">Cost to Company (CTC) Details</h4>
+
+      <!-- Basic Salary Components -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Basic Salary</mat-label>
+            <input matInput formControlName="OfferLetterBasic" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+            @if (offerLetterForm.get('OfferLetterBasic')?.invalid &&
+            offerLetterForm.get('OfferLetterBasic')?.touched) {
+            <mat-error>Basic salary is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Dearness Allowance (DA)</mat-label>
+            <input matInput formControlName="OfferLetterDA" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>House Rent Allowance (HRA)</mat-label>
+            <input matInput formControlName="OfferLetterHRA" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Conveyance Allowance</mat-label>
+            <input matInput formControlName="OfferLetterConvAllowance" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>City Compensatory Allowance</mat-label>
+            <input matInput formControlName="OfferLetterCityCompensatoryAlowance" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Leave Travel Allowance</mat-label>
+            <input matInput formControlName="OfferLetterLeaveTravelAllowance" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Car Allowance</mat-label>
+            <input matInput formControlName="OfferLetterCarAllowance" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Fuel Allowance</mat-label>
+            <input matInput formControlName="OfferLetterFuelAllowance" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Driver Allowance</mat-label>
+            <input matInput formControlName="OfferLetterDriverAllowance" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Miscellaneous Allowance</mat-label>
+            <input matInput formControlName="OfferLetterMiscAllowance" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Performance KPA</mat-label>
+            <input matInput formControlName="OfferLetterPerformanceKPA" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Bonus</mat-label>
+            <input matInput formControlName="OfferLetterBonus" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Gross Salary -->
+      <div class="row mb-3">
+        <div class="col-sm-12 col-xl-12">
+          <mat-form-field appearance="outline">
+            <mat-label>Gross Salary</mat-label>
+            <input matInput formControlName="OfferLetterGross" type="number" readonly placeholder="0.00" />
+            <mat-hint>Automatically calculated from above components</mat-hint>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Deductions -->
+      <mat-divider></mat-divider>
+      <h4 class="section-header mt-4 mb-3">Deductions</h4>
+
+      <div class="row mb-3">
+        <div class="col-sm-3 col-xl-3">
+          <mat-form-field appearance="outline">
+            <mat-label>Professional Tax (PT)</mat-label>
+            <input matInput formControlName="OfferLetterPT" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3 col-xl-3">
+          <mat-form-field appearance="outline">
+            <mat-label>ESIC</mat-label>
+            <input matInput formControlName="OfferLetterEsic" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3 col-xl-3">
+          <mat-form-field appearance="outline">
+            <mat-label>PF Employee</mat-label>
+            <input matInput formControlName="OfferLetterPFEmployee" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-3 col-xl-3">
+          <mat-form-field appearance="outline">
+            <mat-label>MLWF</mat-label>
+            <input matInput formControlName="OfferLetterMLWF" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Employer Contributions -->
+      <mat-divider></mat-divider>
+      <h4 class="section-header mt-4 mb-3">Employer Contributions</h4>
+
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>PF Employer</mat-label>
+            <input matInput formControlName="OfferLetterPFEmployer" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Medical Insurance</mat-label>
+            <input matInput formControlName="OfferLetterMedicalInsurance" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Gratuity</mat-label>
+            <input matInput formControlName="OfferLetterGraduity" type="number"
+                   min="0" step="0.01" placeholder="0.00" (input)="calculateGrossAndCTC()" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- CTC Summary -->
+      <div class="row mb-3">
+        <div class="col-sm-12 col-xl-12">
+          <div class="ctc-summary-card">
+            <h5>Total Annual CTC: ₹{{ totalCTC | number:'1.2-2' }}</h5>
+            <p>This includes all earnings, employer contributions, and statutory benefits</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden/System Fields -->
+      <input type="hidden" formControlName="OfferLetterId" />
+      <input type="hidden" formControlName="CreatedBy" />
+      <input type="hidden" formControlName="UpdatedBy" />
+
+      <!-- Action buttons -->
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <button mat-flat-button color="primary" class="btn-primary px-4"
+               [disabled]="!isEditMode && offerLetterForm.invalid" (click)="onSubmit()">
+              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+
+            <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
+              <mat-icon>close</mat-icon>
+              Cancel
+            </button>
+
+            @if (!isEditMode) {
+            <button mat-button type="button" class="btn-outline px-4" (click)="onReset()">
+              <mat-icon>refresh</mat-icon>
+              Reset
+            </button>
+            }
+          </div>
+        </div>
+      </div>
+
+    </form>
+  </mat-card-content>
+</mat-card>
