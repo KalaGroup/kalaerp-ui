@@ -27,5 +27,5 @@ export const defaults: AppSettings = {
 
 export const apiEnvironment = {
   //baseUrl: 'http://2.240.123.216:8080/api/'
-  baseUrl: 'http://localhost:7019/api/'
+  baseUrl: 'https://localhost:7019/api/'
 };
