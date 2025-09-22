@@ -2,31 +2,32 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
+import { apiEnvironment } from '@core';
 
 
 @Injectable({
     providedIn: 'root',
 })
 export class LeaveTypeMasterservice {
+
+    baseUrl = apiEnvironment.baseUrl;
+
     constructor(private http: HttpClient) { }
 
-    private LeaveTypemasterUrl = 'https://localhost:7019/api/LeaveTypeMaster';
     getAllLeaveTypemaster(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.LeaveTypemasterUrl}/GetAllLeaveType`);
+        return this.http.get<any[]>(`${this.baseUrl}LeaveTypeMaster/GetAllLeaveType`);
     }
 
-    private insertLeaveTypemasterUrl = 'https://localhost:7019/api/LeaveTypeMaster/InsertleaveType';
     insertLeaveTypemaster(insertLeaveTypemaster: any): Observable<any> {
-        return this.http.post(`${this.insertLeaveTypemasterUrl}`, insertLeaveTypemaster);
+        return this.http.post(`${this.baseUrl}LeaveTypeMaster/InsertleaveType`, insertLeaveTypemaster);
     }
 
-    private updateLeaveTypemasterUrl = 'https://localhost:7019/api/LeaveTypeMaster/UpdateLeaveType';
     updateLeaveTypemaster(updateLeaveTypemaster: any): Observable<any> {
-        return this.http.put(`${this.updateLeaveTypemasterUrl}`, updateLeaveTypemaster);
+        return this.http.put(`${this.baseUrl}LeaveTypeMaster/UpdateLeaveType`, updateLeaveTypemaster);
     }
-    private deleteLeaveTypemasterUrl = 'https://localhost:7019/api/LeaveTypeMaster/DeleteLeaveType';
     deleteLeaveTypemaster(LeaveTypeMasterId: number): Observable<any> {
-        return this.http.delete(`${this.deleteLeaveTypemasterUrl}/${LeaveTypeMasterId}`);
+        return this.http.delete(`${this.baseUrl}LeaveTypeMaster/DeleteLeaveType/${LeaveTypeMasterId}`);
     }
+
 
 }
