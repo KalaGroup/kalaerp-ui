@@ -2,33 +2,40 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IWorkstation } from '@shared/interfaces/hr/workstation';
+import { apiEnvironment } from '@core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Workstationservice {
-  private WorkstationUrl = 'https://localhost:7019/api/WorkstationMaster/GetAllWorkstation';
-  private insertWorkstationUrl = 'https://localhost:7019/api/WorkstationMaster/CreateWorkstation';
-  private updateWorkstationUrl = 'https://localhost:7019/api/WorkstationMaster/UpdateWorkstation';
-  private deleteWorkstationUrl = 'https://localhost:7019/api/WorkstationMaster/deleteWorkstation';
-  private getWorkstationByIdUrl = 'https://localhost:7019/api/WorkstationMaster/getWorkstationbyid';
+  baseUrl = apiEnvironment.baseUrl;
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
-    getAllWorkstation(): Observable<any[]> {
-    return this.http.get<any[]>(this.WorkstationUrl)
+  // 🔹 GET all workstations
+  getAllWorkstation(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}WorkstationMaster/GetAllWorkstation`);
   }
 
+  // 🔹 INSERT workstation
   insertWorkstation(insertWorkstation: IWorkstation): Observable<any> {
-    return this.http.post(this.insertWorkstationUrl, insertWorkstation);
+    return this.http.post(`${this.baseUrl}WorkstationMaster/CreateWorkstation`, insertWorkstation);
   }
+
+  // 🔹 UPDATE workstation
   updateWorkstation(updateWorkstation: IWorkstation): Observable<any> {
-    return this.http.put(this.updateWorkstationUrl, updateWorkstation);
+    return this.http.put(`${this.baseUrl}WorkstationMaster/UpdateWorkstation`, updateWorkstation);
   }
+
+  // 🔹 DELETE workstation
   deleteWorkstation(WorkstationId: number): Observable<any> {
-    return this.http.delete(`${this.deleteWorkstationUrl}/${WorkstationId}`);
+    return this.http.delete(`${this.baseUrl}WorkstationMaster/deleteWorkstation/${WorkstationId}`);
   }
+
+  // 🔹 GET workstation by ID
   getWorkstationById(WorkstationId: number): Observable<IWorkstation> {
-    return this.http.get<IWorkstation>(`${this.getWorkstationByIdUrl}/${WorkstationId}`);
+    return this.http.get<IWorkstation>(
+      `${this.baseUrl}WorkstationMaster/getWorkstationbyid/${WorkstationId}`
+    );
   }
 }

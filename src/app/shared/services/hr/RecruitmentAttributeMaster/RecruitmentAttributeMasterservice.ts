@@ -1,33 +1,41 @@
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
 import { IRecruitmentAttribute } from '@shared/interfaces/hr/RecruitmentAttributeMaster';
+import { apiEnvironment } from '@core';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class RecruitmentAttributeservices {
+  baseUrl = apiEnvironment.baseUrl;
 
-    constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-    private recruitmentattributeUrl = 'https://localhost:7019/api/RecruitmentAttributeMaster';
-    getAllRecruitmentAttribute(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.recruitmentattributeUrl}/GetAllRecruitmentAttributeMaster`);
-    }
+  getAllRecruitmentAttribute(): Observable<any[]> {
+    return this.http.get<any[]>(
+      `${this.baseUrl}RecruitmentAttributeMaster/GetAllRecruitmentAttributeMaster`
+    );
+  }
 
+  insertRecruitmentAttribute(insertRecruitmentAttribute: IRecruitmentAttribute): Observable<any> {
+    return this.http.post(
+      `${this.baseUrl}RecruitmentAttributeMaster/CreateRecruitmentAttributeMaster`,
+      insertRecruitmentAttribute
+    );
+  }
 
-    private insertrecruitmentattributeUrl = 'https://localhost:7019/api/RecruitmentAttributeMaster/CreateRecruitmentAttributeMaster';
-    insertRecruitmentAttribute(insertRecruitmentAttribute: IRecruitmentAttribute): Observable<any> {
-        return this.http.post(`${this.insertrecruitmentattributeUrl}`, insertRecruitmentAttribute);
-    }
-    private updaterecruitmentattributeUrl = 'https://localhost:7019/api/RecruitmentAttributeMaster/UpdateRecruitmentAttributeMaster';
-    updateRecruitmentAttribute(updateRecruitmentAttribute: IRecruitmentAttribute): Observable<any> {
-        return this.http.put(`${this.updaterecruitmentattributeUrl}`, updateRecruitmentAttribute);
-    }
-    private deleterecruitmentattributeUrl = 'https://localhost:7019/api/RecruitmentAttributeMaster/DeleteRecruitmentAttributeMaster';
-    deleteRecruitmentAttribute(RecruitmentAttributeId: number): Observable<any> {
-        return this.http.delete(`${this.deleterecruitmentattributeUrl}/${RecruitmentAttributeId}`);
-    }
-} 
+  updateRecruitmentAttribute(updateRecruitmentAttribute: IRecruitmentAttribute): Observable<any> {
+    return this.http.put(
+      `${this.baseUrl}RecruitmentAttributeMaster/UpdateRecruitmentAttributeMaster`,
+      updateRecruitmentAttribute
+    );
+  }
+
+  deleteRecruitmentAttribute(RecruitmentAttributeId: number): Observable<any> {
+    return this.http.delete(
+      `${this.baseUrl}RecruitmentAttributeMaster/DeleteRecruitmentAttributeMaster/${RecruitmentAttributeId}`
+    );
+  }
+}

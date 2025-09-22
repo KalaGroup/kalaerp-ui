@@ -1,33 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '@env/environment';
 import { Currency } from '@shared/interfaces/hr';
-
+import { apiEnvironment } from '@core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Currencyservice {
-  // 
+  baseUrl = apiEnvironment.baseUrl;
 
-  constructor(private http: HttpClient) { }
-  private currencyUrl = 'https://localhost:7019/api/CurrencyMaster';
+  constructor(private http: HttpClient) {}
+
   getAllCurrencies(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.currencyUrl}/getallcurrencydetails`);
+    return this.http.get<any[]>(`${this.baseUrl}CurrencyMaster/getallcurrencydetails`);
   }
-  insertcurrency = 'https://localhost:7019/api/CurrencyMaster/createcurrency';
+
   insertCurrency(currecnyURL: Currency): Observable<any> {
-    return this.http.post(this.insertcurrency, currecnyURL);
+    return this.http.post(`${this.baseUrl}CurrencyMaster/createcurrency`, currecnyURL);
   }
-  updatecurrency = 'https://localhost:7019/api/CurrencyMaster/updatecurrency';
+
   updateCurrency(updatecurrency: Currency): Observable<any> {
-    return this.http.put(this.updatecurrency, updatecurrency);
+    return this.http.put(`${this.baseUrl}CurrencyMaster/updatecurrency`, updatecurrency);
   }
-  deleteurl = 'https://localhost:7019/api/CurrencyMaster/deletecurrency'
+
   deleteCurrency(CurrencyId: number): Observable<any> {
-    return this.http.delete(`${this.deleteurl}/${CurrencyId}`);
-
+    return this.http.delete(`${this.baseUrl}CurrencyMaster/deletecurrency/${CurrencyId}`);
   }
-
 }
