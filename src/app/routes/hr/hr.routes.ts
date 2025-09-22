@@ -38,6 +38,7 @@ import { Profitcenterbudget } from './profitcenterbudget/profitcenterbudget';
 import { Shiftmaster } from './shiftmaster/shiftmaster';
 import { Districtmaster } from './districtmaster/districtmaster';
 import { Workstationbudget } from './workstationbudget/workstationbudget';
+import { Leavetypemaster } from './leavetypemaster/leavetypemaster';
 import { Offerletter } from './offerletter/offerletter';
 import { Employeeleavebalances } from './employeeleavebalances/employeeleavebalances';
 
@@ -186,6 +187,10 @@ export const routes: Routes = [
   {
     path: 'workstationbudget',
     component: Workstationbudget
+  },
+  {
+    path: 'leavetypemaster',
+    component: Leavetypemaster
   },
   {
     path: 'offerletter',

@@ -177,6 +177,11 @@
           "type": "link"
         },
         {
+          "route": "leavetypemaster",
+          "name": "leavetypemaster",
+          "type": "link"
+        },
+        {
           "route": "offerletter",
           "name": "offerletter",
           "type": "link"
