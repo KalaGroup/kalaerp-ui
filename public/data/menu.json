@@ -175,6 +175,11 @@
           "route": "workstationbudget",
           "name": "workstationbudget",
           "type": "link"
+        },
+        {
+          "route": "leavetypemaster",
+          "name": "leavetypemaster",
+          "type": "link"
         }
       ]
     }
