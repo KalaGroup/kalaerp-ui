@@ -192,6 +192,11 @@
           "type": "link"
         },
         {
+          "route": "leaveapplications",
+          "name": "leaveapplications",
+          "type": "link"
+        },
+        {
           "route": "positionmaster",
           "name": "positionmaster",
           "type": "link"

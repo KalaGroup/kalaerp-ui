@@ -41,6 +41,7 @@ import { Workstationbudget } from './workstationbudget/workstationbudget';
 import { Leavetypemaster } from './leavetypemaster/leavetypemaster';
 import { Offerletter } from './offerletter/offerletter';
 import { Employeeleavebalances } from './employeeleavebalances/employeeleavebalances';
+import { Leaveapplications } from './leaveapplications/leaveapplications';
 import { Positionmaster } from './positionmaster/positionmaster';
 
 export const routes: Routes = [
@@ -199,10 +200,19 @@ export const routes: Routes = [
   },
   {
     path: 'employeeleavebalances',
+    component: Employeeleavebalances
+  },
+  {
+    path: 'leaveapplications',
+    component:Leaveapplications
+  },
+  {
+    path: 'employeeleavebalances',
     component: Employeeleavebalances,
   },
   {
     path: 'positionmaster',
     component: Positionmaster,
   },
+
 ];
