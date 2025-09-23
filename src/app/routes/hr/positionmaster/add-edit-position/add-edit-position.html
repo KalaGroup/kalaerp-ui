@@ -1,0 +1,649 @@
+<mat-card>
+  <mat-card-title>{{ isEditMode ? 'Edit Position Master' : 'Add Position Master' }}</mat-card-title>
+
+  <mat-card-content>
+    <form [formGroup]="positionForm" class="form-field-full">
+      <!-- Checkbox row -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-3"></div>
+        <div class="col-sm-8 col-xl-9">
+          <div class="d-flex checkbox-group">
+            <mat-checkbox
+              formControlName="PositionMasterAuth"
+              color="primary"
+              [disabled]="!isEditMode"
+            >
+              Auth
+            </mat-checkbox>
+            <mat-checkbox
+              formControlName="PositionMasterIsActive"
+              color="primary"
+              [disabled]="!isEditMode"
+            >
+              Active
+            </mat-checkbox>
+            <mat-checkbox
+              formControlName="PositionMasterIsDiscard"
+              color="primary"
+              [disabled]="!isEditMode"
+              *ngIf="isEditMode"
+            >
+              Discard
+            </mat-checkbox>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Fields (3 columns) -->
+      <div class="row mb-3">
+        <!-- 1st Column -->
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Position Code</mat-label>
+            <input matInput formControlName="PositionMasterCode" placeholder="Enter Code" />
+            <mat-error
+              *ngIf="positionForm.get('PositionMasterCode')?.invalid && positionForm.get('PositionMasterCode')?.touched"
+            >
+              Position Code is required
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Company Name</mat-label>
+            <mat-select formControlName="PositionMasterCompanyId" placeholder="Select Company Name">
+              <mat-option>
+                <input
+                  matInput
+                  placeholder="Search Company Name"
+                  [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+              <mat-option value="">Select Company Name</mat-option>
+              <mat-option
+                *ngFor="let companyname of filteredCompanyList"
+                [value]="companyname.CompanyId"
+              >
+                {{ companyname.CompanyName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Department Name</mat-label>
+            <mat-select
+              formControlName="PositionMasterDepartmentId"
+              placeholder="Select Department"
+            >
+              <mat-option>
+                <input
+                  matInput
+                  placeholder="Search Department"
+                  [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+              <mat-option value="">Select Department</mat-option>
+              <mat-option
+                *ngFor="let department of filteredDepartmentList"
+                [value]="department.DepartmentId"
+              >
+                {{ department.DepartmentName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Designation Name</mat-label>
+            <mat-select
+              formControlName="PositionMasterDesignationId"
+              placeholder="Select Designation"
+              (selectionChange)="loadRolesDetails()"
+            >
+              <mat-option>
+                <input
+                  matInput
+                  placeholder="Search Designation..."
+                  [formControl]="DesignationSearchControl"
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+              <mat-option value="">Select Designation</mat-option>
+              <mat-option
+                *ngFor="let designation of filteredDesignationList"
+                [value]="designation.DesignationId"
+              >
+                {{ designation.DesignationName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <!-- 2nd Column -->
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Position Name</mat-label>
+            <input
+              matInput
+              formControlName="PositionMasterName"
+              placeholder="Enter Position Name"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>ProfitCenter Name</mat-label>
+            <mat-select
+              formControlName="PositionMasterProfitcenterId"
+              placeholder="Select ProfitCenter Name"
+              (selectionChange)="onProfitCenterChange($event.value)"
+            >
+              <mat-option>
+                <input
+                  matInput
+                  placeholder="Search ProfitCenter Name..."
+                  [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+              <mat-option value="">Select ProfitCenter Name</mat-option>
+              <mat-option
+                *ngFor="let profitcenter of filteredProfitcenterList"
+                [value]="profitcenter.ProfitCenterId"
+              >
+                {{ profitcenter.ProfitCenterName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Workstation Name</mat-label>
+            <mat-select
+              formControlName="PositionMasterWorkStationId"
+              placeholder="Select Workstation"
+            >
+              <mat-option>
+                <input
+                  matInput
+                  placeholder="Search Workstation"
+                  [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+              <mat-option value="">Select Workstation</mat-option>
+              <mat-option
+                *ngFor="let workstation of filteredWorkstationList"
+                [value]="workstation.WorkStationId"
+              >
+                {{ workstation.WorkStationName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Count</mat-label>
+            <input
+              matInput
+              type="number"
+              formControlName="PositionMasterPositionCount"
+              placeholder="Enter count"
+              min="1"
+              max="100"
+            />
+            <mat-error
+              *ngIf="positionForm.get('PositionMasterPositionCount')?.invalid && positionForm.get('PositionMasterPositionCount')?.touched"
+            >
+              Count is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <!-- 3rd Column -->
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Employee Type</mat-label>
+            <mat-select
+              formControlName="PositionMasterEmployeeTypeId"
+              placeholder="Select Employee Type"
+            >
+              <mat-option>
+                <input
+                  matInput
+                  placeholder="Search Employee Type..."
+                  [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+              <mat-option value="">Select Employee Type</mat-option>
+              <mat-option
+                *ngFor="let employeetype of filteredEmployeetypeList"
+                [value]="employeetype.EmployeeTypeId"
+              >
+                {{ employeetype.EmployeeTypeName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Division Name</mat-label>
+            <mat-select
+              formControlName="PositionMasterDivisionId"
+              placeholder="Select Division"
+              (selectionChange)="onDivisionChange($event.value)"
+              (selectionChange)="loadRolesDetails()"
+            >
+              <mat-option>
+                <input
+                  matInput
+                  placeholder="Search Division"
+                  [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+              <mat-option value="">Select Division</mat-option>
+              <mat-option
+                *ngFor="let division of filteredDivisionList"
+                [value]="division.DivisionId"
+              >
+                {{ division.DivisionName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Grade Name</mat-label>
+            <mat-select
+              formControlName="PositionMasterGradeId"
+              placeholder="Select Grade"
+              (selectionChange)="onGradeChange($event.value)"
+              (selectionChange)="loadRolesDetails()"
+            >
+              <mat-option>
+                <input
+                  matInput
+                  placeholder="Search Grade..."
+                  [formControl]="GradeSearchControl"
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+              <mat-option value="">Select Grade</mat-option>
+              <mat-option *ngFor="let grade of filteredGradeList" [value]="grade.GradeId">
+                {{ grade.GradeName }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Role Details Table -->
+      <div class="section-header">Role Details</div>
+
+      <mat-card class="mt-3">
+        <mat-card-content>
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="RolesDetailsList" class="w-100">
+              <!-- Sr No Column -->
+              <ng-container matColumnDef="SrNo">
+                <th mat-header-cell *matHeaderCellDef>Sr No</th>
+                <td mat-cell *matCellDef="let element">{{ element.SrNo }}</td>
+              </ng-container>
+
+              <!-- Description Column -->
+              <ng-container matColumnDef="RolesDetailsDescription">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let element">{{ element.RolesDetailsDescription }}</td>
+              </ng-container>
+
+              <!-- Header & Row Definitions -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsRoles"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsRoles"></tr>
+            </table>
+
+            <!-- No data message -->
+            <div *ngIf="RolesDetailsList.length === 0" class="p-3 text-center text-muted">
+              No role details available.
+              <br />
+              (Select Grade, Designation and Division to view details)
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Responsibilties Details Table -->
+      <div class="section-header">Responsibilties Details</div>
+
+      <mat-card class="mt-3">
+        <mat-card-content>
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="ResponsibilitiesDetailsList" class="w-100">
+              <!-- Sr No Column -->
+              <ng-container matColumnDef="SrNo">
+                <th mat-header-cell *matHeaderCellDef>Sr No</th>
+                <td mat-cell *matCellDef="let element">{{ element.SrNo }}</td>
+              </ng-container>
+
+              <!-- Description Column -->
+              <ng-container matColumnDef="ResponsibilitiesDetailsDescription">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.ResponsibilitiesDetailsDescription}}
+                </td>
+              </ng-container>
+
+              <!-- Header & Row Definitions -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsResponsibilities"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsResponsibilities"></tr>
+            </table>
+
+            <!-- No data message -->
+            <div *ngIf="RolesDetailsList.length === 0" class="p-3 text-center text-muted">
+              No Responsibilties details available.
+              <br />
+              (Select Grade, Designation and Division to view details)
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Activity Details Table -->
+      <div class="section-header">Activity Details</div>
+
+      <mat-card class="mt-3">
+        <mat-card-content>
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="ActivityDetailsList" class="w-100">
+              <!-- Sr No Column -->
+              <ng-container matColumnDef="SrNo">
+                <th mat-header-cell *matHeaderCellDef>Sr No</th>
+                <td mat-cell *matCellDef="let element">{{ element.SrNo }}</td>
+              </ng-container>
+
+              <!-- Description Column -->
+              <ng-container matColumnDef="ActivityDetailsDescription">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let element">{{ element.ActivityDetailsDescription}}</td>
+              </ng-container>
+
+              <!-- Header & Row Definitions -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsActivity"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsActivity"></tr>
+            </table>
+
+            <!-- No data message -->
+            <div *ngIf="ActivityDetailsList.length === 0" class="p-3 text-center text-muted">
+              No Activity details available.
+              <br />
+              (Select Grade, Designation and Division to view details)
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Authorities Details Table -->
+      <div class="section-header">Authorities Details</div>
+
+      <mat-card class="mt-3">
+        <mat-card-content>
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="AuthoritiesDetailsList" class="w-100">
+              <!-- Sr No Column -->
+              <ng-container matColumnDef="SrNo">
+                <th mat-header-cell *matHeaderCellDef>Sr No</th>
+                <td mat-cell *matCellDef="let element">{{ element.SrNo }}</td>
+              </ng-container>
+
+              <!-- Description Column -->
+              <ng-container matColumnDef="AuthoritiesDetailsDescription">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let element">
+                  {{ element.AuthoritiesDetailsDescription}}
+                </td>
+              </ng-container>
+
+              <!-- Header & Row Definitions -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsAuthorities"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsAuthorities"></tr>
+            </table>
+
+            <!-- No data message -->
+            <div *ngIf="AuthoritiesDetailsList.length === 0" class="p-3 text-center text-muted">
+              No Authorities details available.
+              <br />
+              (Select Grade, Designation and Division to view details)
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- KPA Details Table -->
+      <div class="section-header">KPA Details</div>
+
+      <mat-card class="mt-3">
+        <mat-card-content>
+          <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="KPADetailsList" class="w-100">
+              <!-- Sr No Column -->
+              <ng-container matColumnDef="SrNo">
+                <th mat-header-cell *matHeaderCellDef>Sr No</th>
+                <td mat-cell *matCellDef="let element">{{ element.SrNo }}</td>
+              </ng-container>
+
+              <!-- Description Column -->
+              <ng-container matColumnDef="KpadetailsDescription">
+                <th mat-header-cell *matHeaderCellDef>Description</th>
+                <td mat-cell *matCellDef="let element">{{ element.KpadetailsDescription}}</td>
+              </ng-container>
+
+              <!-- Marks Column -->
+              <ng-container matColumnDef="Marks">
+                <th mat-header-cell *matHeaderCellDef>Marks</th>
+                <td mat-cell *matCellDef="let element">{{ element.Marks}}</td>
+              </ng-container>
+
+              <!-- Header & Row Definitions -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumnsKPA"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumnsKPA"></tr>
+            </table>
+
+            <!-- No data message -->
+            <div *ngIf="KPADetailsList.length === 0" class="p-3 text-center text-muted">
+              No KPA details available.
+              <br />
+              (Select Grade, Designation and Division to view details)
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="container mt-3">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title style="font-size: 20px; font-weight: bold; color: #007bff">
+              Position Details
+            </mat-card-title>
+          </mat-card-header>
+
+          <mat-card-content>
+            <form>
+              <div class="table-container">
+                <table class="custom-table">
+                  <thead>
+                    <tr class="table-header">
+                      <th class="sr-no-column">Sr.No</th>
+                      <th class="round-column">Qualification</th>
+                      <th class="marks-column">SrNo</th>
+                      <th class="attribute-column">Description</th>
+                      <th class="action-column">Action</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <tr class="input-row">
+                      <td class="sr-no-cell"></td>
+
+                      <td class="round-cell">
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <mat-label>Qualification</mat-label>
+                          <mat-select [(ngModel)]="qual" name="qual">
+                            <mat-option
+                              *ngFor="let attr of QualificationList"
+                              [value]="attr.QualificationId"
+                            >
+                              {{ attr.QualificationName }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+
+                      <td class="marks-cell">
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <mat-label>SrNo</mat-label>
+                          <input
+                            matInput
+                            type="number"
+                            [(ngModel)]="srno"
+                            name="srno"
+                            placeholder="Enter SrNo"
+                          />
+                        </mat-form-field>
+                      </td>
+
+                      <td class="marks-cell">
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <mat-label>Enter description</mat-label>
+                          <input
+                            matInput
+                            [(ngModel)]="desc"
+                            name="desc"
+                            placeholder="Enter description"
+                          />
+                        </mat-form-field>
+                      </td>
+
+                      <td class="action-cell">
+                        <button
+                          mat-raised-button
+                          color="primary"
+                          (click)="addRow()"
+                          type="button"
+                          class="add-button"
+                        >
+                          <mat-icon>add</mat-icon>
+                          ADD
+                        </button>
+                      </td>
+                    </tr>
+
+                    <tr *ngFor="let description of description; let i = index">
+                      <td>{{ i + 1 }}</td>
+
+                      <!-- Qualification Dropdown -->
+                      <td>
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <mat-select [(ngModel)]="description.qual" name="qualification{{ i }}">
+                            <mat-option
+                              *ngFor="let qual of QualificationList"
+                              [value]="qual.QualificationId"
+                            >
+                              {{ qual.QualificationName }}
+                            </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </td>
+
+                      <!-- SRNO -->
+                      <td>
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <input
+                            matInput
+                            type="number"
+                            [(ngModel)]="description.srno"
+                            name="srno{{ i }}"
+                          />
+                        </mat-form-field>
+                      </td>
+
+                      <!-- Description -->
+                      <td>
+                        <mat-form-field appearance="outline" class="full-width-field">
+                          <mat-label>Enter description</mat-label>
+                          <input
+                            matInput
+                            [(ngModel)]="description.desc"
+                            name="description{{ i }}"
+                            placeholder="Enter description"
+                          />
+                        </mat-form-field>
+                      </td>
+
+                      <!-- Actions -->
+                      <td>
+                        <button
+                          mat-icon-button
+                          color="warn"
+                          (click)="deleteRow(i)"
+                          matTooltip="Delete"
+                        >
+                          <mat-icon>delete</mat-icon>
+                        </button>
+
+                        <button
+                          *ngIf="editIndex !== i"
+                          mat-icon-button
+                          color="accent"
+                          (click)="editRow(i)"
+                          matTooltip="Edit"
+                        >
+                          <mat-icon>edit</mat-icon>
+                        </button>
+
+                        <button
+                          *ngIf="editIndex === i"
+                          mat-icon-button
+                          color="primary"
+                          (click)="updateRow(i)"
+                          matTooltip="Save"
+                        >
+                          <mat-icon>save</mat-icon>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="col-sm-10 col-xl-10">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>Remark</mat-label>
+          <input matInput formControlName="PositionMasterRemark" placeholder="Enter Position Name" />
+        </mat-form-field>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <button
+              mat-flat-button
+              color="primary"
+              class="btn-primary px-4"
+              [disabled]="positionForm.invalid"
+              (click)="onSubmit()"
+            >
+              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+
+            <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
+              <mat-icon>close</mat-icon>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

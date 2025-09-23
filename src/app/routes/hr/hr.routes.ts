@@ -42,6 +42,7 @@ import { Leavetypemaster } from './leavetypemaster/leavetypemaster';
 import { Offerletter } from './offerletter/offerletter';
 import { Employeeleavebalances } from './employeeleavebalances/employeeleavebalances';
 import { Leaveapplications } from './leaveapplications/leaveapplications';
+import { Positionmaster } from './positionmaster/positionmaster';
 
 export const routes: Routes = [
   {
@@ -147,19 +148,19 @@ export const routes: Routes = [
   },
   {
     path: 'recruitmentstagestatusmaster',
-    component: Recruitmentstagestatusmaster
+    component: Recruitmentstagestatusmaster,
   },
   {
     path: 'activity',
-    component: Activitymaster
+    component: Activitymaster,
   },
   {
     path: 'kpa',
-    component: Kpamaster
+    component: Kpamaster,
   },
   {
     path: 'citymaster',
-    component: CitymasterComponent
+    component: CitymasterComponent,
   },
   {
     path: 'gradedesignationfacilityassignment',
@@ -167,35 +168,35 @@ export const routes: Routes = [
   },
   {
     path: 'recruitmentreferencemaster',
-    component: Recruitmentreferencemaster
+    component: Recruitmentreferencemaster,
   },
   {
     path: 'recruitmentmaster',
-    component: Recruitmentmaster
+    component: Recruitmentmaster,
   },
   {
     path: 'profitcenterbudget',
-    component: Profitcenterbudget
+    component: Profitcenterbudget,
   },
   {
     path: 'shiftmaster',
-    component: Shiftmaster
+    component: Shiftmaster,
   },
   {
     path: 'distictmaster',
-    component: Districtmaster
+    component: Districtmaster,
   },
   {
     path: 'workstationbudget',
-    component: Workstationbudget
+    component: Workstationbudget,
   },
   {
     path: 'leavetypemaster',
-    component: Leavetypemaster
+    component: Leavetypemaster,
   },
   {
     path: 'offerletter',
-    component: Offerletter
+    component: Offerletter,
   },
   {
     path: 'employeeleavebalances',
@@ -204,6 +205,14 @@ export const routes: Routes = [
   {
     path: 'leaveapplications',
     component:Leaveapplications
-  }
+  },
+  {
+    path: 'employeeleavebalances',
+    component: Employeeleavebalances,
+  },
+  {
+    path: 'positionmaster',
+    component: Positionmaster,
+  },
 
 ];
