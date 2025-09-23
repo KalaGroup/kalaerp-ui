@@ -190,6 +190,11 @@
           "route": "employeeleavebalances",
           "name": "employeeleavebalances",
           "type": "link"
+        },
+        {
+          "route": "positionmaster",
+          "name": "positionmaster",
+          "type": "link"
         }
       ]
     }
