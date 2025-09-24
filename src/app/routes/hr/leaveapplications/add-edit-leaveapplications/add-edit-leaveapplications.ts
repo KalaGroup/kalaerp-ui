@@ -52,6 +52,7 @@ export class AddEditLeaveapplications {
   FinancialYearList: any[] = [];
   LeaveBalancesTypeList: any;
   today: Date = new Date();
+  isDisabled: boolean = true;
 
   constructor(
     private http: HttpClient,
@@ -68,31 +69,28 @@ export class AddEditLeaveapplications {
     this.initializeForm();
   }
 
-
   private initializeForm(): void {
     const currentDate = new Date();
 
-this.leaveapplicationsForm = this.fb.group({
-  LeaveApplicationID: [0],
-  LeaveApplicationsEmployeeID: [null, Validators.required],
-  LeaveApplicationsLeaveTypeID: [null, Validators.required],
-  LeaveBalancesYear: [null, Validators.required],
-range: this.fb.group({
-    LeaveApplicationsFromDate: [null, [Validators.required, this.futureDateValidator()]],
-    LeaveApplicationsToDate: [null, [Validators.required, this.futureDateValidator()]],
-  }),
-  LeaveApplicationsLeaveCount: [null, Validators.required],
-  LeaveApplicationsRemark: [null, Validators.required],
-  LeaveApplicationsAuthRemark: ['NIL'],
-  LeaveApplicationsAuth: [{ value: true, disabled: !this.isEditMode }],
-  LeaveApplicationsIsActive: [{ value: true, disabled: !this.isEditMode }],
-  LeaveApplicationsIsDiscard: [{ value: false, disabled: !this.isEditMode }],
-  CreatedBy: [1],
-  CreatedDate: [currentDate],
-  UpdatedBy: [1],
-  UpdatedDate: [currentDate],
-});
-
+    this.leaveapplicationsForm = this.fb.group({
+      LeaveApplicationID: [0],
+      LeaveApplicationsEmployeeID: [null, Validators.required],
+      LeaveApplicationsLeaveTypeID: [null, Validators.required],
+      range: this.fb.group({
+        LeaveApplicationsFromDate: [null, [Validators.required, this.futureDateValidator()]],
+        LeaveApplicationsToDate: [null, [Validators.required, this.futureDateValidator()]],
+      }),
+      LeaveApplicationsLeaveCount: [null],
+      LeaveApplicationsRemark: [null, Validators.required],
+      LeaveApplicationsAuthRemark: ['NIL'],
+      LeaveApplicationsAuth: [{ value: true, disabled: !this.isEditMode }],
+      LeaveApplicationsIsActive: [{ value: true, disabled: !this.isEditMode }],
+      LeaveApplicationsIsDiscard: [{ value: false, disabled: !this.isEditMode }],
+      CreatedBy: [1],
+      CreatedDate: [currentDate],
+      UpdatedBy: [1],
+      UpdatedDate: [currentDate],
+    });
 
     if (this.isEditMode && this.data.employeeleavebalances) {
       this.leaveapplicationsForm.patchValue(this.data.employeeleavebalances);
@@ -105,19 +103,18 @@ range: this.fb.group({
     this.dialogRef.close();
   }
 
-
-   futureDateValidator(): ValidatorFn {
+  futureDateValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-    const value = control.value;
-    if (!value) return null;
+      const value = control.value;
+      if (!value) return null;
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
 
-    const selected = new Date(value);
-    selected.setHours(0, 0, 0, 0);
+      const selected = new Date(value);
+      selected.setHours(0, 0, 0, 0);
 
-    return selected < today ? { pastDate: true } : null;
-  };
-}
+      return selected < today ? { pastDate: true } : null;
+    };
+  }
 }
