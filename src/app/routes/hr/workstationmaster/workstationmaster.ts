@@ -256,7 +256,6 @@ export class Workstationmaster implements OnInit {
   }
 
   edit(record: any) {
-    debugger;
     this.dialog
       .open(AddEditWorkstation, {
         width: '80%',

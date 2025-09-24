@@ -17,6 +17,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
 import { AddEditEmployeeleavebalances } from './add-edit-employeeleavebalances/add-edit-employeeleavebalances';
+import { EmployeeLeaveBalanceservice } from '@shared/services/hr/employeeleavebalance/employeeleavebalanceservice';
+import { IEmployeeLeaveBalance } from '@shared/interfaces/hr/employeeleavebalance';
+import { Toastservice } from 'app/routes/toastservice';
 
 @Component({
   selector: 'app-employeeleavebalances',
@@ -63,12 +66,17 @@ export class Employeeleavebalances {
   list: any[] = [];
   isConfigExpanded: boolean = false;
   employeeleavebalancesForm: any;
+
   constructor(
+    private employeeleavebalanceService: EmployeeLeaveBalanceservice,
     private fb: FormBuilder,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private toastService: Toastservice
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadAllEmployeeLeaveBalance();
+  }
 
   toggleConfigSection(): void {
     this.isConfigExpanded = !this.isConfigExpanded;
@@ -82,49 +90,49 @@ export class Employeeleavebalances {
       width: '80px',
     },
     {
-      header: this.translate.stream('Employee'),
-      field: 'LeaveBalancesEmployeeId',
+      header: this.translate.stream('Employee Name'),
+      field: 'EmployeeMasterFullName',
       sortable: true,
       minWidth: 150,
     },
     {
-      header: this.translate.stream('Type'),
-      field: 'LeaveBalancesTypeId',
+      header: this.translate.stream('Leave Type'),
+      field: 'LeaveTypeMasterName',
       sortable: true,
       minWidth: 150,
     },
     {
-      header: this.translate.stream('Year'),
+      header: this.translate.stream('Leave Year'),
       field: 'LeaveBalancesYear',
       sortable: true,
       minWidth: 150,
     },
     {
-      header: this.translate.stream('Opening'),
+      header: this.translate.stream('Leave Opening'),
       field: 'LeaveBalancesOpening', // replace with lookup/display value
       sortable: true,
       minWidth: 150,
     },
     {
-      header: this.translate.stream('Credited'),
+      header: this.translate.stream('Leave Credited'),
       field: 'LeaveBalancesCredited',
       sortable: true,
       minWidth: 120,
     },
     {
-      header: this.translate.stream('Utilized'),
+      header: this.translate.stream('Leave Utilized'),
       field: 'LeaveBalancesUtilized',
       sortable: true,
       minWidth: 120,
     },
     {
-      header: this.translate.stream('Encashed'),
+      header: this.translate.stream('Leave Encashed'),
       field: 'LeaveBalancesEncashed',
       sortable: true,
       minWidth: 100,
     },
     {
-      header: this.translate.stream('Closing'),
+      header: this.translate.stream('Leave Closing'),
       field: 'LeaveBalancesClosing',
       sortable: true,
       minWidth: 100,
@@ -146,7 +154,6 @@ export class Employeeleavebalances {
       field: 'LeaveBalancesAuth',
       sortable: true,
       minWidth: 100,
-
     },
     {
       header: this.translate.stream('Discard'),
@@ -189,40 +196,133 @@ export class Employeeleavebalances {
     },
   ];
 
-  edit(record: AddEditEmployeeleavebalances) {
-    this.dialog.open(AddEditEmployeeleavebalances, {
-      width: '80%',
-      height: '70%',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
-      data: { employeeleavebalances: record },
+  loadAllEmployeeLeaveBalance() {
+    this.employeeleavebalanceService.getAllEmployeeLeaveBalance().subscribe({
+      next: data => {
+        this.list = data.map((item: any, index: number) => ({
+          ...item,
+          SNo: index + 1,
+        }));
+        console.log('Fetched LeaveBalance with S.No:', this.list);
+      },
+      error: err => {
+        console.error('Error fetching Leave Balance:', err);
+      },
     });
   }
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditEmployeeleavebalances, {
-      width: '60%',
-      height: '70%',
+      width: '70%',
+      height: '80%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {},
     });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Payload for adding Leave Balance:', result);
+        // Call the service to insert the Leave Balance
+        this.employeeleavebalanceService.insertEmployeeLeaveBalance(result).subscribe({
+          next: response => {
+            this.toastService.showSuccess('Leave Balance added successfully:', response);
+            this.loadAllEmployeeLeaveBalance();
+            alert(`Employee ID  "${result.LeaveBalancesEmployeeId}" added successfully!`);
+          },
+          error: err => {
+            if (err.status === 400 && err.error) {
+              // Validation errors from FluentValidation
+              err.error.forEach((validationErr: any) => {
+                const field = validationErr.PropertyName;
+                const message = validationErr.ErrorMessage;
+
+                // Mark field error in form
+                if (this.employeeleavebalancesForm.get(field)) {
+                  this.employeeleavebalancesForm.get(field)?.setErrors({ serverError: message });
+                }
+                // Optionally show toast
+                this.toastService.showError(message);
+              });
+            } else {
+              this.toastService.showError(
+                'Failed to add Leave Balance. Please verify Leave Balance details and try again.'
+              );
+            }
+          },
+        });
+      }
+    });
   }
 
-  delete(value: any) {}
+  edit(record: any) {
+    debugger;
+    this.dialog
+      .open(AddEditEmployeeleavebalances, {
+        width: '80%',
+        height: '70%',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        data: { employeeleavebalances: record },
+      })
+      .afterClosed()
+      .subscribe(result => {
+        if (result) {
+          debugger;
+          console.log('Leave Balance Updated:', result);
+          console.log('Update payload:', result);
+          this.employeeleavebalanceService.updateEmployeeLeaveBalance(result).subscribe({
+            next: response => {
+              this.toastService.showSuccess('Leave Balance updated successfully:', response);
+              alert(`Leave Balance "${result.LeaveBalancesEmployeeId}" updated successfully!`);
+              this.loadAllEmployeeLeaveBalance();
+            },
+            error: err => {
+              console.error('Error updating Leave Balance:', err);
+            },
+          });
+        }
+      });
+  }
+
+  closeDialog(): void {
+    this.dialogRef.close();
+  }
+
+  save(record: any): void {
+    console.log('Saving record:', record);
+    this.closeDialog();
+  }
+
+  delete(value: any) {
+    debugger;
+    this.employeeleavebalanceService.deleteEmployeeLeaveBalance(value.LeaveBalancesId).subscribe({
+      next: response => {
+        this.toastService.showSuccess('Leave Balance deleted successfully:', response);
+        alert(`You have deleted ${value.EmployeeMasterFullName} successfully!`);
+        this.loadAllEmployeeLeaveBalance();
+      },
+      error: err => {
+        console.error('Error deleting Leave Balance:', err);
+      },
+    });
+  }
 
   changeSelect(e: any) {
     console.log(e);
   }
+
   changeSort(e: any) {
     console.log(e);
   }
+
   updateCell() {
     this.list = this.list.map(item => {
       item.weight = Math.round(Math.random() * 1000) / 100;
       return item;
     });
   }
+
   updateList() {
     this.list = this.list.splice(-1).concat(this.list);
   }
