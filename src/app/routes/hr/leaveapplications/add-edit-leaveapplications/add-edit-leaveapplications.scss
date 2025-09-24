@@ -33,3 +33,30 @@ input[readonly] {
 .readonly-checkbox .mat-checkbox-inner-container {
   background-color: #f8f9fa;
 }
+
+.small-font {
+  font-size: 12px; // overall smaller
+}
+
+.small-font .mat-mdc-form-field-subscript-wrapper,
+.small-font .mat-mdc-hint,
+.small-font .mat-mdc-error {
+  font-size: 11px; // smaller for hint and errors
+}
+
+.small-font .mat-mdc-floating-label {
+  font-size: 12px; // label font size
+}
+
+.small-font input {
+  font-size: 12px; // input text smaller
+}
+@media (max-width: 768px) {
+  .hint,
+  .mat-mdc-error {
+    font-size: xx-small !important;  // make hint + error text smaller
+  }
+}
+mat-form-field {
+  margin-bottom: 0; // extra spacing so errors won’t overlap
+}
