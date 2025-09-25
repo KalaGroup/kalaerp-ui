@@ -17,10 +17,13 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
 import { AddEditLeaveapplications } from './add-edit-leaveapplications/add-edit-leaveapplications';
+import { Toastservice } from 'app/routes/toastservice';
+import { LeaveApplicationServices } from '@shared/services/hr/LeaveApplication/leaveapplication';
+import { ILeaveApplication } from '@shared/interfaces/hr/LeaveApplication';
 
 @Component({
   selector: 'app-leaveapplications',
-imports: [
+  imports: [
     CommonModule,
     MatTableModule,
     MatCardModule,
@@ -63,13 +66,18 @@ export class Leaveapplications {
   list: any[] = [];
   isConfigExpanded: boolean = false;
   employeeleavebalancesForm: any;
+  leaveapplicationsForm: any;
+
   constructor(
+
     private fb: FormBuilder,
-    private dialog: MatDialog
-  ) {}
+    private LeaveApplicationServices: LeaveApplicationServices,
+    private dialog: MatDialog,
+    private toastService: Toastservice
+  ) { }
 
   ngOnInit(): void {
-    
+    this.getAllLeaveApplication();
   }
 
   toggleConfigSection(): void {
@@ -85,13 +93,13 @@ export class Leaveapplications {
     },
     {
       header: this.translate.stream('Employee'),
-      field: 'LeaveApplicationsEmployeeID',
+      field: 'EmployeeMasterFullName',
       sortable: true,
       minWidth: 150,
     },
     {
       header: this.translate.stream('Type'),
-      field: 'LeaveApplicationsLeaveTypeID',
+      field: 'LeaveTypeMasterName',
       sortable: true,
       minWidth: 150,
     },
@@ -115,13 +123,13 @@ export class Leaveapplications {
     },
     {
       header: this.translate.stream('Auth Remark'),
-      field: 'LeaveBalancesAuthRemark',
+      field: 'LeaveApplicationsAuthRemark',
       sortable: true,
       minWidth: 100,
     },
     {
       header: this.translate.stream('Auth'),
-      field: 'LeaveApplicationsAuthRemark',
+      field: 'LeaveApplicationsAuth',
       sortable: true,
       minWidth: 100,
 
@@ -167,27 +175,177 @@ export class Leaveapplications {
     },
   ];
 
-  edit(record: AddEditLeaveapplications) {
-    this.dialog.open(AddEditLeaveapplications, {
+  getAllLeaveApplication() {
+
+    this.LeaveApplicationServices.getAllLeaveApplication().subscribe({
+      next: (data) => {
+        this.list = data.map((item: any, index: number) => ({
+          ...item,
+          SNo: index + 1
+        }));
+      },
+      error: (err) => {
+        console.error('Error fetching budget:', err);
+      }
+    });
+
+  }
+
+  edit(record: ILeaveApplication) {
+    debugger
+    // Ensure Angular Material datepickers receive Date objects
+    const dialogRef = this.dialog.open(AddEditLeaveapplications, {
+
       width: '80%',
       height: '70%',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: { employeeleavebalances: record },
+      data: {
+
+        leaveApplication: {
+          ...record,
+          LeaveApplicationsFromDate: record.LeaveApplicationsFromDate ? new Date(record.LeaveApplicationsFromDate) : null,
+          LeaveApplicationsToDate: record.LeaveApplicationsToDate ? new Date(record.LeaveApplicationsToDate) : null
+        }
+      }
+    });
+    debugger
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) {
+        console.log('Leave Application update canceled.');
+        return;
+      }
+
+      const fromDate = result.LeaveApplicationsFromDate
+        ? new Date(result.LeaveApplicationsFromDate).toISOString().split('T')[0]
+        : '';
+      const toDate = result.LeaveApplicationsToDate
+        ? new Date(result.LeaveApplicationsToDate).toISOString().split('T')[0]
+        : '';
+
+      // Calculate leave count here instead of relying on result
+      let leaveCount = 0;
+      if (fromDate && toDate) {
+        const from = new Date(fromDate);
+        const to = new Date(toDate);
+        leaveCount = Math.floor((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+      }
+
+      // Prepare the payload
+      const updatePayload: ILeaveApplication = {
+        LeaveApplicationId: record.LeaveApplicationId,
+        LeaveApplicationsEmployeeId: result.LeaveApplicationsEmployeeId,
+        LeaveApplicationsLeaveTypeId: result.LeaveApplicationsLeaveTypeId,
+        LeaveApplicationsFromDate: fromDate,
+        LeaveApplicationsToDate: toDate,
+        LeaveApplicationsLeaveCount: result.LeaveApplicationsLeaveCount || leaveCount,
+        LeaveBalancesClosing: result.LeaveBalancesClosing,
+        LeaveApplicationsRemark: result.LeaveApplicationsRemark,
+        LeaveApplicationsAuthRemark: result.LeaveApplicationsAuthRemark,
+        LeaveApplicationsAuth: result.LeaveApplicationsAuth ?? true,
+        LeaveApplicationsIsDiscard: result.LeaveApplicationsIsDiscard ?? false,
+        LeaveApplicationsIsActive: result.LeaveApplicationsIsActive ?? true,
+        CreatedBy: record.CreatedBy ?? 3,   // Preserve original created info
+        CreatedDate: record.CreatedDate ?? new Date(),
+        UpdatedBy: record.UpdatedBy ?? 3,
+        UpdatedDate: new Date()
+      };
+
+      console.log('Update payload (LeaveApplication):', updatePayload);
+
+      // Call the backend API
+      this.LeaveApplicationServices.updateLeaveApplication(updatePayload).subscribe({
+        next: () => {
+          this.toastService.showSuccess("Leave Application updated successfully");
+          this.getAllLeaveApplication();
+        },
+        error: (err) => {
+          console.error('Error updating Leave Application:', err);
+          this.toastService.showError("Error updating Leave Application");
+        }
+      });
     });
   }
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditLeaveapplications, {
       width: '60%',
-      height: '70%',
+      height: '60%',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: {},
+      data: {} // empty for add
+    });
+    debugger
+    dialogRef.afterClosed().subscribe(result => {
+      if (!result) return; // user cancelled
+
+      const fromDate = result.LeaveApplicationsFromDate
+        ? new Date(result.LeaveApplicationsFromDate).toISOString().split('T')[0]
+        : '';
+      const toDate = result.LeaveApplicationsToDate
+        ? new Date(result.LeaveApplicationsToDate).toISOString().split('T')[0]
+        : '';
+
+      // Calculate leave count here instead of relying on result
+      let leaveCount = 0;
+      if (fromDate && toDate) {
+        const from = new Date(fromDate);
+        const to = new Date(toDate);
+        leaveCount = Math.floor((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24)) + 1;
+      }
+      console.log('Dialog result:', result);
+      debugger
+      const payload: ILeaveApplication = {
+        LeaveApplicationId: 0,
+        LeaveApplicationsEmployeeId: result.LeaveApplicationsEmployeeId,
+        LeaveApplicationsLeaveTypeId: result.LeaveApplicationsLeaveTypeId,
+        LeaveApplicationsFromDate: fromDate,
+        LeaveApplicationsToDate: toDate,
+        LeaveApplicationsLeaveCount: leaveCount,
+        LeaveApplicationsRemark: result.LeaveApplicationsRemark,
+        LeaveApplicationsAuthRemark: result.LeaveApplicationsAuthRemark,
+        LeaveApplicationsAuth: result.LeaveApplicationsAuth ?? true,
+        LeaveApplicationsIsDiscard: result.LeaveApplicationsIsDiscard ?? false,
+        LeaveApplicationsIsActive: result.LeaveApplicationsIsActive ?? true,
+        LeaveBalancesClosing: result.LeaveBalancesClosing,
+        CreatedBy: 3,
+        CreatedDate: new Date(),
+        UpdatedBy: 3,
+        UpdatedDate: new Date()
+      };
+
+      this.LeaveApplicationServices.insertLeaveApplication(payload).subscribe({
+        next: () => {
+          this.toastService.showSuccess('Leave application added successfully');
+          this.getAllLeaveApplication();
+        },
+        error: (err) => {
+          console.error('Error adding Leave application:', err);
+          this.toastService.showError('Failed to add leave application. Check inputs.');
+        }
+      });
     });
   }
 
-  delete(value: any) {}
+
+
+
+
+  delete(value: any) {
+    debugger
+    this.LeaveApplicationServices.deleteLeaveApplication(value.LeaveApplicationId).subscribe({
+      next: (response) => {
+        console.log('Delete success:', response);
+        alert(`Leave Application deleted successfully!`);
+        this.toastService.showSuccess("Leave Application delete successfully");
+        this.getAllLeaveApplication();
+      },
+      error: (err) => {
+        console.error('Error deleting Petrol:', err);
+      }
+    });
+  }
+
 
   changeSelect(e: any) {
     console.log(e);
