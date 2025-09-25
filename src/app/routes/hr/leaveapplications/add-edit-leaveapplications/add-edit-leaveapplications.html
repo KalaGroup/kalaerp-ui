@@ -22,16 +22,13 @@
         <div class="col-12 col-md-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Employee Name</mat-label>
-            <mat-select
-              formControlName="LeaveApplicationsEmployeeID"
-              placeholder="Select Employee"
-              required
-            >
-              <mat-option *ngFor="let emp of EmployeeList" [value]="emp.LeaveApplicationsEmployeeID">
-                {{ emp.EmployeeName }}
+            <mat-select formControlName="LeaveApplicationsEmployeeId" placeholder="Select Employee" required>
+              <mat-option *ngFor="let emp of EmployeeList" [value]="emp.EmployeeMasterId">
+                {{ emp.EmployeeMasterFullName }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="leaveapplicationsForm.get('LeaveApplicationsEmployeeID')?.invalid && leaveapplicationsForm.get('LeaveApplicationsEmployeeID')?.touched">
+            <mat-error
+              *ngIf="leaveapplicationsForm.get('LeaveApplicationsEmployeeId')?.invalid && leaveapplicationsForm.get('LeaveApplicationsEmployeeId')?.touched">
               Employee is required
             </mat-error>
           </mat-form-field>
@@ -40,19 +37,22 @@
         <div class="col-12 col-md-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Employee Code</mat-label>
-            <input matInput placeholder="Employee Code" readonly="true" />
+            <input matInput placeholder="Employee Code" formControlName="EmployeeMasterCode" readonly />
           </mat-form-field>
         </div>
 
+
+
         <div class="col-12 col-md-4">
           <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Type</mat-label>
-            <mat-select formControlName="LeaveApplicationsLeaveTypeID" placeholder="Select Type">
-              <mat-option *ngFor="let ws of LeaveBalancesTypeList" [value]="ws.LeaveApplicationsLeaveTypeID">
-                {{ ws.TypeName }}
+            <mat-label>Leave Type</mat-label>
+            <mat-select formControlName="LeaveApplicationsLeaveTypeId" placeholder="Select Type">
+              <mat-option *ngFor="let ws of LeaveTypeList" [value]="ws.LeaveTypeMasterId">
+                {{ ws.LeaveTypeMasterName }}
               </mat-option>
             </mat-select>
-            <mat-error *ngIf="leaveapplicationsForm.get('LeaveApplicationsLeaveTypeID')?.invalid && leaveapplicationsForm.get('LeaveApplicationsLeaveTypeID')?.touched">
+            <mat-error
+              *ngIf="leaveapplicationsForm.get('LeaveApplicationsLeaveTypeId')?.invalid && leaveapplicationsForm.get('LeaveApplicationsLeaveTypeID')?.touched">
               Type is required
             </mat-error>
           </mat-form-field>
@@ -63,8 +63,8 @@
       <div class="row mb-3">
         <div class="col-12 col-md-4">
           <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Balance</mat-label>
-            <input matInput placeholder="Leave Balance" readonly="true" />
+            <mat-label>Leave Balance</mat-label>
+            <input matInput placeholder="Leave Balance" readonly="true" formControlName="LeaveBalancesClosing" />
           </mat-form-field>
         </div>
 
@@ -72,11 +72,7 @@
           <mat-form-field class="small-font" subscriptSizing="dynamic">
             <mat-label>Enter a Leave date</mat-label>
             <mat-date-range-input [formGroupName]="'range'" [rangePicker]="picker">
-              <input
-                matStartDate
-                formControlName="LeaveApplicationsFromDate"
-                placeholder="Start date"
-              />
+              <input matStartDate formControlName="LeaveApplicationsFromDate" placeholder="Start date" />
               <input matEndDate formControlName="LeaveApplicationsToDate" placeholder="End date" />
             </mat-date-range-input>
             <mat-hint class="hint">YYYY/MM/DD – YYYY/MM/DD</mat-hint>
@@ -97,18 +93,24 @@
         <div class="col-12 col-md-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Leave Count</mat-label>
-            <input matInput  formControlName="LeaveApplicationsLeaveCount" placeholder="Enter Leave Count" readonly="true"/>
+            <input matInput formControlName="LeaveApplicationsLeaveCount" placeholder="Enter Leave Count"
+              readonly="true" />
+            <mat-error *ngIf="leaveapplicationsForm.get('LeaveApplicationsLeaveCount')?.hasError('exceedBalance')">
+              Leave count exceeds available balance of {{
+              leaveapplicationsForm.get('LeaveApplicationsLeaveCount')?.getError('exceedBalance').balance }} days
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
-<br>
+      <br>
       <!-- Row 3: Reason | Auth Reason -->
       <div class="row mb-3">
         <div class="col-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Reason</mat-label>
             <textarea matInput formControlName="LeaveApplicationsRemark" placeholder="Enter Reason"></textarea>
-                        <mat-error *ngIf="leaveapplicationsForm.get('LeaveApplicationsRemark')?.invalid && leaveapplicationsForm.get('LeaveApplicationsRemark')?.touched">
+            <mat-error
+              *ngIf="leaveapplicationsForm.get('LeaveApplicationsRemark')?.invalid && leaveapplicationsForm.get('LeaveApplicationsRemark')?.touched">
               Reason is required
             </mat-error>
           </mat-form-field>
@@ -117,7 +119,8 @@
         <div class="col-12 col-md-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Auth Remark</mat-label>
-            <textarea matInput formControlName="LeaveApplicationsAuthRemark" placeholder="Authorization Remark" readonly="true" ></textarea>
+            <textarea matInput formControlName="LeaveApplicationsAuthRemark" placeholder="Authorization Remark"
+              readonly="true"></textarea>
           </mat-form-field>
         </div>
       </div>
@@ -125,12 +128,7 @@
       <!-- Action Buttons -->
       <div class="row">
         <div class="col-12 text-center mt-4">
-          <button
-            mat-flat-button
-            color="primary"
-            [disabled]="leaveapplicationsForm.invalid"
-            (click)="onSubmit()"
-          >
+          <button mat-flat-button color="primary" [disabled]="leaveapplicationsForm.invalid" (click)="onSubmit()">
             <mat-icon class="me-1">{{ isEditMode ? 'update' : 'save' }}</mat-icon>
             {{ isEditMode ? 'Update' : 'Save' }}
           </button>
