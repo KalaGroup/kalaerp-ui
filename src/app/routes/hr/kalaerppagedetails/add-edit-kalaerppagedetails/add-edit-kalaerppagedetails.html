@@ -1,0 +1,154 @@
+<mat-card>
+  <mat-card-title>{{ isEditMode ? 'Edit ERPPageDetails' : 'Add ERPPageDetails' }}</mat-card-title>
+
+  <mat-card-content>
+    <form [formGroup]="erppagedetailsForm" class="form-field-full">
+      <!-- Active / Discard -->
+      <div class="d-flex align-items-center justify-content-end gap-3" style="height: 56px">
+        <mat-checkbox
+          formControlName="KalaErppageDetailsAuth"
+          color="primary"
+          [disabled]="!isEditMode"
+        >
+          Auth
+        </mat-checkbox>
+        <mat-checkbox
+          formControlName="KalaErppageDetailsIsActive"
+          color="primary"
+          [disabled]="!isEditMode"
+        >
+          Active
+        </mat-checkbox>
+        <mat-checkbox
+          formControlName="KalaErppageDetailsIsDiscard"
+          color="primary"
+          [disabled]="!isEditMode"
+        >
+          Discard
+        </mat-checkbox>
+      </div>
+
+      <!-- ================= Row 1 : Division + Page Title ================= -->
+      <div class="row mb-3">
+        <div class="col-sm-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Division</mat-label>
+            <mat-select
+              formControlName="KalaErppageDetailsDivisionId"
+              placeholder="Select Division"
+            >
+              <mat-option>
+                <input
+                  matInput
+                  placeholder="Search Division..."
+                  [formControl]="divisionSearchControl"
+                  (click)="$event.stopPropagation()"
+                />
+              </mat-option>
+              <mat-option value="">Select Division</mat-option>
+              @for (division of filtereddivisionList; track division.DivisionId) {
+              <mat-option [value]="division.DivisionId">{{ division.DivisionName }}</mat-option>
+              }
+            </mat-select>
+            @if (erppagedetailsForm.get('KalaErppageDetailsDivisionId')?.invalid &&
+            erppagedetailsForm.get('KalaErppageDetailsDivisionId')?.touched) {
+            <mat-error>Division is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Page Title</mat-label>
+            <input matInput formControlName="PageTittle" placeholder="Enter Page Title" />
+            @if (erppagedetailsForm.get('PageTittle')?.invalid &&
+            erppagedetailsForm.get('PageTittle')?.touched) {
+            <mat-error>Page Title is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- ================= Row 2 : Page URL ================= -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Page URL</mat-label>
+            <input matInput formControlName="PageUrl" placeholder="Enter Page URL" />
+            @if (erppagedetailsForm.get('PageUrl')?.invalid &&
+            erppagedetailsForm.get('PageUrl')?.touched) {
+            <mat-error>Page URL is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- ================= Row 3 : Page Type + ISO Number ================= -->
+      <div class="row mb-3">
+        <div class="col-sm-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Page Type</mat-label>
+            <mat-select formControlName="PageType" placeholder="Select Page Type">
+              <mat-option value="">Select Page Type</mat-option>
+              @for (type of pageTypeList; track type.id) {
+              <mat-option [value]="type.id">{{ type.name }}</mat-option>
+              }
+            </mat-select>
+            @if (erppagedetailsForm.get('PageType')?.invalid &&
+            erppagedetailsForm.get('PageType')?.touched) {
+            <mat-error>Page Type is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-6">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>ISO Number</mat-label>
+            <input matInput formControlName="PageIsonumber" placeholder="Enter ISO Number" />
+            @if (erppagedetailsForm.get('PageIsonumber')?.invalid &&
+            erppagedetailsForm.get('PageIsonumber')?.touched) {
+            <mat-error>ISO Number is required</mat-error>
+            }
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- ================= Row 4 : Remark ================= -->
+      <div class="row mb-3">
+        <div class="col-12">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>Remark</mat-label>
+            <textarea
+              matInput
+              rows="3"
+              formControlName="KalaErppageDetailsRemark"
+              placeholder="Enter remark..."
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <button
+              mat-flat-button
+              color="primary"
+              class="btn-primary px-4"
+              [disabled]="erppagedetailsForm.invalid"
+              (click)="onSubmit()"
+            >
+              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+            <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
+              <mat-icon>close</mat-icon>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

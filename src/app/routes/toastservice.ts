@@ -5,6 +5,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root'
 })
 export class Toastservice {
+  showInfo(arg0: string) {
+    throw new Error('Method not implemented.');
+  }
     constructor(private snackBar: MatSnackBar) {}
 
   showSuccess(message: string, duration: number = 3000): void {

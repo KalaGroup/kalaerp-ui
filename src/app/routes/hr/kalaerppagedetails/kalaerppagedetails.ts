@@ -16,39 +16,42 @@ import { MtxDialog } from '@ng-matero/extensions/dialog';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
-import { AddEditEmployeeleavebalances } from './add-edit-employeeleavebalances/add-edit-employeeleavebalances';
-import { EmployeeLeaveBalanceservice } from '@shared/services/hr/employeeleavebalance/employeeleavebalanceservice';
-import { IEmployeeLeaveBalance } from '@shared/interfaces/hr/employeeleavebalance';
 import { Toastservice } from 'app/routes/toastservice';
+import { IKalaErpPageDetails } from '@shared/interfaces/hr/kalaerppagedetails';
+import { KalaErpPageDetailsservice } from '@shared/services/hr/KalaERPPageDetails/kalaerppagedetailsservice';
+import { AddEditKalaerppagedetails } from './add-edit-kalaerppagedetails/add-edit-kalaerppagedetails';
 
 @Component({
-  selector: 'app-employeeleavebalances',
+  selector: 'app-kalaerppagedetails',
   imports: [
     CommonModule,
     MatTableModule,
     MatCardModule,
-    MatDividerModule,
     MatButtonModule,
     MatIconModule,
-    ReactiveFormsModule,
-    FormsModule,
+    MatDividerModule,
     MatFormFieldModule,
     MatCheckboxModule,
+    ReactiveFormsModule,
+    FormsModule,
     MatRadioModule,
     MtxGridModule,
     PageHeader,
     MatDialogModule,
   ],
-  templateUrl: './employeeleavebalances.html',
-  styleUrl: './employeeleavebalances.scss',
+  templateUrl: './kalaerppagedetails.html',
+  styleUrl: './kalaerppagedetails.scss',
 })
-export class Employeeleavebalances {
+export class Kalaerppagedetails {
   private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
+
+  ERPPageDetails: IKalaErpPageDetails[] = [];
   showForm = false;
-  employeeleavebalancesModel: any = {};
+  stateModel: any = {};
   editIndex: number | null = null;
+
   multiSelectable = true;
   rowSelectable = true;
   hideRowSelectionCheckbox = false;
@@ -65,111 +68,93 @@ export class Employeeleavebalances {
   isLoading = false;
   list: any[] = [];
   isConfigExpanded: boolean = false;
-  employeeleavebalancesForm: any;
+  erppagedetailsForm: any;
 
   constructor(
-    private employeeleavebalanceService: EmployeeLeaveBalanceservice,
     private fb: FormBuilder,
+    private kalaerppagedetailsService: KalaErpPageDetailsservice,
     private dialog: MatDialog,
     private toastService: Toastservice
   ) {}
-
   ngOnInit(): void {
-    this.loadAllEmployeeLeaveBalance();
+    this.loadAllERPPageDetails();
   }
 
   toggleConfigSection(): void {
     this.isConfigExpanded = !this.isConfigExpanded;
   }
 
-  columns: MtxGridColumn[] = [
+  cityColumns: MtxGridColumn[] = [
     {
       header: this.translate.stream('SNo'),
       field: 'SNo',
       sortable: true,
+      minWidth: 80,
       width: '80px',
     },
     {
-      header: this.translate.stream('Employee Name'),
-      field: 'EmployeeMasterFullName',
-      sortable: true,
-      minWidth: 150,
-    },
-    {
-      header: this.translate.stream('Leave Type'),
-      field: 'LeaveTypeMasterName',
-      sortable: true,
-      minWidth: 150,
-    },
-    {
-      header: this.translate.stream('Leave Year'),
-      field: 'LeaveBalancesYear',
-      sortable: true,
-      minWidth: 150,
-    },
-    {
-      header: this.translate.stream('Leave Opening'),
-      field: 'LeaveBalancesOpening', // replace with lookup/display value
-      sortable: true,
-      minWidth: 150,
-    },
-    {
-      header: this.translate.stream('Leave Credited'),
-      field: 'LeaveBalancesCredited',
+      header: this.translate.stream('Division Name'),
+      field: 'DivisionName',
       sortable: true,
       minWidth: 120,
+      width: '200px',
     },
     {
-      header: this.translate.stream('Leave Utilized'),
-      field: 'LeaveBalancesUtilized',
+      header: this.translate.stream('Page Tittle'),
+      field: 'PageTittle',
       sortable: true,
-      minWidth: 120,
+      minWidth: 150,
+      width: '200px',
     },
+
     {
-      header: this.translate.stream('Leave Encashed'),
-      field: 'LeaveBalancesEncashed',
+      header: this.translate.stream('Page Url'),
+      field: 'PageUrl',
       sortable: true,
-      minWidth: 100,
+      minWidth: 150,
+      width: '240px',
     },
+
     {
-      header: this.translate.stream('Leave Closing'),
-      field: 'LeaveBalancesClosing',
+      header: this.translate.stream('Page Type'),
+      field: 'PageType',
       sortable: true,
-      minWidth: 100,
+      minWidth: 150,
+      width: '280px',
+    },
+
+    {
+      header: this.translate.stream('Page ISO Number'),
+      field: 'PageIsonumber',
+      sortable: true,
+      minWidth: 150,
+      width: '120px',
     },
     {
       header: this.translate.stream('Remark'),
-      field: 'LeaveBalancesRemark',
+      field: 'KalaErppageDetailsRemark',
       sortable: true,
-      minWidth: 100,
+      minWidth: 140,
+      width: '180px',
     },
-    {
+        {
       header: this.translate.stream('Auth Remark'),
-      field: 'LeaveBalancesAuthRemark',
+      field: 'KalaErppageDetailsAuthRemark',
       sortable: true,
-      minWidth: 100,
+      minWidth: 140,
+      width: '180px',
     },
     {
       header: this.translate.stream('Auth'),
-      field: 'LeaveBalancesAuth',
+      field: 'KalaErppageDetailsAuth',
       sortable: true,
       minWidth: 100,
-    },
-    {
-      header: this.translate.stream('Discard'),
-      field: 'LeaveBalancesIsDiscard',
-      sortable: true,
-      minWidth: 100,
-    },
-    {
-      header: this.translate.stream('Active'),
-      field: 'LeaveBalancesIsActive',
-      sortable: true,
-      minWidth: 100,
+      width: '150px',
     },
     {
       header: this.translate.stream('Action'),
       field: 'action',
+      minWidth: 140,
       width: '140px',
       pinned: 'right',
       type: 'button',
@@ -190,29 +175,30 @@ export class Employeeleavebalances {
             closeText: this.translate.stream('close'),
             okText: this.translate.stream('ok'),
           },
-          click: (record: any) => this.delete(record),
+          click: record => this.delete(record),
         },
       ],
     },
   ];
 
-  loadAllEmployeeLeaveBalance() {
-    this.employeeleavebalanceService.getAllEmployeeLeaveBalance().subscribe({
+  loadAllERPPageDetails() {
+    debugger;
+    this.kalaerppagedetailsService.getAllERPPageDetails().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
           ...item,
           SNo: index + 1,
         }));
-        console.log('Fetched LeaveBalance with S.No:', this.list);
+        console.log('Fetched ERP Page Details with S.No:', this.list);
       },
       error: err => {
-        console.error('Error fetching Leave Balance:', err);
+        console.error('Error fetching ERP Page Detail:', err);
       },
     });
   }
 
   openAddDialog() {
-    const dialogRef = this.dialog.open(AddEditEmployeeleavebalances, {
+    const dialogRef = this.dialog.open(AddEditKalaerppagedetails, {
       width: '70%',
       height: '80%',
       maxWidth: '100vw',
@@ -222,13 +208,15 @@ export class Employeeleavebalances {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Payload for adding Leave Balance:', result);
-        // Call the service to insert the Leave Balance
-        this.employeeleavebalanceService.insertEmployeeLeaveBalance(result).subscribe({
+        debugger;
+        console.log('Added City:', result);
+        console.log('Payload for adding ERP Page Detail:', result);
+        // Call the service to insert the ERP Page Detail
+        this.kalaerppagedetailsService.insertERPPageDetails(result).subscribe({
           next: response => {
-            this.toastService.showSuccess('Leave Balance added successfully:', response);
-            this.loadAllEmployeeLeaveBalance();
-            alert(`Employee ID  "${result.LeaveBalancesEmployeeId}" added successfully!`);
+            this.toastService.showSuccess('ERP Page Detail added successfully:', response);
+            this.loadAllERPPageDetails();
+            alert(`ERP Page Detail "${result.PageTittle}" added successfully!`);
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -238,15 +226,15 @@ export class Employeeleavebalances {
                 const message = validationErr.ErrorMessage;
 
                 // Mark field error in form
-                if (this.employeeleavebalancesForm.get(field)) {
-                  this.employeeleavebalancesForm.get(field)?.setErrors({ serverError: message });
+                if (this.erppagedetailsForm.get(field)) {
+                  this.erppagedetailsForm.get(field)?.setErrors({ serverError: message });
                 }
                 // Optionally show toast
                 this.toastService.showError(message);
               });
             } else {
               this.toastService.showError(
-                'Failed to add Leave Balance. Please verify Leave Balance details and try again.'
+                'Failed to add ERP Page Details. Please verify ERP Page Details details and try again.'
               );
             }
           },
@@ -256,29 +244,28 @@ export class Employeeleavebalances {
   }
 
   edit(record: any) {
-    debugger;
     this.dialog
-      .open(AddEditEmployeeleavebalances, {
+      .open(AddEditKalaerppagedetails, {
         width: '80%',
         height: '70%',
         maxWidth: '100vw',
         maxHeight: '100vh',
-        data: { employeeleavebalances: record },
+        data: { kalaerppagedetails: record },
       })
       .afterClosed()
       .subscribe(result => {
         if (result) {
           debugger;
-          console.log('Leave Balance Updated:', result);
+          console.log('ERP Page Detail Updated:', result);
           console.log('Update payload:', result);
-          this.employeeleavebalanceService.updateEmployeeLeaveBalance(result).subscribe({
+          this.kalaerppagedetailsService.updateERPPageDetails(result).subscribe({
             next: response => {
-              this.toastService.showSuccess('Leave Balance updated successfully:', response);
-              alert(`Leave Balance "${result.LeaveBalancesEmployeeId}" updated successfully!`);
-              this.loadAllEmployeeLeaveBalance();
+              this.toastService.showSuccess('ERP Page Detail updated successfully:', response);
+              alert(`ERP Page Detail "${result.PageTittle}" updated successfully!`);
+              this.loadAllERPPageDetails();
             },
             error: err => {
-              console.error('Error updating Leave Balance:', err);
+              console.error('Error updating ERP Page Details:', err);
             },
           });
         }
@@ -296,14 +283,14 @@ export class Employeeleavebalances {
 
   delete(value: any) {
     debugger;
-    this.employeeleavebalanceService.deleteEmployeeLeaveBalance(value.LeaveBalancesId).subscribe({
+    this.kalaerppagedetailsService.deleteERPPageDetails(value.KalaErppageDetailsId).subscribe({
       next: response => {
-        this.toastService.showSuccess('Leave Balance deleted successfully:', response);
-        alert(`You have deleted ${value.EmployeeMasterFullName} successfully!`);
-        this.loadAllEmployeeLeaveBalance();
+        this.toastService.showSuccess('ERP Page Details deleted successfully:', response);
+        alert(`You have deleted ${value.PageTittle} successfully!`);
+        this.loadAllERPPageDetails();
       },
       error: err => {
-        console.error('Error deleting Leave Balance:', err);
+        console.error('Error deleting ERP Page Details:', err);
       },
     });
   }
