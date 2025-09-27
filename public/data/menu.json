@@ -200,6 +200,11 @@
           "route": "positionmaster",
           "name": "positionmaster",
           "type": "link"
+        },
+        {
+          "route": "kalaerppagedetails",
+          "name": "kalaerppagedetails",
+          "type": "link"  
         }
       ]
     }
