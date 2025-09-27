@@ -43,6 +43,7 @@ import { Offerletter } from './offerletter/offerletter';
 import { Employeeleavebalances } from './employeeleavebalances/employeeleavebalances';
 import { Leaveapplications } from './leaveapplications/leaveapplications';
 import { Positionmaster } from './positionmaster/positionmaster';
+import { Departmentbudget } from './departmentbudget/departmentbudget';
 
 export const routes: Routes = [
   {
@@ -214,5 +215,9 @@ export const routes: Routes = [
     path: 'positionmaster',
     component: Positionmaster,
   },
+  {
+    path: 'departmentbudget',
+    component: Departmentbudget
+  }
 
 ];
