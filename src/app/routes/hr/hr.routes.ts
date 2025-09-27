@@ -44,6 +44,7 @@ import { Employeeleavebalances } from './employeeleavebalances/employeeleavebala
 import { Leaveapplications } from './leaveapplications/leaveapplications';
 import { Positionmaster } from './positionmaster/positionmaster';
 import { Dailyattendance } from './dailyattendance/dailyattendance';
+import { Kalaerppagedetails } from './kalaerppagedetails/kalaerppagedetails';
 
 export const routes: Routes = [
   {
@@ -219,5 +220,8 @@ export const routes: Routes = [
     path: 'dailyattendance',
     component: Dailyattendance,
   },
-
+  {
+    path: 'kalaerppagedetails',
+    component: Kalaerppagedetails,
+  }
 ];
