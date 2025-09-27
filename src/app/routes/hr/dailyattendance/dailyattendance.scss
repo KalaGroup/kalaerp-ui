@@ -1,0 +1,199 @@
+/* Grid Configuration Styling */
+.rounded-3 {
+    border-radius: 1rem !important;
+}
+
+.bg-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.config-header:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
+    transform: translateY(-1px);
+    transition: all 0.3s ease;
+}
+
+.settings-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.settings-icon {
+    font-size: 24px !important;
+    animation: rotate-settings 8s linear infinite;
+}
+
+@keyframes rotate-settings {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.config-header:hover .settings-icon {
+    animation-duration: 2s;
+}
+
+.toggle-wrapper {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.toggle-wrapper:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+}
+
+.toggle-arrow {
+    font-size: 28px !important;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rotate-180 {
+    transform: rotate(180deg);
+}
+
+.transition-transform {
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.text-white-50 {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+/* Option sections styling */
+.option-section {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f2ff 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+    transition: all 0.3s ease;
+}
+
+.option-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
+    border-color: rgba(102, 126, 234, 0.2);
+}
+
+.option-section:last-child {
+    margin-bottom: 0;
+}
+
+.custom-checkbox,
+.custom-radio {
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.custom-checkbox:hover,
+.custom-radio:hover {
+    transform: translateX(4px);
+}
+
+/* Card shadow enhancement */
+.shadow-lg {
+    box-shadow: 0 10px 40px rgba(102, 126, 234, 0.2) !important;
+}
+
+/* Smooth content animation */
+.config-content {
+    animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Enhanced section icons */
+.option-section .mat-icon {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Action Buttons Styling */
+.action-btn {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+    border: 1px solid #dee2e6 !important;
+    color: #495057 !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+    font-weight: 500 !important;
+    text-transform: none !important;
+    padding: 8px 16px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.action-btn:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border-color: #adb5bd !important;
+}
+
+.primary-btn {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    transition: all 0.3s ease !important;
+    font-weight: 450 !important;
+    text-transform: none !important;
+    padding: 8px 20px !important;
+    box-shadow: 0 3px 8px rgba(0, 123, 255, 0.3) !important;
+}
+
+.primary-btn:hover {
+    background: linear-gradient(135deg, #0056b3 0%, #004085 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4) !important;
+}
+
+.small-input {
+    width: 100px;
+    /* adjust as needed */
+    font-size: 12px;
+    /* optional: smaller text */
+    padding: 4px 8px;
+    /* optional: smaller padding */
+}
+
+.Small-input {
+    width: 150px;
+    /* adjust as needed */
+    font-size: 12px;
+    /* optional: smaller text */
+    padding: 4px 8px;
+    /* optional: smaller padding */
+}

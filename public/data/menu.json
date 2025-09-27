@@ -202,6 +202,11 @@
           "type": "link"
         },
         {
+          "route": "dailyattendance",
+          "name": "dailyattendance",
+          "type": "link"
+        },
+        {
           "route": "kalaerppagedetails",
           "name": "kalaerppagedetails",
           "type": "link"  
