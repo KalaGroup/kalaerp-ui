@@ -1,0 +1,123 @@
+<mat-card class="custom-card">
+    <mat-card-title class="text-center mb-3">
+        {{ isEditMode ? 'Edit Department Budget' : 'Add Department Budget' }}
+    </mat-card-title>
+
+    <mat-card-content>
+        <form [formGroup]="DepartmentBudgetForm" class="form-field-full">
+
+            <!-- Checkboxes -->
+            <div class="row mb-3">
+                <div class="col-12 d-flex gap-4 align-items-center justify-content-start">
+                    <mat-checkbox formControlName="DepartmentBudgetAuth" color="primary">Auth</mat-checkbox>
+                    <mat-checkbox formControlName="DepartmentBudgetIsActive" color="primary">Active</mat-checkbox>
+                    <mat-checkbox formControlName="DepartmentBudgetIsDiscard" color="primary">Discard</mat-checkbox>
+                </div>
+            </div>
+
+            <!-- Form Fields -->
+            <div class="row mb-3">
+                <!-- Left Column -->
+                <div class="col-md-6">
+                    <!-- Workstation Dropdown -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Department</mat-label>
+                        <mat-select formControlName="DepartmentBudgetDepartmentId" placeholder="Select Department">
+                            <mat-option *ngFor="let ws of DepartmentList" [value]="ws.DepartmentId">
+                                {{ ws.DepartmentName }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetDepartmentId')?.invalid && DepartmentBudgetForm.get('DepartmentBudgetDepartmentId')?.touched">
+                            Department is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Budget Amount -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Budget Amount</mat-label>
+                        <input matInput type="number" formControlName="DepartmentBudgetAmt"
+                            placeholder="Enter budget amount" />
+                        <mat-error
+                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetAmt')?.invalid && DepartmentBudgetForm.get('DepartmentBudgetAmt')?.touched">
+                            Budget Amount is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Right Column -->
+                <div class="col-md-6">
+
+                  <!-- Financial Year -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Financial Year</mat-label>
+                        <mat-select formControlName="DepartmentFy" placeholder="Select Financial Year">
+                            <mat-option *ngFor="let year of FinancialYearList" [value]="year.YR_VALUE">
+                                {{ year.YR_TEXT }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="DepartmentBudgetForm.get('DepartmentFy')?.invalid && DepartmentBudgetForm.get('DepartmentFy')?.touched">
+                            Financial Year is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <!-- Budget Head Dropdown -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Employee</mat-label>
+                        <mat-select formControlName="DepartmentBudgetHeadId" placeholder="Select Employee" >
+                            <mat-option *ngFor="let employee of EmployeeList" [value]="employee.EmployeeMasterId">
+                                {{ employee.EmployeeMasterFullName }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetHeadId')?.invalid && DepartmentBudgetForm.get('DepartmentBudgetHeadId')?.touched">
+                            Employee is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Budget Remark -->
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Budget Remark</mat-label>
+                        <textarea matInput formControlName="DepartmentBudgetRemark" placeholder="Enter Reason"></textarea>
+                        <mat-error
+                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetRemark')?.invalid && DepartmentBudgetForm.get('DepartmentBudgetRemark')?.touched">
+                            Remark is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <!-- Auth Remark -->
+                <div class="col-md-6">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Auth Remark</mat-label>
+                        <textarea matInput formControlName="DepartmentBudgetAuthRemark"
+                            placeholder="Enter auth remark..." ></textarea>
+                        <mat-error
+                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetAuthRemark')?.invalid && DepartmentBudgetForm.get('DepartmentBudgetAuthRemark')?.touched">
+                            Auth Remark is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="row">
+                <div class="col-12 text-center mt-4">
+                    <button mat-flat-button color="primary" [disabled]="DepartmentBudgetForm.invalid"
+                        (click)="onSubmit()">
+                        <mat-icon class="me-1">{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+                        {{ isEditMode ? 'Update' : 'Save' }}
+                    </button>
+
+                    <button mat-stroked-button type="button" class="ms-3" (click)="onCancel()">
+                        <mat-icon class="me-1">close</mat-icon>
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

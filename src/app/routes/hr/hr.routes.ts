@@ -43,6 +43,7 @@ import { Offerletter } from './offerletter/offerletter';
 import { Employeeleavebalances } from './employeeleavebalances/employeeleavebalances';
 import { Leaveapplications } from './leaveapplications/leaveapplications';
 import { Positionmaster } from './positionmaster/positionmaster';
+import { Departmentbudget } from './departmentbudget/departmentbudget';
 import { Dailyattendance } from './dailyattendance/dailyattendance';
 import { Kalaerppagedetails } from './kalaerppagedetails/kalaerppagedetails';
 
@@ -217,6 +218,10 @@ export const routes: Routes = [
     component: Positionmaster,
   },
   {
+    path: 'departmentbudget',
+    component: Departmentbudget
+  },
+  {
     path: 'dailyattendance',
     component: Dailyattendance,
   },
@@ -224,4 +229,5 @@ export const routes: Routes = [
     path: 'kalaerppagedetails',
     component: Kalaerppagedetails,
   }
+
 ];
