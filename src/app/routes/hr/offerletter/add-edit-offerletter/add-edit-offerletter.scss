@@ -284,3 +284,227 @@ input[readonly] {
     margin-bottom: 0;
   }
 }
+
+.table-container {
+  // Enable horizontal scrolling
+  overflow-x: auto;
+  // Enable vertical scrolling with max height
+  overflow-y: auto;
+  max-height: 500px;
+  // Add border for better visual separation
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+
+  .recruitment-table {
+    width: 100%;
+    background: white;
+    // Set minimum width to ensure horizontal scroll when needed
+    min-width: 2000px;
+
+    .mat-mdc-header-cell {
+      background-color: #f8f9fa;
+      color: #495057;
+      font-weight: 600;
+      font-size: 12px;
+      border-bottom: 2px solid #dee2e6;
+      border-right: 1px solid #e0e0e0;
+      padding: 8px 6px;
+      white-space: nowrap;
+      // Make header sticky
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      // Prevent text selection in header
+      user-select: none;
+
+      &:last-child {
+        border-right: none;
+      }
+    }
+
+    .mat-mdc-cell {
+      padding: 8px 6px;
+      border-bottom: 1px solid #f1f3f4;
+      border-right: 1px solid #f1f3f4;
+      font-size: 12px;
+      white-space: nowrap;
+
+      &:first-of-type {
+        padding-left: 12px;
+      }
+
+      &:last-of-type {
+        padding-right: 12px;
+        border-right: none;
+      }
+
+      &.comment-cell {
+        max-width: 150px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        cursor: help;
+
+        &:hover {
+          background-color: #f8f9fa;
+          // Show tooltip on hover for truncated text
+          position: relative;
+        }
+      }
+    }
+
+    .mat-mdc-row {
+      &:hover {
+        background-color: #f8f9fa;
+      }
+
+      &:nth-child(even) {
+        background-color: #fdfdfd;
+      }
+
+      // Add transition for smooth hover effect
+      transition: background-color 0.2s ease;
+    }
+
+    // Sticky header row
+    .mat-mdc-header-row {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #f8f9fa;
+    }
+  }
+
+  // Custom scrollbar styling for WebKit browsers
+  &::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+
+    &:hover {
+      background: #a1a1a1;
+    }
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: #f1f1f1;
+  }
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6c757d;
+  background: white;
+
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 16px;
+    color: #adb5bd;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+  }
+}
+
+// Mat Chip Styling in Table
+.mat-mdc-chip-set {
+  margin: 0;
+
+  .mat-mdc-chip {
+    font-size: 11px;
+    min-height: 20px;
+    padding: 2px 8px;
+
+    &.mat-accent {
+      background-color: #28a745;
+      color: white;
+    }
+
+    &.mat-warn {
+      background-color: #ffc107;
+      color: #212529;
+    }
+
+    &.mat-primary {
+      background-color: #007bff;
+      color: white;
+    }
+  }
+}
+
+// Responsive adjustments for smaller screens
+@media (max-width: 768px) {
+  .table-container {
+    max-height: 400px;
+
+    .recruitment-table {
+      min-width: 1500px; // Reduce min-width for mobile
+
+      .mat-mdc-header-cell,
+      .mat-mdc-cell {
+        padding: 6px 4px;
+        font-size: 11px;
+      }
+
+      .comment-cell {
+        max-width: 100px;
+      }
+    }
+  }
+}
+
+.no-data-message {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6c757d;
+
+  mat-icon {
+    font-size: 48px;
+    height: 48px;
+    width: 48px;
+    margin-bottom: 16px;
+    color: #adb5bd;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
+  }
+}
+
+// Mat Chip Styling in Table
+.mat-mdc-chip-set {
+  .mat-mdc-chip {
+    font-size: 12px;
+    min-height: 24px;
+
+    &.mat-accent {
+      background-color: #28a745;
+      color: white;
+    }
+
+    &.mat-warn {
+      background-color: #ffc107;
+      color: #212529;
+    }
+
+    &.mat-primary {
+      background-color: #007bff;
+      color: white;
+    }
+  }
+}

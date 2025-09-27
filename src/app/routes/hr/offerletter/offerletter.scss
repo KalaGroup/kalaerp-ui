@@ -172,3 +172,155 @@
   box-shadow: 0 6px 16px rgba(0, 123, 255, 0.4) !important;
 }
 
+/* Offer Letter Styling */
+
+.offer-letter-container {
+  max-width: 800px;
+  width: 100%;
+}
+
+.offer-letter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.offer-letter-content {
+  padding: 30px;
+  font-family: 'Times New Roman', serif;
+  line-height: 1.6;
+  background: white;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.letterhead-section {
+  text-align: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #333;
+}
+
+.company-name {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.company-address, .company-contact {
+  margin: 5px 0;
+  color: #666;
+}
+
+.reference-section {
+  margin: 20px 0;
+}
+
+.ref-date-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.recipient-section, .subject-section {
+  margin: 20px 0;
+}
+
+.letter-body {
+  margin: 30px 0;
+  text-align: justify;
+}
+
+.letter-body p {
+  margin-bottom: 15px;
+}
+
+.ctc-section {
+  margin: 30px 0;
+}
+
+.ctc-section h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.ctc-breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.ctc-breakdown-table th,
+.ctc-breakdown-table td {
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.ctc-breakdown-table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+.section-header {
+  background-color: #e3f2fd !important;
+  font-weight: bold;
+  text-align: center;
+}
+
+.amount {
+  text-align: right;
+}
+
+.gross-total, .total-ctc {
+  background-color: #fff3e0;
+  font-weight: bold;
+}
+
+.closing-section {
+  margin: 40px 0 20px 0;
+}
+
+.signature-section {
+  margin-top: 40px;
+  text-align: right;
+  margin-right: 100px;
+}
+
+.remarks-section {
+  margin-top: 30px;
+  padding-top: 20px;
+}
+
+.dialog-actions {
+  padding: 20px;
+  background: #f5f5f5;
+  border-top: 1px solid #ddd;
+}
+
+/* Print styles */
+@media print {
+  .offer-letter-header,
+  .dialog-actions {
+    display: none !important;
+  }
+
+  .offer-letter-content {
+    padding: 0;
+    font-size: 12px;
+    max-height: none;
+    overflow: visible;
+  }
+}
+
+/* Dialog panel class */
+::ng-deep .offer-letter-preview-dialog {
+  .mat-dialog-container {
+    padding: 0;
+  }
+}
