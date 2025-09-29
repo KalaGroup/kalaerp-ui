@@ -160,7 +160,7 @@
     <mat-dialog-content class="offer-letter-content" *ngIf="selectedOfferLetter" id="offer-letter-content">
 
       <!-- Company Letterhead Section - Matching KALA format -->
-      <div class="letterhead-section">
+      <!-- <div class="letterhead-section">
         <div class="company-header">
           <div class="company-name-box">KALA Genset Pvt. Ltd.</div>
           <div class="company-details">
@@ -168,7 +168,7 @@
             GST No.: 27AAACK6784C1ZH
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Reference and Date - Exact KALA format -->
       <div class="reference-section">
@@ -221,9 +221,9 @@
       <!-- CTC Structure Table - Exact KALA format -->
       <div class="ctc-section">
         <h3>CTC Structure</h3>
-        <div class="date-stamp">
+        <!-- <div class="date-stamp">
           <strong>Dated:</strong> {{ selectedOfferLetter.CreatedDate | date:'dd/MM/yyyy' }}
-        </div>
+        </div> -->
 
         <div class="ctc-table">
           <table class="ctc-breakdown-table">
@@ -246,10 +246,10 @@
                 <td>Conveyance</td>
                 <td class="amount">{{ selectedOfferLetter.OfferLetterConvAllowance || 0 | number:'1.0-0' }}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td>Education</td>
                 <td class="amount">0</td>
-              </tr>
+              </tr> -->
               <tr>
                 <td>City Compensatory Allowances (CCA)</td>
                 <td class="amount">{{ selectedOfferLetter.OfferLetterCityCompensatoryAlowance || 0 | number:'1.0-0' }}</td>
@@ -286,18 +286,18 @@
                 <td>Employer Provident Fund</td>
                 <td class="amount">0</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td>Exgratia</td>
                 <td class="amount">0</td>
-              </tr>
+              </tr> -->
               <tr>
                 <td>Leave Traveling Allowances (LTA)</td>
                 <td class="amount">{{ selectedOfferLetter.OfferLetterLeaveTravelAllowance || 0 | number:'1.0-0' }}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td>Medical Reimbursement</td>
                 <td class="amount">{{ selectedOfferLetter.OfferLetterMedicalInsurance || 0 | number:'1.0-0' }}</td>
-              </tr>
+              </tr> -->
               <tr>
                 <td>Bonus</td>
                 <td class="amount">{{ selectedOfferLetter.OfferLetterBonus || 450 | number:'1.0-0' }}</td>
@@ -320,12 +320,12 @@
               </tr>
               <tr>
                 <td>Mediclaim</td>
-                <td class="amount">0</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterMedicalInsurance || 0 | number:'1.0-0' }}</td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td>Performance Incentive</td>
                 <td class="amount">{{ selectedOfferLetter.OfferLetterPerformanceKpa || 0 | number:'1.0-0' }}</td>
-              </tr>
+              </tr> -->
               <tr class="total-ctc">
                 <td><strong>Cost To Company Per Month (CTC PM)</strong></td>
                 <td class="amount"><strong>{{ (calculateTotalCTC(selectedOfferLetter) / 12) | number:'1.0-0' }}</strong></td>
@@ -369,13 +369,6 @@
         <strong>Website:</strong> www.kalabiz.com | <strong>Email:</strong> kalagenset&#64;kalabiz.com
       </div>
 
-      <!-- Remarks Section -->
-      <div class="remarks-section" *ngIf="selectedOfferLetter.OfferLetterRemark && selectedOfferLetter.OfferLetterRemark !== 'Nil'">
-        <mat-divider></mat-divider>
-        <h4>Remarks</h4>
-        <p>{{ selectedOfferLetter.OfferLetterRemark }}</p>
-      </div>
-
     </mat-dialog-content>
 
     <!-- Actions -->
@@ -388,10 +381,10 @@
         <mat-icon>print</mat-icon>
         Print
       </button>
-      <button mat-raised-button color="accent" (click)="downloadPDF()">
+      <!-- <button mat-raised-button color="accent" (click)="downloadPDF()">
         <mat-icon>download</mat-icon>
         Download PDF
-      </button>
+      </button> -->
     </mat-dialog-actions>
   </div>
 </ng-template>
