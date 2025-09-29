@@ -541,9 +541,7 @@ export class Offerletter {
     this.selectedOfferLetter = record;
 
     this.previewDialogRef = this.dialog.open(this.offerLetterPreviewTemplate, {
-      width: '100%',
-      height: '100%',
-      maxWidth: '100vw',
+      maxWidth: '95vw',
       maxHeight: '100vh',
       panelClass: 'offer-letter-preview-dialog',
       disableClose: false,
@@ -605,20 +603,6 @@ export class Offerletter {
     return new Date().getFullYear();
   }
 
-  // printOfferLetter(): void {
-  //   window.print();
-  // }
-
-  // downloadPDF(): void {
-  //   // Implement PDF download functionality
-  //   console.log('Download PDF functionality to be implemented');
-  // }
-
-  // closePreviewDialog(): void {
-  //   this.previewDialogRef.close();
-  //   this.selectedOfferLetter = null;
-  // }
-
   formatDate(date: any): string {
     if (!date) return '';
     const d = new Date(date);
@@ -632,221 +616,222 @@ export class Offerletter {
     }).format(amount);
   }
 
-   generateKalaOfferLetterPDF(): void {
-    if (!this.selectedOfferLetter) return;
+  //  generateKalaOfferLetterPDF(): void {
+  //   if (!this.selectedOfferLetter) return;
 
-    const doc = new jsPDF();
-    const data = this.selectedOfferLetter;
+  //   const doc = new jsPDF();
+  //   const data = this.selectedOfferLetter;
 
-    // Page margins
-    const margin = 20;
-    const pageWidth = doc.internal.pageSize.width;
-    const pageHeight = doc.internal.pageSize.height;
-    let yPosition = margin;
+  //   // Page margins
+  //   const margin = 20;
+  //   const pageWidth = doc.internal.pageSize.width;
+  //   const pageHeight = doc.internal.pageSize.height;
+  //   let yPosition = margin;
 
-    // Company Header with dark background
-    doc.setFillColor(52, 58, 64);
-    doc.rect(margin, yPosition, pageWidth - 2 * margin, 25, 'F');
+  //   // Company Header with dark background
+  //   doc.setFillColor(52, 58, 64);
+  //   doc.rect(margin, yPosition, pageWidth - 2 * margin, 25, 'F');
 
-    doc.setTextColor(255, 255, 255);
-    doc.setFontSize(16);
-    doc.setFont('helvetica', 'bold');
-    doc.text('KALA Genset Pvt. Ltd.', pageWidth / 2, yPosition + 10, { align: 'center' });
+  //   doc.setTextColor(255, 255, 255);
+  //   doc.setFontSize(16);
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text('KALA Genset Pvt. Ltd.', pageWidth / 2, yPosition + 10, { align: 'center' });
 
-    doc.setFontSize(8);
-    doc.setFont('helvetica', 'normal');
-    doc.text('CIN No.: U90000MH1997PTC112368', pageWidth / 2, yPosition + 16, { align: 'center' });
-    doc.text('GST No.: 27AAACK6784C1ZH', pageWidth / 2, yPosition + 21, { align: 'center' });
+  //   doc.setFontSize(8);
+  //   doc.setFont('helvetica', 'normal');
+  //   doc.text('CIN No.: U90000MH1997PTC112368', pageWidth / 2, yPosition + 16, { align: 'center' });
+  //   doc.text('GST No.: 27AAACK6784C1ZH', pageWidth / 2, yPosition + 21, { align: 'center' });
 
-    yPosition += 35;
+  //   yPosition += 35;
 
-    // Reset text color
-    doc.setTextColor(0, 0, 0);
+  //   // Reset text color
+  //   doc.setTextColor(0, 0, 0);
 
-    // Reference and Date row
-    doc.setFontSize(10);
-    doc.setFont('helvetica', 'bold');
-    doc.text(`Ref No: KGPL/HR/25-26/${data.OfferLetterId.toString().padStart(8, '0')}`, margin, yPosition);
-    doc.text(`Date: ${this.formatDate(data.CreatedDate)}`, pageWidth - margin - 30, yPosition);
-    yPosition += 15;
+  //   // Reference and Date row
+  //   doc.setFontSize(10);
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text(`Ref No: KGPL/HR/25-26/${data.OfferLetterId.toString().padStart(8, '0')}`, margin, yPosition);
+  //   doc.text(`Date: ${this.formatDate(data.CreatedDate)}`, pageWidth - margin - 30, yPosition);
+  //   yPosition += 15;
 
-    // To section
-    doc.setFont('helvetica', 'bold');
-    doc.text('To,', margin, yPosition);
-    yPosition += 8;
-    doc.setFont('helvetica', 'normal');
-    doc.text(`${data.RecruitmentMasterNameOfCandidates}`, margin, yPosition);
-    yPosition += 6;
-    doc.text('Pune, Maharashtra', margin, yPosition);
-    yPosition += 15;
+  //   // To section
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text('To,', margin, yPosition);
+  //   yPosition += 8;
+  //   doc.setFont('helvetica', 'normal');
+  //   doc.text(`${data.RecruitmentMasterNameOfCandidates}`, margin, yPosition);
+  //   yPosition += 6;
+  //   doc.text('Pune, Maharashtra', margin, yPosition);
+  //   yPosition += 15;
 
-    // Subject
-    doc.setFont('helvetica', 'bold');
-    doc.text('Sub: Offer Letter', pageWidth / 2, yPosition, { align: 'center' });
-    yPosition += 15;
+  //   // Subject
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text('Sub: Offer Letter', pageWidth / 2, yPosition, { align: 'center' });
+  //   yPosition += 15;
 
-    // Letter body
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
+  //   // Letter body
+  //   doc.setFont('helvetica', 'normal');
+  //   doc.setFontSize(10);
 
-    const letterText = [
-      `Dear ${data.RecruitmentMasterNameOfCandidates},`,
-      '',
-      `With reference to your application and subsequent interview you had with us, we are pleased to offer you as "${data.PositionMasterName}" in our organization.`,
-      '',
-      `Your CTC (Cost To Company) will be Rs. ${this.formatCurrency(this.calculateTotalCTC(data) / 12)} per month. Details of the same are mentioned below:`,
-      '',
-      'The terms and conditions of employment will remain same as mutually agreed between you and the management of this company at the time of interview.',
-      '',
-      'You will be on probation for a period of 6 months.',
-      'Leave will be applicable after 6 months from date of joining with continuous service.',
-      '',
-      `You are requested to join on or before ${this.formatDate(data.OfferLetterJoinindate)}. On joining, you are required to come with your educational certificates, 2 nos. passport size photographs, previous experience certificates & relieving letter etc at the time of joining.`,
-      '',
-      'Kindly return duplicate copy of this letter duly signed as acceptance of employment offer within next 7 working days.',
-      '',
-      'If Duplicate copy is not received within stipulated time this offer letter will stands cancelled.'
-    ];
+  //   const letterText = [
+  //     `Dear ${data.RecruitmentMasterNameOfCandidates},`,
+  //     '',
+  //     `With reference to your application and subsequent interview you had with us, we are pleased to offer you as "${data.PositionMasterName}" in our organization.`,
+  //     '',
+  //     `Your CTC (Cost To Company) will be Rs. ${this.formatCurrency(this.calculateTotalCTC(data) / 12)} per month. Details of the same are mentioned below:`,
+  //     '',
+  //     'The terms and conditions of employment will remain same as mutually agreed between you and the management of this company at the time of interview.',
+  //     '',
+  //     'You will be on probation for a period of 6 months.',
+  //     'Leave will be applicable after 6 months from date of joining with continuous service.',
+  //     '',
+  //     `You are requested to join on or before ${this.formatDate(data.OfferLetterJoinindate)}. On joining, you are required to come with your educational certificates, 2 nos. passport size photographs, previous experience certificates & relieving letter etc at the time of joining.`,
+  //     '',
+  //     'Kindly return duplicate copy of this letter duly signed as acceptance of employment offer within next 7 working days.',
+  //     '',
+  //     'If Duplicate copy is not received within stipulated time this offer letter will stands cancelled.'
+  //   ];
 
-    letterText.forEach(line => {
-      if (line === '') {
-        yPosition += 4;
-      } else {
-        const splitText = doc.splitTextToSize(line, pageWidth - 2 * margin);
-        doc.text(splitText, margin, yPosition);
-        yPosition += splitText.length * 5;
-      }
-    });
+  //   letterText.forEach(line => {
+  //     if (line === '') {
+  //       yPosition += 4;
+  //     } else {
+  //       const splitText = doc.splitTextToSize(line, pageWidth - 2 * margin);
+  //       doc.text(splitText, margin, yPosition);
+  //       yPosition += splitText.length * 5;
+  //     }
+  //   });
 
-    // Check if we need a new page for the table
-    if (yPosition > pageHeight - 100) {
-      doc.addPage();
-      yPosition = margin;
-    }
+  //   // Check if we need a new page for the table
+  //   if (yPosition > pageHeight - 100) {
+  //     doc.addPage();
+  //     yPosition = margin;
+  //   }
 
-    yPosition += 10;
+  //   yPosition += 10;
 
-    // CTC Structure heading
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(12);
-    doc.text('CTC Structure', pageWidth / 2, yPosition, { align: 'center' });
-    yPosition += 10;
+  //   // CTC Structure heading
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.setFontSize(12);
+  //   doc.text('CTC Structure', pageWidth / 2, yPosition, { align: 'center' });
+  //   yPosition += 10;
 
-    // Table setup
-    const tableX = margin;
-    const tableWidth = pageWidth - 2 * margin;
-    const col1Width = tableWidth * 0.7;
-    const col2Width = tableWidth * 0.3;
+  //   // Table setup
+  //   const tableX = margin;
+  //   const tableWidth = pageWidth - 2 * margin;
+  //   const col1Width = tableWidth * 0.7;
+  //   const col2Width = tableWidth * 0.3;
 
-    // Table data matching the original format
-    const tableData = [
-      ['Cost To Company (CTC)', 'Amount (Rs.)'],
-      ['Consolidated Salary', this.formatCurrency(data.OfferLetterBasic || 18000)],
-      ['House Rent Allowance (H.R.A)', this.formatCurrency(data.OfferLetterHra || 0)],
-      ['Conveyance', this.formatCurrency(data.OfferLetterConvAllowance || 0)],
-      ['Education', '0'],
-      ['City Compensatory Allowances (CCA)', this.formatCurrency(data.OfferLetterCityCompensatoryAlowance || 0)],
-      ['Miscellaneous', this.formatCurrency(data.OfferLetterMiscAllowance || 0)],
-      ['Gross Amount', this.formatCurrency(data.OfferLetterGross || 18000)],
-      ['Employee Provident Fund (P.F)', this.formatCurrency(data.OfferLetterPfemployee || 0)],
-      ['Professional Tax (P.T)', this.formatCurrency(data.OfferLetterPt || 200)],
-      ['Employee ESIC', this.formatCurrency(data.OfferLetterEsic || 135)],
-      ['Take Home Salary', this.formatCurrency(this.calculateTakeHomeSalary(data))],
-      ['Employer ESIC', this.formatCurrency(data.OfferLetterPfemployer || 585)],
-      ['Employer Provident Fund', '0'],
-      ['Exgratia', '0'],
-      ['Leave Traveling Allowances (LTA)', this.formatCurrency(data.OfferLetterLeaveTravelAllowance || 0)],
-      ['Medical Reimbursement', this.formatCurrency(data.OfferLetterMedicalInsurance || 0)],
-      ['Bonus', this.formatCurrency(data.OfferLetterBonus || 450)],
-      ['Gratuity', this.formatCurrency(data.OfferLetterGraduity || 866)],
-      ['Canteen', '2,860'],
-      ['Mobile Limit', '353'],
-      ['Uniform', '200'],
-      ['Mediclaim', '0'],
-      ['Performance Incentive', this.formatCurrency(data.OfferLetterPerformanceKpa || 0)],
-      ['Cost To Company Per Month (CTC PM)', this.formatCurrency(this.calculateTotalCTC(data) / 12)],
-      ['Cost To Company Per Annum (CTC PA)', this.formatCurrency(this.calculateTotalCTC(data))]
-    ];
+  //   // Table data matching the original format
+  //   const tableData = [
+  //     ['Cost To Company (CTC)', 'Amount (Rs.)'],
+  //     ['Consolidated Salary', this.formatCurrency(data.OfferLetterBasic || 18000)],
+  //     ['House Rent Allowance (H.R.A)', this.formatCurrency(data.OfferLetterHra || 0)],
+  //     ['Conveyance', this.formatCurrency(data.OfferLetterConvAllowance || 0)],
+  //     ['Education', '0'],
+  //     ['City Compensatory Allowances (CCA)', this.formatCurrency(data.OfferLetterCityCompensatoryAlowance || 0)],
+  //     ['Miscellaneous', this.formatCurrency(data.OfferLetterMiscAllowance || 0)],
+  //     ['Gross Amount', this.formatCurrency(data.OfferLetterGross || 18000)],
+  //     ['Employee Provident Fund (P.F)', this.formatCurrency(data.OfferLetterPfemployee || 0)],
+  //     ['Professional Tax (P.T)', this.formatCurrency(data.OfferLetterPt || 200)],
+  //     ['Employee ESIC', this.formatCurrency(data.OfferLetterEsic || 135)],
+  //     ['Take Home Salary', this.formatCurrency(this.calculateTakeHomeSalary(data))],
+  //     ['Employer ESIC', this.formatCurrency(data.OfferLetterPfemployer || 585)],
+  //     ['Employer Provident Fund', '0'],
+  //     ['Exgratia', '0'],
+  //     ['Leave Traveling Allowances (LTA)', this.formatCurrency(data.OfferLetterLeaveTravelAllowance || 0)],
+  //     ['Medical Reimbursement', this.formatCurrency(data.OfferLetterMedicalInsurance || 0)],
+  //     ['Bonus', this.formatCurrency(data.OfferLetterBonus || 450)],
+  //     ['Gratuity', this.formatCurrency(data.OfferLetterGraduity || 866)],
+  //     ['Canteen', '2,860'],
+  //     ['Mobile Limit', '353'],
+  //     ['Uniform', '200'],
+  //     ['Mediclaim', '0'],
+  //     ['Performance Incentive', this.formatCurrency(data.OfferLetterPerformanceKpa || 0)],
+  //     ['Cost To Company Per Month (CTC PM)', this.formatCurrency(this.calculateTotalCTC(data) / 12)],
+  //     ['Cost To Company Per Annum (CTC PA)', this.formatCurrency(this.calculateTotalCTC(data))]
+  //   ];
 
-    // Draw table
-    doc.setFontSize(9);
-    let rowHeight = 7;
+  //   // Draw table
+  //   doc.setFontSize(9);
+  //   let rowHeight = 7;
 
-    tableData.forEach((row, index) => {
-      // Check if we need a new page
-      if (yPosition + rowHeight > pageHeight - margin) {
-        doc.addPage();
-        yPosition = margin;
-      }
+  //   tableData.forEach((row, index) => {
+  //     // Check if we need a new page
+  //     if (yPosition + rowHeight > pageHeight - margin) {
+  //       doc.addPage();
+  //       yPosition = margin;
+  //     }
 
-      // Header row styling
-      if (index === 0) {
-        doc.setFillColor(245, 245, 245);
-        doc.rect(tableX, yPosition - 2, tableWidth, rowHeight, 'F');
-        doc.setFont('helvetica', 'bold');
-      } else {
-        doc.setFont('helvetica', 'normal');
-      }
+  //     // Header row styling
+  //     if (index === 0) {
+  //       doc.setFillColor(245, 245, 245);
+  //       doc.rect(tableX, yPosition - 2, tableWidth, rowHeight, 'F');
+  //       doc.setFont('helvetica', 'bold');
+  //     } else {
+  //       doc.setFont('helvetica', 'normal');
+  //     }
 
-      // Draw borders
-      doc.rect(tableX, yPosition - 2, col1Width, rowHeight);
-      doc.rect(tableX + col1Width, yPosition - 2, col2Width, rowHeight);
+  //     // Draw borders
+  //     doc.rect(tableX, yPosition - 2, col1Width, rowHeight);
+  //     doc.rect(tableX + col1Width, yPosition - 2, col2Width, rowHeight);
 
-      // Add text
-      doc.text(row[0], tableX + 3, yPosition + 3);
-      doc.text(row[1], tableX + col1Width + col2Width - 5, yPosition + 3, { align: 'right' });
+  //     // Add text
+  //     doc.text(row[0], tableX + 3, yPosition + 3);
+  //     doc.text(row[1], tableX + col1Width + col2Width - 5, yPosition + 3, { align: 'right' });
 
-      yPosition += rowHeight;
-    });
+  //     yPosition += rowHeight;
+  //   });
 
-    yPosition += 15;
+  //   yPosition += 15;
 
-    // Closing section
-    doc.setFont('helvetica', 'bold');
-    doc.text('Thanking you,', margin, yPosition);
-    yPosition += 15;
-    doc.text('For Kala Genset Pvt Ltd.', margin, yPosition);
-    yPosition += 25;
+  //   // Closing section
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text('Thanking you,', margin, yPosition);
+  //   yPosition += 15;
+  //   doc.text('For Kala Genset Pvt Ltd.', margin, yPosition);
+  //   yPosition += 25;
 
-    // Signature section with seal representation
-    // doc.circle(pageWidth - 60, yPosition, 15, 'S');
-    // doc.setFontSize(6);
-    // doc.text('KALA GENSET', pageWidth - 60, yPosition - 2, { align: 'center' });
-    // doc.text('PVT. LTD.', pageWidth - 60, yPosition + 2, { align: 'center' });
-    // doc.text('PUNE', pageWidth - 60, yPosition + 6, { align: 'center' });
+  //   // Signature section with seal representation
+  //   // doc.circle(pageWidth - 60, yPosition, 15, 'S');
+  //   // doc.setFontSize(6);
+  //   // doc.text('KALA GENSET', pageWidth - 60, yPosition - 2, { align: 'center' });
+  //   // doc.text('PVT. LTD.', pageWidth - 60, yPosition + 2, { align: 'center' });
+  //   // doc.text('PUNE', pageWidth - 60, yPosition + 6, { align: 'center' });
 
-    yPosition += 20;
-    doc.setFontSize(10);
-    doc.text('Authorized Signatory', pageWidth - 60, yPosition, { align: 'center' });
+  //   yPosition += 20;
+  //   doc.setFontSize(10);
+  //   doc.text('Authorized Signatory', pageWidth - 60, yPosition, { align: 'center' });
 
-    // Footer address
-    yPosition = pageHeight - 25;
-    doc.setFontSize(6);
-    doc.setFont('helvetica', 'normal');
-    const footerText = [
-      'Regd. Address: Gat No. 392/1, Mahalunge Ingale, Khed, Pune, Maharashtra 410501',
-      'Head Office: A-37, H Block, MIDC, Pimpri, Pune - 411018, Maharashtra, India',
-      'Tel: 020-2724 1881 / 020 2724 2212  Toll Free: 1800 123 0018',
-      'Website: www.kalabiz.com | Email: kalagenset@kalabiz.com'
-    ];
+  //   // Footer address
+  //   yPosition = pageHeight - 25;
+  //   doc.setFontSize(6);
+  //   doc.setFont('helvetica', 'normal');
+  //   const footerText = [
+  //     'Regd. Address: Gat No. 392/1, Mahalunge Ingale, Khed, Pune, Maharashtra 410501',
+  //     'Head Office: A-37, H Block, MIDC, Pimpri, Pune - 411018, Maharashtra, India',
+  //     'Tel: 020-2724 1881 / 020 2724 2212  Toll Free: 1800 123 0018',
+  //     'Website: www.kalabiz.com | Email: kalagenset@kalabiz.com'
+  //   ];
 
-    footerText.forEach(line => {
-      doc.text(line, pageWidth / 2, yPosition, { align: 'center' });
-      yPosition += 3;
-    });
+  //   footerText.forEach(line => {
+  //     doc.text(line, pageWidth / 2, yPosition, { align: 'center' });
+  //     yPosition += 3;
+  //   });
 
-    // Save the PDF
-    doc.save(`Offer-Letter-${data.RecruitmentMasterNameOfCandidates}-${data.OfferLetterId}.pdf`);
-    this.toastService.showSuccess('PDF downloaded successfully');
-  }
+  //   // Save the PDF
+  //   doc.save(`Offer-Letter-${data.RecruitmentMasterNameOfCandidates}-${data.OfferLetterId}.pdf`);
+  //   this.toastService.showSuccess('PDF downloaded successfully');
+  // }
 
   printOfferLetter(): void {
     window.print();
   }
 
-  downloadPDF(): void {
-    this.generateKalaOfferLetterPDF();
-  }
+
+  // downloadPDF(): void {
+    // this.generateKalaOfferLetterPDF();
+  // }
 
   closePreviewDialog(): void {
     this.previewDialogRef.close();

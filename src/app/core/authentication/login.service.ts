@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { map } from 'rxjs';
 
-import { Menu } from '@core';
+import { apiEnvironment, Menu } from '@core';
 import { Token, User } from './interface';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class LoginService {
 
    // change this endpoint to real API
   login(username: string, password: string, rememberMe = false) {
-    return this.http.post<Token>('https://localhost:7019/api/UserLogin/login', { username, password, rememberMe }, { observe: 'body' });
+    return this.http.post<Token>(`${apiEnvironment.baseUrl}UserLogin/login`, { username, password, rememberMe }, { observe: 'body' });
   }
 
   refresh(params: Record<string, any>) {

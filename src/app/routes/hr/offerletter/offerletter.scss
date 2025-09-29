@@ -324,3 +324,30 @@
     padding: 0;
   }
 }
+
+
+/* Completely hide scrollbar while keeping scroll functionality */
+.offer-letter-content {
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Ensure Material Dialog doesn't add scrollbars */
+::ng-deep .offer-letter-preview-dialog {
+  .mat-mdc-dialog-container,
+  .mat-dialog-container,
+  .mdc-dialog__surface,
+  .mat-mdc-dialog-surface {
+    overflow: hidden !important;
+  }
+}
