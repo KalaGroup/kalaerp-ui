@@ -251,7 +251,7 @@ export class Shiftmaster implements OnInit {
         console.log('Update payload:', updatePayload);
         this.ShiftMasterservice.UpdateShiftMaster(updatePayload).subscribe({
           next: () => {
-            alert(`shift updated successfully!`);
+           
             this.toastService.showSuccess("shift updated successfully");
             this.GetAllShiftMaster();
           },
@@ -311,7 +311,7 @@ export class Shiftmaster implements OnInit {
         };
         this.ShiftMasterservice.insertShiftMaster(payload).subscribe({
           next: () => {
-            alert(`shift added successfully!`);
+          
             this.toastService.showSuccess("shift added successfully");
             this.GetAllShiftMaster();
           },
@@ -329,7 +329,7 @@ export class Shiftmaster implements OnInit {
     this.ShiftMasterservice.deleteShiftMaster(value.ShiftMasterId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-        alert(`shift deleted successfully!`);
+    
         this.toastService.showSuccess("shift delete successfully");
         this.GetAllShiftMaster();
       },

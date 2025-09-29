@@ -79,17 +79,21 @@ export class Dailyattendance implements OnInit {
   ) {
     // Initialize filter form
     this.filterForm = this.fb.group({
-      fromDate: [null],
-      toDate: [null],
+      fromDate: ['', Validators.required],
+      toDate: ['', Validators.required],
       EmployeeMasterFullName: [''],
       CompanyName: ['']
     });
+
   }
 
+
   ngOnInit(): void {
-    this.getAllDailyAttendance();
+    this.filterByDate();
     this.getAllEmployeeName();
     this.getAllCompanyName();
+    this.initializeForm();
+
   }
 
   initializeForm() {
@@ -203,26 +207,65 @@ export class Dailyattendance implements OnInit {
 
 
 
-  // Get all daily attendance data
-  getAllDailyAttendance() {
+  // // Get all daily attendance data
+  // getAllDailyAttendance() {
+  //   this.isLoading = true;
+  //   this.DailyAttendanceservice.getAllDailyAttendance().subscribe({
+  //     next: (data) => {
+  //       this.originalList = data.map((item: any, index: number) => ({
+  //         ...item,
+  //         SNo: index + 1
+  //       }));
+  //       this.list = [...this.originalList];
+  //       this.filteredList = [...this.originalList];
+  //       this.isLoading = false;
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching daily attendance:', err);
+  //       this.isLoading = false;
+  //       this.toastService.showError('Error fetching daily attendance data');
+  //     }
+  //   });
+  // }
+
+
+  filterByDate() {
+    const formValues = this.filterForm.value;
+
+    if (!formValues.fromDate || !formValues.toDate) {
+      this.toastService.showError('Please select From and To dates');
+      return;
+    }
+
+    const fromDate = new Date(formValues.fromDate);
+    const toDate = new Date(formValues.toDate);
+
     this.isLoading = true;
     this.DailyAttendanceservice.getAllDailyAttendance().subscribe({
       next: (data) => {
-        this.originalList = data.map((item: any, index: number) => ({
-          ...item,
-          SNo: index + 1
-        }));
-        this.list = [...this.originalList];
-        this.filteredList = [...this.originalList];
+        // Filter date-wise
+        const filtered = data.filter(item => {
+          const itemDate = new Date(item.AttendanceDate);
+          itemDate.setHours(0, 0, 0, 0);
+          return itemDate >= fromDate && itemDate <= toDate;
+        });
+
+        this.list = filtered.map((item, index) => ({ ...item, SNo: index + 1 }));
         this.isLoading = false;
+
+        this.list.length
+          ? this.toastService.showSuccess(`${this.list.length} record(s) found`)
+          : this.toastService.showInfo('No records found');
       },
       error: (err) => {
-        console.error('Error fetching daily attendance:', err);
+        console.error(err);
         this.isLoading = false;
-        this.toastService.showError('Error fetching daily attendance data');
+        this.toastService.showError('Error fetching data');
       }
     });
   }
+
+
 
   // // Get all employee names for dropdown
   // getAllEmployeeName() {
@@ -342,61 +385,61 @@ export class Dailyattendance implements OnInit {
 
 
   // Main search/filter function
-  filterByDate() {
-    debugger
-    const formValues = this.filterForm.value;
+  // filterByDate() {
+  //   debugger
+  //   const formValues = this.filterForm.value;
 
-    this.filteredList = this.originalList.filter(item => {
-      let matches = true;
+  //   this.filteredList = this.originalList.filter(item => {
+  //     let matches = true;
 
-      // Filter by From Date
-      if (formValues.fromDate) {
-        const fromDate = new Date(formValues.fromDate);
-        const itemDate = new Date(item.AttendanceDate);
-        fromDate.setHours(0, 0, 0, 0);
-        itemDate.setHours(0, 0, 0, 0);
-        matches = matches && itemDate >= fromDate;
-      }
+  //     // Filter by From Date
+  //     if (formValues.fromDate) {
+  //       const fromDate = new Date(formValues.fromDate);
+  //       const itemDate = new Date(item.AttendanceDate);
+  //       fromDate.setHours(0, 0, 0, 0);
+  //       itemDate.setHours(0, 0, 0, 0);
+  //       matches = matches && itemDate >= fromDate;
+  //     }
 
-      // Filter by To Date
-      if (formValues.toDate) {
-        const toDate = new Date(formValues.toDate);
-        const itemDate = new Date(item.AttendanceDate);
-        toDate.setHours(23, 59, 59, 999);
-        itemDate.setHours(0, 0, 0, 0);
-        matches = matches && itemDate <= toDate;
-      }
+  //     // Filter by To Date
+  //     if (formValues.toDate) {
+  //       const toDate = new Date(formValues.toDate);
+  //       const itemDate = new Date(item.AttendanceDate);
+  //       toDate.setHours(23, 59, 59, 999);
+  //       itemDate.setHours(0, 0, 0, 0);
+  //       matches = matches && itemDate <= toDate;
+  //     }
 
-      // Filter by Employee Name
-      if (formValues.EmployeeMasterFullName && formValues.EmployeeMasterFullName.trim() !== '') {
-        const employeeName = item.EmployeeMasterFullName || '';
-        matches = matches &&
-          employeeName.toLowerCase().includes(formValues.EmployeeMasterFullName.toLowerCase().trim());
-      }
+  //     // Filter by Employee Name
+  //     if (formValues.EmployeeMasterFullName && formValues.EmployeeMasterFullName.trim() !== '') {
+  //       const employeeName = item.EmployeeMasterFullName || '';
+  //       matches = matches &&
+  //         employeeName.toLowerCase().includes(formValues.EmployeeMasterFullName.toLowerCase().trim());
+  //     }
 
-      // Filter by Company Name
-      if (formValues.CompanyName && formValues.CompanyName.trim() !== '') {
-        const companyName = item.CompanyName || '';
-        matches = matches &&
-          companyName.toLowerCase().includes(formValues.CompanyName.toLowerCase().trim());
-      }
+  //     // Filter by Company Name
+  //     if (formValues.CompanyName && formValues.CompanyName.trim() !== '') {
+  //       const companyName = item.CompanyName || '';
+  //       matches = matches &&
+  //         companyName.toLowerCase().includes(formValues.CompanyName.toLowerCase().trim());
+  //     }
 
-      return matches;
-    });
+  //     return matches;
+  //   });
 
-    // Update the list with filtered results and renumber
-    this.list = this.filteredList.map((item, index) => ({
-      ...item,
-      SNo: index + 1
-    }));
+  //   // Update the list with filtered results and renumber
+  //   this.list = this.filteredList.map((item, index) => ({
+  //     ...item,
+  //     SNo: index + 1
+  //   }));
 
-    // Show message if no results found
-    if (this.list.length === 0) {
-      this.toastService.showInfo('No records found matching your criteria');
-    } else {
-      this.toastService.showSuccess(`matching ${this.list.length} record`);
-    }
-  }
+  //   // Show message if no results found
+  //   if (this.list.length === 0) {
+  //     this.toastService.showInfo('No records found matching your criteria');
+  //   } else {
+  //     this.toastService.showSuccess(`matching ${this.list.length} record`);
+  //   }
+  // }
 
   // Reset filter function
   resetFilter() {

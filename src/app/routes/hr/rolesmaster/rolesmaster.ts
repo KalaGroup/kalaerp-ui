@@ -73,7 +73,7 @@ export class Rolesmaster {
     private roleService: Roleservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.loadAllRole();
   }
@@ -198,7 +198,7 @@ export class Rolesmaster {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditRole, {
-      width: '70%',
+      width: '80%',
       height: '80%',
       maxWidth: '100vw',
       maxHeight: '100vh',
@@ -228,7 +228,7 @@ export class Rolesmaster {
           next: response => {
             this.toastService.showSuccess('Role  added successfully:', response);
             this.loadAllRole();
-            alert(`Role "${result.RolesGradeId}" added successfully!`);
+
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -260,7 +260,7 @@ export class Rolesmaster {
     this.dialog
       .open(AddEditRole, {
         width: '80%',
-        height: '70%',
+        height: '80%',
         maxWidth: '100vw',
         maxHeight: '100vh',
         data: { role: record },
@@ -288,7 +288,7 @@ export class Rolesmaster {
           this.roleService.updateRole(updatePayload).subscribe({
             next: response => {
               this.toastService.showSuccess('Role updated successfully:', response);
-              alert(`Role "${result.RolesGradeId}" updated successfully!`);
+
               this.loadAllRole();
             },
             error: err => {
@@ -314,7 +314,7 @@ export class Rolesmaster {
     this.roleService.deleteRole(value.RolesId).subscribe({
       next: response => {
         this.toastService.showSuccess('Role deleted successfully:', response);
-        alert(`You have deleted ${value.RolesGradeId} successfully!`);
+
         this.loadAllRole();
       },
       error: err => {

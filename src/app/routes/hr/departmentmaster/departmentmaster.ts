@@ -73,7 +73,7 @@ export class Departmentmaster implements OnInit {
     private departmentService: Departmentservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.loadAllDepartment();
   }
@@ -233,7 +233,7 @@ export class Departmentmaster implements OnInit {
           next: response => {
             this.toastService.showSuccess('Department added successfully:', response);
             this.loadAllDepartment();
-            alert(`Department "${result.DepartmentName}" added successfully!`);
+
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -295,11 +295,12 @@ export class Departmentmaster implements OnInit {
           this.departmentService.updateDepartment(updatePayload).subscribe({
             next: response => {
               this.toastService.showSuccess('Department updated successfully:', response);
-              alert(`Department "${result.DepartmentName}" updated successfully!`);
+
               this.loadAllDepartment();
             },
             error: err => {
               console.error('Error updating state:', err);
+              this.toastService.showError('Failed to update Department. Please check inputs.');
             },
           });
         }
@@ -319,11 +320,12 @@ export class Departmentmaster implements OnInit {
     this.departmentService.deleteDepartment(value.DepartmentId).subscribe({
       next: response => {
         this.toastService.showSuccess('Department Deleted successfully:', response);
-        alert(`You have deleted ${value.DepartmentName} successfully!`);
+
         this.loadAllDepartment();
       },
       error: err => {
         console.error('Error deleting Department:', err);
+        this.toastService.showError('Failed to delete Department. It might be in use.');
       },
     });
   }

@@ -14,12 +14,7 @@
             <mat-checkbox formControlName="RolesIsActive" color="primary" [disabled]="!isEditMode">
               Active
             </mat-checkbox>
-            <mat-checkbox
-              formControlName="RolesIsDiscard"
-              color="primary"
-              [disabled]="!isEditMode"
-              *ngIf="isEditMode"
-            >
+            <mat-checkbox formControlName="RolesIsDiscard" color="primary" [disabled]="!isEditMode" *ngIf="isEditMode">
               Discard
             </mat-checkbox>
           </div>
@@ -29,31 +24,33 @@
       <div class="row mb-3">
         <!-- Left Side -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Grade</mat-label>
             <mat-select formControlName="RolesGradeId" placeholder="Select Grade">
-              <mat-option value="">Select Grade</mat-option>
-              @for (grade of filteredgradeList; track grade.GradeId) {
-              <mat-option [value]="grade.GradeId">{{ grade.GradeName }}</mat-option>
-              }
+              <mat-option *ngFor="let grade of filteredgradeList" [value]="grade.GradeId">
+                {{ grade.GradeName }}
+              </mat-option>
             </mat-select>
-            @if (roleForm.get('RolesGradeId')?.invalid && roleForm.get('RolesGradeId')?.touched) {
-            <mat-error>Grade is required</mat-error>
-            }
+            <mat-error *ngIf="roleForm.get('RolesGradeId')?.invalid 
+          && roleForm.get('RolesGradeId')?.touched">
+              Grade is required
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+
+
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Designation</mat-label>
             <mat-select formControlName="RolesDesignationId" placeholder="Select Designation">
-              <mat-option value="">Select Designation</mat-option>
-              @for (desg of filtereddesignationList; track desg.DesignationId) {
-              <mat-option [value]="desg.DesignationId">{{ desg.DesignationName }}</mat-option>
-              }
+              <mat-option *ngFor="let desig of filtereddesignationList" [value]="desig.DesignationId">
+                {{ desig.DesignationName }}
+              </mat-option>
             </mat-select>
-            @if (roleForm.get('RolesDesignationId')?.invalid &&
-            roleForm.get('RolesDesignationId')?.touched) {
-            <mat-error>Designation is required</mat-error>
-            }
+            <mat-error *ngIf="roleForm.get('RolesDesignationId')?.invalid 
+          && roleForm.get('RolesDesignationId')?.touched">
+              Designation is required
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -73,15 +70,20 @@
             }
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="RolesRemark" placeholder="Enter Remark" />
+            <mat-error
+              *ngIf="roleForm.get('RolesRemark')?.hasError('required') && roleForm.get('RolesRemark')?.touched">
+              Remark is required
+            </mat-error>
           </mat-form-field>
+
           <br />
         </div>
       </div>
 
-            <div class="container mt-3">
+      <div class="container mt-3">
         <mat-card>
           <mat-card-header>
             <mat-card-title style="font-size: 20px; font-weight: bold; color: #007bff">
@@ -107,22 +109,12 @@
                       <td class="description-cell">
                         <mat-form-field appearance="outline" class="full-width-field">
                           <mat-label>Enter description</mat-label>
-                          <input
-                            matInput
-                            [(ngModel)]="newDescription"
-                            name="newDescription"
-                            placeholder="Enter description"
-                          />
+                          <input matInput [(ngModel)]="newDescription" name="newDescription"
+                            placeholder="Enter description" />
                         </mat-form-field>
                       </td>
                       <td class="action-cell">
-                        <button
-                          mat-raised-button
-                          color="primary"
-                          (click)="addRow()"
-                          type="button"
-                          class="add-button"
-                        >
+                        <button mat-raised-button color="primary" (click)="addRow()" type="button" class="add-button">
                           <mat-icon>add</mat-icon>
                           ADD
                         </button>
@@ -135,48 +127,25 @@
                       <td class="sr-no-cell">{{ part.srno }}</td>
                       <td class="description-cell">
                         <mat-form-field appearance="outline" class="full-width-field">
-                          <input
-                            matInput
-                           [(ngModel)]="part.desc"
-                            [readonly]="editIndex !== i"
-                            name="desc{{i}}"
-                            [class.readonly-input]="editIndex !== i"
-                          />
+                          <input matInput [(ngModel)]="part.desc" [readonly]="editIndex !== i" name="desc{{i}}"
+                            [class.readonly-input]="editIndex !== i" />
                         </mat-form-field>
                       </td>
                       <td class="action-cell">
                         <div class="action-buttons">
-                          <button
-                            mat-raised-button
-                            color="warn"
-                            (click)="deleteRow(i)"
-                            type="button"
-                            class="delete-button"
-                            matTooltip="Delete row"
-                          >
+                          <button mat-raised-button color="warn" (click)="deleteRow(i)" type="button"
+                            class="delete-button" matTooltip="Delete row">
                             <mat-icon>delete</mat-icon>
                           </button>
 
                           @if (editIndex !== i) {
-                          <button
-                            mat-raised-button
-                            color="accent"
-                            (click)="editRow(i)"
-                            type="button"
-                            class="edit-button"
-                            matTooltip="Edit row"
-                          >
+                          <button mat-raised-button color="accent" (click)="editRow(i)" type="button"
+                            class="edit-button" matTooltip="Edit row">
                             <mat-icon>edit</mat-icon>
                           </button>
                           } @else {
-                          <button
-                            mat-raised-button
-                            color="primary"
-                            (click)="updateRow(i)"
-                            type="button"
-                            class="update-button"
-                            matTooltip="Save changes"
-                          >
+                          <button mat-raised-button color="primary" (click)="updateRow(i)" type="button"
+                            class="update-button" matTooltip="Save changes">
                             <mat-icon>save</mat-icon>
                           </button>
                           }
@@ -194,26 +163,21 @@
       <!-- Action buttons -->
 
     </form>
-          <div class="row">
-        <div class="col-12">
-          <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="roleForm.invalid"
-              (click)="onSubmit()"
-            >
-              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
-              {{ isEditMode ? 'Update' : 'Save' }}
-            </button>
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="roleForm.invalid"
+            (click)="onSubmit()">
+            <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
 
-            <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
-              <mat-icon>close</mat-icon>
-              Cancel
-            </button>
-          </div>
+          <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
+            <mat-icon>close</mat-icon>
+            Cancel
+          </button>
         </div>
       </div>
+    </div>
   </mat-card-content>
 </mat-card>

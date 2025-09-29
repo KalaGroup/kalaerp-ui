@@ -7,22 +7,6 @@
         <form [formGroup]="qualificationForm" class="form-field-full">
             <!-- Auto-generated Fields -->
             <div class="row mb-3">
-                <!-- <div class="col-md-4">
-
-                    <mat-form-field appearance="fill" class="w-100">
-                        <mat-label>Created Date</mat-label>
-                        <input matInput formControlName="CreatedDate" readonly placeholder="Auto-generated" />
-                    </mat-form-field>
-                </div> -->
-
-                <!-- <div class="col-md-4">
-                   
-                    <mat-form-field appearance="fill" class="w-100">
-                        <mat-label>Qualification ID</mat-label>
-                        <input matInput formControlName="QualificationId" readonly
-                            [placeholder]="isEditMode ? 'Enter ID' : 'Auto-generated'" />
-                    </mat-form-field>
-                </div> -->
 
                 <div class="col-md-4">
                     <!-- Checkboxes -->
@@ -39,24 +23,26 @@
                 <!-- Left column -->
                 <div class="col-md-6">
                     <!-- Qualification Name -->
-                    <mat-form-field appearance="fill" class="w-100">
+                    <!-- Qualification Name -->
+                    <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Qualification Name</mat-label>
                         <input matInput formControlName="QualificationName" placeholder="Enter full name" />
                         <mat-error
-                            *ngIf="qualificationForm.get('QualificationName')?.invalid && qualificationForm.get('QualificationName')?.touched">
+                            *ngIf="qualificationForm.get('QualificationName')?.hasError('required') && qualificationForm.get('QualificationName')?.touched">
                             Qualification Name is required
                         </mat-error>
                     </mat-form-field>
 
                     <!-- Qualification Remark -->
-                    <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Qualification Remark</mat-label>
                         <input matInput formControlName="QualificationRemark" placeholder="Enter remark..." />
                         <mat-error
-                            *ngIf="qualificationForm.get('QualificationRemark')?.invalid && qualificationForm.get('QualificationRemark')?.touched">
+                            *ngIf="qualificationForm.get('QualificationRemark')?.hasError('required') && qualificationForm.get('QualificationRemark')?.touched">
                             Remark is required
                         </mat-error>
                     </mat-form-field>
+
 
                     <!-- Created By -->
                     <!-- <mat-form-field appearance="fill" class="w-100">
@@ -72,14 +58,16 @@
                 <!-- Right column -->
                 <div class="col-md-6">
                     <!-- Qualification Code -->
-                    <mat-form-field appearance="fill" class="w-100">
+                    <!-- Qualification Code -->
+                    <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Qualification Code</mat-label>
                         <input matInput formControlName="QualificationCode" placeholder="Enter qualification code" />
                         <mat-error
-                            *ngIf="qualificationForm.get('QualificationCode')?.invalid && qualificationForm.get('QualificationCode')?.touched">
+                            *ngIf="qualificationForm.get('QualificationCode')?.hasError('required') && qualificationForm.get('QualificationCode')?.touched">
                             Qualification Code is required
                         </mat-error>
                     </mat-form-field>
+
 
                     <!-- Qualification Type Dropdown -->
                     <mat-form-field appearance="outline" class="w-100">

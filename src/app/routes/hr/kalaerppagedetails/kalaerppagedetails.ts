@@ -216,7 +216,7 @@ export class Kalaerppagedetails {
           next: response => {
             this.toastService.showSuccess('ERP Page Detail added successfully:', response);
             this.loadAllERPPageDetails();
-            alert(`ERP Page Detail "${result.PageTittle}" added successfully!`);
+         
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -261,11 +261,12 @@ export class Kalaerppagedetails {
           this.kalaerppagedetailsService.updateERPPageDetails(result).subscribe({
             next: response => {
               this.toastService.showSuccess('ERP Page Detail updated successfully:', response);
-              alert(`ERP Page Detail "${result.PageTittle}" updated successfully!`);
+             
               this.loadAllERPPageDetails();
             },
             error: err => {
               console.error('Error updating ERP Page Details:', err);
+              this.toastService.showError('Failed to update ERP Page Details. Please check inputs.');
             },
           });
         }
@@ -286,7 +287,7 @@ export class Kalaerppagedetails {
     this.kalaerppagedetailsService.deleteERPPageDetails(value.KalaErppageDetailsId).subscribe({
       next: response => {
         this.toastService.showSuccess('ERP Page Details deleted successfully:', response);
-        alert(`You have deleted ${value.PageTittle} successfully!`);
+     
         this.loadAllERPPageDetails();
       },
       error: err => {

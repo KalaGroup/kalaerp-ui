@@ -208,7 +208,7 @@ export class Currencymaster implements OnInit {
         this.currencyService.updateCurrency(updatePayload).subscribe({
           next: (response) => {
             console.log('Country updated successfully:', response);
-            alert(`Country "${result.CurrencyName}" updated successfully!`);
+
             this.loadAllCurrencies();
           },
           error: (err) => {
@@ -273,10 +273,12 @@ export class Currencymaster implements OnInit {
     this.currencyService.deleteCurrency(record.CurrencyId).subscribe({
       next: () => {
         this.loadAllCurrencies();
+        this.toastService.showSuccess('Currency deleted successfully');
         // Show success message
       },
       error: (err) => {
         console.error('Error deleting currency:', err);
+        this.toastService.showError('Failed to delete currency. It might be in use.');  
         // Show error message
       }
     });

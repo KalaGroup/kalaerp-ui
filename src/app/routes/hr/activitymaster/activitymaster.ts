@@ -218,12 +218,13 @@ export class Activitymaster implements OnInit {
         console.log('Update payload:', updatePayload);
         this.ActivityServices.updateActivity(updatePayload).subscribe({
           next: () => {
-            alert(`Activity updated successfully!`);
+
             this.toastService.showSuccess("Activity updated successfully");
             this.loadAllActivity();
           },
           error: (err) => {
             console.error('Error updating activity:', err);
+            this.toastService.showError('Failed to update activity. Please check inputs.');
             this.loadAllActivity();
           }
         });
@@ -259,7 +260,6 @@ export class Activitymaster implements OnInit {
         this.ActivityServices.insertActivity(payload).subscribe({
           next: () => {
             this.toastService.showSuccess('Activity added successfully:');
-            alert(`Activity added successfully!`);
 
             this.loadAllActivity();
           },
@@ -277,11 +277,12 @@ export class Activitymaster implements OnInit {
       next: (response) => {
         console.log('Delete success:', response);
         this.toastService.showSuccess('Delete  successfully:');
-        alert(`deleted successfully!`);
+
         this.loadAllActivity();
       },
       error: (err) => {
-        console.error('Error deleting Petrol:', err);
+        console.error('Error deleting activity:', err);
+        this.toastService.showError('Failed to delete activity. It might be in use.');
       }
     });
   }

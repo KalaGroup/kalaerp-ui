@@ -8,12 +8,8 @@
         <div class="col-sm-4 col-xl-3">
           <mat-form-field *ngIf="isEditMode" appearance="fill">
             <mat-label>CompEntityType ID</mat-label>
-            <input
-              matInput
-              formControlName="CompEntityTypeId"
-              [readonly]="true"
-              placeholder="Enter Company Entity Type ID"
-            />
+            <input matInput formControlName="CompEntityTypeId" [readonly]="true"
+              placeholder="Enter Company Entity Type ID" />
           </mat-form-field>
         </div>
 
@@ -25,7 +21,8 @@
             <mat-checkbox formControlName="CompanyEntityTypeIsActive" color="primary" [disabled]="!isEditMode">
               Active
             </mat-checkbox>
-            <mat-checkbox formControlName="CompanyEntityTypeIsDiscard" color="primary" [disabled]="!isEditMode" *ngIf="isEditMode">
+            <mat-checkbox formControlName="CompanyEntityTypeIsDiscard" color="primary" [disabled]="!isEditMode"
+              *ngIf="isEditMode">
               Discard
             </mat-checkbox>
           </div>
@@ -35,22 +32,27 @@
       <div class="row mb-3">
         <!-- Left side  -->
         <div class="col-sm-6 col-xl-6">
+          <!-- Company Entity Type Name -->
           <mat-form-field appearance="fill" class="w-100">
-            <mat-label>Name</mat-label>
+            <mat-label>Company Entity Type Name</mat-label>
             <input matInput formControlName="CompanyEntityTypeName" placeholder="Enter Company EntityType Name" />
-            @if (companyentitytypeForm.get('CompanyEntityTypeName')?.invalid && companyentitytypeForm.get('CompanyEntityTypeName')?.touched) {
-              <mat-error>Company Name is required</mat-error>
-            }
+            <mat-error
+              *ngIf="companyentitytypeForm.get('CompanyEntityTypeName')?.hasError('required') && companyentitytypeForm.get('CompanyEntityTypeName')?.touched">
+              Company Name is required
+            </mat-error>
           </mat-form-field>
 
 
+          <!-- Company Entity Type Remark -->
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="CompanyEntityTypeRemark" placeholder="Enter remark..." />
-            @if (companyentitytypeForm.get('CompanyEntityTypeRemark')?.invalid && companyentitytypeForm.get('CompanyEntityTypeRemark')?.touched) {
-              <mat-error>Remark is required</mat-error>
-            }
+            <mat-error
+              *ngIf="companyentitytypeForm.get('CompanyEntityTypeRemark')?.hasError('required') && companyentitytypeForm.get('CompanyEntityTypeRemark')?.touched">
+              Remark is required
+            </mat-error>
           </mat-form-field>
+
         </div>
 
         <!-- Right side  -->
@@ -58,11 +60,14 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="fill" class="w-100">
             <mat-label>Short Name</mat-label>
-            <input matInput formControlName="CompanyEntityTypeShortName" placeholder="Enter Company Entity Type Short Name" (input)="toUpperCase($event)" />
-            @if (companyentitytypeForm.get('CompanyEntityTypeShortName')?.invalid && companyentitytypeForm.get('CompanyEntityTypeShortName')?.touched) {
-              <mat-error>Company Short Name is required</mat-error>
-            }
+            <input matInput formControlName="CompanyEntityTypeShortName"
+              placeholder="Enter Company Entity Type Short Name" (input)="toUpperCase($event)" />
+            <mat-error *ngIf="companyentitytypeForm.get('CompanyEntityTypeShortName')?.hasError('required') 
+          && companyentitytypeForm.get('CompanyEntityTypeShortName')?.touched">
+              Company Short Name is required
+            </mat-error>
           </mat-form-field>
+
 
         </div>
       </div>
@@ -71,13 +76,8 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="companyentitytypeForm.invalid"
-              (click)="onSubmit()"
-            >
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="companyentitytypeForm.invalid"
+              (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>

@@ -335,7 +335,7 @@ export class Ctcmaster {
           next: response => {
             this.toastService.showSuccess('CTCStructure added successfully:', response);
             this.loadAllCTC();
-            alert(`CTCStructure "${result.CtcmasterGradeId}" added successfully!`);
+
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -404,11 +404,12 @@ export class Ctcmaster {
           this.ctcstructureService.updateCtcstructure(updatePayload).subscribe({
             next: response => {
               this.toastService.showSuccess('CTCStructure updated successfully:', response);
-              alert(`CTCStructure "${result.CtcmasterGradeId}" updated successfully!`);
+
               this.loadAllCTC();
             },
             error: err => {
               console.error('Error updating CTCStructure:', err);
+              this.toastService.showError('Failed to update CTCStructure. Please check inputs.');
             },
           });
         }
@@ -428,11 +429,12 @@ export class Ctcmaster {
     this.ctcstructureService.deleteCtcstructure(value.CtcstructureId).subscribe({
       next: response => {
         this.toastService.showSuccess('CTCStructure deleted successfully:', response);
-        alert(`You have deleted ${value.CtcmasterGradeId} successfully!`);
+
         this.loadAllCTC();
       },
       error: err => {
         console.error('Error deleting CTCStructure:', err);
+        this.toastService.showError('Failed to delete CTCStructure. It might be in use.');
       },
     });
   }

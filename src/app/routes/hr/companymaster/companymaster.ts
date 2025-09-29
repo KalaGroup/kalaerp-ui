@@ -76,7 +76,7 @@ export class Companymaster {
     private companyService: Companyservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.loadAllCompanies();
   }

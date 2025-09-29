@@ -33,43 +33,56 @@
       <div class="row mb-3">
         <!-- Left side (City Name, Short Name, Latitude, Longitude, Remark) -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Recruitment Attribute Name</mat-label>
             <input matInput formControlName="RecruitmentAttributeName" placeholder="Enter Recruitment Attribute Name" />
-            <!-- @if (cityForm.get('CityName')?.invalid && cityForm.get('CityName')?.touched) {
-              <mat-error>City Name is required</mat-error>
-            } -->
+            <mat-error
+              *ngIf="recruitmentattributeForm.get('RecruitmentAttributeName')?.hasError('required') && recruitmentattributeForm.get('RecruitmentAttributeName')?.touched">
+              Recruitment Attribute Name is required
+            </mat-error>
           </mat-form-field>
 
 
 
-          <mat-form-field appearance="fill" class="w-100">
+
+          <!-- Remark -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="RecruitmentAttributeRemark" placeholder="Enter remark..." />
-            <!-- @if (cityForm.get('CityRemark')?.invalid && cityForm.get('CityRemark')?.touched) {
-              <mat-error>City Remark is required</mat-error>
-            } -->
+            <mat-error
+              *ngIf="recruitmentattributeForm.get('RecruitmentAttributeRemark')?.hasError('required') && recruitmentattributeForm.get('RecruitmentAttributeRemark')?.touched">
+              Remark is required
+            </mat-error>
           </mat-form-field>
         </div>
 
         <!-- Right side (Country, State, District, Tier Type) -->
 
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- Marks -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Marks</mat-label>
             <input matInput formControlName="RecruitmentAttributeMarks" placeholder="Enter Marks" type="number" />
-            <!-- @if (cityForm.get('CityCode')?.invalid && cityForm.get('CityCode')?.touched) {
-              <mat-error>City Code is required</mat-error>
-            } -->
+            <mat-error
+              *ngIf="recruitmentattributeForm.get('RecruitmentAttributeMarks')?.hasError('required') && recruitmentattributeForm.get('RecruitmentAttributeMarks')?.touched">
+              Marks are required
+            </mat-error>
+            <mat-error
+              *ngIf="recruitmentattributeForm.get('RecruitmentAttributeMarks')?.hasError('min') && recruitmentattributeForm.get('RecruitmentAttributeMarks')?.touched">
+              Marks must be greater than 0
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100" *ngIf="isEditMode">
-            <mat-label> Auth Remark</mat-label>
+          <!-- Auth Remark (visible only in edit mode) -->
+          <mat-form-field appearance="outline" class="w-100" *ngIf="isEditMode">
+            <mat-label>Auth Remark</mat-label>
             <input matInput formControlName="RecruitmentAttributeAuthRemark" placeholder="Enter remark..." />
-            <!-- @if (cityForm.get('RecruitmentAttributeAuthRemark')?.invalid && cityForm.get('RecruitmentAttributeAuthRemark')?.touched) {
-            <mat-error> Remark is required</mat-error>
-            } -->
+            <mat-error
+              *ngIf="recruitmentattributeForm.get('RecruitmentAttributeAuthRemark')?.hasError('required') && recruitmentattributeForm.get('RecruitmentAttributeAuthRemark')?.touched">
+              Auth Remark is required
+            </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 

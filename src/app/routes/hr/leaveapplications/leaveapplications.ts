@@ -336,12 +336,13 @@ export class Leaveapplications {
     this.LeaveApplicationServices.deleteLeaveApplication(value.LeaveApplicationId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-        alert(`Leave Application deleted successfully!`);
+      
         this.toastService.showSuccess("Leave Application delete successfully");
         this.getAllLeaveApplication();
       },
       error: (err) => {
         console.error('Error deleting Petrol:', err);
+        this.toastService.showError('Failed to delete Leave Application. It might be in use.');
       }
     });
   }

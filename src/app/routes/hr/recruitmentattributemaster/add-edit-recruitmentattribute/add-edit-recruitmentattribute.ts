@@ -69,15 +69,15 @@ export class AddEditRecruitmentattribute {
     this.recruitmentattributeForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
       //FaciltyCode: [{ value: '', disabled: this.isEditMode }],
-      RecruitmentAttributeId: [this.isEditMode && this.data.recruitmentattribute ? this.data.recruitmentattribute.RecruitmentAttributeId : 0],
+      RecruitmentAttributeId: [0],
       RecruitmentAttributeName: ['', [Validators.required]],
       RecruitmentAttributeMarks: [''],
       RecruitmentAttributeRemark: [''],
       RecruitmentAttributeAuthRemark: ['ok'],
       RecruitmentAttributeAuth: [{ value: true, disabled: !this.isEditMode }],
       RecruitmentAttributeIsDiscard: [{ value: false, disabled: !this.isEditMode }],
-      RecruitmentAttributeIsActive: [{ value: true, disabled: this.isEditMode }],
-      CreatedBy: [0]
+      RecruitmentAttributeIsActive: [{ value: true, disabled: !this.isEditMode }],
+      CreatedBy: [5]
     });
 
     if (this.isEditMode && this.data.recruitmentattribute) {
@@ -90,10 +90,10 @@ export class AddEditRecruitmentattribute {
         RecruitmentAttributeRemark: this.data.recruitmentattribute.RecruitmentAttributeRemark || '',
         RecruitmentAttributeAuthRemark: this.data.recruitmentattribute.RecruitmentAttributeAuthRemark || '',
         RecruitmentAttributeIsActive: this.data.recruitmentattribute.RecruitmentAttributeIsActive ?? true,
-        RecruitmentAttributeIsDiscard: this.data.recruitmentattribute.RecruitmentAttributeIsDiscard ?? true,
+        RecruitmentAttributeIsDiscard: this.data.recruitmentattribute.RecruitmentAttributeIsDiscard ?? false,
         RecruitmentAttributeAuth: this.data.recruitmentattribute.RecruitmentAttributeAuth ?? true,
 
-        CreatedBy: this.data.recruitmentattribute.CreatedBy ?? 0
+        CreatedBy: this.data.recruitmentattribute.CreatedBy ?? 5
       });
 
     }

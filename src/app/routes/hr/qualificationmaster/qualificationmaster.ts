@@ -168,10 +168,10 @@ export class Qualificationmaster implements OnInit {
     // debugger; // Remove before production
 
     this.dialog.open<AddEditQualification, { qualification: IQualification }, IQualification>(AddEditQualification, {
-      width: '80%',
+      width: '70%',
       height: '70%',
       maxWidth: '100vw',
-      maxHeight: '100vh',
+      maxHeight: '90vh',
       data: { qualification: record },
     }).afterClosed().subscribe(result => {
       if (result) {
@@ -196,13 +196,13 @@ export class Qualificationmaster implements OnInit {
         this.QualificationServices.updateQualification(updatePayload).subscribe({
           next: (response) => {
             console.log('Qualification updated successfully:', response);
-            alert(`Qualification "${result.QualificationName}" updated successfully!`);
+         
             this.toastService.showSuccess("Qualification updated successfully");
             this.loadAllQualification();
           },
           error: (err) => {
             console.error('Error updating Qualification:', err);
-            alert('Error updating qualification. Please try again.');
+            this.toastService.showError('Failed to update Qualification. Please check inputs.');
           }
         });
       }
@@ -244,7 +244,7 @@ export class Qualificationmaster implements OnInit {
             console.log('Qualification added successfully:', response);
             this.loadAllQualification();
             this.toastService.showSuccess("Qualification added successfully");
-            alert(`Qualification added successfully!`);
+           
 
           },
           error: (err) => {
@@ -272,10 +272,11 @@ export class Qualificationmaster implements OnInit {
         console.log('Qualification deleted successfully:', response);
         this.toastService.showSuccess("Qualification delete successfully")
         this.loadAllQualification();
-        alert(`Qualification deleted successfully!`);
+       
       },
       error: (err) => {
         console.error('Error deleting Qualification:', err);
+        this.toastService.showError('Failed to delete Qualification. It might be in use.');
       }
     });
   }

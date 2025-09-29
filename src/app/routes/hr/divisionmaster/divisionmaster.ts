@@ -2,7 +2,7 @@ import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule }   from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,17 +23,17 @@ import { IDivision } from '@shared/interfaces/hr/division';
 
 @Component({
   selector: 'app-divisionmaster',
-  imports: [CommonModule,MatTableModule,MatCardModule,MatDividerModule,MatButtonModule,MatIconModule,
+  imports: [CommonModule, MatTableModule, MatCardModule, MatDividerModule, MatButtonModule, MatIconModule,
     ReactiveFormsModule, FormsModule, MatFormFieldModule, MatCheckboxModule, MatRadioModule, MtxGridModule,
-    PageHeader,MatDialogModule
+    PageHeader, MatDialogModule
   ],
   templateUrl: './divisionmaster.html',
   styleUrl: './divisionmaster.scss'
 })
 export class Divisionmaster implements OnInit {
-   private readonly translate = inject(TranslateService);
-   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
-    dialogRef!: MatDialogRef<any>;
+  private readonly translate = inject(TranslateService);
+  @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
+  dialogRef!: MatDialogRef<any>;
 
   division: IDivision[] = [];
   showForm = false;
@@ -56,208 +56,209 @@ export class Divisionmaster implements OnInit {
   isLoading = false;
   list: IDivision[] = [];
   isConfigExpanded: boolean = false;
-    divisionForm: any;
+  divisionForm: any;
 
 
-  constructor(private fb: FormBuilder,private divisionService: Divisionservice,private dialog: MatDialog,private toastService:Toastservice) {}
-    ngOnInit(): void {
-     this.getAllDivision();
-   }
+  constructor(private fb: FormBuilder, private divisionService: Divisionservice, private dialog: MatDialog, private toastService: Toastservice) { }
+  ngOnInit(): void {
+    this.getAllDivision();
+  }
 
-    toggleConfigSection(): void {
+  toggleConfigSection(): void {
     this.isConfigExpanded = !this.isConfigExpanded;
   }
 
   columns: MtxGridColumn[] = [
-  {
-    header: this.translate.stream('SNo'),
-    field: 'SNo',
-    sortable: true,
-    minWidth: 80,
-    width: '60px',
-  },
     {
-    header: this.translate.stream('Division Name'),
-    field: 'DivisionName',
-    sortable: true,
-    minWidth: 80,
-    width: '200px',
-  },
-  {
-    header: this.translate.stream('Division Short Name'),
-    field: 'DivisionShortName',
-    sortable: true,
-    minWidth: 120,
-    width: '250px',
-  },
-  {
-    header: this.translate.stream('Division Mail Id'),
-    field: 'DivisionMailId',
-    sortable: true,
-    minWidth: 150,
-    width: '250px',
-  },
-  {
-    header: this.translate.stream('Division Remark'),
-    field: 'DivisionRemark',
-    sortable: true,
-    minWidth: 150,
-    width: '300px',
-  },
-    {
-    header: this.translate.stream('Division Auth Remark'),
-    field: 'DivisionAuthRemark',
-    sortable: true,
-    minWidth: 150,
-    width: '300px',
-  },
-      {
-    header: this.translate.stream('Division Is Active'),
-    field: 'DivisionIsActive',
-    sortable: true,
-    minWidth: 150,
-    width: '80px',
-  },
-      {
-    header: this.translate.stream('Division Is Discard'),
-    field: 'DivisionIsDiscard',
-    sortable: true,
-    minWidth: 150,
-    width: '80px',
-  },
-
-  {
-    header: this.translate.stream('Action'),
-    field: 'action',
-    minWidth: 140,
-    width: '140px',
-    pinned: 'right',
-    type: 'button',
-    buttons: [
-      {
-        type: 'icon',
-        icon: 'edit',
-        tooltip: this.translate.stream('edit'),
-        click: (record: any) => this.edit(record),
-      },
-      {
-        type: 'icon',
-        color: 'warn',
-        icon: 'delete',
-        tooltip: this.translate.stream('delete'),
-        pop: {
-          title: this.translate.stream('confirm_delete'),
-          closeText: this.translate.stream('close'),
-          okText: this.translate.stream('ok'),
-        },
-        click: record => this.delete(record),
-      },
-    ],
-  },
-];
-
-getAllDivision() {
-  debugger;
-  this.divisionService.getAllDivision().subscribe({
-    next: (data) => {
-      this.list = data.map((item: any, index: number) => ({
-        ...item,
-        SNo: index + 1
-      }));
-      console.log('Fetched Division with S.No:', this.list);
+      header: this.translate.stream('SNo'),
+      field: 'SNo',
+      sortable: true,
+      minWidth: 80,
+      width: '60px',
     },
-    error: (err) => {
-      console.error('Error fetching Division:', err);
-    }
-  });
-}
+    {
+      header: this.translate.stream('Division Name'),
+      field: 'DivisionName',
+      sortable: true,
+      minWidth: 80,
+      width: '200px',
+    },
+    {
+      header: this.translate.stream('Division Short Name'),
+      field: 'DivisionShortName',
+      sortable: true,
+      minWidth: 120,
+      width: '250px',
+    },
+    {
+      header: this.translate.stream('Division Mail Id'),
+      field: 'DivisionMailId',
+      sortable: true,
+      minWidth: 150,
+      width: '250px',
+    },
+    {
+      header: this.translate.stream('Division Remark'),
+      field: 'DivisionRemark',
+      sortable: true,
+      minWidth: 150,
+      width: '300px',
+    },
+    {
+      header: this.translate.stream('Division Auth Remark'),
+      field: 'DivisionAuthRemark',
+      sortable: true,
+      minWidth: 150,
+      width: '300px',
+    },
+    {
+      header: this.translate.stream('Division Is Active'),
+      field: 'DivisionIsActive',
+      sortable: true,
+      minWidth: 150,
+      width: '80px',
+    },
+    {
+      header: this.translate.stream('Division Is Discard'),
+      field: 'DivisionIsDiscard',
+      sortable: true,
+      minWidth: 150,
+      width: '80px',
+    },
 
-edit(record: any) {
-  // Open dialog, pass in the record
-  this.dialog.open(AddEditDivision, {
-    width: '80%',
-    height: '70%',
-    maxWidth: '100vw',
-    maxHeight: '100vh',
-    data: { division: record },
-  }).afterClosed().subscribe(result => {
-    if (result) {
-       console.log('Division Updated:', result);
-    //Create update payload
-     const updatePayload: IDivision = {
-       DivisionId: result.DivisionId,
-       DivisionCode: result.DivisionCode,
-       DivisionName: result.DivisionName,
-       DivisionShortName: result.DivisionShortName,
-        DivisionMailId: result.DivisionMailId,
-        DivisionRemark: result.DivisionRemark,
-        DivisionAuthRemark: result.DivisionAuthRemark,
-        DivisionAuth: result.DivisionAuth,
-        DivisionIsDiscard: result.DivisionIsDiscard,
-        DivisionIsActive: result.DivisionIsActive,
-        CreatedBy: '1', // or use actual user ID
-        CreatedDate: result.CreatedDate,
-     };
-          console.log('Update payload:', updatePayload);
-          this.divisionService.updateDivision(updatePayload).subscribe({
-            next: (response) => {
-              console.log('Division updated successfully:', response);
-              alert(`Division "${result.DivisionName}" updated successfully!`);
-              this.getAllDivision();
-            },
-            error: (err) => {
-              console.error('Error updating Division:', err);
-            }
-          });
-        }
-      });
-}
+    {
+      header: this.translate.stream('Action'),
+      field: 'action',
+      minWidth: 140,
+      width: '140px',
+      pinned: 'right',
+      type: 'button',
+      buttons: [
+        {
+          type: 'icon',
+          icon: 'edit',
+          tooltip: this.translate.stream('edit'),
+          click: (record: any) => this.edit(record),
+        },
+        {
+          type: 'icon',
+          color: 'warn',
+          icon: 'delete',
+          tooltip: this.translate.stream('delete'),
+          pop: {
+            title: this.translate.stream('confirm_delete'),
+            closeText: this.translate.stream('close'),
+            okText: this.translate.stream('ok'),
+          },
+          click: record => this.delete(record),
+        },
+      ],
+    },
+  ];
 
- openAddDialog() {
-   const dialogRef = this.dialog.open(AddEditDivision, {
-     width: '60%',
-     height: '60%',
-     maxWidth: '100vw',
-     maxHeight: '100vh',
-     data: {}, // empty for add
-   });
+  getAllDivision() {
+    debugger;
+    this.divisionService.getAllDivision().subscribe({
+      next: (data) => {
+        this.list = data.map((item: any, index: number) => ({
+          ...item,
+          SNo: index + 1
+        }));
+        console.log('Fetched Division with S.No:', this.list);
+      },
+      error: (err) => {
+        console.error('Error fetching Division:', err);
+      }
+    });
+  }
 
-   dialogRef.afterClosed().subscribe(result => {
-     if (result) {
-       debugger;
-       console.log('Added Division:', result);
-       const payload: IDivision = {
-         DivisionId: 0,
-         DivisionCode: result.DivisionCode,
-         DivisionName: result.DivisionName,
-         DivisionShortName: result.DivisionShortName,
-         DivisionMailId: result.DivisionMailId,
-         DivisionRemark: result.DivisionRemark,
-         DivisionAuthRemark: result.DivisionAuthRemark,
-         DivisionAuth: result.DivisionAuth,
-         DivisionIsActive: result.DivisionIsActive,
-         DivisionIsDiscard: result.DivisionIsDiscard,
-         CreatedBy: result.CreatedBy, // or use actual user ID
-         CreatedDate: new Date().toISOString(),
-       };
-       console.log('Payload for adding state:', payload);
-       // Call the service to insert the state
-       this.divisionService.insertDivision(payload).subscribe({
-         next: response => {
-           this.toastService.showSuccess('Division added successfully:', response);
-           this.getAllDivision();
-           alert(`Division "${result.DivisionName}" added successfully!`);
-         },
-         error: err => {
-           console.error('Error while adding Division:', err);
-           this.toastService.showError(
-             'Failed to add Division. Please verify Division details and try again.'
-           );
-         },
-       });
-     }
-   });
- }
+  edit(record: any) {
+    // Open dialog, pass in the record
+    this.dialog.open(AddEditDivision, {
+      width: '80%',
+      height: '70%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: { division: record },
+    }).afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Division Updated:', result);
+        //Create update payload
+        const updatePayload: IDivision = {
+          DivisionId: result.DivisionId,
+          DivisionCode: result.DivisionCode,
+          DivisionName: result.DivisionName,
+          DivisionShortName: result.DivisionShortName,
+          DivisionMailId: result.DivisionMailId,
+          DivisionRemark: result.DivisionRemark,
+          DivisionAuthRemark: result.DivisionAuthRemark,
+          DivisionAuth: result.DivisionAuth,
+          DivisionIsDiscard: result.DivisionIsDiscard,
+          DivisionIsActive: result.DivisionIsActive,
+          CreatedBy: '1', // or use actual user ID
+          CreatedDate: result.CreatedDate,
+        };
+        console.log('Update payload:', updatePayload);
+        this.divisionService.updateDivision(updatePayload).subscribe({
+          next: (response) => {
+            console.log('Division updated successfully:', response);
+
+            this.getAllDivision();
+          },
+          error: (err) => {
+            console.error('Error updating Division:', err)
+            this.toastService.showError('Failed to update Division. Please check inputs.');
+          }
+        });
+      }
+    });
+  }
+
+  openAddDialog() {
+    const dialogRef = this.dialog.open(AddEditDivision, {
+      width: '60%',
+      height: '60%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: {}, // empty for add
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        debugger;
+        console.log('Added Division:', result);
+        const payload: IDivision = {
+          DivisionId: 0,
+          DivisionCode: result.DivisionCode,
+          DivisionName: result.DivisionName,
+          DivisionShortName: result.DivisionShortName,
+          DivisionMailId: result.DivisionMailId,
+          DivisionRemark: result.DivisionRemark,
+          DivisionAuthRemark: result.DivisionAuthRemark,
+          DivisionAuth: result.DivisionAuth,
+          DivisionIsActive: result.DivisionIsActive,
+          DivisionIsDiscard: result.DivisionIsDiscard,
+          CreatedBy: result.CreatedBy, // or use actual user ID
+          CreatedDate: new Date().toISOString(),
+        };
+        console.log('Payload for adding state:', payload);
+        // Call the service to insert the state
+        this.divisionService.insertDivision(payload).subscribe({
+          next: response => {
+            this.toastService.showSuccess('Division added successfully:', response);
+            this.getAllDivision();
+
+          },
+          error: err => {
+            console.error('Error while adding Division:', err);
+            this.toastService.showError(
+              'Failed to add Division. Please verify Division details and try again.'
+            );
+          },
+        });
+      }
+    });
+  }
 
   closeDialog(): void {
     this.dialogRef.close();
@@ -268,24 +269,25 @@ edit(record: any) {
     this.closeDialog();
   }
 
-    delete(value: any) {
-   debugger;
+  delete(value: any) {
+    debugger;
     this.divisionService.deleteDivision(value.DivisionId).subscribe({
       next: (response) => {
-         this.toastService.showSuccess('Division Deleted successfully:', response);
+        this.toastService.showSuccess('Division Deleted successfully:', response);
 
         console.log('Division deleted successfully:', response);
 
-        alert(`You have deleted ${value.DivisionName}..!`);
+
         this.getAllDivision();
       },
       error: (err) => {
         console.error('Error deleting Division:', err);
+        this.toastService.showError('Failed to delete Division. It might be in use.');
       }
     });
   }
 
-   changeSelect(e: any) {
+  changeSelect(e: any) {
     console.log(e);
   }
 
@@ -293,11 +295,11 @@ edit(record: any) {
     console.log(e);
   }
 
-   enableRowExpandable() {
+  enableRowExpandable() {
     this.columns[0].showExpand = this.expandable;
   }
 
-   updateCell() {
+  updateCell() {
     this.list = this.list.map(item => {
       item.weight = Math.round(Math.random() * 1000) / 100;
       return item;

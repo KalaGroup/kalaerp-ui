@@ -79,7 +79,7 @@ export class Holidaymaster implements OnInit {
     private holidayService: Holidayservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.loadAllHoliday();
   }
@@ -232,7 +232,7 @@ export class Holidaymaster implements OnInit {
           next: response => {
             this.toastService.showSuccess('Holiday added successfully:', response);
             this.loadAllHoliday();
-            alert(`Holiday "${result.HolidayFor}" added successfully!`);
+
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -292,11 +292,12 @@ export class Holidaymaster implements OnInit {
           this.holidayService.updateHoliday(updatePayload).subscribe({
             next: response => {
               this.toastService.showSuccess('Holiday updated successfully:', response);
-              alert(`Holiday "${result.HolidayFor}" updated successfully!`);
+
               this.loadAllHoliday();
             },
             error: err => {
               console.error('Error updating Holiday:', err);
+              this.toastService.showError('Failed to update Holiday. Please check inputs.');
             },
           });
         }
@@ -317,11 +318,14 @@ export class Holidaymaster implements OnInit {
     this.holidayService.deleteHoliday(value.HolidayId).subscribe({
       next: response => {
         console.log('Holiday deleted successfully:', response);
-        alert(`You have deleted ${value.HolidayFor} successfully!`);
+        this.toastService.showSuccess('Holiday deleted successfully:', response);
+
         this.loadAllHoliday();
       },
+
       error: err => {
         console.error('Error deleting Holiday:', err);
+        this.toastService.showError('Failed to delete Holiday. It might be in use.');
       },
     });
   }

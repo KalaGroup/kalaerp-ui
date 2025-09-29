@@ -63,14 +63,19 @@
 
 
                     <!-- Budget Head Dropdown -->
-                    <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Employee</mat-label>
-                        <mat-select formControlName="ProfitCenterBudgetHeadId">
+                        <mat-select formControlName="ProfitCenterBudgetHeadId" placeholder="Select Employee">
                             <mat-option *ngFor="let employee of EmployeeList" [value]="employee.EmployeeMasterId">
                                 {{ employee.EmployeeMasterFullName }}
                             </mat-option>
                         </mat-select>
+                        <mat-error *ngIf="profitcenterBudgetForm.get('ProfitCenterBudgetHeadId')?.invalid 
+          && profitcenterBudgetForm.get('ProfitCenterBudgetHeadId')?.touched">
+                            Employee is required
+                        </mat-error>
                     </mat-form-field>
+
                 </div>
 
                 <!-- Budget Remark -->

@@ -57,7 +57,7 @@ export class AddEditFacility implements OnInit {
       FacilityName: ['', [Validators.required]],
       FacilityRemark: [''],
       FacilityAuth: [{ value: true, disabled: !this.isEditMode }],
-      // FacilityIsDiscard: [{ value: false, disabled: !this.isEditMode }],
+      FacilityIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       FacilityIsActive: [{ value: true, disabled: !this.isEditMode }],
       CreatedBy: [0]
     });

@@ -202,7 +202,7 @@ export class Qualificationtypemaster implements OnInit {
             next: response => {
               this.toastService.showSuccess('Qualificationtype added successfully:', response);
               this.loadAllQualificationtype();
-              alert(`Qualificationtype "${result.QualificationTypeName}" added successfully!`);
+       
             },
             error: err => {
               if (err.status === 400 && err.error) {
@@ -260,7 +260,7 @@ export class Qualificationtypemaster implements OnInit {
           this.qualificationtypeService.updateQualificationtype(updatePayload).subscribe({
             next: (response) => {
               this.toastService.showSuccess('Qualificationtype updated successfully:', response);
-              alert(`Qualificationtype "${result.QualificationTypeName}" updated successfully!`);
+            
               this.loadAllQualificationtype(); 
             },
             error: (err) => {
@@ -285,7 +285,7 @@ export class Qualificationtypemaster implements OnInit {
     this.qualificationtypeService.deleteQualificationtype(value.QualificationTypeId).subscribe({
       next: response => {
         this.toastService.showSuccess('Qualificationtype deleted successfully:', response);
-        alert(`You have deleted ${value.QualificationTypeName} successfully!`);
+      
         this.loadAllQualificationtype();
       },
       error: err => {

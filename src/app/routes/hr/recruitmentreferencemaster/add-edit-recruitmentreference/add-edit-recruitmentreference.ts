@@ -61,9 +61,9 @@ export class AddEditRecruitmentreference implements OnInit {
       RecruitmentReferenceName: ['', Validators.required],
       RecruitmentReferenceRemark: [''],
       RecruitmentReferenceAuthRemark: ['ok'],
-      RecruitmentReferenceAuth: [true],
-      RecruitmentReferenceIsActive: [true],
-      RecruitmentReferenceIsDiscard: [false],
+      RecruitmentReferenceAuth: [{ value: true, disabled: !this.isEditMode }],
+      RecruitmentReferenceIsActive: [{ value: true, disabled: !this.isEditMode }],
+      RecruitmentReferenceIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       CreatedBy: [1], // default user ID, replace with logged-in user if available
       CreatedDate: [currentDate]
     });

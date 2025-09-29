@@ -192,12 +192,13 @@ export class Petrolallowancemaster implements OnInit {
         console.log('Update payload:', updatePayload);
         this.PetrolAllowanceservice.updatePetrolAllowance(updatePayload).subscribe({
           next: () => {
-            alert(`petrolallowance updated successfully!`);
+          
             this.toastService.showSuccess("petrolallowance updated successfully");
             this.getAllPetrolAllowance();
           },
           error: (err) => {
             console.error('Error updating petrolallowance:', err);
+            this.toastService.showError('Failed to update petrolallowance. Please check inputs.');
           }
         });
       });
@@ -228,7 +229,7 @@ export class Petrolallowancemaster implements OnInit {
 
         this.PetrolAllowanceservice.insertPetrolAllowance(payload).subscribe({
           next: () => {
-            alert(`petrolallowance added successfully!`);
+        
             this.toastService.showSuccess("petrolallowance added successfully");
             this.getAllPetrolAllowance();
           },
@@ -246,12 +247,13 @@ export class Petrolallowancemaster implements OnInit {
     this.PetrolAllowanceservice.deletePetrolAllowance(value.PetrolAllowanceId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-        alert(`Petrol Allowance deleted successfully!`);
+       
         this.toastService.showSuccess("petrolallowance delete successfully");
         this.getAllPetrolAllowance();
       },
       error: (err) => {
         console.error('Error deleting Petrol:', err);
+        this.toastService.showError('Failed to delete Petrol Allowance. It might be in use.');
       }
     });
   }

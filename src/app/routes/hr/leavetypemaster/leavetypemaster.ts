@@ -230,7 +230,7 @@ export class Leavetypemaster implements OnInit {
         console.log('Update payload (LeaveType):', updatePayload);
         this.LeaveTypeMasterservice.updateLeaveTypemaster(updatePayload).subscribe({
           next: () => {
-            alert("Leave Type updated successfully!")
+            
             this.toastService.showSuccess("Leave Type updated successfully!");
             this.getAllLeaveTypemaster();
           },
@@ -278,7 +278,7 @@ export class Leavetypemaster implements OnInit {
 
         this.LeaveTypeMasterservice.insertLeaveTypemaster(payload).subscribe({
           next: () => {
-            alert("Leave Type Added successfully!")
+         
             this.toastService.showSuccess("Leave Type added successfully!");
             this.getAllLeaveTypemaster();
           },
@@ -296,12 +296,13 @@ export class Leavetypemaster implements OnInit {
     this.LeaveTypeMasterservice.deleteLeaveTypemaster(value.LeaveTypeMasterId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-        alert(`Leave deleted successfully!`);
+      
         this.toastService.showSuccess("Leave delete successfully");
         this.getAllLeaveTypemaster();
       },
       error: (err) => {
         console.error('Error deleting Leave:', err);
+        this.toastService.showError('Failed to delete Leave Type. It might be in use.');
       }
     });
   }

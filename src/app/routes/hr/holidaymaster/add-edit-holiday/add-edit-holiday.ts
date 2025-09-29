@@ -49,11 +49,8 @@ export class AddEditHoliday implements OnInit {
   code: string = '';
   companiesSearchControl = new FormControl('');
   filteredCompaniesList: any[] = [];
-  filteredHolidayFYList: any[] = [
-  { HolidayFy: '25-26' },   // ✅ Hardcoded FY
-  { HolidayFy: '26-27' },   // (optional) Next year
-  { HolidayFy: '24-25' },   // (optional) Previous year
-];
+
+  FinancialYearList: any[] = [];
 
   constructor(
     private holidayService: Holidayservice,
@@ -70,6 +67,7 @@ export class AddEditHoliday implements OnInit {
   ngOnInit(): void {
     this.initializeForm();
     this.loadAllCompanies();
+    this.loadAllFinancialYear();
   }
 
   private initializeForm(): void {
@@ -77,13 +75,13 @@ export class AddEditHoliday implements OnInit {
     const currentDate = new Date().toLocaleDateString('en-GB');
     this.holidayForm = this.fb.group({
       HolidayId: [''],
-      HolidayFy: ['25-26', Validators.required],
+      HolidayFy: ['', Validators.required],
       HolidayDate: ['', Validators.required],
       HolidayFor: ['', Validators.required],
       HolidayCompanyId: ['', Validators.required],
       HolidayRemark: [''],
       HolidayAuth: [{ value: true, disabled: !this.isEditMode }],
-      HolidayAuthRemark: ['NIL', Validators.required],
+      HolidayAuthRemark: ['NIL'],
       HolidayIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       HolidayIsActive: [{ value: true, disabled: !this.isEditMode }],
       CreatedBy: ['10'],
@@ -159,6 +157,35 @@ export class AddEditHoliday implements OnInit {
       console.log('Company set in form:', CompanyId);
     } else {
       console.log('No Company ID found for Company name:', companyData?.CompanyName);
+    }
+  }
+
+
+
+  loadAllFinancialYear(): void {
+
+    this.holidayService.getAllFinancialYear().subscribe({
+      next: res => {
+        this.FinancialYearList = res;
+        console.log('FinancialYearList:', this.FinancialYearList);
+
+        if (this.isEditMode && this.data) {
+          this.setFinancialyearForEdit();
+        }
+      },
+      error: err => console.error('Error loading Financial Years', err)
+    });
+  }
+
+  private setFinancialyearForEdit(): void {
+    debugger
+    const profitcenterData = this.data.holiday;
+
+    if (profitcenterData?.ProfitcenterFy) {
+      this.holidayForm.patchValue({
+        HolidayFy: profitcenterData.HolidayFy
+      });
+      console.log('Financial Year patched:', profitcenterData.HolidayFy);
     }
   }
 

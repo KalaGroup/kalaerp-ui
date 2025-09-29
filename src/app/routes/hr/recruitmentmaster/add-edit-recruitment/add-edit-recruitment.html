@@ -38,22 +38,32 @@
         </div>
 
         <div class="col-sm-4 col-xl-4">
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- Recruitment Reference -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Recruitment Reference</mat-label>
-            <mat-select formControlName="RecruitmentMasterReferenceId">
+            <mat-select formControlName="RecruitmentMasterReferenceId" placeholder="Select Recruitment Reference">
               <mat-option *ngFor="let ref of RecruitmentReferenceList" [value]="ref.RecruitmentReferenceId">
                 {{ ref.RecruitmentReferenceName }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="RecruitmentForm.get('RecruitmentMasterReferenceId')?.invalid 
+          && RecruitmentForm.get('RecruitmentMasterReferenceId')?.touched">
+              Recruitment Reference is required
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- Position -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Position</mat-label>
-            <mat-select formControlName="RecruitmentMasterPositionId">
+            <mat-select formControlName="RecruitmentMasterPositionId" placeholder="Select Position">
               <mat-option *ngFor="let pos of positionList" [value]="pos.PositionMasterId">
                 {{ pos.PositionMasterName }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="RecruitmentForm.get('RecruitmentMasterPositionId')?.invalid 
+          && RecruitmentForm.get('RecruitmentMasterPositionId')?.touched">
+              Position is required
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="w-100">
@@ -112,14 +122,19 @@
             <input matInput formControlName="RecruitmentMasterAppropriateForJobRole" placeholder="Enter Job Role" />
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Stage Status</mat-label>
-            <mat-select formControlName="RecruitmentMasterRecruitmentStageStatusId">
+            <mat-select formControlName="RecruitmentMasterRecruitmentStageStatusId" placeholder="Select Stage Status">
               <mat-option *ngFor="let status of StatusStageList" [value]="status.RecruitmentStageStatusId">
                 {{ status.RecruitmentStageStatusName }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="RecruitmentForm.get('RecruitmentMasterRecruitmentStageStatusId')?.invalid 
+          && RecruitmentForm.get('RecruitmentMasterRecruitmentStageStatusId')?.touched">
+              Stage Status is required
+            </mat-error>
           </mat-form-field>
+
         </div>
 
         <div class="col-sm-4 col-xl-4">
@@ -128,36 +143,52 @@
             <input matInput formControlName="RecruitmentMasterInterviewerComment" placeholder="Enter Comment" />
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Employee</mat-label>
-            <mat-select formControlName="RecruitmentMasterInterviewerEmployeeId">
+            <mat-select formControlName="RecruitmentMasterInterviewerEmployeeId" placeholder="Select Employee">
               <mat-option *ngFor="let employee of EmployeeList" [value]="employee.EmployeeMasterId">
                 {{ employee.EmployeeMasterFullName }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="RecruitmentForm.get('RecruitmentMasterInterviewerEmployeeId')?.invalid 
+          && RecruitmentForm.get('RecruitmentMasterInterviewerEmployeeId')?.touched">
+              Employee is required
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+
+
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Grade</mat-label>
-            <mat-select formControlName="RecruitmentMasterGradeId">
+            <mat-select formControlName="RecruitmentMasterGradeId" placeholder="Select Grade">
               <mat-option *ngFor="let grade of gradeList" [value]="grade.GradeId">
                 {{ grade.GradeName }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="RecruitmentForm.get('RecruitmentMasterGradeId')?.invalid 
+          && RecruitmentForm.get('RecruitmentMasterGradeId')?.touched">
+              Grade is required
+            </mat-error>
           </mat-form-field>
+
 
 
         </div>
 
         <div class="col-sm-4 col-xl-4">
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Designation</mat-label>
-            <mat-select formControlName="RecruitmentMasterDesignationId">
+            <mat-select formControlName="RecruitmentMasterDesignationId" placeholder="Select Designation">
               <mat-option *ngFor="let desig of designationList" [value]="desig.DesignationId">
                 {{ desig.DesignationName }}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="RecruitmentForm.get('RecruitmentMasterDesignationId')?.invalid 
+          && RecruitmentForm.get('RecruitmentMasterDesignationId')?.touched">
+              Designation is required
+            </mat-error>
           </mat-form-field>
+
 
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Current CTC</mat-label>

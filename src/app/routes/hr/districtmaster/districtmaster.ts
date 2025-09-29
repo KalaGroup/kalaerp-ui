@@ -3,7 +3,7 @@ import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule }   from '@angular/material/checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -44,8 +44,8 @@ import { Districtmasterservice } from '@shared/services/hr/districtmaster/distri
   styleUrl: './districtmaster.scss'
 })
 export class Districtmaster implements OnInit {
-expandable: any;
-private readonly translate = inject(TranslateService);
+  expandable: any;
+  private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
@@ -92,14 +92,16 @@ private readonly translate = inject(TranslateService);
     { header: this.translate.stream('Short Name'), field: 'ShortName', sortable: true, minWidth: 120 },
     { header: this.translate.stream('Country'), field: 'CountryName', sortable: true, minWidth: 120 },
     { header: this.translate.stream('State'), field: 'StateName', sortable: true, minWidth: 120 },
-    { header: this.translate.stream('Is Active'), field: 'IsActive',sortable: true,minWidth: 100},
-    { header: this.translate.stream('Is Discard'),field: 'IsDiscard',sortable: true,minWidth: 100,},
+    { header: this.translate.stream('Is Active'), field: 'IsActive', sortable: true, minWidth: 100 },
+    { header: this.translate.stream('Is Discard'), field: 'IsDiscard', sortable: true, minWidth: 100, },
     { header: this.translate.stream('Remark'), field: 'DistrictMasterRemark', sortable: true, minWidth: 150 },
-    { header: this.translate.stream('Auth'), field: 'DistrictMasterAuth', sortable: true, minWidth: 100,
-      formatter: (row: any) => row.IsDiscard ? 'Complete' : 'Pending'},
+    {
+      header: this.translate.stream('Auth'), field: 'DistrictMasterAuth', sortable: true, minWidth: 100,
+      formatter: (row: any) => row.IsDiscard ? 'Complete' : 'Pending'
+    },
     { header: this.translate.stream('Auth Remark'), field: 'DistrictMasterAuthRemark', sortable: true, minWidth: 150 },
     { header: this.translate.stream('Created By'), field: 'CreatedBy', sortable: true, minWidth: 120 },
-    { header: this.translate.stream('Created Date'), field: 'CreatedDate', sortable: true, minWidth: 100, type: 'date',  typeParameter: { format: 'dd/MM/yyyy hh:mm a' }  },
+    { header: this.translate.stream('Created Date'), field: 'CreatedDate', sortable: true, minWidth: 100, type: 'date', typeParameter: { format: 'dd/MM/yyyy hh:mm a' } },
 
     {
       header: this.translate.stream('Action'),
@@ -143,90 +145,91 @@ private readonly translate = inject(TranslateService);
     });
   }
 
-edit(record: any) {
-  this.dialog.open(AddEditDistrictComponent, {
+  edit(record: any) {
+    this.dialog.open(AddEditDistrictComponent, {
 
-    width: '80%',
-    height: '70%',
-    maxWidth: '100vw',
-    maxHeight: '100vh',
-    data: { District: record },
-  }).afterClosed().subscribe(result => {
+      width: '80%',
+      height: '70%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: { District: record },
+    }).afterClosed().subscribe(result => {
 
 
-    if (result) {
-       console.log('District Updated:', result);
+      if (result) {
+        console.log('District Updated:', result);
         // Create update payload
-      const updatePayload: IDistict = {
-        DistrictId: result.DistrictId || record.DistrictID,
-        DistrictCode: result.DistrictCode,
-        DistrictName: result.DistrictName,
-        ShortName: result.ShortName,
-        IsDiscard: result.IsDiscard,
-        IsActive: result.IsActive,
-        DistrictMasterAuth: result.DistrictMasterAuth,
-        DistrictMasterRemark: result.DistrictMasterRemark,
-        DistrictMasterAuthRemark: result.DistrictMasterAuthRemark,
+        const updatePayload: IDistict = {
+          DistrictId: result.DistrictId || record.DistrictID,
+          DistrictCode: result.DistrictCode,
+          DistrictName: result.DistrictName,
+          ShortName: result.ShortName,
+          IsDiscard: result.IsDiscard,
+          IsActive: result.IsActive,
+          DistrictMasterAuth: result.DistrictMasterAuth,
+          DistrictMasterRemark: result.DistrictMasterRemark,
+          DistrictMasterAuthRemark: result.DistrictMasterAuthRemark,
 
-        CountryId: result.CountryId,
-        StateId: result.StateId,
-        CreatedBy: result.CreatedBy,
-        CreatedDate: new Date().toISOString()
-      };
+          CountryId: result.CountryId,
+          StateId: result.StateId,
+          CreatedBy: result.CreatedBy,
+          CreatedDate: new Date().toISOString()
+        };
 
-      console.log('Update payload:', updatePayload);
-      this.districtservice.updateDistrict(updatePayload).subscribe({
+        console.log('Update payload:', updatePayload);
+        this.districtservice.updateDistrict(updatePayload).subscribe({
 
-        next: (response) => {
-          this.toastService.showSuccess('District updated successfully:', response);
-          console.log('District updated successfully:', response);
+          next: (response) => {
+            this.toastService.showSuccess('District updated successfully:', response);
+            console.log('District updated successfully:', response);
 
-          this.loadAllDistrict();
-        },
-        error: (err) => {
-          console.error('Error updating District:', err);
-        }
-      });
-    }
-  });
+            this.loadAllDistrict();
+          },
+          error: (err) => {
+            console.error('Error updating District:', err);
+            this.toastService.showError('Failed to update District. Please check inputs.');
+          }
+        });
+      }
+    });
 
-}
+  }
 
- openAddDialog() {
-  const dialogRef = this.dialog.open(AddEditDistrictComponent, {
-    width: '70%',
-    height: '65%',
-    maxWidth: '100vw',
-    maxHeight: '100vh',
-    data: {}
-  });
+  openAddDialog() {
+    const dialogRef = this.dialog.open(AddEditDistrictComponent, {
+      width: '70%',
+      height: '65%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: {}
+    });
 
-  dialogRef.afterClosed().subscribe(result => {
-    if (result) {
-      console.log('Added District:', result);
-      const DistictData: IDistict = {
-        DistrictId: 0,
-        DistrictCode: result.DistrictCode,
-        DistrictName: result.DistrictName,
-        ShortName: result.ShortName,
-        IsDiscard: result.IsDiscard,
-        IsActive: result.IsActive,
-        CountryId: result.CountryId,
-        DistrictMasterAuth: result.DistrictMasterAuth,
-        DistrictMasterRemark: result.DistrictMasterRemark,
-        DistrictMasterAuthRemark: result.DistrictMasterAuthRemark,
-        StateId: result.StateId,
-        CreatedBy: result.CreatedBy,
-        CreatedDate: new Date().toISOString()
-      };
-      console.log('Payload for adding District:', DistictData);
-      // Call the service to insert the country
-      this.districtservice.AddDistrict(DistictData).subscribe({
-        next: (response) => {
-          this.toastService.showSuccess('District added successfully:', response);
-          console.log('District added successfully:', response);
-          this.loadAllDistrict();
-        },
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log('Added District:', result);
+        const DistictData: IDistict = {
+          DistrictId: 0,
+          DistrictCode: result.DistrictCode,
+          DistrictName: result.DistrictName,
+          ShortName: result.ShortName,
+          IsDiscard: result.IsDiscard,
+          IsActive: result.IsActive,
+          CountryId: result.CountryId,
+          DistrictMasterAuth: result.DistrictMasterAuth,
+          DistrictMasterRemark: result.DistrictMasterRemark,
+          DistrictMasterAuthRemark: result.DistrictMasterAuthRemark,
+          StateId: result.StateId,
+          CreatedBy: result.CreatedBy,
+          CreatedDate: new Date().toISOString()
+        };
+        console.log('Payload for adding District:', DistictData);
+        // Call the service to insert the country
+        this.districtservice.AddDistrict(DistictData).subscribe({
+          next: (response) => {
+            this.toastService.showSuccess('District added successfully:', response);
+            console.log('District added successfully:', response);
+            this.loadAllDistrict();
+          },
           error: err => {
             if (err.status === 400 && err.error) {
               // Validation errors from FluentValidation
@@ -247,12 +250,12 @@ edit(record: any) {
               );
             }
           },
-      });
-    }
-  });
-}
+        });
+      }
+    });
+  }
 
-   delete(value: any) {
+  delete(value: any) {
     this.districtservice.deleteDistrict(value.DistrictId).subscribe({
       next: (response) => {
         this.toastService.showSuccess('District deleted successfully', response);
@@ -261,6 +264,7 @@ edit(record: any) {
       },
       error: (err) => {
         console.error('Error deleting District:', err);
+        this.toastService.showError('Failed to delete District. It might be in use.');
       }
     });
   }
