@@ -211,12 +211,13 @@ export class Profitcenterbudget implements OnInit {
         console.log('Update payload:', updatePayload);
         this.Profitcenterbudgetservice.updateProfitcenterbudget(updatePayload).subscribe({
           next: () => {
-            alert(`budget updated successfully!`);
+          
             this.toastService.showSuccess("budget updated successfully");
             this.getAllProfitcenterBudget();
           },
           error: (err) => {
             console.error('Error updating budget:', err);
+            this.toastService.showError('Failed to update budget. Please check inputs.');
           }
         });
       });
@@ -254,7 +255,7 @@ export class Profitcenterbudget implements OnInit {
 
         this.Profitcenterbudgetservice.insertProfitcenterbudget(payload).subscribe({
           next: () => {
-            alert(`budget added successfully!`);
+          
             this.toastService.showSuccess("budget added successfully");
             this.getAllProfitcenterBudget();
           },
@@ -273,7 +274,7 @@ export class Profitcenterbudget implements OnInit {
                 this.toastService.showError(message);
               });
             } else {
-              alert(` Financial Year and profit center budegt  already exists.!`);
+          
               this.toastService.showError('A budget for this Financial Year and  profit center budegt already exists.');
 
             }
@@ -288,12 +289,13 @@ export class Profitcenterbudget implements OnInit {
     this.Profitcenterbudgetservice.deleteProfitcenterbudget(value.ProfitcenterBudgetId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-        alert(`profit center budget deleted successfully!`);
+      
         this.toastService.showSuccess("budget delete successfully");
         this.getAllProfitcenterBudget();
       },
       error: (err) => {
         console.error('Error deleting Petrol:', err);
+        this.toastService.showError('Failed to delete budget. It might be in use.');
       }
     });
   }

@@ -219,13 +219,13 @@ export class Profitcentermaster implements OnInit {
         this.profitCenterServices.updateProfitcenter(updatePayload).subscribe({
           next: (response) => {
             this.toastService.showSuccess("updated successfully!");
-            alert(`profit "${result.ProfitCenterName}" updated successfully!`);
+          
 
             this.loadAllProfitcenter();
           },
           error: (err) => {
             console.error('Error updating profit:', err);
-            alert('Error updating profit. Please try again.');
+            this.toastService.showError('Failed to update profit center. Please check inputs.');
           }
         });
       }
@@ -237,7 +237,7 @@ export class Profitcentermaster implements OnInit {
       width: '60%',
       height: '60%',
       maxWidth: '100vw',
-      maxHeight: '100vh',
+      maxHeight: '80vh',
       data: {} // Empty for add
     });
 
@@ -267,7 +267,7 @@ export class Profitcentermaster implements OnInit {
             console.log('profitcenter added successfully:', response);
             this.toastService.showSuccess("profitcenter added successfully");
             this.loadAllProfitcenter();
-            alert(`profitcenter added successfully!`);
+          
 
           },
           error: (err) => {
@@ -295,10 +295,11 @@ export class Profitcentermaster implements OnInit {
         console.log('profitcenter deleted successfully:', response);
         this.toastService.showSuccess('profitcenter deleted successfully');
         this.loadAllProfitcenter();
-        alert(`profitcenter deleted successfully!`);
+       
       },
       error: (err) => {
         console.error('Error deleting profitcenter:', err);
+        this.toastService.showError('Failed to delete profitcenter. It might be in use.');
       }
     });
   }

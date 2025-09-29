@@ -65,7 +65,7 @@ export class AddEditQualification {
       QualificationAuth: [{ value: true, disabled: !this.isEditMode }],
       QualificationRemark: [''],
       QualificationIsActive: [{ value: true, disabled: !this.isEditMode }],
-      QualificationIsDiscard: [false],
+      QualificationIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       CreatedBy: ['1'],
     });
 
@@ -76,10 +76,10 @@ export class AddEditQualification {
         QualificationCode: this.data.qualification.QualificationCode || '',
         MasterQualificationTypeID: this.data.qualification.MasterQualificationTypeID || '',
         QualificationName: this.data.qualification.QualificationName || '',
-        QualificationAuth: this.data.qualification.QualificationAuth || '',
+        QualificationAuth: this.data.qualification.QualificationAuth ?? true,
         QualificationRemark: this.data.qualification.QualificationRemark || '',
         QualificationIsActive: this.data.qualification.QualificationIsActive ?? true,
-        QualificationIsDiscard: this.data.qualification.QualificationIsDiscard ?? true,
+        QualificationIsDiscard: this.data.qualification.QualificationIsDiscard ?? false,
         CreatedBy: this.data.qualification.CreatedBy ?? 1,
         CreatedDate: this.data.qualification.CreatedDate || currentDate
       });
@@ -132,10 +132,6 @@ export class AddEditQualification {
       console.log('No QualificationType ID found for name:', qualificationData?.QualificationTypeName);
     }
   }
-
-
-
-
 
   onSubmit(): void {
 

@@ -33,33 +33,37 @@
                 <!-- Left Column -->
                 <div class="col-md-6">
                     <!-- Travel Class Code -->
-                    <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Travel Class Code</mat-label>
                         <input matInput formControlName="ClassOfTravelCode" placeholder="Enter travel class code" />
                         <mat-error
-                            *ngIf="classoftravelForm.get('ClassOfTravelCode')?.invalid && classoftravelForm.get('ClassOfTravelCode')?.touched">
+                            *ngIf="classoftravelForm.get('ClassOfTravelCode')?.hasError('required') && classoftravelForm.get('ClassOfTravelCode')?.touched">
                             Travel Class Code is required
                         </mat-error>
                     </mat-form-field>
 
                     <!-- Travel Class Name -->
-                    <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Travel Class Name</mat-label>
                         <input matInput formControlName="ClassOfTravelName" placeholder="Enter travel class name" />
                         <mat-error
-                            *ngIf="classoftravelForm.get('ClassOfTravelName')?.invalid && classoftravelForm.get('ClassOfTravelName')?.touched">
+                            *ngIf="classoftravelForm.get('ClassOfTravelName')?.hasError('required') && classoftravelForm.get('ClassOfTravelName')?.touched">
                             Travel Class Name is required
                         </mat-error>
                     </mat-form-field>
 
                     <!-- DA Food Allowance Per Day -->
-                    <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="outline" class="w-100">
                         <mat-label>DA Food Allowance Per Day</mat-label>
                         <input matInput type="number" formControlName="DafoodAllowancePerday"
                             placeholder="Enter daily allowance amount" />
                         <mat-error
-                            *ngIf="classoftravelForm.get('DafoodAllowancePerday')?.invalid && classoftravelForm.get('DafoodAllowancePerday')?.touched">
+                            *ngIf="classoftravelForm.get('DafoodAllowancePerday')?.hasError('required') && classoftravelForm.get('DafoodAllowancePerday')?.touched">
                             DA Food Allowance is required
+                        </mat-error>
+                        <mat-error
+                            *ngIf="classoftravelForm.get('DafoodAllowancePerday')?.hasError('min') && classoftravelForm.get('DafoodAllowancePerday')?.touched">
+                            Allowance must be greater than 0
                         </mat-error>
                     </mat-form-field>
 
@@ -106,15 +110,17 @@
 
 
                     <!-- Travel Class Remark -->
-                    <mat-form-field appearance="fill" class="w-100">
+                    <!-- Travel Class Remark -->
+                    <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Travel Class Remark</mat-label>
                         <textarea matInput formControlName="ClassOfTravelRemark" rows="3"
                             placeholder="Enter remarks about this travel class..."></textarea>
                         <mat-error
-                            *ngIf="classoftravelForm.get('ClassOfTravelRemark')?.invalid && classoftravelForm.get('ClassOfTravelRemark')?.touched">
+                            *ngIf="classoftravelForm.get('ClassOfTravelRemark')?.hasError('required') && classoftravelForm.get('ClassOfTravelRemark')?.touched">
                             Travel Class Remark is required
                         </mat-error>
                     </mat-form-field>
+
                 </div>
             </div>
 

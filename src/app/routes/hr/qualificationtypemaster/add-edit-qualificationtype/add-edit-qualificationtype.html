@@ -17,7 +17,8 @@
             <mat-checkbox formControlName="QualificationTypeIsActive" color="primary" [disabled]="!isEditMode">
               Active
             </mat-checkbox>
-            <mat-checkbox formControlName="QualificationTypeIsDiscard" color="primary" [disabled]="!isEditMode" *ngIf="isEditMode">
+            <mat-checkbox formControlName="QualificationTypeIsDiscard" color="primary" [disabled]="!isEditMode"
+              *ngIf="isEditMode">
               Discard
             </mat-checkbox>
           </div>
@@ -27,34 +28,41 @@
       <div class="row mb-3">
         <!-- Left side  -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- Qualification Code -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Qualification Code</mat-label>
             <input matInput formControlName="QualificationTypeCode" placeholder="Enter Company Entity Type Name" />
-            @if (qualificationtypeForm.get('QualificationTypeCode')?.invalid && qualificationtypeForm.get('QualificationTypeCode')?.touched) {
-              <mat-error>Qualification Code is required</mat-error>
-            }
+            <mat-error
+              *ngIf="qualificationtypeForm.get('QualificationTypeCode')?.hasError('required') && qualificationtypeForm.get('QualificationTypeCode')?.touched">
+              Qualification Code is required
+            </mat-error>
           </mat-form-field>
 
-
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- Remark -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="QualificationTypeRemark" placeholder="Enter remark..." />
-            @if (qualificationtypeForm.get('QualificationTypeRemark')?.invalid && qualificationtypeForm.get('QualificationTypeRemark')?.touched) {
-              <mat-error>Remark is required</mat-error>
-            }
+            <mat-error
+              *ngIf="qualificationtypeForm.get('QualificationTypeRemark')?.hasError('required') && qualificationtypeForm.get('QualificationTypeRemark')?.touched">
+              Remark is required
+            </mat-error>
           </mat-form-field>
+
         </div>
 
         <!-- Right side  -->
 
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Qualification Name</mat-label>
-            <input matInput formControlName="QualificationTypeName" placeholder="Enter Company Entity Type Short Name" />
-            @if (qualificationtypeForm.get('QualificationTypeName')?.invalid && qualificationtypeForm.get('QualificationTypeName')?.touched) {
-              <mat-error>Qualification Name is required</mat-error>
-            }
+            <input matInput formControlName="QualificationTypeName"
+              placeholder="Enter Company Entity Type Short Name" />
+            <mat-error
+              *ngIf="qualificationtypeForm.get('QualificationTypeName')?.hasError('required') && qualificationtypeForm.get('QualificationTypeName')?.touched">
+              Qualification Name is required
+            </mat-error>
           </mat-form-field>
+
 
         </div>
       </div>
@@ -63,13 +71,8 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="qualificationtypeForm.invalid"
-              (click)="onSubmit()"
-            >
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="qualificationtypeForm.invalid"
+              (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>

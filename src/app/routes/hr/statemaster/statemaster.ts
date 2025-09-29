@@ -20,6 +20,7 @@ import { AddEditState } from './add-edit-state/add-edit-state';
 import { Toastservice } from 'app/routes/toastservice';
 import { IState } from '@shared/interfaces/hr/state';
 import { Stateservice } from '@shared/services/hr/state/stateservice';
+import { th } from 'date-fns/locale';
 
 @Component({
   selector: 'app-statemaster',
@@ -75,7 +76,7 @@ export class Statemaster implements OnInit {
     private stateService: Stateservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.loadAllState();
   }
@@ -173,14 +174,14 @@ export class Statemaster implements OnInit {
     });
   }
 
- openAddDialog() {
-  const dialogRef = this.dialog.open(AddEditState, {
-    width: '80%',
-    height: '90%',
-    maxWidth: '100vw',
-    maxHeight: '100vh',
-    data: {} // empty for add
-  });
+  openAddDialog() {
+    const dialogRef = this.dialog.open(AddEditState, {
+      width: '60%',
+      height: '50%',
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      data: {} // empty for add
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       debugger;
@@ -206,7 +207,7 @@ export class Statemaster implements OnInit {
             console.log('Line 229');
             this.toastService.showSuccess('State added successfully:', response);
             this.loadAllState();
-            alert(`State "${result.StateName}" added successfully!`);
+          
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -237,7 +238,7 @@ export class Statemaster implements OnInit {
     // Open dialog, pass in the record
     this.dialog
       .open(AddEditState, {
-        width: '50%',
+        width: '60%',
         height: '50%',
         maxWidth: '70vw',
         maxHeight: '60vh',
@@ -263,7 +264,7 @@ export class Statemaster implements OnInit {
           this.stateService.updateState(updatePayload).subscribe({
             next: response => {
               console.log('State updated successfully:', response);
-              alert(`State "${result.StateName}" updated successfully!`);
+            
               this.loadAllState();
             },
             error: err => {
@@ -288,7 +289,8 @@ export class Statemaster implements OnInit {
     this.stateService.deleteState(value.StateId).subscribe({
       next: response => {
         console.log('State deleted successfully:', response);
-        alert(`You have deleted ${value.StateName} successfully!`);
+        this.toastService.showSuccess('State deleted successfully');
+       
         this.loadAllState();
       },
       error: err => {

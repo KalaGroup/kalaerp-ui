@@ -12,19 +12,11 @@
             <mat-checkbox formControlName="HolidayAuth" color="primary" [disabled]="!isEditMode">
               Auth
             </mat-checkbox>
-            <mat-checkbox
-              formControlName="HolidayIsActive"
-              color="primary"
-              [disabled]="!isEditMode"
-            >
+            <mat-checkbox formControlName="HolidayIsActive" color="primary" [disabled]="!isEditMode">
               Active
             </mat-checkbox>
-            <mat-checkbox
-              formControlName="HolidayIsDiscard"
-              color="primary"
-              [disabled]="!isEditMode"
-              *ngIf="isEditMode"
-            >
+            <mat-checkbox formControlName="HolidayIsDiscard" color="primary" [disabled]="!isEditMode"
+              *ngIf="isEditMode">
               Discard
             </mat-checkbox>
           </div>
@@ -35,26 +27,12 @@
         <!-- Left side  -->
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
-            <mat-label>Holiday FY</mat-label>
-            <mat-select formControlName="HolidayFy" placeholder="Select Holiday FY">
-              <mat-option>
-                <input
-                  matInput
-                  placeholder="Search Holiday FY..."
-                  (click)="$event.stopPropagation()"
-                />
+            <mat-label>Financial Year</mat-label>
+            <mat-select formControlName="HolidayFy" placeholder="Select Financial Year">
+              <mat-option *ngFor="let year of FinancialYearList" [value]="year.YR_VALUE">
+                {{ year.YR_TEXT }}
               </mat-option>
-
-              <mat-option value="">Select Holiday FY</mat-option>
-
-              @for (holiday of filteredHolidayFYList; track holiday.HolidayFy) {
-              <mat-option [value]="holiday.HolidayFy">{{ holiday.HolidayFy }}</mat-option>
-              }
             </mat-select>
-
-            @if (holidayForm.get('HolidayFy')?.invalid && holidayForm.get('HolidayFy')?.touched) {
-            <mat-error>Holiday FY is required</mat-error>
-            }
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="w-100">
@@ -76,12 +54,7 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field>
             <mat-label>Holiday Date</mat-label>
-            <input
-              matInput
-              [matDatepicker]="birthdayPicker"
-              formControlName="HolidayDate"
-              required
-            />
+            <input matInput [matDatepicker]="birthdayPicker" formControlName="HolidayDate" required />
             <mat-datepicker-toggle matSuffix [for]="birthdayPicker" />
             <mat-datepicker #birthdayPicker startView="year" />
           </mat-form-field>
@@ -90,11 +63,7 @@
             <mat-label>Company</mat-label>
             <mat-select formControlName="HolidayCompanyId" placeholder="Select Company">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search Company..."
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search Company..." (click)="$event.stopPropagation()" />
               </mat-option>
               <mat-option value="">Select Company</mat-option>
               @for (Company of filteredCompaniesList; track Company.CompanyName) {
@@ -117,13 +86,8 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="holidayForm.invalid"
-              (click)="onSubmit()"
-            >
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="holidayForm.invalid"
+              (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>

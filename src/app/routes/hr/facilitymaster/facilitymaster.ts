@@ -159,10 +159,10 @@ export class Facilitymaster implements OnInit {
 
   edit(record: IFacilityMaster) {
     this.dialog.open(AddEditFacility, {
-      width: '80%',
-      height: '70%',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
+      width: '50%',
+      height: '50%',
+      maxWidth: '80vw',
+      maxHeight: '80vh',
       data: { facility: record },
     })
       .afterClosed()
@@ -186,22 +186,23 @@ export class Facilitymaster implements OnInit {
         console.log('Update payload:', updatePayload);
         this.Facilityservices.updateFacility(updatePayload).subscribe({
           next: () => {
-            alert(`Facility "${result.FacilityName}" updated successfully!`);
+
             this.toastService.showSuccess("updating facility");
             this.getAllFacility();
           },
           error: (err) => {
             console.error('Error updating facility:', err);
+            this.toastService.showError('Failed to update facility. Please check inputs.');
           }
         });
       });
   }
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditFacility, {
-      width: '60%',
-      height: '60%',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
+      width: '50%',
+      height: '50%',
+      maxWidth: '80vw',
+      maxHeight: '80vh',
       data: {}
     });
 
@@ -221,7 +222,7 @@ export class Facilitymaster implements OnInit {
 
         this.Facilityservices.insertFacility(payload).subscribe({
           next: () => {
-            alert(`Facility "${result.FacilityName}" added successfully!`);
+
             this.toastService.showSuccess("added facility");
             this.getAllFacility();
           },
@@ -240,12 +241,13 @@ export class Facilitymaster implements OnInit {
       next: (response) => {
         console.log('Delete success:', response);
         this.toastService.showSuccess;
-        alert(`You have deleted ${value.FacilityName}..!`);
+
         this.toastService.showSuccess("delete facility");
         this.getAllFacility();
       },
       error: (err) => {
         console.error('Error deleting Faciltiy:', err);
+        this.toastService.showError('Failed to delete facility. It might be in use.');
       }
     });
   }

@@ -145,6 +145,7 @@ export class employeetypemaster implements OnInit {
       },
       error: (err) => {
         console.error('Error fetching employeetypes:', err);
+        this.toastService.showError('Failed to fetch employee types. Please try again later.');
       }
     });
   }
@@ -166,7 +167,7 @@ export class employeetypemaster implements OnInit {
         // Create update payload
         const updatePayload: IEmployeetype = {
           EmployeeTypeId: record.EmployeeTypeId,
-         // EmployeeTypeCode: result.EmployeeTypeCode,
+          // EmployeeTypeCode: result.EmployeeTypeCode,
           EmployeeTypeName: result.EmployeeTypeName,
           EmployeeTypeDescription: result.EmployeeTypeDescription,
           EmployeeTypeRemark: result.EmployeeTypeRemark,
@@ -178,12 +179,13 @@ export class employeetypemaster implements OnInit {
         this.employeetypeService.updateemployeetype(updatePayload).subscribe({
           next: (response) => {
             console.log('employeetype updated successfully:', response);
-            alert(`employeetype "${result.EmployeeTypeName}" updated successfully!`);
+
             this.loadAllemployeetypes();
             this.toastService.showSuccess(`EmployeeTypeName "${result.EmployeeTypeName}" updated successfully!`);
           },
           error: (err) => {
             console.error('Error updating employeetype:', err);
+            this.toastService.showError('Failed to update employee type. Please check inputs.');
           }
         });
       }
@@ -204,7 +206,7 @@ export class employeetypemaster implements OnInit {
         debugger;
         console.log('Added employeetype:', result);
         const payload: IEmployeetype = {
-         // EmployeeTypeCode: result.EmployeeTypeCode,
+          // EmployeeTypeCode: result.EmployeeTypeCode,
           EmployeeTypeName: result.EmployeeTypeName,
           EmployeeTypeDescription: result.EmployeeTypeDescription,
           EmployeeTypeRemark: result.EmployeeTypeRemark,
@@ -218,7 +220,7 @@ export class employeetypemaster implements OnInit {
           next: (response) => {
             console.log('employee type added successfully:', response);
             this.loadAllemployeetypes();
-            alert(`employeetype "${result.EmployeeTypeName}" added successfully!`);
+
             this.toastService.showSuccess(`EmployeeTypeName "${result.EmployeeTypeName}" added successfully!`);
           },
           error: (err) => {
@@ -244,12 +246,13 @@ export class employeetypemaster implements OnInit {
     this.employeetypeService.deleteemployeetype(value.EmployeeTypeId).subscribe({
       next: (response) => {
         console.log('employeetype deleted successfully:', response);
-        alert(`You have deleted ${value.EmployeeTypeName}..!`);
+
         this.toastService.showSuccess(`EmployeeTypeName "${value.EmployeeTypeName}" deleted successfully!`);
         this.loadAllemployeetypes();
       },
       error: (err) => {
         console.error('Error deleting employeetype:', err);
+        this.toastService.showError('Failed to delete employee type. It might be in use.');
       }
     });
   }

@@ -74,7 +74,7 @@ export class Authoritiesmaster {
     private authoritiesService: Authoritiesservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.loadAllAuthorities();
   }
@@ -225,10 +225,10 @@ export class Authoritiesmaster {
         // Call the service to insert the Workstation
         this.authoritiesService.insertAuthorities(payload).subscribe({
           next: response => {
-            
+
             this.toastService.showSuccess('Authorities  added successfully:', response);
             this.loadAllAuthorities();
-            alert(`Authorities "${result.GradeID}" added successfully!`);
+
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -286,11 +286,12 @@ export class Authoritiesmaster {
           this.authoritiesService.updateAuthorities(updatePayload).subscribe({
             next: response => {
               this.toastService.showSuccess('Authorities updated successfully:', response);
-              alert(`Authorities "${result.AuthoritiesId}" updated successfully!`);
+
               this.loadAllAuthorities();
             },
             error: err => {
               console.error('Error updating Authorities:', err);
+              this.toastService.showError('Failed to update Authorities. Please check inputs.');
               this.loadAllAuthorities();
             },
           });
@@ -311,11 +312,12 @@ export class Authoritiesmaster {
     this.authoritiesService.deleteAuthorities(value.AuthoritiesId).subscribe({
       next: response => {
         this.toastService.showSuccess('Authorities deleted successfully:', response);
-        alert(`You have deleted ${value.AuthoritiesId} successfully!`);
+
         this.loadAllAuthorities();
       },
       error: err => {
         console.error('Error deleting Authorities:', err);
+        this.toastService.showError('Failed to delete Authorities. It might be in use.');
         this.loadAllAuthorities();
       },
     });

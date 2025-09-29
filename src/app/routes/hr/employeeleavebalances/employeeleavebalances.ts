@@ -72,7 +72,7 @@ export class Employeeleavebalances {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadAllEmployeeLeaveBalance();
@@ -228,7 +228,7 @@ export class Employeeleavebalances {
           next: response => {
             this.toastService.showSuccess('Leave Balance added successfully:', response);
             this.loadAllEmployeeLeaveBalance();
-            alert(`Employee ID  "${result.LeaveBalancesEmployeeId}" added successfully!`);
+
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -274,11 +274,12 @@ export class Employeeleavebalances {
           this.employeeleavebalanceService.updateEmployeeLeaveBalance(result).subscribe({
             next: response => {
               this.toastService.showSuccess('Leave Balance updated successfully:', response);
-              alert(`Leave Balance "${result.LeaveBalancesEmployeeId}" updated successfully!`);
+
               this.loadAllEmployeeLeaveBalance();
             },
             error: err => {
               console.error('Error updating Leave Balance:', err);
+              this.toastService.showError('Failed to update Leave Balance. Please check inputs.');
             },
           });
         }
@@ -299,11 +300,12 @@ export class Employeeleavebalances {
     this.employeeleavebalanceService.deleteEmployeeLeaveBalance(value.LeaveBalancesId).subscribe({
       next: response => {
         this.toastService.showSuccess('Leave Balance deleted successfully:', response);
-        alert(`You have deleted ${value.EmployeeMasterFullName} successfully!`);
+
         this.loadAllEmployeeLeaveBalance();
       },
       error: err => {
         console.error('Error deleting Leave Balance:', err);
+        this.toastService.showError('Failed to delete Leave Balance. It might be in use.');
       },
     });
   }

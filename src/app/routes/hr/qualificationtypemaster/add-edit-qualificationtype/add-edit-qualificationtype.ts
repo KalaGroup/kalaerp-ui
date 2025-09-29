@@ -71,8 +71,8 @@ export class AddEditQualificationtype implements OnInit {
       QualificationTypeName: ['', [Validators.required]],
       QualificationTypeRemark: [''],
       QualificationTypeAuth: [{ value: true, disabled: !this.isEditMode }],
-      QualificationTypeIsDiscard:  [{ value: false, disabled: !this.isEditMode }],
-      QualificationTypeIsActive:  [{ value: true, disabled: !this.isEditMode }],
+      QualificationTypeIsDiscard: [{ value: false, disabled: !this.isEditMode }],
+      QualificationTypeIsActive: [{ value: true, disabled: !this.isEditMode }],
       CreatedBy: ['1'],
       CreatedDate: [{ value: currentDate, disabled: true }],
     });
@@ -100,7 +100,7 @@ export class AddEditQualificationtype implements OnInit {
 
   onSubmit(): void {
     debugger;
-        this.qualificationtypeForm.enable();//important for active boolean
+    this.qualificationtypeForm.enable();//important for active boolean
     if (this.qualificationtypeForm.valid) {
       this.dialogRef.close(this.qualificationtypeForm.value);
     } else {

@@ -220,12 +220,13 @@ export class Kpamaster implements OnInit {
         console.log('Update payload:', updatePayload);
         this.KPAservice.updateKPA(updatePayload).subscribe({
           next: () => {
-            alert(`kpa updated successfully!`);
+           
             this.toastService.showSuccess("kpa updated successfully!");
             this.loadAllKPA();
           },
           error: (err) => {
             console.error('Error updating kpa:', err);
+            this.toastService.showError('Failed to update kpa. Please check inputs.');
           }
         });
       });
@@ -262,7 +263,7 @@ export class Kpamaster implements OnInit {
         this.KPAservice.insertKPA(payload).subscribe({
           next: () => {
             this.toastService.showSuccess('kpa added successfully:');
-            alert(`kpa added successfully!`);
+          
             this.toastService.showSuccess("kpa added successfully!");
 
             this.loadAllKPA();
@@ -280,11 +281,12 @@ export class Kpamaster implements OnInit {
       next: (response) => {
         console.log('Delete success:', response);
         this.toastService.showSuccess('Delete  successfully:');
-        alert(`deleted successfully!`);
+       
         this.loadAllKPA();
       },
       error: (err) => {
         console.error('Error deleting Petrol:', err);
+        this.toastService.showError('Failed to delete kpa. It might be in use.');
       }
     });
   }

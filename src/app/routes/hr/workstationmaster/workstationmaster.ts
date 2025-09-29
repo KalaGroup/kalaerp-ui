@@ -80,7 +80,7 @@ export class Workstationmaster implements OnInit {
     private workstationService: Workstationservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.loadAllWorkstation();
   }
@@ -228,7 +228,7 @@ export class Workstationmaster implements OnInit {
           next: response => {
             this.toastService.showSuccess('Workstation added successfully:', response);
             this.loadAllWorkstation();
-            alert(`Workstation "${result.WorkStationName}" added successfully!`);
+
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -283,12 +283,12 @@ export class Workstationmaster implements OnInit {
             CreatedBy: result.CreatedBy,
             WorkStationAuth: false,
           };
-         console.log('Update payload:', updatePayload);
+          console.log('Update payload:', updatePayload);
           this.workstationService.updateWorkstation(updatePayload).subscribe({
             next: (response) => {
               this.toastService.showSuccess('Workstation updated successfully:', response);
-              alert(`Workstation "${result.WorkStationName}" updated successfully!`);
-              this.loadAllWorkstation(); 
+
+              this.loadAllWorkstation();
             },
             error: (err) => {
               console.error('Error updating Workstation:', err);
@@ -296,7 +296,7 @@ export class Workstationmaster implements OnInit {
           });
         }
       });
-}
+  }
 
   closeDialog(): void {
     this.dialogRef.close();
@@ -312,7 +312,7 @@ export class Workstationmaster implements OnInit {
     this.workstationService.deleteWorkstation(value.WorkStationId).subscribe({
       next: response => {
         this.toastService.showSuccess('Workstation deleted successfully:', response);
-        alert(`You have deleted ${value.WorkStationName} successfully!`);
+
         this.loadAllWorkstation();
       },
       error: err => {

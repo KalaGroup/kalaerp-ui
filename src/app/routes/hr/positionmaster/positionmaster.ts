@@ -255,7 +255,7 @@ export class Positionmaster {
         next: response => {
           this.toastService.showSuccess('Position  added successfully:', response);
           this.loadAllPosition();
-          alert(`Position "${result.GradeID}" added successfully!`);
+        
         },
         error: err => {
           console.error('Error while adding Position:', err);
@@ -284,11 +284,12 @@ export class Positionmaster {
           this.positionService.updatePosition(result).subscribe({
             next: response => {
               this.toastService.showSuccess('Position updated successfully:', response);
-              alert(`Position "${result.PositionMasterId}" updated successfully!`);
+           
               this.loadAllPosition();
             },
             error: err => {
               console.error('Error updating Position:', err);
+              this.toastService.showError('Failed to update Position. Please check inputs.');
               this.loadAllPosition();
             },
           });
@@ -309,11 +310,12 @@ export class Positionmaster {
     this.positionService.deletePosition(value.PositionMasterId).subscribe({
       next: response => {
         this.toastService.showSuccess('Position deleted successfully:', response);
-        alert(`You have deleted ${value.PositionMasterId} successfully!`);
+   
         this.loadAllPosition();
       },
       error: err => {
         console.error('Error deleting Position:', err);
+        this.toastService.showError('Failed to delete Position. It might be in use.');
         this.loadAllPosition();
       },
     });

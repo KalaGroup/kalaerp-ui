@@ -92,13 +92,6 @@ export class Recruitmentattributemaster implements OnInit {
       width: '80px',
     },
     {
-      header: this.translate.stream('ID'),
-      field: 'RecruitmentAttributeId',
-      sortable: true,
-      minWidth: 120,
-      width: '120px',
-    },
-    {
       header: this.translate.stream('Name'),
       field: 'RecruitmentAttributeName',
       sortable: true,
@@ -178,7 +171,7 @@ export class Recruitmentattributemaster implements OnInit {
   }
   edit(record: IRecruitmentAttribute) {
     this.dialog.open(AddEditRecruitmentattribute, {
-      width: '80%',
+      width: '70%',
       height: '70%',
       maxWidth: '100vw',
       maxHeight: '100vh',
@@ -206,7 +199,7 @@ export class Recruitmentattributemaster implements OnInit {
         console.log('Update payload:', updatePayload);
         this.RecruitmentAttributeServices.updateRecruitmentAttribute(updatePayload).subscribe({
           next: () => {
-            alert(`recruitment updated successfully!`);
+           
             this.toastService.showSuccess("updated successfully");
             this.getAllRecruitmentAttribute();
           },
@@ -223,7 +216,7 @@ export class Recruitmentattributemaster implements OnInit {
       width: '60%',
       height: '60%',
       maxWidth: '100vw',
-      maxHeight: '100vh',
+      maxHeight: '80vh',
       data: {}
     });
 
@@ -244,7 +237,7 @@ export class Recruitmentattributemaster implements OnInit {
 
         this.RecruitmentAttributeServices.insertRecruitmentAttribute(payload).subscribe({
           next: () => {
-            alert(`recruitment  added successfully!`);
+           
             this.toastService.showSuccess("recruitment added successfully ");
             this.getAllRecruitmentAttribute();
           },
@@ -262,7 +255,7 @@ export class Recruitmentattributemaster implements OnInit {
     this.RecruitmentAttributeServices.deleteRecruitmentAttribute(value.RecruitmentAttributeId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-        alert(`You have deleted..!`);
+      
         this.toastService.showSuccess("delete success ");
         this.getAllRecruitmentAttribute();
       },

@@ -205,13 +205,13 @@ export class Locationmaster implements OnInit {
         this.LocationServices.updateLocation(updatePayload).subscribe({
           next: (response) => {
             console.log('location updated successfully:', response);
-            alert(`location "${result.LocationName}" updated successfully!`);
+         
             this.toastService.showSuccess("updated successfully");
             this.loadAllLocation();
           },
           error: (err) => {
             console.error('Error updating location:', err);
-            alert('Error updating location. Please try again.');
+            this.toastService.showError('Failed to update Location. Please check inputs.');
           }
         });
       }
@@ -254,8 +254,7 @@ export class Locationmaster implements OnInit {
             console.log('Location added successfully:', response);
             this.loadAllLocation();
             this.toastService.showSuccess("added successfully");
-            alert(`Location added successfully!`);
-
+          
           },
           error: (err) => {
             console.error('Error while adding Location:', err);
@@ -282,10 +281,11 @@ export class Locationmaster implements OnInit {
         console.log('Location deleted successfully:', response);
         this.loadAllLocation();
         this.toastService.showSuccess("delete successfully");
-        alert(`Location deleted successfully!`);
+       
       },
       error: (err) => {
         console.error('Error deleting Location:', err);
+        this.toastService.showError('Failed to delete Location. It might be in use.');
       }
     });
   }

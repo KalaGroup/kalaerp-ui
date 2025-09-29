@@ -175,7 +175,7 @@ export class Employeemasterupdationformaster implements OnInit {
       maxHeight: '60vh',
       data: { employeemasterupdationfor: record },
     }).afterClosed().subscribe(result => {
-      
+
       if (result) {
         console.log('Employeemasterupdationfor Updated:', result);
         // Create update payload
@@ -196,19 +196,20 @@ export class Employeemasterupdationformaster implements OnInit {
         this.empmstupdationforservice.updateemployeeMasterUpdationFor(updatePayload).subscribe({
           next: (response) => {
             console.log('Employeemasterupdationfor updated successfully:', response);
-           // alert(`Employeemasterupdationfor "${result.EmployeeMasterUpdationForName}" updated successfully!`);
+            // alert(`Employeemasterupdationfor "${result.EmployeeMasterUpdationForName}" updated successfully!`);
             this.toastService.showSuccess('Employeemasterupdationfor updated successfully:', response);
             this.loadAllemployeemasterupdationfor();
           },
           error: (err) => {
             console.error('Error updating Employeemasterupdationfor:', err);
+            this.toastService.showError('Failed to update Employeemasterupdationfor. Please check inputs.');
           }
         });
       }
     });
   }
 
-   openAddDialog() {
+  openAddDialog() {
     const dialogRef = this.dialog.open(AddEditEmployeemasterupdationfor, {
       width: '60%',
       height: '50%',
@@ -216,9 +217,9 @@ export class Employeemasterupdationformaster implements OnInit {
       maxHeight: '100vh',
       data: {} // empty for add
     });
-  
+
     dialogRef.afterClosed().subscribe(result => {
-      
+
       if (result) {
         console.log('Added Employeemasterupdationfor:', result);
         const payload: IEmpmstforupdationmst = {
@@ -236,37 +237,37 @@ export class Employeemasterupdationformaster implements OnInit {
         // Call the service to insert the state
         this.empmstupdationforservice.insertemployeeMasterUpdationFor(payload).subscribe({
           next: (response) => {
-          
-  
+
+
             console.log('Employeemasterupdationfor type added successfully:', response);
-           this.toastService.showSuccess('Employeemasterupdationfor added successfully:', response);
+            this.toastService.showSuccess('Employeemasterupdationfor added successfully:', response);
             this.loadAllemployeemasterupdationfor();
             //alert(`Employeemasterupdationfor "${result.EmployeeMasterUpdationForName}" added successfully!`);
           },
           error: (err) => {
-           if (err.status === 400 && err.error) {
-        // Validation errors from FluentValidation
-        err.error.forEach((validationErr: any) => {
-          const field = validationErr.PropertyName;
-          const message = validationErr.ErrorMessage;
-  
-          // Mark field error in form
-          if (this.EmployeeMasterUpdationForForm.get(field)) {
-            this.EmployeeMasterUpdationForForm.get(field)?.setErrors({ serverError: message });
-          }
-          // Optionally show toast
-          this.toastService.showError(message);
-        });
-        } else {
-        this.toastService.showError('Failed to add Employeemasterupdationfor. Please verify Employeemasterupdationfor details and try again.');
-      }
+            if (err.status === 400 && err.error) {
+              // Validation errors from FluentValidation
+              err.error.forEach((validationErr: any) => {
+                const field = validationErr.PropertyName;
+                const message = validationErr.ErrorMessage;
+
+                // Mark field error in form
+                if (this.EmployeeMasterUpdationForForm.get(field)) {
+                  this.EmployeeMasterUpdationForForm.get(field)?.setErrors({ serverError: message });
+                }
+                // Optionally show toast
+                this.toastService.showError(message);
+              });
+            } else {
+              this.toastService.showError('Failed to add Employeemasterupdationfor. Please verify Employeemasterupdationfor details and try again.');
+            }
           }
         });
       }
     })
   }
 
-    closeDialog(): void {
+  closeDialog(): void {
     this.dialogRef.close();
   }
 
@@ -275,21 +276,22 @@ export class Employeemasterupdationformaster implements OnInit {
     this.closeDialog();
   }
 
-    delete(value: any) {
+  delete(value: any) {
     this.empmstupdationforservice.deleteemployeeMasterUpdationFor(value.EmployeeMasterUpdationForId).subscribe({
       next: (response) => {
         console.log('Employeemasterupdationfor deleted successfully:', response);
         this.toastService.showSuccess('Employeemasterupdationfor deleted successfully:', response);
-       // alert(`You have deleted ${value.EmployeeMasterUpdationForName} successfully!`);
+        // alert(`You have deleted ${value.EmployeeMasterUpdationForName} successfully!`);
         this.loadAllemployeemasterupdationfor();
       },
       error: (err) => {
         console.error('Error deleting Employeemasterupdationfor:', err);
+        this.toastService.showError('Failed to delete Employeemasterupdationfor. It might be in use.');
       }
     });
   }
 
-   changeSelect(e: any) {
+  changeSelect(e: any) {
     console.log(e);
   }
 
@@ -297,11 +299,11 @@ export class Employeemasterupdationformaster implements OnInit {
     console.log(e);
   }
 
-   enableRowExpandable() {
+  enableRowExpandable() {
     this.columns[0].showExpand = this.expandable;
   }
 
-   updateCell() {
+  updateCell() {
     this.list = this.list.map(item => {
       item.weight = Math.round(Math.random() * 1000) / 100;
       return item;

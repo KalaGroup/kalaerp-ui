@@ -212,7 +212,7 @@ export class Workstationbudget implements OnInit {
 
         this.WorkstationBudgetservice.updateworkstationbudget(updatePayload).subscribe({
           next: () => {
-            alert('Workstation budget updated successfully!');
+           
             this.toastService.showSuccess('Workstation budget updated successfully');
             this.getAllWorkstationBudget();
           },
@@ -256,7 +256,7 @@ export class Workstationbudget implements OnInit {
 
         this.WorkstationBudgetservice.insertworkstationbudget(payload).subscribe({
           next: () => {
-            alert('Workstation budget added successfully!');
+           
             this.toastService.showSuccess('Workstation budget added successfully');
             this.getAllWorkstationBudget();
           },
@@ -290,7 +290,7 @@ export class Workstationbudget implements OnInit {
     this.WorkstationBudgetservice.deleteworkstationbudget(value.WorkstationBudgetId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-        alert(`Petrol budget deleted successfully!`);
+       
         this.toastService.showSuccess("budget delete successfully");
         this.getAllWorkstationBudget();
       },

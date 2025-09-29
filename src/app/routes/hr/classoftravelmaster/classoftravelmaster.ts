@@ -216,12 +216,12 @@ export class Classoftravelmaster implements OnInit {
         this.ClassofTravelService.updateClassOftravel(updatePayload).subscribe({
           next: (response) => {
             this.toastService.showSuccess('class update successfully:', response);
-            alert(`class "${result.ClassOfTravelName}" updated successfully!`);
+
             this.loadAllClassoftravel();
           },
           error: (err) => {
             console.error('Error updating class:', err);
-            alert('Error updating class. Please try again.');
+            this.toastService.showError('Failed to update class. Please check inputs.');
           }
         });
       }
@@ -263,7 +263,7 @@ export class Classoftravelmaster implements OnInit {
             console.log('class added successfully:', response);
             this.loadAllClassoftravel();
             this.toastService.showSuccess('class added successfully:');
-            alert(`class added successfully!`);
+
 
           },
           error: (err) => {
@@ -290,10 +290,11 @@ export class Classoftravelmaster implements OnInit {
         console.log('class deleted successfully:', response);
         this.loadAllClassoftravel();
         this.toastService.showSuccess('class delete successfully:');
-        alert(`class deleted successfully!`);
+
       },
       error: (err) => {
         console.error('Error deleting class:', err);
+        this.toastService.showError('Failed to delete class. It might be in use.');
       }
     });
   }

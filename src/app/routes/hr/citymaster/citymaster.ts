@@ -181,6 +181,7 @@ export class CitymasterComponent implements OnInit {
           },
           error: (err) => {
             console.error('Error updating City:', err);
+            this.toastService.showError('Failed to update City. Please check inputs.');
           }
         });
       }
@@ -243,6 +244,7 @@ export class CitymasterComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting City:', err);
+        this.toastService.showError('Failed to delete City. It might be in use.');
       }
     });
   }

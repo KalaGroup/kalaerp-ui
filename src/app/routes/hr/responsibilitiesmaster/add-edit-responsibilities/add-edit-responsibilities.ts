@@ -100,7 +100,7 @@ export class AddEditResponsibilities {
       DesignationID: ['', [Validators.required]],
       DivisionID: ['', [Validators.required]],
       // Text input fields
-      responsibilitiesType: ['', [Validators.maxLength(100)]],
+      // responsibilitiesType: ['', [Validators.maxLength(100)]],
       responsibilitiesRemark: ['', [Validators.maxLength(500)]],
       responsibilitiesAuthRemark: ['', [Validators.maxLength(500)]],
 
@@ -114,7 +114,7 @@ export class AddEditResponsibilities {
       this.loadAllDescriptions();
       this.responsibilitiesMstForm.patchValue({
         // Text input fields
-        responsibilitiesType: this.data.responsibilities.ResponsibilitiesType || '',
+        // responsibilitiesType: this.data.responsibilities.ResponsibilitiesType || '',
         responsibilitiesRemark: this.data.responsibilities.ResponsibilitiesRemark || '',
         responsibilitiesAuthRemark: this.data.responsibilities.ResponsibilitiesAuthRemark || '',
 

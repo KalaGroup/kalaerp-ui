@@ -32,70 +32,69 @@
       <div class="row mb-3">
         <!-- Left side (City Name, Short Name, Latitude, Longitude, Remark) -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Profitcenter Code</mat-label>
             <input matInput formControlName="ProfitCenterCode" placeholder="Enter Profitcenter Code" />
-            <!-- @if (profitcenterForm.get('CityName')?.invalid && profitcenterForm.get('CityName')?.touched) {
-              <mat-error>City Name is required</mat-error>
-            } -->
+            <mat-error
+              *ngIf="profitcenterForm.get('ProfitCenterCode')?.hasError('required') && profitcenterForm.get('ProfitCenterCode')?.touched">
+              Profitcenter Code is required
+            </mat-error>
           </mat-form-field>
 
+          <!-- Profit Center -->
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Profit Center</mat-label>
             <mat-select formControlName="ProfitCenterCompanyId" placeholder="Select Profit Center">
-              <mat-option>
-                <input matInput placeholder="Select Profit Center..." (click)="$event.stopPropagation()" />
-              </mat-option>
-              <mat-option *ngFor="let country of filteredprofitcentertypeList" [value]="country.CompanyId">
-                {{ country.CompanyName }}
+              <mat-option *ngFor="let company of filteredprofitcentertypeList" [value]="company.CompanyId">
+                {{ company.CompanyName }}
               </mat-option>
             </mat-select>
+            <mat-error
+              *ngIf="profitcenterForm.get('ProfitCenterCompanyId')?.hasError('required') && profitcenterForm.get('ProfitCenterCompanyId')?.touched">
+              Profit Center is required
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- Remark -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="ProfitCenterRemark" placeholder="Enter remark..." />
-            <!-- @if (profitcenterForm.get('CityRemark')?.invalid && profitcenterForm.get('CityRemark')?.touched) {
-              <mat-error>City Remark is required</mat-error>
-            } -->
+            <mat-error
+              *ngIf="profitcenterForm.get('ProfitCenterRemark')?.hasError('required') && profitcenterForm.get('ProfitCenterRemark')?.touched">
+              Remark is required
+            </mat-error>
           </mat-form-field>
+
         </div>
 
         <!-- Right side (Country, State, District, Tier Type) -->
 
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- Profitcenter Name -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Profitcenter Name</mat-label>
             <input matInput formControlName="ProfitCenterName" placeholder="Enter Profitcenter Name" />
-            <!-- @if (profitcenterForm.get('CityCode')?.invalid && profitcenterForm.get('CityCode')?.touched) {
-              <mat-error>City Code is required</mat-error>
-            } -->
+            <mat-error
+              *ngIf="profitcenterForm.get('ProfitCenterName')?.hasError('required') && profitcenterForm.get('ProfitCenterName')?.touched">
+              Profitcenter Name is required
+            </mat-error>
           </mat-form-field>
 
-          <!-- <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Profit Center Company</mat-label>
-            <mat-select formControlName="CityCountryID" placeholder="Select Profit Center Company">
-              <mat-option>
-                <input
-                  matInput
-                  placeholder="Select Profit Center Company..."
-                  (click)="$event.stopPropagation()"
-                />
-              </mat-option>
-              <mat-option *ngFor="let country of filteredCountryList" [value]="country.CountryId">
-                {{ country.CountryName }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field> -->
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- Parent Profit Center ID (optional) -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Parent Profit Center ID</mat-label>
             <input matInput type="number" formControlName="ParentProfitCenterId"
               placeholder="Enter parent ID (optional)" />
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- Auth Remark -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Auth Remark</mat-label>
             <input matInput formControlName="ProfitCenterAuthRemark" placeholder="Enter auth remark..." />
+            <mat-error
+              *ngIf="profitcenterForm.get('ProfitCenterAuthRemark')?.hasError('required') && profitcenterForm.get('ProfitCenterAuthRemark')?.touched">
+              Auth Remark is required
+            </mat-error>
           </mat-form-field>
 
         </div>

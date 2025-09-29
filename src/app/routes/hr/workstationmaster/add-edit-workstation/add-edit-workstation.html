@@ -5,18 +5,10 @@
   <mat-card-content>
     <form [formGroup]="workstationForm" class="form-field-full">
       <div class="d-flex align-items-center justify-content-end gap-3" style="height: 56px">
-        <mat-checkbox
-          formControlName="WorkStationIsActive"
-          color="primary"
-          [disabled]="!isEditMode"
-        >
+        <mat-checkbox formControlName="WorkStationIsActive" color="primary" [disabled]="!isEditMode">
           Active
         </mat-checkbox>
-        <mat-checkbox
-          formControlName="WorkStationIsDiscard"
-          color="primary"
-          [disabled]="!isEditMode"
-        >
+        <mat-checkbox formControlName="WorkStationIsDiscard" color="primary" [disabled]="!isEditMode">
           Discard
         </mat-checkbox>
       </div>
@@ -24,32 +16,22 @@
       <div class="row mb-3">
         <!-- Left side (City Name, Short Name, Latitude, Longitude, Remark) -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- WorkStation Code -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>WorkStation Code</mat-label>
-            <input
-              matInput
-              formControlName="WorkStationCode"
-              placeholder="Enter WorkStation Code"
-            />
-            @if (workstationForm.get('WorkStationCode')?.invalid &&
-            workstationForm.get('WorkStationCode')?.touched) {
-            <mat-error>WorkStation Code is required</mat-error>
-            }
+            <input matInput formControlName="WorkStationCode" placeholder="Enter WorkStation Code" />
+            <mat-error
+              *ngIf="workstationForm.get('WorkStationCode')?.hasError('required') && workstationForm.get('WorkStationCode')?.touched">
+              WorkStation Code is required
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>ProfitCenter</mat-label>
-            <mat-select
-              formControlName="WorkStationProfitcenterId"
-              placeholder="Select ProfitCenter"
-            >
+            <mat-select formControlName="WorkStationProfitcenterId" placeholder="Select ProfitCenter">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search ProfitCenter..."
-                  [formControl]="profitcenterSearchControl"
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search ProfitCenter..." [formControl]="profitcenterSearchControl"
+                  (click)="$event.stopPropagation()" />
               </mat-option>
 
               <mat-option value="">Select ProfitCenter</mat-option>
@@ -67,41 +49,42 @@
             }
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
-            <mat-label>Remark</mat-label>
+          <!-- WorkStation Remark -->
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>WorkStation Remark</mat-label>
             <input matInput formControlName="WorkStationRemark" placeholder="Enter remark..." />
+            <mat-error
+              *ngIf="workstationForm.get('WorkStationRemark')?.hasError('required') && workstationForm.get('WorkStationRemark')?.touched">
+              Remark is required
+            </mat-error>
           </mat-form-field>
+
         </div>
 
         <!-- Right side (Country, State, District, Tier Type) -->
 
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- WorkStation Name -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>WorkStation Name</mat-label>
-            <input
-              matInput
-              formControlName="WorkStationName"
-              placeholder="Enter WorkStation Name"
-            />
-            @if (workstationForm.get('WorkStationName')?.invalid &&
-            workstationForm.get('WorkStationName')?.touched) {
-            <mat-error>WorkStation Name is required</mat-error>
-            }
+            <input matInput formControlName="WorkStationName" placeholder="Enter WorkStation Name" />
+            <mat-error
+              *ngIf="workstationForm.get('WorkStationName')?.hasError('required') && workstationForm.get('WorkStationName')?.touched">
+              WorkStation Name is required
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- WorkStation Short Name -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>WorkStation Short Name</mat-label>
-            <input
-              matInput
-              formControlName="WorkStationShortName"
-              placeholder="Enter WorkStation Short Name"
-              (input)="toUpperCase($event)"
-            />
-            @if (workstationForm.get('WorkStationShortName')?.invalid &&
-            workstationForm.get('WorkStationShortName')?.touched) {
-            <mat-error>WorkStation Short Name is required</mat-error>
-            }
+            <input matInput formControlName="WorkStationShortName" placeholder="Enter WorkStation Short Name"
+              (input)="toUpperCase($event)" />
+            <mat-error
+              *ngIf="workstationForm.get('WorkStationShortName')?.hasError('required') && workstationForm.get('WorkStationShortName')?.touched">
+              WorkStation Short Name is required
+            </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 
@@ -109,13 +92,8 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="workstationForm.invalid"
-              (click)="onSubmit()"
-            >
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="workstationForm.invalid"
+              (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>

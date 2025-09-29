@@ -10,7 +10,7 @@ import { apiEnvironment } from '@core';
 export class Holidayservice {
   baseUrl = apiEnvironment.baseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAllHoliday(): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}HolidayMaster/getallholidaymasters`);
@@ -32,5 +32,9 @@ export class Holidayservice {
     return this.http.get<IHoliday>(
       `${this.baseUrl}HolidayMaster/getholidaymasterbyID/${HolidayId}`
     );
+  }
+
+  getAllFinancialYear(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}ProfitcenterBudget/GetFinancialYear`);
   }
 }

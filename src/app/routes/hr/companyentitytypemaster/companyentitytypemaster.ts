@@ -79,7 +79,7 @@ export class Companyentitytypemaster implements OnInit {
     private companyentitytypeService: Companyentitytypeservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.loadAllCompanyentitytype();
   }
@@ -198,7 +198,7 @@ export class Companyentitytypemaster implements OnInit {
           next: response => {
             this.toastService.showSuccess('Companyentitytype added successfully:', response);
             this.loadAllCompanyentitytype();
-            alert(`Companyentitytype "${result.CompanyEntityTypeName}" added successfully!`);
+
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -241,25 +241,26 @@ export class Companyentitytypemaster implements OnInit {
           debugger;
           console.log('Companyentitytype Updated:', result);
           const updatePayload = {
-          CompEntityTypeId: result.CompEntityTypeId,
-          CompanyEntityTypeName: result.CompanyEntityTypeName,
-          CompanyEntityTypeShortName: result.CompanyEntityTypeShortName,
-          CompanyEntityTypeRemark: result.CompanyEntityTypeRemark,
-          WorkStationAuthRemark: result.WorkStationAuthRemark,
-          CompanyEntityTypeAuth: result.CompanyEntityTypeAuth,
-          CompanyEntityTypeIsDiscard: result.CompanyEntityTypeIsDiscard,
-          CompanyEntityTypeIsActive: result.CompanyEntityTypeIsActive,
-          CreatedBy: result.CreatedBy,
+            CompEntityTypeId: result.CompEntityTypeId,
+            CompanyEntityTypeName: result.CompanyEntityTypeName,
+            CompanyEntityTypeShortName: result.CompanyEntityTypeShortName,
+            CompanyEntityTypeRemark: result.CompanyEntityTypeRemark,
+            WorkStationAuthRemark: result.WorkStationAuthRemark,
+            CompanyEntityTypeAuth: result.CompanyEntityTypeAuth,
+            CompanyEntityTypeIsDiscard: result.CompanyEntityTypeIsDiscard,
+            CompanyEntityTypeIsActive: result.CompanyEntityTypeIsActive,
+            CreatedBy: result.CreatedBy,
           };
           console.log('Update payload:', updatePayload);
           this.companyentitytypeService.updateCompanyentitytype(updatePayload).subscribe({
             next: response => {
               this.toastService.showSuccess('Companyentitytype updated successfully:', response);
-              alert(`Companyentitytype "${result.CompanyEntityTypeName}" updated successfully!`);
+
               this.loadAllCompanyentitytype();
             },
             error: err => {
               console.error('Error updating Companyentitytype:', err);
+              this.toastService.showError('Failed to update Companyentitytype. Please check inputs.');
             },
           });
         }
@@ -280,11 +281,12 @@ export class Companyentitytypemaster implements OnInit {
     this.companyentitytypeService.deleteCompanyentitytype(value.CompEntityTypeId).subscribe({
       next: response => {
         this.toastService.showSuccess('Companyentitytype deleted successfully:', response);
-        alert(`You have deleted ${value.CompanyEntityTypeName} successfully!`);
+
         this.loadAllCompanyentitytype();
       },
       error: err => {
         console.error('Error deleting Companyentitytype:', err);
+        this.toastService.showError('Failed to delete Companyentitytype. It might be in use.');
       },
     });
   }
