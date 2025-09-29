@@ -141,3 +141,250 @@
 <ng-template #expansionTpl let-row>
   {{ row.name }}
 </ng-template>
+
+
+<ng-template #offerLetterPreviewTemplate>
+  <div class="offer-letter-container">
+    <!-- Header -->
+    <div class="offer-letter-header">
+      <h2 mat-dialog-title>
+        <mat-icon>description</mat-icon>
+        Offer Letter Preview
+      </h2>
+      <button mat-icon-button (click)="closePreviewDialog()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <!-- Offer Letter Content -->
+    <mat-dialog-content class="offer-letter-content" *ngIf="selectedOfferLetter" id="offer-letter-content">
+
+      <!-- Company Letterhead Section - Matching KALA format -->
+      <!-- <div class="letterhead-section">
+        <div class="company-header">
+          <div class="company-name-box">KALA Genset Pvt. Ltd.</div>
+          <div class="company-details">
+            CIN No.: U90000MH1997PTC112368<br>
+            GST No.: 27AAACK6784C1ZH
+          </div>
+        </div>
+      </div> -->
+
+      <!-- Reference and Date - Exact KALA format -->
+      <div class="reference-section">
+        <div class="ref-date-row">
+          <div class="ref-info">
+            <strong>Ref No:</strong> KGPL/HR/25-26/{{ selectedOfferLetter.OfferLetterId.toString().padStart(8, '0') }}
+          </div>
+          <div class="date-info">
+            <strong>Date:</strong> {{ selectedOfferLetter.CreatedDate | date:'dd/MM/yyyy' }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Candidate Information -->
+      <div class="recipient-section">
+        <p><strong>To,</strong></p>
+        <p>{{ selectedOfferLetter.RecruitmentMasterNameOfCandidates }}</p>
+        <p>Pune, Maharashtra</p>
+      </div>
+
+      <!-- Subject -->
+      <div class="subject-section">
+        <p><strong>Sub: Offer Letter</strong></p>
+      </div>
+
+      <!-- Letter Body -->
+      <div class="letter-body">
+        <p><strong>Dear {{ selectedOfferLetter.RecruitmentMasterNameOfCandidates }},</strong></p>
+
+        <p>With reference to your application and subsequent interview you had with us, we are pleased to offer you as
+        <strong>"{{ selectedOfferLetter.PositionMasterName }}"</strong> in our organization.</p>
+
+        <p>Your CTC (Cost To Company) will be <strong>Rs. {{ (calculateTotalCTC(selectedOfferLetter) / 12) | number:'1.0-0' }}</strong> per month.
+        Details of the same are mentioned below:</p>
+
+        <p>The terms and conditions of employment will remain same as mutually agreed between you and the management of this company at the time of interview.</p>
+
+        <p>You will be on probation for a period of 6 months.</p>
+        <p>Leave will be applicable after 6 months from date of joining with continuous service.</p>
+
+        <p>You are requested to join on or before <strong>{{ selectedOfferLetter.OfferLetterJoinindate | date:'dd/MM/yyyy' }}</strong>.
+        On joining, you are required to come with your educational certificates, 2 nos. passport size photographs,
+        previous experience certificates & relieving letter etc at the time of joining.</p>
+
+        <p>Kindly return duplicate copy of this letter duly signed as acceptance of employment offer within next 7 working days.</p>
+
+        <p>If Duplicate copy is not received within stipulated time this offer letter will stands cancelled.</p>
+      </div>
+
+      <!-- CTC Structure Table - Exact KALA format -->
+      <div class="ctc-section">
+        <h3>CTC Structure</h3>
+        <!-- <div class="date-stamp">
+          <strong>Dated:</strong> {{ selectedOfferLetter.CreatedDate | date:'dd/MM/yyyy' }}
+        </div> -->
+
+        <div class="ctc-table">
+          <table class="ctc-breakdown-table">
+            <thead>
+              <tr>
+                <th>Cost To Company (CTC)</th>
+                <th>Amount (Rs.)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Consolidated Salary</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterBasic || 18000 | number:'1.0-0' }}</td>
+              </tr>
+              <tr>
+                <td>House Rent Allowance (H.R.A)</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterHra || 0 | number:'1.0-0' }}</td>
+              </tr>
+              <tr>
+                <td>Conveyance</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterConvAllowance || 0 | number:'1.0-0' }}</td>
+              </tr>
+              <!-- <tr>
+                <td>Education</td>
+                <td class="amount">0</td>
+              </tr> -->
+              <tr>
+                <td>City Compensatory Allowances (CCA)</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterCityCompensatoryAlowance || 0 | number:'1.0-0' }}</td>
+              </tr>
+              <tr>
+                <td>Miscellaneous</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterMiscAllowance || 0 | number:'1.0-0' }}</td>
+              </tr>
+              <tr class="gross-total">
+                <td><strong>Gross Amount</strong></td>
+                <td class="amount"><strong>{{ selectedOfferLetter.OfferLetterGross || 18000 | number:'1.0-0' }}</strong></td>
+              </tr>
+              <tr>
+                <td>Employee Provident Fund (P.F)</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterPfemployee || 0 | number:'1.0-0' }}</td>
+              </tr>
+              <tr>
+                <td>Professional Tax (P.T)</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterPt || 200 | number:'1.0-0' }}</td>
+              </tr>
+              <tr>
+                <td>Employee ESIC</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterEsic || 135 | number:'1.0-0' }}</td>
+              </tr>
+              <tr class="take-home-total">
+                <td><strong>Take Home Salary</strong></td>
+                <td class="amount"><strong>{{ calculateTakeHomeSalary(selectedOfferLetter) | number:'1.0-0' }}</strong></td>
+              </tr>
+              <tr>
+                <td>Employer ESIC</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterPfemployer || 585 | number:'1.0-0' }}</td>
+              </tr>
+              <tr>
+                <td>Employer Provident Fund</td>
+                <td class="amount">0</td>
+              </tr>
+              <!-- <tr>
+                <td>Exgratia</td>
+                <td class="amount">0</td>
+              </tr> -->
+              <tr>
+                <td>Leave Traveling Allowances (LTA)</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterLeaveTravelAllowance || 0 | number:'1.0-0' }}</td>
+              </tr>
+              <!-- <tr>
+                <td>Medical Reimbursement</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterMedicalInsurance || 0 | number:'1.0-0' }}</td>
+              </tr> -->
+              <tr>
+                <td>Bonus</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterBonus || 450 | number:'1.0-0' }}</td>
+              </tr>
+              <tr>
+                <td>Gratuity</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterGraduity || 866 | number:'1.0-0' }}</td>
+              </tr>
+              <tr>
+                <td>Canteen</td>
+                <td class="amount">2,860</td>
+              </tr>
+              <tr>
+                <td>Mobile Limit</td>
+                <td class="amount">353</td>
+              </tr>
+              <tr>
+                <td>Uniform</td>
+                <td class="amount">200</td>
+              </tr>
+              <tr>
+                <td>Mediclaim</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterMedicalInsurance || 0 | number:'1.0-0' }}</td>
+              </tr>
+              <!-- <tr>
+                <td>Performance Incentive</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterPerformanceKpa || 0 | number:'1.0-0' }}</td>
+              </tr> -->
+              <tr class="total-ctc">
+                <td><strong>Cost To Company Per Month (CTC PM)</strong></td>
+                <td class="amount"><strong>{{ (calculateTotalCTC(selectedOfferLetter) / 12) | number:'1.0-0' }}</strong></td>
+              </tr>
+              <tr class="total-ctc">
+                <td><strong>Cost To Company Per Annum (CTC PA)</strong></td>
+                <td class="amount"><strong>{{ calculateTotalCTC(selectedOfferLetter) | number:'1.0-0' }}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Closing - Matching KALA format -->
+      <div class="closing-section">
+        <p><strong>Thanking you,</strong></p>
+      </div>
+
+      <!-- Signature section with company seal -->
+      <div class="signature-section">
+        <div class="signature-left">
+          <strong>For Kala Genset Pvt Ltd.</strong>
+        </div>
+        <div class="signature-right">
+          <div class="company-seal">
+            <div class="seal-content">
+              KALA GENSET<br>
+              PVT. LTD.<br>
+              <span class="seal-location">PUNE</span>
+            </div>
+          </div>
+          <div class="signatory-text"><strong>Authorized Signatory</strong></div>
+        </div>
+      </div>
+
+      <!-- Footer Address -->
+      <div class="footer-address">
+        <strong>Regd. Address:</strong> Gat No. 392/1, Mahalunge Ingale, Khed, Pune, Maharashtra 410501<br>
+        <strong>Head Office:</strong> A-37, H Block, MIDC, Pimpri, Pune - 411018, Maharashtra, India<br>
+        <strong>Tel:</strong> 020-2724 1881 / 020 2724 2212 <strong>Toll Free:</strong> 1800 123 0018<br>
+        <strong>Website:</strong> www.kalabiz.com | <strong>Email:</strong> kalagenset&#64;kalabiz.com
+      </div>
+
+    </mat-dialog-content>
+
+    <!-- Actions -->
+    <mat-dialog-actions align="end" class="dialog-actions">
+      <button mat-button (click)="closePreviewDialog()">
+        <mat-icon>close</mat-icon>
+        Close
+      </button>
+      <button mat-raised-button color="primary" (click)="printOfferLetter()">
+        <mat-icon>print</mat-icon>
+        Print
+      </button>
+      <!-- <button mat-raised-button color="accent" (click)="downloadPDF()">
+        <mat-icon>download</mat-icon>
+        Download PDF
+      </button> -->
+    </mat-dialog-actions>
+  </div>
+</ng-template>

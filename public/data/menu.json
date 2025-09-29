@@ -202,6 +202,11 @@
           "type": "link"
         },
         {
+          "route": "departmentbudget",
+          "name": "departmentbudget",
+          "type": "link"
+        },
+        {
           "route": "dailyattendance",
           "name": "dailyattendance",
           "type": "link"

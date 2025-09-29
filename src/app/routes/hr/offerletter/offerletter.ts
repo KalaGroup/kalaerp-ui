@@ -17,10 +17,13 @@ import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
 import { Toastservice } from 'app/routes/toastservice';
 import { AddEditOfferletter } from './add-edit-offerletter/add-edit-offerletter';
+import { Offerletter as offerLetterService } from '@shared/services/hr/offerletter/offerletter';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-offerletter',
-  imports: [ CommonModule,
+  imports: [
+    CommonModule,
     MatTableModule,
     MatCardModule,
     MatDividerModule,
@@ -36,12 +39,15 @@ import { AddEditOfferletter } from './add-edit-offerletter/add-edit-offerletter'
     MatDialogModule,
   ],
   templateUrl: './offerletter.html',
-  styleUrl: './offerletter.scss'
+  styleUrl: './offerletter.scss',
 })
 export class Offerletter {
-private readonly translate = inject(TranslateService);
+  private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
+  @ViewChild('offerLetterPreviewTemplate') offerLetterPreviewTemplate!: TemplateRef<any>;
+  previewDialogRef!: MatDialogRef<any>;
+  selectedOfferLetter: any = null;
 
   //countries: ICompany[] = [];
   showForm = false;
@@ -49,7 +55,7 @@ private readonly translate = inject(TranslateService);
   editIndex: number | null = null;
 
   multiSelectable = true;
-  rowSelectable = true;
+  rowSelectable = false;
   hideRowSelectionCheckbox = false;
   showToolbar = true;
   columnHideable = true;
@@ -67,12 +73,12 @@ private readonly translate = inject(TranslateService);
 
   constructor(
     private fb: FormBuilder,
-    //private companyService: Companyservice,
+    private offerletterService: offerLetterService,
     private dialog: MatDialog,
     private toastService: Toastservice
   ) {}
   ngOnInit(): void {
-   // this.loadAllCompanies();
+    this.loadAllOfferLetters();
   }
 
   toggleConfigSection(): void {
@@ -88,168 +94,29 @@ private readonly translate = inject(TranslateService);
       width: '60px',
     },
     {
-      header: this.translate.stream('Company Code'),
-      field: 'CompanyCode',
+      header: this.translate.stream('Offer Letter ID'),
+      field: 'OfferLetterId',
       sortable: true,
       minWidth: 120,
       width: '120px',
     },
     {
-      header: this.translate.stream('Company Name'),
-      field: 'CompanyName',
-      sortable: true,
-      minWidth: 200,
-      width: '200px',
-    },
-    {
-      header: this.translate.stream('Short Name'),
-      field: 'ShortName',
-      sortable: true,
-      minWidth: 120,
-      width: '120px',
-    },
-    {
-      header: this.translate.stream('Email'),
-      field: 'EmailId',
-      sortable: true,
-      minWidth: 180,
-      width: '180px',
-    },
-    {
-      header: this.translate.stream('Phone'),
-      field: 'PhoneNumber',
-      sortable: true,
-      minWidth: 140,
-      width: '140px',
-    },
-    {
-      header: this.translate.stream('Registered Address'),
-      field: 'RegisteredAddress',
-      sortable: true,
-      minWidth: 200,
-      width: '200px',
-      // Optional: Add tooltip for long addresses
-      //showExpand: true,
-    },
-    {
-      header: this.translate.stream('Registered City'),
-      field: 'RegisteredCityName',
-      sortable: true,
-      minWidth: 120,
-      width: '120px',
-    },
-    {
-      header: this.translate.stream('Registered District'),
-      field: 'RegisteredDistrictName',
-      sortable: true,
-      minWidth: 120,
-      width: '120px',
-    },
-    {
-      header: this.translate.stream('Registered State'),
-      field: 'RegisteredStateName',
-      sortable: true,
-      minWidth: 120,
-      width: '120px',
-    },
-    {
-      header: this.translate.stream('Registered Country'),
-      field: 'RegisteredCountryName',
-      sortable: true,
-      minWidth: 130,
-      width: '130px',
-    },
-    {
-      header: this.translate.stream('Pin Code'),
-      field: 'RegisteredPinCode',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('Corporate Address'),
-      field: 'CorporateAddress',
-      sortable: true,
-      minWidth: 200,
-      width: '200px',
-    },
-    {
-      header: this.translate.stream('Corporate Country'),
-      field: 'CorporateCountryName',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('Corporate State'),
-      field: 'CorporateStateName',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('Corporate District'),
-      field: 'CorporateDistrictName',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('Corporate City'),
-      field: 'CorporateCityName',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('Corporate Pin Code'),
-      field: 'CorporatePinCode',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('Website'),
-      field: 'Website',
-      sortable: true,
-      minWidth: 160,
-      width: '160px',
-      // Make website clickable
-      type: 'link',
-    },
-    {
-      header: this.translate.stream('Social Media'),
-      field: 'SocialMedialink',
-      sortable: true,
-      minWidth: 160,
-      width: '160px',
-      // Make website clickable
-      type: 'link',
-    },
-    {
-      header: this.translate.stream('PAN'),
-      field: 'Pan',
-      sortable: true,
-      minWidth: 120,
-      width: '120px',
-    },
-    {
-      header: this.translate.stream('GST'),
-      field: 'Gst',
+      header: this.translate.stream('Position'),
+      field: 'PositionMasterName',
       sortable: true,
       minWidth: 150,
       width: '150px',
     },
     {
-      header: this.translate.stream('CIN'),
-      field: 'Cin',
+      header: this.translate.stream('Candidate Name'),
+      field: 'RecruitmentMasterNameOfCandidates',
       sortable: true,
       minWidth: 180,
       width: '180px',
     },
     {
-      header: this.translate.stream('Established Date'),
-      field: 'EstablishedDate',
+      header: this.translate.stream('Joining Date'),
+      field: 'OfferLetterJoinindate',
       sortable: true,
       minWidth: 130,
       width: '130px',
@@ -259,48 +126,30 @@ private readonly translate = inject(TranslateService);
       },
     },
     {
-      header: this.translate.stream('Entity Type'),
-      field: 'CompanyEntityTypeName',
+      header: this.translate.stream('Basic Salary'),
+      field: 'OfferLetterBasic',
       sortable: true,
       minWidth: 120,
       width: '120px',
-    },
-    {
-      header: this.translate.stream('Currency'),
-      field: 'CurrencyName',
-      sortable: true,
-      minWidth: 100,
-      width: '100px',
-    },
-    {
-      header: this.translate.stream('Fiscal Year Start'),
-      field: 'FiscalYearStart',
-      sortable: true,
-      minWidth: 130,
-      width: '130px',
-      type: 'date',
+      type: 'number',
       typeParameter: {
-        format: 'dd/MM/yyyy',
+        digitsInfo: '1.0-2',
       },
     },
     {
-      header: this.translate.stream('Logo'),
-      field: 'LogoUrl',
-      sortable: false,
-      minWidth: 80,
-      width: '80px',
-      type: 'image',
-    },
-    {
-      header: this.translate.stream('Parent Company'),
-      field: 'ParentCompanyName',
+      header: this.translate.stream('Gross Salary'),
+      field: 'OfferLetterGross',
       sortable: true,
-      minWidth: 150,
-      width: '150px',
+      minWidth: 120,
+      width: '120px',
+      type: 'number',
+      typeParameter: {
+        digitsInfo: '1.0-2',
+      },
     },
     {
-      header: this.translate.stream('Ownership %'),
-      field: 'OwnershipPercentage',
+      header: this.translate.stream('DA'),
+      field: 'OfferLetterDa',
       sortable: true,
       minWidth: 100,
       width: '100px',
@@ -310,91 +159,121 @@ private readonly translate = inject(TranslateService);
       },
     },
     {
-      header: this.translate.stream('AI Insights'),
-      field: 'AiinsightsEnabled',
+      header: this.translate.stream('HRA'),
+      field: 'OfferLetterHra',
       sortable: true,
       minWidth: 100,
       width: '100px',
-      type: 'tag',
-      tag: {
-        true: { text: 'Enabled', color: 'green-100' },
-        false: { text: 'Disabled', color: 'red-100' },
+      type: 'number',
+      typeParameter: {
+        digitsInfo: '1.0-2',
       },
     },
     {
-      header: this.translate.stream('Predictive Analytics Level'),
-      field: 'PredictiveAnalyticsLevel',
+      header: this.translate.stream('Conv Allowance'),
+      field: 'OfferLetterConvAllowance',
+      sortable: true,
+      minWidth: 120,
+      width: '120px',
+      type: 'number',
+      typeParameter: {
+        digitsInfo: '1.0-2',
+      },
+    },
+    {
+      header: this.translate.stream('PF Employee'),
+      field: 'OfferLetterPfemployee',
+      sortable: true,
+      minWidth: 110,
+      width: '110px',
+      type: 'number',
+      typeParameter: {
+        digitsInfo: '1.0-2',
+      },
+    },
+    {
+      header: this.translate.stream('PF Employer'),
+      field: 'OfferLetterPfemployer',
+      sortable: true,
+      minWidth: 110,
+      width: '110px',
+      type: 'number',
+      typeParameter: {
+        digitsInfo: '1.0-2',
+      },
+    },
+    {
+      header: this.translate.stream('Medical Insurance'),
+      field: 'OfferLetterMedicalInsurance',
       sortable: true,
       minWidth: 130,
       width: '130px',
-    },
-    {
-      header: this.translate.stream('Inter-Company Transactions'),
-      field: 'InterCompanyTransactions',
-      sortable: true,
-      minWidth: 160,
-      width: '160px',
-      type: 'tag',
-      tag: {
-        true: { text: 'Yes', color: 'green-100' },
-        false: { text: 'No', color: 'gray-100' },
+      type: 'number',
+      typeParameter: {
+        digitsInfo: '1.0-2',
       },
     },
     {
-      header: this.translate.stream('Location Advantage Score'),
-      field: 'LocationAdvantageScore',
+      header: this.translate.stream('Performance KPA'),
+      field: 'OfferLetterPerformanceKpa',
       sortable: true,
       minWidth: 120,
       width: '120px',
       type: 'number',
       typeParameter: {
-        digitsInfo: '1.1-1',
+        digitsInfo: '1.0-2',
       },
     },
     {
-      header: this.translate.stream('Talent Accessiblity Score'),
-      field: 'TalentAccessibilityScore',
+      header: this.translate.stream('Bonus'),
+      field: 'OfferLetterBonus',
       sortable: true,
-      minWidth: 110,
-      width: '110px',
+      minWidth: 100,
+      width: '100px',
       type: 'number',
       typeParameter: {
-        digitsInfo: '1.1-1',
+        digitsInfo: '1.0-2',
       },
     },
     {
-      header: this.translate.stream('Company Remark'),
-      field: 'CompanyRemark',
-      sortable: true,
-      minWidth: 110,
-      width: '110px',
-    },
-    {
-      header: this.translate.stream('Cost Efficiency Rating'),
-      field: 'CostEfficiencyRating',
-      sortable: true,
-      minWidth: 120,
-      width: '120px',
-      type: 'number',
-      typeParameter: {
-        digitsInfo: '1.1-1',
-      },
-    },
-    {
-      header: this.translate.stream('Authorized'),
-      field: 'CompanyIsAuth',
+      header: this.translate.stream('Level 1 Auth'),
+      field: 'OfferLetterAuth1',
       sortable: true,
       minWidth: 100,
       width: '100px',
       type: 'tag',
       tag: {
-        true: { text: 'Yes', color: 'green-100' },
-        false: { text: 'No', color: 'red-100' },
+        true: { text: 'Authorized', color: 'green-100' },
+        false: { text: 'Pending', color: 'red-100' },
+      },
+    },
+    {
+      header: this.translate.stream('Level 2 Auth'),
+      field: 'OfferLetterAuth2',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+      type: 'tag',
+      tag: {
+        true: { text: 'Authorized', color: 'green-100' },
+        false: { text: 'Pending', color: 'red-100' },
+      },
+    },
+    {
+      header: this.translate.stream('Level 3 Auth'),
+      field: 'OfferLetterAuth3',
+      sortable: true,
+      minWidth: 100,
+      width: '100px',
+      type: 'tag',
+      tag: {
+        true: { text: 'Authorized', color: 'green-100' },
+        false: { text: 'Pending', color: 'red-100' },
       },
     },
     {
       header: this.translate.stream('Status'),
-      field: 'CompanyIsActive',
+      field: 'OfferLetterIsActive',
       sortable: true,
       minWidth: 100,
       width: '100px',
@@ -405,41 +284,22 @@ private readonly translate = inject(TranslateService);
       },
     },
     {
-      header: this.translate.stream('Discard'),
-      field: 'CompanyIsDiscard',
+      header: this.translate.stream('Remarks'),
+      field: 'OfferLetterRemark',
       sortable: true,
-      minWidth: 100,
-      width: '100px',
-      type: 'tag',
-      tag: {
-        true: { text: 'Active', color: 'green-100' },
-        false: { text: 'Inactive', color: 'red-100' },
-      },
+      minWidth: 150,
+      width: '150px',
     },
     {
       header: this.translate.stream('Created Date'),
       field: 'CreatedDate',
       sortable: true,
-      minWidth: 130,
-      width: '130px',
+      minWidth: 140,
+      width: '140px',
       type: 'date',
       typeParameter: {
         format: 'dd/MM/yyyy HH:mm',
       },
-    },
-    {
-      header: this.translate.stream('Created By'),
-      field: 'CreatedBy',
-      sortable: true,
-      minWidth: 120,
-      width: '120px',
-    },
-    {
-      header: this.translate.stream('Company Remark 2'),
-      field: 'CompanyRemark2',
-      sortable: true,
-      minWidth: 110,
-      width: '110px',
     },
     {
       header: this.translate.stream('Action'),
@@ -449,6 +309,13 @@ private readonly translate = inject(TranslateService);
       pinned: 'right',
       type: 'button',
       buttons: [
+        {
+          type: 'icon',
+          icon: 'visibility',
+          tooltip: this.translate.stream('view'),
+          color: 'primary',
+          click: (record: any) => this.preview(record),
+        },
         {
           type: 'icon',
           icon: 'edit',
@@ -463,9 +330,8 @@ private readonly translate = inject(TranslateService);
           tooltip: this.translate.stream('delete'),
           pop: {
             title: this.translate.stream('confirm_delete'),
-            description: this.translate.stream('confirm_delete_company_message'),
-            closeText: this.translate.stream('cancel'),
-            okText: this.translate.stream('delete'),
+            closeText: this.translate.stream('close'),
+            okText: this.translate.stream('ok'),
           },
           click: (record: any) => this.delete(record),
         },
@@ -473,62 +339,118 @@ private readonly translate = inject(TranslateService);
     },
   ];
 
-  // loadAllCompanies() {
-  //   this.companyService.getAllCompanies().subscribe({
-  //     next: data => {
-  //       debugger;
-  //       this.list = data.map((item: any, index: number) => ({
-  //         ...item,
-  //         SNo: index + 1,
-  //         // Convert base64 logo to displayable URL
-  //         LogoUrl: this.getLogoUrl(item.Logo),
-  //       }));
-  //       console.log('Fetched companies:', this.list);
-  //     },
-  //     error: err => {
-  //       console.error('Error fetching countries:', err);
-  //     },
-  //   });
-  // }
+  loadAllOfferLetters() {
+    this.offerletterService.getAllOfferLetters().subscribe({
+      next: data => {
+        this.list = data.map((item: any, index: number) => {
+          // Extract CTC data from nested array (assuming first element)
+          const ctcData =
+            item.OfferLetterCtcs && item.OfferLetterCtcs[0] ? item.OfferLetterCtcs[0] : {};
 
-  // getLogoUrl(logoBase64: string): string {
-  //   if (logoBase64 && logoBase64.trim() !== '') {
-  //     return `data:image/jpeg;base64,${logoBase64}`;
-  //   }
-  //   return 'assets/images/default-company-logo.png'; // fallback image
-  // }
+          return {
+            // Add serial number
+            SNo: index + 1,
+
+            // Main offer letter fields
+            OfferLetterId: item.OfferLetterId,
+            PositionMasterName: item.PositionMasterName,
+            RecruitmentMasterNameOfCandidates: item.RecruitmentMasterNameOfCandidates,
+            OfferLetterJoinindate: item.OfferLetterJoinindate,
+            OfferLetterRemark: item.OfferLetterRemark,
+            OfferLetterAuth1: item.OfferLetterAuth1,
+            OfferLetterAuth1Remark: item.OfferLetterAuth1Remark,
+            OfferLetterAuth2: item.OfferLetterAuth2,
+            OfferLetterAuth2Remark: item.OfferLetterAuth2Remark,
+            OfferLetterAuth3: item.OfferLetterAuth3,
+            OfferLetterAuth3Remark: item.OfferLetterAuth3Remark,
+            OfferLetterIsActive: item.OfferLetterIsActive,
+            OfferLetterIsDiscard: item.OfferLetterIsDiscard,
+            // CreatedBy: item.CreatedBy,
+            CreatedDate: item.CreatedDate,
+            // UpdatedBy: item.UpdatedBy,
+            // UpdatedDate: item.UpdatedDate,
+
+            // Flattened CTC data from nested OfferLetterCtcs array
+            OfferLetterBasic: ctcData.OfferLetterBasic || 0,
+            OfferLetterDa: ctcData.OfferLetterDa || 0,
+            OfferLetterHra: ctcData.OfferLetterHra || 0,
+            OfferLetterConvAllowance: ctcData.OfferLetterConvAllowance || 0,
+            OfferLetterCityCompensatoryAlowance: ctcData.OfferLetterCityCompensatoryAlowance || 0,
+            OfferLetterLeaveTravelAllowance: ctcData.OfferLetterLeaveTravelAllowance || 0,
+            OfferLetterCarAllowance: ctcData.OfferLetterCarAllowance || 0,
+            OfferLetterFuelAllowance: ctcData.OfferLetterFuelAllowance || 0,
+            OfferLetterDriverAllowance: ctcData.OfferLetterDriverAllowance || 0,
+            OfferLetterMiscAllowance: ctcData.OfferLetterMiscAllowance || 0,
+            OfferLetterGross: ctcData.OfferLetterGross || 0,
+            OfferLetterPt: ctcData.OfferLetterPt || 0,
+            OfferLetterEsic: ctcData.OfferLetterEsic || 0,
+            OfferLetterPfemployee: ctcData.OfferLetterPfemployee || 0,
+            OfferLetterPfemployer: ctcData.OfferLetterPfemployer || 0,
+            OfferLetterMedicalInsurance: ctcData.OfferLetterMedicalInsurance || 0,
+            OfferLetterPerformanceKpa: ctcData.OfferLetterPerformanceKpa || 0,
+            OfferLetterGraduity: ctcData.OfferLetterGraduity || 0,
+            OfferLetterBonus: ctcData.OfferLetterBonus || 0,
+            OfferLetterMlwf: ctcData.OfferLetterMlwf || 0,
+
+            // Keep original nested structure if needed elsewhere
+            OfferLetterCtcs: item.OfferLetterCtcs,
+          };
+        });
+        console.log('Fetched Offer letters with flattened CTC data:', this.list);
+      },
+      error: err => {
+        console.error('Error fetching offer letters:', err);
+      },
+    });
+  }
 
   edit(record: any) {
     // Open dialog, pass in the record
-    this.dialog.open(AddEditOfferletter, {
+    this.dialog
+      .open(AddEditOfferletter, {
         width: '100%',
         height: '100%',
         maxWidth: '100vw',
         maxHeight: '100vh',
-        data: { offerletter: record },
+        data: { offerLetter: record },
       })
       .afterClosed()
       .subscribe(result => {
-        // if (result) {
-        //   console.log('Company Id', record.CompanyId);
-        //   console.log('Dialog result:', result);
-        //   const payload = this.createAndUpdateCompanyPayload(result);
-        //   payload.CompanyId = record.CompanyId; // Include CompanyId for update
-        //   payload.CompanyCode = record.CompanyCode; // CompanyCode is required
-        //   console.log('Payload for update:', payload);
-        //   this.companyService.updateCompany(payload).subscribe({
-        //     next: res => {
-        //       console.log('Company updated successfully:', res);
-        //       this.loadAllCompanies();
-        //       this.toastService.showSuccess('Company updated successfully');
-        //     },
-        //     error: err => {
-        //       this.loadAllCompanies();
-        //       console.error('Error updating company:', err);
-        //       this.toastService.showError('Error updating company');
-        //     },
-        //   });
-        // }
+        if (result) {
+          const updatePayload = {
+            CreatedBy: result.CreatedBy,
+            CreatedDate: result.CreatedDate,
+            OfferLetterId: record.OfferLetterId,
+            OfferLetterAuth1: result.OfferLetterAuth1,
+            OfferLetterAuth1Remark: result.OfferLetterAuth1Remark,
+            OfferLetterAuth2: result.OfferLetterAuth2,
+            OfferLetterAuth2Remark: result.OfferLetterAuth2Remark,
+            OfferLetterAuth3: result.OfferLetterAuth3,
+            OfferLetterAuth3Remark: result.OfferLetterAuth3Remark,
+            OfferLetterIsActive: result.OfferLetterIsActive,
+            OfferLetterIsDiscard: result.OfferLetterIsDiscard,
+            OfferLetterJoinindate: result.OfferLetterJoinindate,
+            OfferLetterPositionId: result.OfferLetterPositionId,
+            OfferLetterRecruitmentId: result.OfferLetterRecruitmentId,
+            OfferLetterRemark: result.OfferLetterRemark,
+            UpdatedBy: result.UpdatedBy,
+            UpdatedDate: result.UpdatedDate,
+            offerLetterCtcs: result.offerLetterCtcs,
+          };
+          console.log('Updated offer letter data:', updatePayload);
+          this.offerletterService.updateOfferLetter(updatePayload).subscribe({
+            next: res => {
+              console.log('Offer Letter updated successfully:', res);
+              this.loadAllOfferLetters();
+              this.toastService.showSuccess('Offer Letter updated successfully');
+            },
+            error: err => {
+              this.loadAllOfferLetters();
+              console.error('Error updating offer letter:', err);
+              this.toastService.showError('Error updating offer letter');
+            },
+          });
+        }
       });
   }
 
@@ -542,22 +464,22 @@ private readonly translate = inject(TranslateService);
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // if (result) {
-      //   console.log('New company added:', result);
-      //   const payload = this.createAndUpdateCompanyPayload(result);
-      //   this.companyService.createCompany(payload).subscribe({
-      //     next: res => {
-      //       console.log('Company created successfully:', res);
-      //       this.loadAllCompanies();
-      //       this.toastService.showSuccess('Company created successfully');
-      //     },
-      //     error: err => {
-      //       this.loadAllCompanies();
-      //       console.error('Error creating company:', err);
-      //       this.toastService.showError('Error creating company');
-      //     },
-      //   });
-      // }
+      if (result) {
+        console.log('New company added:', result);
+
+        this.offerletterService.insertOfferLetter(result).subscribe({
+          next: res => {
+            console.log('Offer Letter Generated successfully:', res);
+            this.loadAllOfferLetters();
+            this.toastService.showSuccess('Offer Letter Generated successfully');
+          },
+          error: err => {
+            this.loadAllOfferLetters();
+            console.error('Error generating offer letter:', err);
+            this.toastService.showError('Error generating offer letter');
+          },
+        });
+      }
     });
   }
 
@@ -572,23 +494,23 @@ private readonly translate = inject(TranslateService);
 
   delete(value: any) {
     console.log('Deleting record:', value);
-    const companyId = value.CompanyId;
-    if (!companyId) {
-      this.toastService.showError('Invalid Company ID');
+    const offerletterId = value.OfferLetterId;
+    if (!offerletterId) {
+      this.toastService.showError('Invalid Offer Letter ID');
       return;
     }
-    // this.companyService.deleteCompany(companyId).subscribe({
-    //   next: res => {
-    //     console.log('Company deleted successfully:', res);
-    //     this.toastService.showSuccess('Company deleted successfully');
-    //     this.loadAllCompanies();
-    //   },
-    //   error: err => {
-    //     this.loadAllCompanies();
-    //     console.error('Error deleting company:', err);
-    //     this.toastService.showError('Error deleting company');
-    //   },
-    // });
+    this.offerletterService.deleteOfferLetter(offerletterId).subscribe({
+      next: res => {
+        console.log('Offer Letter deleted successfully:', res);
+        this.toastService.showSuccess('Offer Letter deleted successfully');
+        this.loadAllOfferLetters();
+      },
+      error: err => {
+        this.loadAllOfferLetters();
+        console.error('Error deleting offer letter:', err);
+        this.toastService.showError('Error deleting offer letter');
+      },
+    });
   }
 
   changeSelect(e: any) {
@@ -614,95 +536,306 @@ private readonly translate = inject(TranslateService);
     this.list = this.list.splice(-1).concat(this.list);
   }
 
-  private createAndUpdateCompanyPayload(formData: any): any {
-    // Convert dates to DateOnly format (YYYY-MM-DD)
-    const establishedDate = formData.EstablishedDate
-      ? this.formatDateToDateOnly(formData.EstablishedDate)
-      : null;
+  preview(record: any): void {
+    console.log('Previewing offer letter:', record);
+    this.selectedOfferLetter = record;
 
-    const fiscalYearStart = formData.FiscalYearStart
-      ? this.formatDateToDateOnly(formData.FiscalYearStart)
-      : new Date().toISOString().split('T')[0]; // Default to today if not provided
+    this.previewDialogRef = this.dialog.open(this.offerLetterPreviewTemplate, {
+      maxWidth: '95vw',
+      maxHeight: '100vh',
+      panelClass: 'offer-letter-preview-dialog',
+      disableClose: false,
+      autoFocus: false,
+    });
+  }
 
-    let logoBase64: string | null = null;
-    if (formData.Logo && typeof formData.Logo === 'string') {
-      logoBase64 = formData.Logo; // Keep as base64 string
-    }
+  // 3. Add these helper methods for the preview dialog
+  calculateTotalCTC(data: any): number {
+    const earnings = [
+      'OfferLetterBasic',
+      'OfferLetterDa',
+      'OfferLetterHra',
+      'OfferLetterConvAllowance',
+      'OfferLetterCityCompensatoryAlowance',
+      'OfferLetterLeaveTravelAllowance',
+      'OfferLetterCarAllowance',
+      'OfferLetterFuelAllowance',
+      'OfferLetterDriverAllowance',
+      'OfferLetterMiscAllowance',
+      'OfferLetterPerformanceKpa',
+      'OfferLetterBonus',
+    ];
 
-    const payload = {
-      // Auto-generated on backend - don't send
-      // CompanyCode: will be generated
-      // Basic Information
-      CompanyName: formData.CompanyName || '',
-      ShortName: formData.ShortName || null,
+    const employerContributions = [
+      'OfferLetterPfemployer',
+      'OfferLetterMedicalInsurance',
+      'OfferLetterGraduity',
+    ];
 
-      // Address Information
-      RegisteredAddress: formData.RegisteredAddress || null,
-      RegisteredCountryId: formData.RegisteredCountryID || 0,
-      RegisteredStateId: formData.RegisteredStateID || 0,
-      RegisteredDistrictId: formData.RegisteredDistrictID || 0,
-      RegisteredCityId: formData.RegisteredCityID || 0,
-      RegisteredPinCode: formData.RegisteredPinCode || '',
+    let totalEarnings = 0;
+    let totalEmployerContributions = 0;
 
-      CorporateAddress: formData.CorporateAddress || null,
-      CorporateCountryId: formData.CorporateCountryID || null,
-      CorporateStateId: formData.CorporateStateID || null,
-      CorporateDistrictId: formData.CorporateDistrictID || null,
-      CorporateCityId: formData.CorporateCityID || null,
-      CorporatePinCode: formData.CorporatePinCode || null,
+    earnings.forEach(field => {
+      totalEarnings += parseFloat(data[field]) || 0;
+    });
 
-      // Contact Information
-      PhoneNumber: formData.PhoneNumber || null,
-      EmailId: formData.EmailID || '', // Note: EmailID -> EmailId
-      Website: formData.Website || null,
-      SocialMedialink: formData.SocialMedialink || null,
+    employerContributions.forEach(field => {
+      totalEmployerContributions += parseFloat(data[field]) || 0;
+    });
 
-      // Legal Information
-      Pan: formData.PAN || null,
-      Gst: formData.GST || null,
-      Cin: formData.CIN || null,
+    return totalEarnings + totalEmployerContributions;
+  }
 
-      // Company Details
-      EstablishedDate: establishedDate,
-      CompanyMasterEntityTypeId: formData.CompEntityTypeId || null,
-      ParentCompanyId: formData.ParentCompanyId || null,
-      OwnershipPercentage: formData.OwnershipPercentage || 0,
-      CompanyCurrencyId: formData.CurrencyId || 0,
-      FiscalYearStart: fiscalYearStart,
+  calculateTakeHomeSalary(data: any): number {
+    const gross = parseFloat(data.OfferLetterGross) || 0;
+    const deductions = [
+      parseFloat(data.OfferLetterPt) || 0,
+      parseFloat(data.OfferLetterEsic) || 0,
+      parseFloat(data.OfferLetterPfemployee) || 0,
+      parseFloat(data.OfferLetterMlwf) || 0
+    ];
 
-      // Logo
-      Logo: logoBase64, // Send base64 string or null
+    const totalDeductions = deductions.reduce((sum, deduction) => sum + deduction, 0);
+    return gross - totalDeductions;
+  }
 
-      // AI & Analytics
-      AiinsightsEnabled: formData.AIInsightsEnabled || false,
-      PredictiveAnalyticsLevel: 'Basic', // Default value as it's required
-      InterCompanyTransactions: formData.InterCompanyTransactions || false,
-      LocationAdvantageScore: formData.LocationAdvantageScore || null,
-      TalentAccessibilityScore: formData.TalentAccessibilityScore || null,
-      CostEfficiencyRating: formData.CostEfficiencyRating || null,
+  getCurrentYear(): number {
+    return new Date().getFullYear();
+  }
 
-      // Status Information
-      CompanyIsAuth: formData.CompanyIsAuth !== undefined ? formData.CompanyIsAuth : true,
-      CompanyRemark: formData.CompanyRemark || '',
-      CompanyRemark2: formData.CompanyRemark2 || null,
-      CompanyIsDiscard: formData.CompanyIsDiscard !== undefined ? formData.CompanyIsDiscard : false,
-      CompanyIsActive: formData.CompanyIsActive !== undefined ? formData.CompanyIsActive : true,
-    };
+  formatDate(date: any): string {
+    if (!date) return '';
+    const d = new Date(date);
+    return d.toLocaleDateString('en-GB');
+  }
 
-    console.log('Payload to send to API:', payload);
-    return payload;
+  formatCurrency(amount: number): string {
+    return new Intl.NumberFormat('en-IN', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount);
+  }
+
+  //  generateKalaOfferLetterPDF(): void {
+  //   if (!this.selectedOfferLetter) return;
+
+  //   const doc = new jsPDF();
+  //   const data = this.selectedOfferLetter;
+
+  //   // Page margins
+  //   const margin = 20;
+  //   const pageWidth = doc.internal.pageSize.width;
+  //   const pageHeight = doc.internal.pageSize.height;
+  //   let yPosition = margin;
+
+  //   // Company Header with dark background
+  //   doc.setFillColor(52, 58, 64);
+  //   doc.rect(margin, yPosition, pageWidth - 2 * margin, 25, 'F');
+
+  //   doc.setTextColor(255, 255, 255);
+  //   doc.setFontSize(16);
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text('KALA Genset Pvt. Ltd.', pageWidth / 2, yPosition + 10, { align: 'center' });
+
+  //   doc.setFontSize(8);
+  //   doc.setFont('helvetica', 'normal');
+  //   doc.text('CIN No.: U90000MH1997PTC112368', pageWidth / 2, yPosition + 16, { align: 'center' });
+  //   doc.text('GST No.: 27AAACK6784C1ZH', pageWidth / 2, yPosition + 21, { align: 'center' });
+
+  //   yPosition += 35;
+
+  //   // Reset text color
+  //   doc.setTextColor(0, 0, 0);
+
+  //   // Reference and Date row
+  //   doc.setFontSize(10);
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text(`Ref No: KGPL/HR/25-26/${data.OfferLetterId.toString().padStart(8, '0')}`, margin, yPosition);
+  //   doc.text(`Date: ${this.formatDate(data.CreatedDate)}`, pageWidth - margin - 30, yPosition);
+  //   yPosition += 15;
+
+  //   // To section
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text('To,', margin, yPosition);
+  //   yPosition += 8;
+  //   doc.setFont('helvetica', 'normal');
+  //   doc.text(`${data.RecruitmentMasterNameOfCandidates}`, margin, yPosition);
+  //   yPosition += 6;
+  //   doc.text('Pune, Maharashtra', margin, yPosition);
+  //   yPosition += 15;
+
+  //   // Subject
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text('Sub: Offer Letter', pageWidth / 2, yPosition, { align: 'center' });
+  //   yPosition += 15;
+
+  //   // Letter body
+  //   doc.setFont('helvetica', 'normal');
+  //   doc.setFontSize(10);
+
+  //   const letterText = [
+  //     `Dear ${data.RecruitmentMasterNameOfCandidates},`,
+  //     '',
+  //     `With reference to your application and subsequent interview you had with us, we are pleased to offer you as "${data.PositionMasterName}" in our organization.`,
+  //     '',
+  //     `Your CTC (Cost To Company) will be Rs. ${this.formatCurrency(this.calculateTotalCTC(data) / 12)} per month. Details of the same are mentioned below:`,
+  //     '',
+  //     'The terms and conditions of employment will remain same as mutually agreed between you and the management of this company at the time of interview.',
+  //     '',
+  //     'You will be on probation for a period of 6 months.',
+  //     'Leave will be applicable after 6 months from date of joining with continuous service.',
+  //     '',
+  //     `You are requested to join on or before ${this.formatDate(data.OfferLetterJoinindate)}. On joining, you are required to come with your educational certificates, 2 nos. passport size photographs, previous experience certificates & relieving letter etc at the time of joining.`,
+  //     '',
+  //     'Kindly return duplicate copy of this letter duly signed as acceptance of employment offer within next 7 working days.',
+  //     '',
+  //     'If Duplicate copy is not received within stipulated time this offer letter will stands cancelled.'
+  //   ];
+
+  //   letterText.forEach(line => {
+  //     if (line === '') {
+  //       yPosition += 4;
+  //     } else {
+  //       const splitText = doc.splitTextToSize(line, pageWidth - 2 * margin);
+  //       doc.text(splitText, margin, yPosition);
+  //       yPosition += splitText.length * 5;
+  //     }
+  //   });
+
+  //   // Check if we need a new page for the table
+  //   if (yPosition > pageHeight - 100) {
+  //     doc.addPage();
+  //     yPosition = margin;
+  //   }
+
+  //   yPosition += 10;
+
+  //   // CTC Structure heading
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.setFontSize(12);
+  //   doc.text('CTC Structure', pageWidth / 2, yPosition, { align: 'center' });
+  //   yPosition += 10;
+
+  //   // Table setup
+  //   const tableX = margin;
+  //   const tableWidth = pageWidth - 2 * margin;
+  //   const col1Width = tableWidth * 0.7;
+  //   const col2Width = tableWidth * 0.3;
+
+  //   // Table data matching the original format
+  //   const tableData = [
+  //     ['Cost To Company (CTC)', 'Amount (Rs.)'],
+  //     ['Consolidated Salary', this.formatCurrency(data.OfferLetterBasic || 18000)],
+  //     ['House Rent Allowance (H.R.A)', this.formatCurrency(data.OfferLetterHra || 0)],
+  //     ['Conveyance', this.formatCurrency(data.OfferLetterConvAllowance || 0)],
+  //     ['Education', '0'],
+  //     ['City Compensatory Allowances (CCA)', this.formatCurrency(data.OfferLetterCityCompensatoryAlowance || 0)],
+  //     ['Miscellaneous', this.formatCurrency(data.OfferLetterMiscAllowance || 0)],
+  //     ['Gross Amount', this.formatCurrency(data.OfferLetterGross || 18000)],
+  //     ['Employee Provident Fund (P.F)', this.formatCurrency(data.OfferLetterPfemployee || 0)],
+  //     ['Professional Tax (P.T)', this.formatCurrency(data.OfferLetterPt || 200)],
+  //     ['Employee ESIC', this.formatCurrency(data.OfferLetterEsic || 135)],
+  //     ['Take Home Salary', this.formatCurrency(this.calculateTakeHomeSalary(data))],
+  //     ['Employer ESIC', this.formatCurrency(data.OfferLetterPfemployer || 585)],
+  //     ['Employer Provident Fund', '0'],
+  //     ['Exgratia', '0'],
+  //     ['Leave Traveling Allowances (LTA)', this.formatCurrency(data.OfferLetterLeaveTravelAllowance || 0)],
+  //     ['Medical Reimbursement', this.formatCurrency(data.OfferLetterMedicalInsurance || 0)],
+  //     ['Bonus', this.formatCurrency(data.OfferLetterBonus || 450)],
+  //     ['Gratuity', this.formatCurrency(data.OfferLetterGraduity || 866)],
+  //     ['Canteen', '2,860'],
+  //     ['Mobile Limit', '353'],
+  //     ['Uniform', '200'],
+  //     ['Mediclaim', '0'],
+  //     ['Performance Incentive', this.formatCurrency(data.OfferLetterPerformanceKpa || 0)],
+  //     ['Cost To Company Per Month (CTC PM)', this.formatCurrency(this.calculateTotalCTC(data) / 12)],
+  //     ['Cost To Company Per Annum (CTC PA)', this.formatCurrency(this.calculateTotalCTC(data))]
+  //   ];
+
+  //   // Draw table
+  //   doc.setFontSize(9);
+  //   let rowHeight = 7;
+
+  //   tableData.forEach((row, index) => {
+  //     // Check if we need a new page
+  //     if (yPosition + rowHeight > pageHeight - margin) {
+  //       doc.addPage();
+  //       yPosition = margin;
+  //     }
+
+  //     // Header row styling
+  //     if (index === 0) {
+  //       doc.setFillColor(245, 245, 245);
+  //       doc.rect(tableX, yPosition - 2, tableWidth, rowHeight, 'F');
+  //       doc.setFont('helvetica', 'bold');
+  //     } else {
+  //       doc.setFont('helvetica', 'normal');
+  //     }
+
+  //     // Draw borders
+  //     doc.rect(tableX, yPosition - 2, col1Width, rowHeight);
+  //     doc.rect(tableX + col1Width, yPosition - 2, col2Width, rowHeight);
+
+  //     // Add text
+  //     doc.text(row[0], tableX + 3, yPosition + 3);
+  //     doc.text(row[1], tableX + col1Width + col2Width - 5, yPosition + 3, { align: 'right' });
+
+  //     yPosition += rowHeight;
+  //   });
+
+  //   yPosition += 15;
+
+  //   // Closing section
+  //   doc.setFont('helvetica', 'bold');
+  //   doc.text('Thanking you,', margin, yPosition);
+  //   yPosition += 15;
+  //   doc.text('For Kala Genset Pvt Ltd.', margin, yPosition);
+  //   yPosition += 25;
+
+  //   // Signature section with seal representation
+  //   // doc.circle(pageWidth - 60, yPosition, 15, 'S');
+  //   // doc.setFontSize(6);
+  //   // doc.text('KALA GENSET', pageWidth - 60, yPosition - 2, { align: 'center' });
+  //   // doc.text('PVT. LTD.', pageWidth - 60, yPosition + 2, { align: 'center' });
+  //   // doc.text('PUNE', pageWidth - 60, yPosition + 6, { align: 'center' });
+
+  //   yPosition += 20;
+  //   doc.setFontSize(10);
+  //   doc.text('Authorized Signatory', pageWidth - 60, yPosition, { align: 'center' });
+
+  //   // Footer address
+  //   yPosition = pageHeight - 25;
+  //   doc.setFontSize(6);
+  //   doc.setFont('helvetica', 'normal');
+  //   const footerText = [
+  //     'Regd. Address: Gat No. 392/1, Mahalunge Ingale, Khed, Pune, Maharashtra 410501',
+  //     'Head Office: A-37, H Block, MIDC, Pimpri, Pune - 411018, Maharashtra, India',
+  //     'Tel: 020-2724 1881 / 020 2724 2212  Toll Free: 1800 123 0018',
+  //     'Website: www.kalabiz.com | Email: kalagenset@kalabiz.com'
+  //   ];
+
+  //   footerText.forEach(line => {
+  //     doc.text(line, pageWidth / 2, yPosition, { align: 'center' });
+  //     yPosition += 3;
+  //   });
+
+  //   // Save the PDF
+  //   doc.save(`Offer-Letter-${data.RecruitmentMasterNameOfCandidates}-${data.OfferLetterId}.pdf`);
+  //   this.toastService.showSuccess('PDF downloaded successfully');
+  // }
+
+  printOfferLetter(): void {
+    window.print();
   }
 
 
+  // downloadPDF(): void {
+    // this.generateKalaOfferLetterPDF();
+  // }
 
-  private formatDateToDateOnly(date: Date | string): string | null {
-    if (!date) return null;
-
-    const dateObj = date instanceof Date ? date : new Date(date);
-
-    if (isNaN(dateObj.getTime())) return null;
-
-    // Format as YYYY-MM-DD for DateOnly
-    return dateObj.toISOString().split('T')[0];
+  closePreviewDialog(): void {
+    this.previewDialogRef.close();
+    this.selectedOfferLetter = null;
   }
+
 }
