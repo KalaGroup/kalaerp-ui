@@ -1,7 +1,6 @@
-/* eslint-disable @angular-eslint/prefer-inject */
 import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
+import { ReactiveFormsModule, FormsModule, FormBuilder } from '@angular/forms';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
@@ -10,19 +9,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
-import { TranslateService } from '@ngx-translate/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
+import { TranslateService } from '@ngx-translate/core';
 import { Toastservice } from 'app/routes/toastservice';
-import { AddEditWorkstation } from './add-edit-workstation/add-edit-workstation';
-import { IWorkstation } from '@shared/interfaces/hr/workstation';
-import { Workstationservice } from '@shared/services/hr/workstation/workstationservice';
+import { AddEditGatepasstype } from './add-edit-gatepasstype/add-edit-gatepasstype';
+import { IGatePassType } from '@shared/interfaces/hr/gatepasstype';
+import { Gatepasstypeservice } from '@shared/services/hr/gatepasstype/gatepasstype';
 
 @Component({
-  selector: 'app-workstationmaster',
+  selector: 'app-gatepasstype',
   imports: [
     CommonModule,
     MatTableModule,
@@ -39,16 +36,15 @@ import { Workstationservice } from '@shared/services/hr/workstation/workstations
     PageHeader,
     MatDialogModule,
   ],
-
-  templateUrl: './workstationmaster.html',
-  styleUrl: './workstationmaster.scss',
+  templateUrl: './gatepasstype.html',
+  styleUrl: './gatepasstype.scss',
 })
-export class Workstationmaster implements OnInit {
+export class Gatepasstype implements OnInit {
   private readonly translate = inject(TranslateService);
   @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
   dialogRef!: MatDialogRef<any>;
 
-  workstations: IWorkstation[] = [];
+  gatepasstypes: IGatePassType[] = [];
   showForm = false;
   stateModel: any = {};
   editIndex: number | null = null;
@@ -69,23 +65,23 @@ export class Workstationmaster implements OnInit {
   isLoading = false;
   list: any[] = [];
   isConfigExpanded: boolean = false;
-  workstationForm: any;
+  gatepasstypeForm: any;
 
   constructor(
     private fb: FormBuilder,
-    private workstationService: Workstationservice,
+    private gatepasstypeService: Gatepasstypeservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) { }
+  ) {}
   ngOnInit(): void {
-    this.loadAllWorkstation();
+    this.loadAllGatePassType();
   }
 
   toggleConfigSection(): void {
     this.isConfigExpanded = !this.isConfigExpanded;
   }
 
-  cityColumns: MtxGridColumn[] = [
+  GatePassTypeColumns: MtxGridColumn[] = [
     {
       header: this.translate.stream('SNo'),
       field: 'SNo',
@@ -94,53 +90,53 @@ export class Workstationmaster implements OnInit {
       width: '80px',
     },
     {
-      header: this.translate.stream('WorkStation Code'),
-      field: 'WorkStationCode',
+      header: this.translate.stream('GatePassType Code'),
+      field: 'GatePassTypesTypeCode',
       sortable: true,
       minWidth: 120,
       width: '200px',
     },
     {
-      header: this.translate.stream('WorkStation Name'),
-      field: 'WorkStationName',
+      header: this.translate.stream('GatePassType Name'),
+      field: 'GatePassTypesTypeName',
       sortable: true,
       minWidth: 150,
       width: '200px',
     },
 
     {
-      header: this.translate.stream('WorkStation Short Name'),
-      field: 'WorkStationShortName',
+      header: this.translate.stream('GatePassTypes Description'),
+      field: 'GatePassTypesDescription',
       sortable: true,
       minWidth: 150,
       width: '240px',
     },
 
     {
-      header: this.translate.stream('WorkStation Profitcenter Name'),
-      field: 'ProfitCenterName',
+      header: this.translate.stream('GatePassTypes Requires Approval'),
+      field: 'GatePassTypesRequiresApproval',
       sortable: true,
       minWidth: 150,
       width: '280px',
     },
 
     {
-      header: this.translate.stream('Remark'),
-      field: 'WorkStationRemark',
+      header: this.translate.stream('Auth Remark'),
+      field: 'GatePassTypesAuthRemark',
       sortable: true,
       minWidth: 150,
       width: '120px',
     },
     {
-      header: this.translate.stream('Auth Remark'),
-      field: 'WorkStationAuthRemark',
+      header: this.translate.stream('Is Active'),
+      field: 'GatePassTypesIsActive',
       sortable: true,
-      minWidth: 140,
-      width: '180px',
+      minWidth: 100,
+      width: '150px',
     },
     {
-      header: this.translate.stream('Is Active'),
-      field: 'WorkStationIsActive',
+      header: this.translate.stream('Is Auth'),
+      field: 'GatePassTypesIsAuth',
       sortable: true,
       minWidth: 100,
       width: '150px',
@@ -175,26 +171,26 @@ export class Workstationmaster implements OnInit {
     },
   ];
 
-  loadAllWorkstation() {
+  loadAllGatePassType() {
     debugger;
-    this.workstationService.getAllWorkstation().subscribe({
+    this.gatepasstypeService.getAllGatePassType().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
           ...item,
           SNo: index + 1,
         }));
-        console.log('Fetched Workstation with S.No:', this.list);
+        console.log('Fetched GatePassType with S.No:', this.list);
       },
       error: err => {
-        console.error('Error fetching Workstation:', err);
+        console.error('Error fetching GatePassType:', err);
       },
     });
   }
 
   openAddDialog() {
-    const dialogRef = this.dialog.open(AddEditWorkstation, {
+    const dialogRef = this.dialog.open(AddEditGatepasstype, {
       width: '70%',
-      height: '55%',
+      height: '70%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {},
@@ -204,27 +200,11 @@ export class Workstationmaster implements OnInit {
       if (result) {
         debugger;
         console.log('Added City:', result);
-        const payload: IWorkstation = {
-          WorkStationId: 0,
-          WorkStationProfitcenterId: result.WorkStationProfitcenterId,
-          WorkStationCode: result.WorkStationCode,
-          WorkStationName: result.WorkStationName,
-          WorkStationShortName: result.WorkStationShortName,
-          WorkStationRemark: result.WorkStationRemark,
-          WorkStationAuthRemark: result.WorkStationAuthRemark,
-          WorkStationIsActive: result.WorkStationIsActive,
-          WorkStationIsDiscard: result.WorkStationIsDiscard,
-          CreatedBy: result.CreatedBy,
-          CreatedDate: new Date().toISOString(),
-          WorkStationAuth: false,
-        };
-        console.log('Payload for adding Workstation:', payload);
-        // Call the service to insert the Workstation
-        this.workstationService.insertWorkstation(payload).subscribe({
+        this.gatepasstypeService.insertGatePassType(result).subscribe({
           next: response => {
-            this.toastService.showSuccess('Workstation added successfully:', response);
-            this.loadAllWorkstation();
-
+            this.toastService.showSuccess('GatePassType added successfully:', response);
+            this.loadAllGatePassType();
+            alert(`GatePassType "${result.GatePassTypesTypeName}" added successfully!`);
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -234,15 +214,15 @@ export class Workstationmaster implements OnInit {
                 const message = validationErr.ErrorMessage;
 
                 // Mark field error in form
-                if (this.workstationForm.get(field)) {
-                  this.workstationForm.get(field)?.setErrors({ serverError: message });
+                if (this.gatepasstypeForm.get(field)) {
+                  this.gatepasstypeForm.get(field)?.setErrors({ serverError: message });
                 }
                 // Optionally show toast
                 this.toastService.showError(message);
               });
             } else {
               this.toastService.showError(
-                'Failed to add Workstation. Please verify Workstation details and try again.'
+                'Failed to add GatePassType. Please verify GatePassType details and try again.'
               );
             }
           },
@@ -253,42 +233,44 @@ export class Workstationmaster implements OnInit {
 
   edit(record: any) {
     this.dialog
-      .open(AddEditWorkstation, {
+      .open(AddEditGatepasstype, {
         width: '80%',
         height: '70%',
         maxWidth: '100vw',
         maxHeight: '100vh',
-        data: { workstation: record },
+        data: { gatepasstype: record },
       })
       .afterClosed()
       .subscribe(result => {
         if (result) {
           debugger;
-          console.log('workstation Updated:', result);
-          // Create update payload as per your reqirements
-          const updatePayload = {
-            WorkStationId: result.WorkStationId,
-            WorkStationProfitcenterId: result.WorkStationProfitcenterId,
-            WorkStationCode: result.WorkStationCode,
-            WorkStationName: result.WorkStationName,
-            WorkStationShortName: result.WorkStationShortName,
-            WorkStationRemark: result.WorkStationRemark,
-            WorkStationAuthRemark: result.WorkStationAuthRemark,
-            WorkStationIsActive: result.WorkStationIsActive,
-            WorkStationIsDiscard: result.WorkStationIsDiscard,
-            CreatedBy: result.CreatedBy,
-            WorkStationAuth: false,
-          };
-          console.log('Update payload:', updatePayload);
-          this.workstationService.updateWorkstation(updatePayload).subscribe({
-            next: (response) => {
-              this.toastService.showSuccess('Workstation updated successfully:', response);
-
-              this.loadAllWorkstation();
+          console.log('GatePassType Updated:', result);
+          this.gatepasstypeService.updateGatePassType(result).subscribe({
+            next: response => {
+              this.toastService.showSuccess('GatePassType updated successfully:', response);
+              alert(`GatePassType "${result.GatePassTypesTypeName}" updated successfully!`);
+              this.loadAllGatePassType();
             },
-            error: (err) => {
-              console.error('Error updating Workstation:', err);
-            }
+            error: err => {
+              if (err.status === 400 && err.error) {
+                // Validation errors from FluentValidation
+                err.error.forEach((validationErr: any) => {
+                  const field = validationErr.PropertyName;
+                  const message = validationErr.ErrorMessage;
+
+                  // Mark field error in form
+                  if (this.gatepasstypeForm.get(field)) {
+                    this.gatepasstypeForm.get(field)?.setErrors({ serverError: message });
+                  }
+                  // Optionally show toast
+                  this.toastService.showError(message);
+                });
+              } else {
+                this.toastService.showError(
+                  'Failed to add GatePassType. Please verify GatePassType details and try again.'
+                );
+              }
+            },
           });
         }
       });
@@ -298,18 +280,17 @@ export class Workstationmaster implements OnInit {
     this.dialogRef.close();
   }
 
-  save(record: any): void {
-    console.log('Saving record:', record);
-    this.closeDialog();
-  }
+  // save(record: any): void {
+  //   console.log('Saving record:', record);
+  //   this.closeDialog();
+  // }
 
   delete(value: any) {
-    debugger;
-    this.workstationService.deleteWorkstation(value.WorkStationId).subscribe({
+    this.gatepasstypeService.deleteGatePassType(value.GatePassTypeId).subscribe({
       next: response => {
         this.toastService.showSuccess('Workstation deleted successfully:', response);
-
-        this.loadAllWorkstation();
+        alert(`You have deleted ${value.GatePassTypesTypeName} successfully!`);
+        this.loadAllGatePassType();
       },
       error: err => {
         console.error('Error deleting Workstation:', err);
