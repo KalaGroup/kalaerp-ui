@@ -46,6 +46,7 @@ import { Positionmaster } from './positionmaster/positionmaster';
 import { Departmentbudget } from './departmentbudget/departmentbudget';
 import { Dailyattendance } from './dailyattendance/dailyattendance';
 import { Kalaerppagedetails } from './kalaerppagedetails/kalaerppagedetails';
+import { Gatepasstype } from './gatepasstype/gatepasstype';
 
 export const routes: Routes = [
   {
@@ -228,6 +229,9 @@ export const routes: Routes = [
   {
     path: 'kalaerppagedetails',
     component: Kalaerppagedetails,
+  },
+  {
+    path: 'gatepasstype',
+    component: Gatepasstype,
   }
-
 ];

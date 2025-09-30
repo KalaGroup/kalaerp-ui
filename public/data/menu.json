@@ -215,6 +215,11 @@
           "route": "kalaerppagedetails",
           "name": "kalaerppagedetails",
           "type": "link"  
+        },
+        {
+          "route": "gatepasstype",
+          "name": "gatepasstype",
+          "type": "link"
         }
       ]
     }
