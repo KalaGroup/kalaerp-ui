@@ -280,20 +280,15 @@ export class Gatepasstype implements OnInit {
     this.dialogRef.close();
   }
 
-  // save(record: any): void {
-  //   console.log('Saving record:', record);
-  //   this.closeDialog();
-  // }
-
   delete(value: any) {
     this.gatepasstypeService.deleteGatePassType(value.GatePassTypeId).subscribe({
       next: response => {
-        this.toastService.showSuccess('Workstation deleted successfully:', response);
+        this.toastService.showSuccess('GatePassType deleted successfully:', response);
         alert(`You have deleted ${value.GatePassTypesTypeName} successfully!`);
         this.loadAllGatePassType();
       },
       error: err => {
-        console.error('Error deleting Workstation:', err);
+        console.error('Error deleting GatePassType:', err);
       },
     });
   }
