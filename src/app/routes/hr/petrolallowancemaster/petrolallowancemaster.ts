@@ -183,16 +183,16 @@ export class Petrolallowancemaster implements OnInit {
           FourWheelerPerKm: result.FourWheelerPerKm,
           PetrolAllowanceRemark: result.PetrolAllowanceRemark,
           PetrolAllowanceAuthRemark: result.PetrolAllowanceAuthRemark,
-          PetrolAllowanceIsAuth: result.PetrolAllowanceIsAuth,
-          PetrolAllowanceIsDiscard: result.PetrolAllowanceIsDiscard,
-          PetrolAllowanceIsActive: result.PetrolAllowanceIsActive,
+          PetrolAllowanceIsAuth: result.PetrolAllowanceIsAuth ?? true,
+          PetrolAllowanceIsDiscard: result.PetrolAllowanceIsDiscard ?? false,
+          PetrolAllowanceIsActive: result.PetrolAllowanceIsActive ?? true,
           CreatedBy: record.CreatedBy ?? 1,
           CreatedDate: new Date()
         };
         console.log('Update payload:', updatePayload);
         this.PetrolAllowanceservice.updatePetrolAllowance(updatePayload).subscribe({
           next: () => {
-          
+
             this.toastService.showSuccess("petrolallowance updated successfully");
             this.getAllPetrolAllowance();
           },
@@ -229,7 +229,7 @@ export class Petrolallowancemaster implements OnInit {
 
         this.PetrolAllowanceservice.insertPetrolAllowance(payload).subscribe({
           next: () => {
-        
+
             this.toastService.showSuccess("petrolallowance added successfully");
             this.getAllPetrolAllowance();
           },
@@ -247,7 +247,7 @@ export class Petrolallowancemaster implements OnInit {
     this.PetrolAllowanceservice.deletePetrolAllowance(value.PetrolAllowanceId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-       
+
         this.toastService.showSuccess("petrolallowance delete successfully");
         this.getAllPetrolAllowance();
       },

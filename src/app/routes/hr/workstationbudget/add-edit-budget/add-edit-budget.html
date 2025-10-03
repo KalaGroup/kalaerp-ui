@@ -20,7 +20,7 @@
                 <!-- Left Column -->
                 <div class="col-md-6">
                     <!-- Financial Year -->
-                    <mat-form-field appearance="outline" class="w-100">
+                    <mat-form-field appearance="outline">
                         <mat-label>Financial Year</mat-label>
                         <mat-select formControlName="WorkstationFy" placeholder="Select Financial Year">
                             <mat-option *ngFor="let year of FinancialYearList" [value]="year.YR_VALUE">
@@ -34,7 +34,7 @@
                     </mat-form-field>
 
                     <!-- Budget Amount -->
-                    <mat-form-field appearance="outline" class="w-100">
+                    <mat-form-field appearance="outline">
                         <mat-label>Budget Amount</mat-label>
                         <input matInput type="number" formControlName="WorkstationBudgetAmt"
                             placeholder="Enter budget amount" />
@@ -48,7 +48,7 @@
                 <!-- Right Column -->
                 <div class="col-md-6">
                     <!-- Workstation Dropdown -->
-                    <mat-form-field appearance="outline" class="w-100">
+                    <mat-form-field appearance="outline">
                         <mat-label>Workstation</mat-label>
                         <mat-select formControlName="WorkstationBudgetWorkstationId" placeholder="Select Workstation">
                             <mat-option *ngFor="let ws of WorkstationList" [value]="ws.WorkStationId">
@@ -62,7 +62,7 @@
                     </mat-form-field>
 
                     <!-- Budget Head Dropdown -->
-                    <mat-form-field appearance="fill" class="w-100">
+                    <mat-form-field appearance="outline">
                         <mat-label>Employee</mat-label>
                         <mat-select formControlName="WorkstationBudgetHeadId" placeholder="Select Employee">
                             <mat-option *ngFor="let employee of EmployeeList" [value]="employee.EmployeeMasterId">
@@ -78,7 +78,7 @@
 
                 <!-- Budget Remark -->
                 <div class="col-md-6">
-                    <mat-form-field appearance="outline" class="w-100">
+                    <mat-form-field appearance="outline">
                         <mat-label>Budget Remark</mat-label>
                         <input matInput formControlName="WorkstationBudgetRemark" placeholder="Enter remark..." />
                         <mat-error
@@ -90,7 +90,7 @@
 
                 <!-- Auth Remark -->
                 <div class="col-md-6">
-                    <mat-form-field appearance="outline" class="w-100">
+                    <mat-form-field appearance="outline">
                         <mat-label>Auth Remark</mat-label>
                         <input matInput formControlName="WorkstationBudgetAuthRemark"
                             placeholder="Enter auth remark..." />

@@ -112,8 +112,7 @@ export class AddEditRole implements OnInit {
       console.log('this.data.role', this.data.role);
       this.loadAllDescriptions();
       this.roleForm.patchValue({
-        //CreatedDate: currentDate, tommorow dicuss with Umar
-        // code: this.data.role.code,
+       
         RolesId: this.data.role.RolesId,
         RolesGradeId: this.data.role.RolesGradeId,
         RolesDesignationId: this.data.role.RolesDesignationId,

@@ -16,7 +16,8 @@
             <mat-checkbox formControlName="DepartmentIsActive" color="primary" [disabled]="!isEditMode">
               Active
             </mat-checkbox>
-            <mat-checkbox formControlName="DepartmentIsDiscard" color="primary" [disabled]="!isEditMode"  *ngIf="isEditMode">
+            <mat-checkbox formControlName="DepartmentIsDiscard" color="primary" [disabled]="!isEditMode"
+              *ngIf="isEditMode">
               Discard
             </mat-checkbox>
           </div>
@@ -26,34 +27,36 @@
       <div class="row mb-3">
         <!-- Left Side -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <!-- Department Code -->
+          <mat-form-field appearance="outline">
             <mat-label>Department Code</mat-label>
             <input matInput formControlName="DepartmentCode" placeholder="Enter Department Code" />
-            @if (departmentForm.get('DepartmentCode')?.invalid &&
-            departmentForm.get('DepartmentCode')?.touched) {
+            @if (departmentForm.get('DepartmentCode')?.invalid && departmentForm.get('DepartmentCode')?.touched) {
             <mat-error>Department Code is required</mat-error>
             }
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+
+          <!-- Department Name -->
+          <mat-form-field appearance="outline">
             <mat-label>Department Name</mat-label>
             <input matInput formControlName="DepartmentName" placeholder="Enter Department Name" />
-            @if (departmentForm.get('DepartmentName')?.invalid &&
-            departmentForm.get('DepartmentName')?.touched) {
+            @if (departmentForm.get('DepartmentName')?.invalid && departmentForm.get('DepartmentName')?.touched) {
             <mat-error>Department Name is required</mat-error>
             }
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Short Name</mat-label>
-            <input matInput formControlName="DepartmentShortName" placeholder="Enter Short Name" (input)="toUpperCase($event)" />
+            <input matInput formControlName="DepartmentShortName" placeholder="Enter Short Name"
+              (input)="toUpperCase($event)" />
             @if (departmentForm.get('DepartmentShortName')?.invalid &&
             departmentForm.get('DepartmentShortName')?.touched) {
             <mat-error>Department Short Name is required</mat-error>
             }
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="DepartmentRemark" placeholder="Enter Remark" />
           </mat-form-field>
@@ -61,7 +64,7 @@
 
         <!-- Right Side -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Division</mat-label>
             <mat-select formControlName="DepartmentDivisionId" placeholder="Select Division">
               <mat-option value="">Select Division</mat-option>
@@ -77,7 +80,7 @@
           </mat-form-field>
           <br />
 
-          <mat-form-field appearance="outline" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Parent Department</mat-label>
             <mat-select formControlName="ParentDepartmentId" placeholder="Select Parent Department">
               <mat-option value="">None</mat-option>
@@ -95,12 +98,9 @@
           </mat-form-field>
           <br />
 
-          <mat-form-field appearance="outline" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Profit Center</mat-label>
-            <mat-select
-              formControlName="DepartmentProfitcenterId"
-              placeholder="Select Profit Center"
-            >
+            <mat-select formControlName="DepartmentProfitcenterId" placeholder="Select Profit Center">
               <mat-option value="">Select Profit Center</mat-option>
               @for (profitcenter of filteredprofitcenterList; track profitcenter.ProfitCenterId) {
               <mat-option [value]="profitcenter.ProfitCenterId">{{ profitcenter.ProfitCenterName }}</mat-option>
@@ -113,7 +113,7 @@
             }
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Department Type</mat-label>
             <input matInput formControlName="DepartmentType" placeholder="Enter Department Type" />
           </mat-form-field>
@@ -124,13 +124,8 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="departmentForm.invalid"
-              (click)="onSubmit()"
-            >
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="departmentForm.invalid"
+              (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>

@@ -67,7 +67,7 @@ export class AddEditProfitcenter {
     this.profitcenterForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
       ProfitCenterId: [''],
-      ProfitCenterCode: [''],
+      ProfitCenterCode: ['', [Validators.required]],
       ProfitCenterName: ['', [Validators.required]],
       ProfitCenterCompanyId: ['', [Validators.required]],
       ParentProfitCenterId: [null],

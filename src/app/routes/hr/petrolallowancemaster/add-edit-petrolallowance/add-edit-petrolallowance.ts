@@ -72,9 +72,9 @@ export class AddEditPetrolallowance {
         FourWheelerPerKm: this.data.petrolallowance.FourWheelerPerKm,
         PetrolAllowanceRemark: this.data.petrolallowance.PetrolAllowanceRemark,
         PetrolAllowanceAuthRemark: this.data.petrolallowance.PetrolAllowanceAuthRemark,
-        PetrolAllowanceIsAuth: this.data.petrolallowance.PetrolAllowanceIsAuth,
-        PetrolAllowanceIsDiscard: this.data.petrolallowance.PetrolAllowanceIsDiscard,
-        PetrolAllowanceIsActive: this.data.petrolallowance.PetrolAllowanceIsActive,
+        PetrolAllowanceIsAuth: this.data.petrolallowance.PetrolAllowanceIsAuth ?? true,
+        PetrolAllowanceIsDiscard: this.data.petrolallowance.PetrolAllowanceIsDiscard ?? false,
+        PetrolAllowanceIsActive: this.data.petrolallowance.PetrolAllowanceIsActive ?? true,
         CreatedBy: this.data.petrolallowance.CreatedBy ?? 0
       });
 

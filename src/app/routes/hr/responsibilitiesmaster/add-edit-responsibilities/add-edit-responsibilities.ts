@@ -148,6 +148,7 @@ export class AddEditResponsibilities {
   }
 
   loadAllGrades(): void {
+    debugger
     this.responsibilitiesService.getGradeList().subscribe({
       next: grades => {
         this.gradeList = grades;
@@ -169,6 +170,7 @@ export class AddEditResponsibilities {
   }
 
   private setGradeForEdit(): void {
+    debugger
     let gradeId = null;
     const gradeData = this.data.responsibilities;
     // Find company entity type by name (trim whitespace for comparison)
@@ -182,7 +184,7 @@ export class AddEditResponsibilities {
 
     if (gradeId) {
       this.responsibilitiesMstForm.patchValue({
-        GradeID: gradeId,
+        ResponsibilitiesGradeId: gradeId,
       });
       console.log('Grade set in form:', gradeId);
     } else {
@@ -323,7 +325,7 @@ export class AddEditResponsibilities {
     if (this.newDescription.trim() == undefined || this.newDescription.trim() == '') {
       alert('Please Add Description.');
       return;
-  }
+    }
 
     if (desc !== '') {
       // check if already exists

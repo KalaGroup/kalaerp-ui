@@ -30,19 +30,12 @@
       <div class="row">
         <!-- Country -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Country</mat-label>
-            <mat-select
-              formControlName="CountryId"
-              placeholder="Select country"
-              (selectionChange)="onCountryChange($event.value)"
-            >
+            <mat-select formControlName="CountryId" placeholder="Select country"
+              (selectionChange)="onCountryChange($event.value)">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search country..."
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search country..." (click)="$event.stopPropagation()" />
               </mat-option>
               <mat-option *ngFor="let country of filteredCountryList" [value]="country.CountryId">
                 {{ country.CountryName }}
@@ -53,7 +46,7 @@
 
         <!-- State -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>State</mat-label>
             <mat-select formControlName="StateId" placeholder="Select state">
               <mat-option>
@@ -70,21 +63,21 @@
       <div class="row mb-3">
         <!-- Left side (District Name, Short Name, Latitude, Longitude, Remark) -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>District Name</mat-label>
             <input matInput formControlName="DistrictName" placeholder="Enter full District name" />
             @if (
-              DistrictForm.get('DistrictName')?.invalid && DistrictForm.get('DistrictName')?.touched
+            DistrictForm.get('DistrictName')?.invalid && DistrictForm.get('DistrictName')?.touched
             ) {
-              <mat-error>District Name is required</mat-error>
+            <mat-error>District Name is required</mat-error>
             }
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Short Name</mat-label>
             <input matInput formControlName="ShortName" placeholder="Enter short name" />
             @if (DistrictForm.get('ShortName')?.invalid && DistrictForm.get('ShortName')?.touched) {
-              <mat-error>Short Name Code is required</mat-error>
+            <mat-error>Short Name Code is required</mat-error>
             }
           </mat-form-field>
 
@@ -92,17 +85,17 @@
         </div>
 
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>District Code</mat-label>
             <input matInput formControlName="DistrictCode" placeholder="Enter full District Code" />
             @if (
-              DistrictForm.get('DistrictCode')?.invalid && DistrictForm.get('DistrictCode')?.touched
+            DistrictForm.get('DistrictCode')?.invalid && DistrictForm.get('DistrictCode')?.touched
             ) {
-              <mat-error>District Code is required</mat-error>
+            <mat-error>District Code is required</mat-error>
             }
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="DistrictMasterRemark" placeholder="Enter Remark" />
             <!-- @if (
@@ -118,13 +111,8 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="DistrictForm.invalid"
-              (click)="onSubmit()"
-            >
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="DistrictForm.invalid"
+              (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>

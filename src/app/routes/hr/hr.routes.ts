@@ -20,7 +20,6 @@ import { Holidaymaster } from './holidaymaster/holidaymaster';
 import { Responsibilitiesmaster } from './responsibilitiesmaster/responsibilitiesmaster';
 import { Departmentmaster } from './departmentmaster/departmentmaster';
 import { Rolesmaster } from './rolesmaster/rolesmaster';
-import { Rolesdetails } from './rolesdetails/rolesdetails';
 import { Locationmaster } from './locationmaster/locationmaster';
 import { Classoftravelmaster } from './classoftravelmaster/classoftravelmaster';
 import { Facilitymaster } from './facilitymaster/facilitymaster';
@@ -127,10 +126,6 @@ export const routes: Routes = [
     component: Rolesmaster,
   },
   {
-    path: 'rolesdetails',
-    component: Rolesdetails,
-  },
-  {
     path: 'location',
     component: Locationmaster,
   },
@@ -208,7 +203,7 @@ export const routes: Routes = [
   },
   {
     path: 'leaveapplications',
-    component:Leaveapplications
+    component: Leaveapplications
   },
   {
     path: 'employeeleavebalances',

@@ -16,12 +16,8 @@
             <mat-checkbox formControlName="RecruitmentStageStatusIsActive" color="primary" [disabled]="!isEditMode">
               Active
             </mat-checkbox>
-            <mat-checkbox
-              formControlName="RecruitmentStageStatusIsDiscard"
-              color="primary"
-              [disabled]="!isEditMode"
-              *ngIf="isEditMode"
-            >
+            <mat-checkbox formControlName="RecruitmentStageStatusIsDiscard" color="primary" [disabled]="!isEditMode"
+              *ngIf="isEditMode">
               Discard
             </mat-checkbox>
           </div>
@@ -31,16 +27,13 @@
       <div class="row mb-3">
         <!-- Left side -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Recruitment Stage Status Name</mat-label>
-            <input
-              matInput
-              formControlName="RecruitmentStageStatusName"
-              placeholder="Enter Recruitment Stage Status Name"
-            />
+            <input matInput formControlName="RecruitmentStageStatusName"
+              placeholder="Enter Recruitment Stage Status Name" />
             @if (RecruitmentStageStatusForm.get('RecruitmentStageStatusName')?.invalid &&
             RecruitmentStageStatusForm.get('RecruitmentStageStatusName')?.touched) {
-              <mat-error>Recruitment Stage Status Name is required</mat-error>
+            <mat-error>Recruitment Stage Status Name is required</mat-error>
             }
           </mat-form-field>
 
@@ -49,13 +42,9 @@
 
         <!-- Right side -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Remark</mat-label>
-            <input
-              matInput
-              formControlName="RecruitmentStageStatusRemark"
-              placeholder="Enter remark..."
-            />
+            <input matInput formControlName="RecruitmentStageStatusRemark" placeholder="Enter remark..." />
 
           </mat-form-field>
         </div>
@@ -65,13 +54,8 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="RecruitmentStageStatusForm.invalid"
-              (click)="onSubmit()"
-            >
+            <button mat-flat-button color="primary" class="btn-primary px-4"
+              [disabled]="RecruitmentStageStatusForm.invalid" (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>
