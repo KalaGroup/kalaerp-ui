@@ -305,7 +305,7 @@ export class Rolesmaster {
   }
 
   save(record: any): void {
-    debugger
+    
     console.log('Saving record:', record);
     this.closeDialog();
   }

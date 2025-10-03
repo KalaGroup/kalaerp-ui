@@ -269,8 +269,8 @@ export class Leaveapplications {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditLeaveapplications, {
-      width: '60%',
-      height: '60%',
+      width: '80%',
+      height: '80%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {} // empty for add
@@ -336,7 +336,7 @@ export class Leaveapplications {
     this.LeaveApplicationServices.deleteLeaveApplication(value.LeaveApplicationId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-      
+
         this.toastService.showSuccess("Leave Application delete successfully");
         this.getAllLeaveApplication();
       },

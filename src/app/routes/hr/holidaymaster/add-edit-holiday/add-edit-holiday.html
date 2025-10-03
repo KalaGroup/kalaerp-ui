@@ -35,7 +35,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Holiday For</mat-label>
             <input matInput formControlName="HolidayFor" placeholder="Enter Holiday For..." />
             @if (holidayForm.get('HolidayFor')?.invalid && holidayForm.get('HolidayFor')?.touched) {
@@ -43,7 +43,7 @@
             }
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="HolidayRemark" placeholder="Enter Remark" />
           </mat-form-field>
@@ -52,7 +52,7 @@
         <!-- Right side  -->
 
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field>
+          <mat-form-field appearance="outline">
             <mat-label>Holiday Date</mat-label>
             <input matInput [matDatepicker]="birthdayPicker" formControlName="HolidayDate" required />
             <mat-datepicker-toggle matSuffix [for]="birthdayPicker" />

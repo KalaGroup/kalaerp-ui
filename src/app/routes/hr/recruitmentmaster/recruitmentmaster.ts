@@ -81,7 +81,7 @@ export class Recruitmentmaster {
     },
     {
       header: this.translate.stream('Position'),
-      field: 'PositionMasterName', // ✅ Show name instead of ID
+      field: 'RecruitmentMasterPositionName', // ✅ Show name instead of ID
       sortable: true,
       minWidth: 120,
     },
@@ -135,7 +135,7 @@ export class Recruitmentmaster {
     },
     {
       header: this.translate.stream('Interviewer'),
-      field: 'EmployeeMasterFullName', // ✅ Show name instead of ID
+      field: 'RecruitmentMasterInterviewerComment', // ✅ Show name instead of ID
       sortable: true,
       minWidth: 150,
     },
@@ -153,21 +153,21 @@ export class Recruitmentmaster {
     },
     {
       header: this.translate.stream('Current CTC'),
-      field: 'RecruitmentMasterCurrentCtcpa',
+      field: 'RecruitmentMasterCurrentCTCPA',
       sortable: true,
       minWidth: 120,
       type: 'number'
     },
     {
       header: this.translate.stream('Expected CTC'),
-      field: 'RecruitmentMasterExpectedCtcpa',
+      field: 'RecruitmentMasterExpectedCTCPA',
       sortable: true,
       minWidth: 120,
       type: 'number'
     },
     {
       header: this.translate.stream('Recommended CTC'),
-      field: 'RecruitmentMasterRecommendedCtcpa',
+      field: 'RecruitmentMasterRecommendedCTCPA',
       sortable: true,
       minWidth: 140,
       type: 'number'
@@ -254,6 +254,7 @@ export class Recruitmentmaster {
   ];
 
   loadAllRecruitment() {
+    debugger
     this.isLoading = true;
     this.Recruitmentmasterservice.getAllRecruitmentMaster().subscribe({
       next: (data) => {
@@ -305,9 +306,9 @@ export class Recruitmentmaster {
         RecruitmentMasterInterviewerComment: result.RecruitmentMasterInterviewerComment,
         RecruitmentMasterGradeId: result.RecruitmentMasterGradeId,
         RecruitmentMasterDesignationId: result.RecruitmentMasterDesignationId,
-        RecruitmentMasterCurrentCtcpa: result.RecruitmentMasterCurrentCtcpa,
-        RecruitmentMasterExpectedCtcpa: result.RecruitmentMasterExpectedCtcpa,
-        RecruitmentMasterRecommendedCtcpa: result.RecruitmentMasterRecommendedCtcpa,
+        RecruitmentMasterCurrentCTCPA: result.RecruitmentMasterCurrentCTCPA,
+        RecruitmentMasterExpectedCTCPA: result.RecruitmentMasterExpectedCTCPA,
+        RecruitmentMasterRecommendedCTCPA: result.RecruitmentMasterRecommendedCTCPA,
         RecruitmentMasterExpectedJoiningDate: result.RecruitmentMasterExpectedJoiningDate,
         RecruitmentMasterHrcomment: result.RecruitmentMasterHrcomment,
         RecruitmentMasterRecruitmentStageStatusId: result.RecruitmentMasterRecruitmentStageStatusId,
@@ -369,7 +370,7 @@ export class Recruitmentmaster {
         RecruitmentMasterCandidateEmailId: result.RecruitmentMasterCandidateEmailId,
         RecruitmentMasterCandidateContactNumber: result.RecruitmentMasterCandidateContactNumber,
         RecruitmentMasterAppropriateForJobRole: result.RecruitmentMasterAppropriateForJobRole,
-        RecruitmentMasterInterviewerEmployeeId: result.RecruitmentMasterInterviewerEmployeeId || null,
+        RecruitmentMasterInterviewerEmployeeId: result.RecruitmentMasterInterviewerEmployeeId,
         RecruitmentMasterInterviewerComment: result.RecruitmentMasterInterviewerComment,
         RecruitmentMasterGradeId: result.RecruitmentMasterGradeId,
         RecruitmentMasterDesignationId: result.RecruitmentMasterDesignationId,
@@ -378,7 +379,7 @@ export class Recruitmentmaster {
         RecruitmentMasterRecommendedCtcpa: result.RecruitmentMasterRecommendedCtcpa,
         RecruitmentMasterExpectedJoiningDate: result.RecruitmentMasterExpectedJoiningDate,
         RecruitmentMasterHrcomment: result.RecruitmentMasterHrcomment,
-        RecruitmentMasterRecruitmentStageStatusId: result.RecruitmentMasterRecruitmentStageStatusId || null,
+        RecruitmentMasterRecruitmentStageStatusId: result.RecruitmentMasterRecruitmentStageStatusId,
         RecruitmentMasterOfferLetterStatus: result.RecruitmentMasterOfferLetterStatus,
         RecruitmentMasterRemark: result.RecruitmentMasterRemark,
         RecruitmentMasterAuthRemark: result.RecruitmentMasterAuthRemark,

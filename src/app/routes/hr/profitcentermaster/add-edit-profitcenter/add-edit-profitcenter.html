@@ -43,7 +43,7 @@
 
           <!-- Profit Center -->
           <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Profit Center</mat-label>
+            <mat-label>Company Name</mat-label>
             <mat-select formControlName="ProfitCenterCompanyId" placeholder="Select Profit Center">
               <mat-option *ngFor="let company of filteredprofitcentertypeList" [value]="company.CompanyId">
                 {{ company.CompanyName }}

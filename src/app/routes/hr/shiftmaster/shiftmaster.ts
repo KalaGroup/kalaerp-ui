@@ -200,7 +200,7 @@ export class Shiftmaster implements OnInit {
 
 
   edit(record: IShiftMaster) {
-    debugger;
+    
     this.dialog.open(AddEditShift, {
       width: '80%',
       height: '90%',

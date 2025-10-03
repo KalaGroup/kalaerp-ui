@@ -202,7 +202,7 @@ export class Divisionmaster implements OnInit {
         this.divisionService.updateDivision(updatePayload).subscribe({
           next: (response) => {
             console.log('Division updated successfully:', response);
-
+            this.toastService.showSuccess('Division updated successfully:', response);
             this.getAllDivision();
           },
           error: (err) => {

@@ -139,9 +139,9 @@ export class AddEditRecruitment implements OnInit {
       RecruitmentMasterInterviewerComment: [''],
       RecruitmentMasterGradeId: ['', Validators.required],
       RecruitmentMasterDesignationId: ['', Validators.required],
-      RecruitmentMasterCurrentCtcpa: [''],
-      RecruitmentMasterExpectedCtcpa: [''],
-      RecruitmentMasterRecommendedCtcpa: [''],
+      RecruitmentMasterCurrentCTCPA: [''],
+      RecruitmentMasterExpectedCTCPA: [''],
+      RecruitmentMasterRecommendedCTCPA: [''],
       RecruitmentMasterExpectedJoiningDate: [null, Validators.required],
       RecruitmentMasterHrcomment: [''],
       RecruitmentMasterRecruitmentStageStatusId: ['', Validators.required],
@@ -182,9 +182,9 @@ export class AddEditRecruitment implements OnInit {
       RecruitmentMasterInterviewerComment: recruitment.RecruitmentMasterInterviewerComment,
       RecruitmentMasterGradeId: recruitment.RecruitmentMasterGradeId,
       RecruitmentMasterDesignationId: recruitment.RecruitmentMasterDesignationId,
-      RecruitmentMasterCurrentCtcpa: recruitment.RecruitmentMasterCurrentCtcpa,
-      RecruitmentMasterExpectedCtcpa: recruitment.RecruitmentMasterExpectedCtcpa,
-      RecruitmentMasterRecommendedCtcpa: recruitment.RecruitmentMasterRecommendedCtcpa,
+      RecruitmentMasterCurrentCTCPA: recruitment.RecruitmentMasterCurrentCTCPA,
+      RecruitmentMasterExpectedCTCPA: recruitment.RecruitmentMasterExpectedCTCPA,
+      RecruitmentMasterRecommendedCTCPA: recruitment.RecruitmentMasterRecommendedCTCPA,
       RecruitmentMasterExpectedJoiningDate: recruitment.RecruitmentMasterExpectedJoiningDate
         ? new Date(recruitment.RecruitmentMasterExpectedJoiningDate)
         : null,
@@ -480,6 +480,7 @@ export class AddEditRecruitment implements OnInit {
   }
 
   private setAttributeForEdit(): void {
+    debugger
     let RecruitmentAttributeId = null;
     const recruitmentData = this.data.recruitment;
 
@@ -504,6 +505,7 @@ export class AddEditRecruitment implements OnInit {
 
   // Load Employee API
   loadAllEmployee(): void {
+    debugger
     this.Recruitmentmasterservice.getAllEmployeeId().subscribe({
       next: res => {
         this.EmployeeList = res;
@@ -517,6 +519,7 @@ export class AddEditRecruitment implements OnInit {
   }
 
   private setEmployeeForEdit(): void {
+    debugger
     let EmployeeMasterId = null;
     const recruitmentData = this.data.recruitment;
 
@@ -540,6 +543,7 @@ export class AddEditRecruitment implements OnInit {
 
   // Load Designation API
   loadAllRecruitmentPosition(): void {
+    debugger
     this.Recruitmentmasterservice.getAllpositionId().subscribe({
       next: res => {
         this.positionList = res;
@@ -552,6 +556,7 @@ export class AddEditRecruitment implements OnInit {
   }
 
   private setRecruitmentpositionForEdit(): void {
+    debugger
     let PositionMasterId = null;
     const recruitmentData = this.data.recruitment;
 

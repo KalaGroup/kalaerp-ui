@@ -8,26 +8,14 @@
         <div class="col-sm-4 col-xl-3"></div>
         <div class="col-sm-8 col-xl-9">
           <div class="d-flex checkbox-group">
-            <mat-checkbox
-              formControlName="PositionMasterAuth"
-              color="primary"
-              [disabled]="!isEditMode"
-            >
+            <mat-checkbox formControlName="PositionMasterAuth" color="primary" [disabled]="!isEditMode">
               Auth
             </mat-checkbox>
-            <mat-checkbox
-              formControlName="PositionMasterIsActive"
-              color="primary"
-              [disabled]="!isEditMode"
-            >
+            <mat-checkbox formControlName="PositionMasterIsActive" color="primary" [disabled]="!isEditMode">
               Active
             </mat-checkbox>
-            <mat-checkbox
-              formControlName="PositionMasterIsDiscard"
-              color="primary"
-              [disabled]="!isEditMode"
-              *ngIf="isEditMode"
-            >
+            <mat-checkbox formControlName="PositionMasterIsDiscard" color="primary" [disabled]="!isEditMode"
+              *ngIf="isEditMode">
               Discard
             </mat-checkbox>
           </div>
@@ -38,12 +26,11 @@
       <div class="row mb-3">
         <!-- 1st Column -->
         <div class="col-sm-4 col-xl-4">
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Position Code</mat-label>
             <input matInput formControlName="PositionMasterCode" placeholder="Enter Code" />
             <mat-error
-              *ngIf="positionForm.get('PositionMasterCode')?.invalid && positionForm.get('PositionMasterCode')?.touched"
-            >
+              *ngIf="positionForm.get('PositionMasterCode')?.invalid && positionForm.get('PositionMasterCode')?.touched">
               Position Code is required
             </mat-error>
           </mat-form-field>
@@ -52,18 +39,11 @@
             <mat-label>Company Name</mat-label>
             <mat-select formControlName="PositionMasterCompanyId" placeholder="Select Company Name">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search Company Name"
-                  [formControl]="PositionSearchControl"
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search Company Name" [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()" />
               </mat-option>
               <mat-option value="">Select Company Name</mat-option>
-              <mat-option
-                *ngFor="let companyname of filteredCompanyList"
-                [value]="companyname.CompanyId"
-              >
+              <mat-option *ngFor="let companyname of filteredCompanyList" [value]="companyname.CompanyId">
                 {{ companyname.CompanyName }}
               </mat-option>
             </mat-select>
@@ -71,23 +51,13 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Department Name</mat-label>
-            <mat-select
-              formControlName="PositionMasterDepartmentId"
-              placeholder="Select Department"
-            >
+            <mat-select formControlName="PositionMasterDepartmentId" placeholder="Select Department">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search Department"
-                  [formControl]="PositionSearchControl"
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search Department" [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()" />
               </mat-option>
               <mat-option value="">Select Department</mat-option>
-              <mat-option
-                *ngFor="let department of filteredDepartmentList"
-                [value]="department.DepartmentId"
-              >
+              <mat-option *ngFor="let department of filteredDepartmentList" [value]="department.DepartmentId">
                 {{ department.DepartmentName }}
               </mat-option>
             </mat-select>
@@ -95,24 +65,14 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Designation Name</mat-label>
-            <mat-select
-              formControlName="PositionMasterDesignationId"
-              placeholder="Select Designation"
-              (selectionChange)="loadRolesDetails()"
-            >
+            <mat-select formControlName="PositionMasterDesignationId" placeholder="Select Designation"
+              (selectionChange)="loadRolesDetails()">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search Designation..."
-                  [formControl]="DesignationSearchControl"
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search Designation..." [formControl]="DesignationSearchControl"
+                  (click)="$event.stopPropagation()" />
               </mat-option>
               <mat-option value="">Select Designation</mat-option>
-              <mat-option
-                *ngFor="let designation of filteredDesignationList"
-                [value]="designation.DesignationId"
-              >
+              <mat-option *ngFor="let designation of filteredDesignationList" [value]="designation.DesignationId">
                 {{ designation.DesignationName }}
               </mat-option>
             </mat-select>
@@ -121,35 +81,21 @@
 
         <!-- 2nd Column -->
         <div class="col-sm-4 col-xl-4">
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Position Name</mat-label>
-            <input
-              matInput
-              formControlName="PositionMasterName"
-              placeholder="Enter Position Name"
-            />
+            <input matInput formControlName="PositionMasterName" placeholder="Enter Position Name" />
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>ProfitCenter Name</mat-label>
-            <mat-select
-              formControlName="PositionMasterProfitcenterId"
-              placeholder="Select ProfitCenter Name"
-              (selectionChange)="onProfitCenterChange($event.value)"
-            >
+            <mat-select formControlName="PositionMasterProfitcenterId" placeholder="Select ProfitCenter Name"
+              (selectionChange)="onProfitCenterChange($event.value)">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search ProfitCenter Name..."
-                  [formControl]="PositionSearchControl"
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search ProfitCenter Name..." [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()" />
               </mat-option>
               <mat-option value="">Select ProfitCenter Name</mat-option>
-              <mat-option
-                *ngFor="let profitcenter of filteredProfitcenterList"
-                [value]="profitcenter.ProfitCenterId"
-              >
+              <mat-option *ngFor="let profitcenter of filteredProfitcenterList" [value]="profitcenter.ProfitCenterId">
                 {{ profitcenter.ProfitCenterName }}
               </mat-option>
             </mat-select>
@@ -157,41 +103,24 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Workstation Name</mat-label>
-            <mat-select
-              formControlName="PositionMasterWorkStationId"
-              placeholder="Select Workstation"
-            >
+            <mat-select formControlName="PositionMasterWorkStationId" placeholder="Select Workstation">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search Workstation"
-                  [formControl]="PositionSearchControl"
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search Workstation" [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()" />
               </mat-option>
               <mat-option value="">Select Workstation</mat-option>
-              <mat-option
-                *ngFor="let workstation of filteredWorkstationList"
-                [value]="workstation.WorkStationId"
-              >
+              <mat-option *ngFor="let workstation of filteredWorkstationList" [value]="workstation.WorkStationId">
                 {{ workstation.WorkStationName }}
               </mat-option>
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Count</mat-label>
-            <input
-              matInput
-              type="number"
-              formControlName="PositionMasterPositionCount"
-              placeholder="Enter count"
-              min="1"
-              max="100"
-            />
+            <input matInput type="number" formControlName="PositionMasterPositionCount" placeholder="Enter count"
+              min="1" max="100" />
             <mat-error
-              *ngIf="positionForm.get('PositionMasterPositionCount')?.invalid && positionForm.get('PositionMasterPositionCount')?.touched"
-            >
+              *ngIf="positionForm.get('PositionMasterPositionCount')?.invalid && positionForm.get('PositionMasterPositionCount')?.touched">
               Count is required
             </mat-error>
           </mat-form-field>
@@ -201,23 +130,13 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Employee Type</mat-label>
-            <mat-select
-              formControlName="PositionMasterEmployeeTypeId"
-              placeholder="Select Employee Type"
-            >
+            <mat-select formControlName="PositionMasterEmployeeTypeId" placeholder="Select Employee Type">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search Employee Type..."
-                  [formControl]="PositionSearchControl"
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search Employee Type..." [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()" />
               </mat-option>
               <mat-option value="">Select Employee Type</mat-option>
-              <mat-option
-                *ngFor="let employeetype of filteredEmployeetypeList"
-                [value]="employeetype.EmployeeTypeId"
-              >
+              <mat-option *ngFor="let employeetype of filteredEmployeetypeList" [value]="employeetype.EmployeeTypeId">
                 {{ employeetype.EmployeeTypeName }}
               </mat-option>
             </mat-select>
@@ -225,25 +144,14 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Division Name</mat-label>
-            <mat-select
-              formControlName="PositionMasterDivisionId"
-              placeholder="Select Division"
-              (selectionChange)="onDivisionChange($event.value)"
-              (selectionChange)="loadRolesDetails()"
-            >
+            <mat-select formControlName="PositionMasterDivisionId" placeholder="Select Division"
+              (selectionChange)="onDivisionChange($event.value)" (selectionChange)="loadRolesDetails()">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search Division"
-                  [formControl]="PositionSearchControl"
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search Division" [formControl]="PositionSearchControl"
+                  (click)="$event.stopPropagation()" />
               </mat-option>
               <mat-option value="">Select Division</mat-option>
-              <mat-option
-                *ngFor="let division of filteredDivisionList"
-                [value]="division.DivisionId"
-              >
+              <mat-option *ngFor="let division of filteredDivisionList" [value]="division.DivisionId">
                 {{ division.DivisionName }}
               </mat-option>
             </mat-select>
@@ -251,19 +159,11 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Grade Name</mat-label>
-            <mat-select
-              formControlName="PositionMasterGradeId"
-              placeholder="Select Grade"
-              (selectionChange)="onGradeChange($event.value)"
-              (selectionChange)="loadRolesDetails()"
-            >
+            <mat-select formControlName="PositionMasterGradeId" placeholder="Select Grade"
+              (selectionChange)="onGradeChange($event.value)" (selectionChange)="loadRolesDetails()">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search Grade..."
-                  [formControl]="GradeSearchControl"
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search Grade..." [formControl]="GradeSearchControl"
+                  (click)="$event.stopPropagation()" />
               </mat-option>
               <mat-option value="">Select Grade</mat-option>
               <mat-option *ngFor="let grade of filteredGradeList" [value]="grade.GradeId">
@@ -484,10 +384,7 @@
                         <mat-form-field appearance="outline" class="full-width-field">
                           <mat-label>Qualification</mat-label>
                           <mat-select [(ngModel)]="qual" name="qual">
-                            <mat-option
-                              *ngFor="let attr of QualificationList"
-                              [value]="attr.QualificationId"
-                            >
+                            <mat-option *ngFor="let attr of QualificationList" [value]="attr.QualificationId">
                               {{ attr.QualificationName }}
                             </mat-option>
                           </mat-select>
@@ -497,36 +394,19 @@
                       <td class="marks-cell">
                         <mat-form-field appearance="outline" class="full-width-field">
                           <mat-label>SrNo</mat-label>
-                          <input
-                            matInput
-                            type="number"
-                            [(ngModel)]="srno"
-                            name="srno"
-                            placeholder="Enter SrNo"
-                          />
+                          <input matInput type="number" [(ngModel)]="srno" name="srno" placeholder="Enter SrNo" />
                         </mat-form-field>
                       </td>
 
                       <td class="marks-cell">
                         <mat-form-field appearance="outline" class="full-width-field">
                           <mat-label>Enter description</mat-label>
-                          <input
-                            matInput
-                            [(ngModel)]="desc"
-                            name="desc"
-                            placeholder="Enter description"
-                          />
+                          <input matInput [(ngModel)]="desc" name="desc" placeholder="Enter description" />
                         </mat-form-field>
                       </td>
 
                       <td class="action-cell">
-                        <button
-                          mat-raised-button
-                          color="primary"
-                          (click)="addRow()"
-                          type="button"
-                          class="add-button"
-                        >
+                        <button mat-raised-button color="primary" (click)="addRow()" type="button" class="add-button">
                           <mat-icon>add</mat-icon>
                           ADD
                         </button>
@@ -540,10 +420,7 @@
                       <td>
                         <mat-form-field appearance="outline" class="full-width-field">
                           <mat-select [(ngModel)]="description.qual" name="qualification{{ i }}">
-                            <mat-option
-                              *ngFor="let qual of QualificationList"
-                              [value]="qual.QualificationId"
-                            >
+                            <mat-option *ngFor="let qual of QualificationList" [value]="qual.QualificationId">
                               {{ qual.QualificationName }}
                             </mat-option>
                           </mat-select>
@@ -553,12 +430,7 @@
                       <!-- SRNO -->
                       <td>
                         <mat-form-field appearance="outline" class="full-width-field">
-                          <input
-                            matInput
-                            type="number"
-                            [(ngModel)]="description.srno"
-                            name="srno{{ i }}"
-                          />
+                          <input matInput type="number" [(ngModel)]="description.srno" name="srno{{ i }}" />
                         </mat-form-field>
                       </td>
 
@@ -566,43 +438,24 @@
                       <td>
                         <mat-form-field appearance="outline" class="full-width-field">
                           <mat-label>Enter description</mat-label>
-                          <input
-                            matInput
-                            [(ngModel)]="description.desc"
-                            name="description{{ i }}"
-                            placeholder="Enter description"
-                          />
+                          <input matInput [(ngModel)]="description.desc" name="description{{ i }}"
+                            placeholder="Enter description" />
                         </mat-form-field>
                       </td>
 
                       <!-- Actions -->
                       <td>
-                        <button
-                          mat-icon-button
-                          color="warn"
-                          (click)="deleteRow(i)"
-                          matTooltip="Delete"
-                        >
+                        <button mat-icon-button color="warn" (click)="deleteRow(i)" matTooltip="Delete">
                           <mat-icon>delete</mat-icon>
                         </button>
 
-                        <button
-                          *ngIf="editIndex !== i"
-                          mat-icon-button
-                          color="accent"
-                          (click)="editRow(i)"
-                          matTooltip="Edit"
-                        >
+                        <button *ngIf="editIndex !== i" mat-icon-button color="accent" (click)="editRow(i)"
+                          matTooltip="Edit">
                           <mat-icon>edit</mat-icon>
                         </button>
 
-                        <button
-                          *ngIf="editIndex === i"
-                          mat-icon-button
-                          color="primary"
-                          (click)="updateRow(i)"
-                          matTooltip="Save"
-                        >
+                        <button *ngIf="editIndex === i" mat-icon-button color="primary" (click)="updateRow(i)"
+                          matTooltip="Save">
                           <mat-icon>save</mat-icon>
                         </button>
                       </td>
@@ -626,13 +479,8 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="positionForm.invalid"
-              (click)="onSubmit()"
-            >
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="positionForm.invalid"
+              (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>

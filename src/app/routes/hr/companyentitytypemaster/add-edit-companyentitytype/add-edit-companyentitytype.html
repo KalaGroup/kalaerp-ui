@@ -33,7 +33,7 @@
         <!-- Left side  -->
         <div class="col-sm-6 col-xl-6">
           <!-- Company Entity Type Name -->
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Company Entity Type Name</mat-label>
             <input matInput formControlName="CompanyEntityTypeName" placeholder="Enter Company EntityType Name" />
             <mat-error
@@ -44,7 +44,7 @@
 
 
           <!-- Company Entity Type Remark -->
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="CompanyEntityTypeRemark" placeholder="Enter remark..." />
             <mat-error
@@ -58,7 +58,7 @@
         <!-- Right side  -->
 
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="fill" class="w-100">
+          <mat-form-field appearance="outline">
             <mat-label>Short Name</mat-label>
             <input matInput formControlName="CompanyEntityTypeShortName"
               placeholder="Enter Company Entity Type Short Name" (input)="toUpperCase($event)" />

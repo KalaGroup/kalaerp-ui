@@ -183,7 +183,6 @@ export class AddEditDepartment implements OnInit {
             department.DepartmentName.toLowerCase().includes(filterValue)
           );
         });
-        // Handle currency selection for edit mode
         if (this.isEditMode && this.data) {
           this.setDepartmentForEdit();
         }
@@ -237,7 +236,6 @@ export class AddEditDepartment implements OnInit {
             profitcenter.ProfitCenterName.toLowerCase().includes(filterValue)
           );
         });
-        // Handle currency selection for edit mode
         if (this.isEditMode && this.data) {
           this.setProfitcenterForEdit();
         }
