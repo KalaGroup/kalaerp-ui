@@ -214,11 +214,16 @@
         {
           "route": "kalaerppagedetails",
           "name": "kalaerppagedetails",
-          "type": "link"  
+          "type": "link"
         },
         {
           "route": "gatepasstype",
           "name": "gatepasstype",
+          "type": "link"
+        },
+        {
+          "route": "employee",
+          "name": "employee",
           "type": "link"
         }
       ]
