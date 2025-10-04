@@ -178,7 +178,7 @@ export class Countrymaster implements OnInit {
         this.countryService.updateCountry(updatePayload).subscribe({
           next: (response) => {
             console.log('Country updated successfully:', response);
-
+            this.toastService.showSuccess(`Country "${result.CountryName}" updated successfully!`);
             this.loadAllCountries();
           },
           error: (err) => {
@@ -215,7 +215,6 @@ export class Countrymaster implements OnInit {
           next: (response) => {
             console.log('Country added successfully:', response);
             this.loadAllCountries();
-
             this.toastService.showSuccess(`Country "${result.CountryName}" added successfully!`);
           },
           error: (err) => {
@@ -241,7 +240,7 @@ export class Countrymaster implements OnInit {
     this.countryService.deleteCountry(value.CountryId).subscribe({
       next: (response) => {
         console.log('Country deleted successfully:', response);
-        alert(`You have deleted ${value.CountryName}..!`);
+        this.toastService.showSuccess('Country deleted successfully!');
         this.loadAllCountries();
       },
       error: (err) => {

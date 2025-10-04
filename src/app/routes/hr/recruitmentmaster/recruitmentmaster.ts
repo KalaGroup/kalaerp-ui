@@ -254,7 +254,7 @@ export class Recruitmentmaster {
   ];
 
   loadAllRecruitment() {
-    debugger
+    
     this.isLoading = true;
     this.Recruitmentmasterservice.getAllRecruitmentMaster().subscribe({
       next: (data) => {
@@ -274,7 +274,7 @@ export class Recruitmentmaster {
   }
 
   edit(record: any) {
-    debugger
+    
     const dialogRef = this.dialog.open(AddEditRecruitment, {
       width: '100%',
       height: '100%',
@@ -288,7 +288,7 @@ export class Recruitmentmaster {
         console.log('payload', result);
         return;
       }
-      debugger
+      
       const updatePayload = {
         RecruitmentMasterId: record.RecruitmentMasterId,
         RecruitmentMasterPositionId: result.RecruitmentMasterPositionId,
@@ -408,10 +408,7 @@ export class Recruitmentmaster {
   }
 
   delete(value: any) {
-    debugger
-    if (!confirm('Are you sure you want to delete this recruitment record?')) {
-      return;
-    }
+
 
     console.log("Deleting RecruitmentMasterId:", value.RecruitmentMasterId);
 
