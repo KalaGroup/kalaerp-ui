@@ -66,7 +66,7 @@ export class AddEditCurrency {
       CurrencySymbol: ['', [Validators.required]],
       CurrencyRemark: ['', [Validators.required]],
       CreateBy:0
-    
+
     });
 
     // If editing, pre-fill form with available data
@@ -76,6 +76,7 @@ export class AddEditCurrency {
         CurrencyId: this.data.currency.CurrencyId,
         CurrencyName: this.data.currency.CurrencyName || '',
         CurrencyRemark: this.data.currency.CurrencyRemark || '',
+        CurrencySymbol: this.data.currency.CurrencySymbol || '',
         CurrencyIsActive: this.data.currency.CurrencyIsActive ?? true,
         CurrencyDiscard: this.data.currency.CurrencyIsDiscard ?? false,
         CurrencyAuth: this.data.currency.CurrencyAuth ?? false
