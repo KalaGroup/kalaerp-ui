@@ -213,7 +213,6 @@ export class Countrymaster implements OnInit {
         // Call the service to insert the country
         this.countryService.insertCountry(payload).subscribe({
           next: (response) => {
-            console.log('Country added successfully:', response);
             this.loadAllCountries();
             this.toastService.showSuccess(`Country "${result.CountryName}" added successfully!`);
           },
@@ -236,7 +235,6 @@ export class Countrymaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger
     this.countryService.deleteCountry(value.CountryId).subscribe({
       next: (response) => {
         console.log('Country deleted successfully:', response);

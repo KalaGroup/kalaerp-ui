@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-//import { currencyService } from '../hr.service';
 import { Currencyservice } from '@shared/services/hr/currency/currencyservice';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
@@ -21,7 +20,6 @@ import { PageHeader } from '@shared';
 import { AddEditCurrency } from './add-edit-currency/add-edit-currency';
 import { Toastservice } from 'app/routes/toastservice';
 import { ICurrency } from '@shared/interfaces/hr/currency';
-import { Currency } from '@shared/interfaces/hr';
 
 @Component({
   selector: 'app-currencymaster',
@@ -207,12 +205,12 @@ export class Currencymaster implements OnInit {
         console.log('Update payload:', updatePayload);
         this.currencyService.updateCurrency(updatePayload).subscribe({
           next: (response) => {
-            console.log('Country updated successfully:', response);
-
+            console.log('Currency updated successfully:', response);
+            this.toastService.showSuccess(`Currency "${result.CurrencyName}" updated successfully!`);
             this.loadAllCurrencies();
           },
           error: (err) => {
-            console.error('Error updating country:', err);
+            console.error('Error updating Currency:', err);
           }
         });
       }
@@ -231,7 +229,7 @@ export class Currencymaster implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         debugger;
-        console.log('Added country:', result);
+        console.log('Added Currency:', result);
         const payload: ICurrency = {
           CurrencyName: result.CurrencyName,
           CurrencySymbol: result.CurrencySymbol,
@@ -243,28 +241,23 @@ export class Currencymaster implements OnInit {
           CreatedBy: 0,
           CreatedDate: new Date().toISOString(),
         };
-        console.log('Payload for adding country:', payload);
+        console.log('Payload for adding Currency:', payload);
         //Call the service to insert the country
         this.currencyService.insertCurrency(payload).subscribe({
           next: (response) => {
-            console.log('Country added successfully:', response);
+            console.log('Currency added successfully:', response);
             this.loadAllCurrencies();
 
-            this.toastService.showSuccess(`Country "${result.CurrencyName}" added successfully!`);
+            this.toastService.showSuccess(`Currency "${result.CurrencyName}" added successfully!`);
           },
           error: (err) => {
-            console.error('Error while adding country:', err);
-            this.toastService.showError('Failed to add country. Please verify country details and try again.');
+            console.error('Error while adding Currency:', err);
+            this.toastService.showError('Failed to add Currency. Please verify Currency details and try again.');
           }
         });
       }
     });
   }
-
-  // edit(record: Currency): void {
-  //   this.selectedCurrency = record;
-  //   this.currencyForm.patchValue(record);
-  // }
 
   delete(record: ICurrency): void {
     debugger
@@ -274,38 +267,13 @@ export class Currencymaster implements OnInit {
       next: () => {
         this.loadAllCurrencies();
         this.toastService.showSuccess('Currency deleted successfully');
-        // Show success message
       },
       error: (err) => {
         console.error('Error deleting currency:', err);
-        this.toastService.showError('Failed to delete currency. It might be in use.');  
+        this.toastService.showError('Failed to delete currency. It might be in use.');
         // Show error message
       }
     });
-  }
-
-  onFormSubmit(): void {
-    if (this.currencyForm.valid) {
-      const formData = this.currencyForm.value;
-
-      if (this.selectedCurrency) {
-        // Update existing currency
-        console.log('Updating currency:', formData);
-        // this.currencyService.updateCurrency(this.selectedCurrency.id, formData).subscribe({...});
-      } else {
-        // Create new currency
-        console.log('Creating new currency:', formData);
-        // this.currencyService.createCurrency(formData).subscribe({...});
-      }
-
-      this.loadAllCurrencies();
-    } else {
-      console.log('Form is invalid');
-      // Mark all fields as touched to show validation errors
-      Object.keys(this.currencyForm.controls).forEach(key => {
-        this.currencyForm.get(key)?.markAsTouched();
-      });
-    }
   }
 
   onCancel(): void {

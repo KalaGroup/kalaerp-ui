@@ -1,1 +1,964 @@
-<p>add-edit-emp works!</p>
+<mat-card>
+  <mat-card-title>
+    {{ isEditMode ? 'Edit Employee' : 'Add Employee' }}
+  </mat-card-title>
+
+  <mat-card-content>
+    <mat-stepper [linear]="true" [selectedIndex]="currentStep - 1" orientation="horizontal" #stepper>
+
+      <!-- Step 1: Basic Information -->
+      <mat-step [stepControl]="getStepControl(1)" label="Basic Information">
+        <form [formGroup]="employeeForm" class="form-field-full">
+
+          <!-- Auto-generated fields and status -->
+          <div class="row mb-3">
+            <div class="col-sm-3 col-xl-3">
+              <mat-form-field appearance="outline">
+                <mat-label>Employee Code</mat-label>
+                <input matInput formControlName="EmployeeMasterCode" readonly placeholder="Auto-generated"/>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-3 col-xl-3">
+              <mat-form-field appearance="outline">
+                <mat-label>Created Date</mat-label>
+                <input matInput formControlName="CreatedDate" readonly placeholder="Auto-generated" />
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-xl-6">
+              <div class="d-flex align-items-center justify-content-start" style="height: 56px; gap: 24px;">
+                <mat-checkbox formControlName="EmployeeMasterIsActive" color="primary">Active</mat-checkbox>
+                <mat-checkbox formControlName="EmployeeMasterAuth" color="primary">Authorized</mat-checkbox>
+                <mat-checkbox formControlName="EmployeeMasterIsDiscard" color="warn">Discarded</mat-checkbox>
+              </div>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Personal Details</h4>
+
+          <!-- Name fields -->
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="EmployeeMasterFirstName" placeholder="Enter first name"
+                  maxlength="100" />
+                @if (employeeForm.get('EmployeeMasterFirstName')?.invalid &&
+                employeeForm.get('EmployeeMasterFirstName')?.touched) {
+                <mat-error>First Name is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Middle Name</mat-label>
+                <input matInput formControlName="EmployeeMasterMiddleName" placeholder="Enter middle name"
+                  maxlength="100" />
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="EmployeeMasterLastName" placeholder="Enter last name"
+                  maxlength="100" />
+                @if (employeeForm.get('EmployeeMasterLastName')?.invalid &&
+                employeeForm.get('EmployeeMasterLastName')?.touched) {
+                <mat-error>Last Name is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-12 col-xl-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Full Name</mat-label>
+                <input matInput formControlName="EmployeeMasterFullName" readonly class="readonly-normal" />
+                <mat-hint>Auto-generated from First, Middle, and Last Name</mat-hint>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Basic details -->
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Date of Birth</mat-label>
+                <input matInput [matDatepicker]="dobPicker" formControlName="EmployeeMasterDateOfBirth"
+                  placeholder="Select date" />
+                <mat-datepicker-toggle matSuffix [for]="dobPicker"></mat-datepicker-toggle>
+                <mat-datepicker #dobPicker></mat-datepicker>
+                @if (employeeForm.get('EmployeeMasterDateOfBirth')?.invalid &&
+                employeeForm.get('EmployeeMasterDateOfBirth')?.touched) {
+                <mat-error>Date of Birth is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Gender</mat-label>
+                <mat-select formControlName="EmployeeMasterGender" placeholder="Select gender">
+                  <mat-option value="">Select Gender</mat-option>
+                  @for (gender of genderList; track gender.value) {
+                  <mat-option [value]="gender.value">{{ gender.label }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmployeeMasterGender')?.invalid &&
+                employeeForm.get('EmployeeMasterGender')?.touched) {
+                <mat-error>Gender is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Blood Group</mat-label>
+                <mat-select formControlName="EmployeeMasterBloodGroup" placeholder="Select blood group">
+                  <mat-option value="">Select Blood Group</mat-option>
+                  @for (bloodGroup of bloodGroupList; track bloodGroup.value) {
+                  <mat-option [value]="bloodGroup.value">{{ bloodGroup.label }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmployeeMasterBloodGroup')?.invalid &&
+                employeeForm.get('EmployeeMasterBloodGroup')?.touched) {
+                <mat-error>Blood Group is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Nationality & Religion</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Nationality</mat-label>
+                <mat-select formControlName="EmployeeMasterNationalityCountryId" placeholder="Select nationality">
+                  <mat-option>
+                    <input matInput placeholder="Search country..." [formControl]="countrySearchControlForBasicInfo"
+                      (click)="$event.stopPropagation()" />
+                  </mat-option>
+                  <mat-option value="">Select Country</mat-option>
+                  @for (country of filteredBasicInfoCountryList; track country.CountryId) {
+                  <mat-option [value]="country.CountryId">{{ country.CountryName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmployeeMasterNationalityCountryId')?.invalid &&
+                employeeForm.get('EmployeeMasterNationalityCountryId')?.touched) {
+                <mat-error>Nationality is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Religion</mat-label>
+                <mat-select formControlName="EmployeeMasterReligion" placeholder="Select religion">
+                  <mat-option value="">Select Religion</mat-option>
+                  @for (religion of religionList; track religion.value) {
+                  <mat-option [value]="religion.value">{{ religion.label }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmployeeMasterReligion')?.invalid &&
+                employeeForm.get('EmployeeMasterReligion')?.touched) {
+                <mat-error>Religion is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Religion Category</mat-label>
+                <mat-select formControlName="EmployeeMasterReligionCategory" placeholder="Select category">
+                  <mat-option value="">Select Category</mat-option>
+                  @for (category of religionCategoryList; track category.value) {
+                  <mat-option [value]="category.value">{{ category.label }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmployeeMasterReligionCategory')?.invalid &&
+                employeeForm.get('EmployeeMasterReligionCategory')?.touched) {
+                <mat-error>Religion Category is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Photo & Remarks</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-12 col-xl-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Photo Attachment</mat-label>
+                <input matInput formControlName="EmployeeMasterPhotoAttachment" readonly
+                  placeholder="No file selected" />
+                <button mat-icon-button matSuffix type="button" (click)="photoInput.click()">
+                  <mat-icon>attach_file</mat-icon>
+                </button>
+                <input #photoInput type="file" hidden accept="image/*"
+                  (change)="onFileSelect($event, 'EmployeeMasterPhotoAttachment')" />
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Remark</mat-label>
+                <textarea matInput formControlName="EmployeeMasterRemark" placeholder="Enter remarks" rows="3"
+                  maxlength="200"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Authorization Remark</mat-label>
+                <textarea matInput formControlName="EmployeeMasterAuthRemark" placeholder="Enter authorization remarks"
+                  rows="3" maxlength="200"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div mat-dialog-actions align="end">
+            <button mat-button matStepperNext [disabled]="!isStepValid(1)">Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Step 2: Address Details -->
+      <mat-step [stepControl]="getStepControl(2)" label="Address Details">
+        <form [formGroup]="employeeForm">
+          <h4 class="section-header mb-3">Present Address</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-12 col-xl-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Present Address</mat-label>
+                <textarea matInput formControlName="AddressDetailsEmployeeMasterPresentAdress"
+                  placeholder="Enter present address" rows="3" maxlength="500"></textarea>
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPresentAdress')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPresentAdress')?.touched) {
+                <mat-error>Present Address is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-3 col-xl-3">
+              <mat-form-field appearance="outline">
+                <mat-label>Country</mat-label>
+                <mat-select formControlName="AddressDetailsEmployeeMasterPresentCountryId" placeholder="Select country">
+                   <mat-option>
+                    <input matInput placeholder="Search country..." [formControl]="countrySearchControlForPresentAddress"
+                      (click)="$event.stopPropagation()" />
+                  </mat-option>
+                  <mat-option value="">Select Country</mat-option>
+                  @for (country of filteredPresentAddressCountryList; track country.CountryId) {
+                  <mat-option [value]="country.CountryId">{{ country.CountryName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPresentCountryId')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPresentCountryId')?.touched) {
+                <mat-error>Country is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-3 col-xl-3">
+              <mat-form-field appearance="outline">
+                <mat-label>State</mat-label>
+                <mat-select formControlName="AddressDetailsEmployeeMasterPresentStateId" placeholder="Select state">
+                  <mat-option value="">Select State</mat-option>
+                  @for (state of filteredPresentStateList; track state.StateId) {
+                  <mat-option [value]="state.StateId">{{ state.StateName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPresentStateId')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPresentStateId')?.touched) {
+                <mat-error>State is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-3 col-xl-3">
+              <mat-form-field appearance="outline">
+                <mat-label>District</mat-label>
+                <mat-select formControlName="AddressDetailsEmployeeMasterPresentDistrictId"
+                  placeholder="Select district">
+                  <mat-option value="">Select District</mat-option>
+                  @for (district of filteredPresentDistrictList; track district.DistrictId) {
+                  <mat-option [value]="district.DistrictId">{{ district.DistrictName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPresentDistrictId')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPresentDistrictId')?.touched) {
+                <mat-error>District is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-3 col-xl-3">
+              <mat-form-field appearance="outline">
+                <mat-label>City</mat-label>
+                <mat-select formControlName="AddressDetailsEmployeeMasterPresentCitytId" placeholder="Select city">
+                  <mat-option value="">Select City</mat-option>
+                  @for (city of filteredPresentCityList; track city.CityId) {
+                  <mat-option [value]="city.CityId">{{ city.CityName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPresentCitytId')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPresentCitytId')?.touched) {
+                <mat-error>City is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-12 col-xl-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Pin Code</mat-label>
+                <input matInput formControlName="AddressDetailsEmployeeMasterPresentPinCode"
+                  placeholder="Enter 6-digit pin code" maxlength="6" />
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPresentPinCode')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPresentPinCode')?.touched) {
+                <mat-error>Valid 6-digit Pin Code is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <div class="row mb-3 mt-4">
+            <div class="col-sm-12 col-xl-12">
+              <mat-checkbox formControlName="AddressDetailsEmployeeMasterPemanantAddresssameAsPresent" color="primary">
+                Permanent Address same as Present Address
+              </mat-checkbox>
+            </div>
+          </div>
+
+          <h4 class="section-header mt-4 mb-3">Permanent Address</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-12 col-xl-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Permanent Address</mat-label>
+                <textarea matInput formControlName="AddressDetailsEmployeeMasterPermanantAdress"
+                  placeholder="Enter permanent address" rows="3" maxlength="500"></textarea>
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPermanantAdress')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPermanantAdress')?.touched) {
+                <mat-error>Permanent Address is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-3 col-xl-3">
+              <mat-form-field appearance="outline">
+                <mat-label>Country</mat-label>
+                <mat-select formControlName="AddressDetailsEmployeeMasterPermanantCountryId" placeholder="Select country">
+                  <mat-option>
+                    <input matInput placeholder="Search country..." [formControl]="countrySearchControlForPermanentAddress"
+                      (click)="$event.stopPropagation()" />
+                  </mat-option>
+                  <mat-option value="">Select Country</mat-option>
+                  @for (country of filteredPermanentAddressCountryList; track country.CountryId) {
+                  <mat-option [value]="country.CountryId">{{ country.CountryName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPermanantCountryId')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPermanantCountryId')?.touched) {
+                <mat-error>Country is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-3 col-xl-3">
+              <mat-form-field appearance="outline">
+                <mat-label>State</mat-label>
+                <mat-select formControlName="AddressDetailsEmployeeMasterPermanantStateId" placeholder="Select state">
+                  <mat-option value="">Select State</mat-option>
+                  @for (state of filteredPermanentStateList; track state.StateId) {
+                  <mat-option [value]="state.StateId">{{ state.StateName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPermanantStateId')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPermanantStateId')?.touched) {
+                <mat-error>State is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-3 col-xl-3">
+              <mat-form-field appearance="outline">
+                <mat-label>District</mat-label>
+                <mat-select formControlName="AddressDetailsEmployeeMasterPermanantDistrictId"
+                  placeholder="Select district">
+                  <mat-option value="">Select District</mat-option>
+                  @for (district of filteredPermanentDistrictList; track district.DistrictId) {
+                  <mat-option [value]="district.DistrictId">{{ district.DistrictName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPermanantDistrictId')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPermanantDistrictId')?.touched) {
+                <mat-error>District is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-3 col-xl-3">
+              <mat-form-field appearance="outline">
+                <mat-label>City</mat-label>
+                <mat-select formControlName="AddressDetailsEmployeeMasterPermanantCityId" placeholder="Select city">
+                  <mat-option value="">Select City</mat-option>
+                  @for (city of filteredPermanentCityList; track city.CityId) {
+                  <mat-option [value]="city.CityId">{{ city.CityName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPermanantCityId')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPermanantCityId')?.touched) {
+                <mat-error>City is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-12 col-xl-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Pin Code</mat-label>
+                <input matInput formControlName="AddressDetailsEmployeeMasterPermanantPinCode"
+                  placeholder="Enter 6-digit pin code" maxlength="6" />
+                @if (employeeForm.get('AddressDetailsEmployeeMasterPermanantPinCode')?.invalid &&
+                employeeForm.get('AddressDetailsEmployeeMasterPermanantPinCode')?.touched) {
+                <mat-error>Valid 6-digit Pin Code is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Authorization</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-12 col-xl-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Authorization Remark</mat-label>
+                <textarea matInput formControlName="AddressDetailsEmployeeMasterAuthRemark"
+                  placeholder="Enter authorization remarks" rows="3" maxlength="500"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div mat-dialog-actions align="end">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext [disabled]="!isStepValid(2)">Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Step 3: Family Details -->
+      <mat-step [stepControl]="getStepControl(3)" label="Family Details">
+        <form [formGroup]="employeeForm">
+          <h4 class="section-header mb-3">Family Information</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Father/Husband Name</mat-label>
+                <input matInput formControlName="FamilyDetailsEmployeeMasterFatherHusbandName"
+                  placeholder="Enter father/husband name" maxlength="200" />
+                @if (employeeForm.get('FamilyDetailsEmployeeMasterFatherHusbandName')?.invalid &&
+                employeeForm.get('FamilyDetailsEmployeeMasterFatherHusbandName')?.touched) {
+                <mat-error>Father/Husband Name is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Mother Name</mat-label>
+                <input matInput formControlName="FamilyDetailsEmployeeMasterMotherName" placeholder="Enter mother name"
+                  maxlength="200" />
+                @if (employeeForm.get('FamilyDetailsEmployeeMasterMotherName')?.invalid &&
+                employeeForm.get('FamilyDetailsEmployeeMasterMotherName')?.touched) {
+                <mat-error>Mother Name is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Marital Status & Spouse Details</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-12 col-xl-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Marital Status</mat-label>
+                <mat-select formControlName="FamilyDetailsEmployeeMasterMartialStatus"
+                  placeholder="Select marital status">
+                  <mat-option value="">Select Marital Status</mat-option>
+                  @for (status of maritalStatusList; track status.value) {
+                  <mat-option [value]="status.value">{{ status.label }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('FamilyDetailsEmployeeMasterMartialStatus')?.invalid &&
+                employeeForm.get('FamilyDetailsEmployeeMasterMartialStatus')?.touched) {
+                <mat-error>Marital Status is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          @if (employeeForm.get('FamilyDetailsEmployeeMasterMartialStatus')?.value === 'Married') {
+          <div class="row mb-3">
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Spouse Name</mat-label>
+                <input matInput formControlName="FamilyDetailsEmployeeMasterSpouseName" placeholder="Enter spouse name"
+                  maxlength="200" />
+                @if (employeeForm.get('FamilyDetailsEmployeeMasterSpouseName')?.invalid &&
+                employeeForm.get('FamilyDetailsEmployeeMasterSpouseName')?.touched) {
+                <mat-error>Spouse Name is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Spouse Date of Birth</mat-label>
+                <input matInput [matDatepicker]="spouseDobPicker"
+                  formControlName="FamilyDetailsEmployeeMasterSpouseDateOfBirth" placeholder="Select date" />
+                <mat-datepicker-toggle matSuffix [for]="spouseDobPicker"></mat-datepicker-toggle>
+                <mat-datepicker #spouseDobPicker></mat-datepicker>
+                @if (employeeForm.get('FamilyDetailsEmployeeMasterSpouseDateOfBirth')?.invalid &&
+                employeeForm.get('FamilyDetailsEmployeeMasterSpouseDateOfBirth')?.touched) {
+                <mat-error>Spouse Date of Birth is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Spouse Aadhar Number</mat-label>
+                <input matInput formControlName="FamilyDetailsEmployeeMasterSpouseAadharNumber"
+                  placeholder="Enter 12-digit Aadhar number" maxlength="12" />
+                @if (employeeForm.get('FamilyDetailsEmployeeMasterSpouseAadharNumber')?.invalid &&
+                employeeForm.get('FamilyDetailsEmployeeMasterSpouseAadharNumber')?.touched) {
+                <mat-error>Valid 12-digit Aadhar Number required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Spouse Aadhar Attachment</mat-label>
+                <input matInput formControlName="FamilyDetailsEmployeeMasterSpouseAadharNumberAttachment" readonly
+                  placeholder="No file selected" />
+                <button mat-icon-button matSuffix type="button" (click)="spouseAadharInput.click()">
+                  <mat-icon>attach_file</mat-icon>
+                </button>
+                <input #spouseAadharInput type="file" hidden accept=".pdf,image/*"
+                  (change)="onFileSelect($event, 'FamilyDetailsEmployeeMasterSpouseAadharNumberAttachment')" />
+              </mat-form-field>
+            </div>
+          </div>
+          }
+
+          <div class="row mb-3">
+            <div class="col-sm-12 col-xl-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Number of Children</mat-label>
+                <input matInput formControlName="FamilyDetailsEmployeeMasterNumberofChidren" type="number"
+                  placeholder="0" min="0" max="20" />
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Remarks</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Remark</mat-label>
+                <textarea matInput formControlName="FamilyDetailsEmployeeMasterRemark" placeholder="Enter remarks"
+                  rows="3" maxlength="200"></textarea>
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Authorization Remark</mat-label>
+                <textarea matInput formControlName="FamilyDetailsEmployeeMasterAuthRemark"
+                  placeholder="Enter authorization remarks" rows="3" maxlength="200"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- <div mat-dialog-actions align="end">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!isFormValidForSubmission()">
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+          </div> -->
+          <div mat-dialog-actions align="end">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext [disabled]="!isStepValid(3)">Next</button>
+          </div>
+        </form>
+      </mat-step>
+
+      <!-- Step 4: Employment Details -->
+      <mat-step [stepControl]="getStepControl(4)" label="Employment Details">
+        <form [formGroup]="employeeForm">
+          <h4 class="section-header mb-3">Organizational Details</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Division</mat-label>
+                <mat-select formControlName="EmploymentDetailsDivisionId" placeholder="Select division">
+                  <mat-option>
+                    <input matInput placeholder="Search division..." [formControl]="divisionSearchControl"
+                      (click)="$event.stopPropagation()" />
+                  </mat-option>
+                  <mat-option value="">Select Division</mat-option>
+                  @for (division of filteredDivisionList; track division.DivisionId) {
+                  <mat-option [value]="division.DivisionId">{{ division.DivisionName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsDivisionId')?.invalid &&
+                employeeForm.get('EmploymentDetailsDivisionId')?.touched) {
+                <mat-error>Division is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Position</mat-label>
+                <mat-select formControlName="EmploymentDetailsPositionId" placeholder="Select position">
+                  <mat-option>
+                    <input matInput placeholder="Search position..." [formControl]="positionSearchControl"
+                      (click)="$event.stopPropagation()" />
+                  </mat-option>
+                  <mat-option value="">Select Position</mat-option>
+                  @for (position of filteredPositionList; track position.PositionId) {
+                  <mat-option [value]="position.PositionId">{{ position.PositionName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsPositionId')?.invalid &&
+                employeeForm.get('EmploymentDetailsPositionId')?.touched) {
+                <mat-error>Position is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Offer Letter</mat-label>
+                <mat-select formControlName="EmploymentDetailsOfferLetterId" placeholder="Select offer letter">
+                  <input matInput placeholder="Search Offer letter..." [formControl]="offerLetterSearchControl"
+                    (click)="$event.stopPropagation()" />
+                  <mat-option value="">Select Offer Letter</mat-option>
+                  @for (offer of offerLetterList; track offer.OfferLetterId) {
+                  <mat-option [value]="offer.OfferLetterId">{{ offer.OfferLetterCode }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsOfferLetterId')?.invalid &&
+                employeeForm.get('EmploymentDetailsOfferLetterId')?.touched) {
+                <mat-error>Offer Letter is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Employee Type</mat-label>
+                <mat-select formControlName="EmploymentDetailsEmployeeTypeId" placeholder="Select employee type">
+                  <input matInput placeholder="Search Employee type..." [formControl]="employeeTypeSearchControl"
+                    (click)="$event.stopPropagation()" />
+                  <mat-option value="">Select Employee Type</mat-option>
+                  @for (empType of employeeTypeList; track empType.EmployeeTypeId) {
+                  <mat-option [value]="empType.EmployeeTypeId">{{ empType.EmployeeTypeName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsEmployeeTypeId')?.invalid &&
+                employeeForm.get('EmploymentDetailsEmployeeTypeId')?.touched) {
+                <mat-error>Employee Type is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Parent Company</mat-label>
+                <mat-select formControlName="EmploymentDetailsParentCompanyId" placeholder="Select parent company">
+                  <input matInput placeholder="Search Parent Company..." [formControl]="parentCompanySearchControl"
+                    (click)="$event.stopPropagation()" />
+                  <mat-option value="">Select Parent Company</mat-option>
+                  @for (company of parentCompanyList; track company.ParentCompanyId) {
+                  <mat-option [value]="company.ParentCompanyId">{{ company.ParentCompanyName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsParentCompanyId')?.invalid &&
+                employeeForm.get('EmploymentDetailsParentCompanyId')?.touched) {
+                <mat-error>Parent Company is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Company Entity</mat-label>
+                <mat-select formControlName="EmploymentDetailsCompanyEntityId" placeholder="Select company entity">
+                  <input matInput placeholder="Search company entity..." [formControl]="companyEntitySearchControl"
+                    (click)="$event.stopPropagation()" />
+                  <mat-option value="">Select Company Entity</mat-option>
+                  @for (entity of companyEntityList; track entity.CompanyEntityId) {
+                  <mat-option [value]="entity.CompanyEntityId">{{ entity.CompanyEntityName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsCompanyEntityId')?.invalid &&
+                employeeForm.get('EmploymentDetailsCompanyEntityId')?.touched) {
+                <mat-error>Company Entity is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Department & Location</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Profit Center</mat-label>
+                <mat-select formControlName="EmploymentDetailsProfitcenterId" placeholder="Select profit center">
+                  <input matInput placeholder="Search profitcenter..." [formControl]="profitCenterSearchControl"
+                    (click)="$event.stopPropagation()" />
+                  <mat-option value="">Select Profit Center</mat-option>
+                  @for (profitCenter of profitCenterList; track profitCenter.ProfitCenterId) {
+                  <mat-option [value]="profitCenter.ProfitCenterId">{{ profitCenter.ProfitCenterName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsProfitcenterId')?.invalid &&
+                employeeForm.get('EmploymentDetailsProfitcenterId')?.touched) {
+                <mat-error>Profit Center is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="EmploymentDetailsDepartmentId" placeholder="Select department">
+                  <mat-option>
+                    <input matInput placeholder="Search department..." [formControl]="departmentSearchControl"
+                      (click)="$event.stopPropagation()" />
+                  </mat-option>
+                  <mat-option value="">Select Department</mat-option>
+                  @for (department of filteredDepartmentList; track department.DepartmentId) {
+                  <mat-option [value]="department.DepartmentId">{{ department.DepartmentName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsDepartmentId')?.invalid &&
+                employeeForm.get('EmploymentDetailsDepartmentId')?.touched) {
+                <mat-error>Department is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-4 col-xl-4">
+              <mat-form-field appearance="outline">
+                <mat-label>Workstation</mat-label>
+                <mat-select formControlName="EmploymentDetailsWorkastationId" placeholder="Select workstation">
+                  <input matInput placeholder="Search workstation..." [formControl]="workstationSearchControl"
+                    (click)="$event.stopPropagation()" />
+                  <mat-option value="">Select Workstation</mat-option>
+                  @for (workstation of workstationList; track workstation.WorkstationId) {
+                  <mat-option [value]="workstation.WorkstationId">{{ workstation.WorkstationName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsWorkastationId')?.invalid &&
+                employeeForm.get('EmploymentDetailsWorkastationId')?.touched) {
+                <mat-error>Workstation is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Grade & Designation</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Grade</mat-label>
+                <mat-select formControlName="EmploymentDetailsGradeId" placeholder="Select grade">
+                  <mat-option>
+                    <input matInput placeholder="Search grade..." [formControl]="gradeSearchControl"
+                      (click)="$event.stopPropagation()" />
+                  </mat-option>
+                  <mat-option value="">Select Grade</mat-option>
+                  @for (grade of filteredGradeList; track grade.GradeId) {
+                  <mat-option [value]="grade.GradeId">{{ grade.GradeName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsGradeId')?.invalid &&
+                employeeForm.get('EmploymentDetailsGradeId')?.touched) {
+                <mat-error>Grade is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Designation</mat-label>
+                <mat-select formControlName="EmploymentDetailsDesignationId" placeholder="Select designation">
+                  <mat-option>
+                    <input matInput placeholder="Search designation..." [formControl]="designationSearchControl"
+                      (click)="$event.stopPropagation()" />
+                  </mat-option>
+                  <mat-option value="">Select Designation</mat-option>
+                  @for (designation of filteredDesignationList; track designation.DesignationId) {
+                  <mat-option [value]="designation.DesignationId">{{ designation.DesignationName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsDesignationId')?.invalid &&
+                employeeForm.get('EmploymentDetailsDesignationId')?.touched) {
+                <mat-error>Designation is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Reporting Structure</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Report To</mat-label>
+                <mat-select formControlName="EmploymentDetailsReportToId" placeholder="Select reporting manager">
+                  <input matInput placeholder="Search reporting manager..." [formControl]="reportToSearchControl"
+                    (click)="$event.stopPropagation()" />
+                  <mat-option value="">Select Reporting Manager</mat-option>
+                  @for (manager of reportToList; track manager.EmployeeId) {
+                  <mat-option [value]="manager.EmployeeId">{{ manager.EmployeeName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsReportToId')?.invalid &&
+                employeeForm.get('EmploymentDetailsReportToId')?.touched) {
+                <mat-error>Reporting Manager is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+            <div class="col-sm-6 col-xl-6">
+              <mat-form-field appearance="outline">
+                <mat-label>Department HOD</mat-label>
+                <mat-select formControlName="EmploymentDetailsReportDepartmentHODId"
+                  placeholder="Select department HOD">
+                  <input matInput placeholder="Search department hod..." [formControl]="departmentHODSearchControl"
+                    (click)="$event.stopPropagation()" />
+                  <mat-option value="">Select Department HOD</mat-option>
+                  @for (hod of departmentHODList; track hod.EmployeeId) {
+                  <mat-option [value]="hod.EmployeeId">{{ hod.EmployeeName }}</mat-option>
+                  }
+                </mat-select>
+                @if (employeeForm.get('EmploymentDetailsReportDepartmentHODId')?.invalid &&
+                employeeForm.get('EmploymentDetailsReportDepartmentHODId')?.touched) {
+                <mat-error>Department HOD is required</mat-error>
+                }
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Remarks</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-12 col-xl-12">
+              <mat-form-field appearance="outline">
+                <mat-label>Employment Remark</mat-label>
+                <textarea matInput formControlName="EmploymentDetailsRemark" placeholder="Enter employment remarks"
+                  rows="3" maxlength="200"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+          <h4 class="section-header mt-4 mb-3">Authorization Remarks</h4>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
+                <mat-checkbox formControlName="EmploymentDetailsAuth1" color="primary" [disabled]="!canAuthorize">
+                  Level 1 Authorization
+                </mat-checkbox>
+              </div>
+            </div>
+            <div class="col-sm-8 col-xl-8">
+              <mat-form-field appearance="outline">
+                <mat-label>Authorization 1 Remarks</mat-label>
+                <textarea matInput formControlName="EmploymentDetailsAuth1Remark"
+                  placeholder="Remarks for Level 1 authorization" rows="1" maxlength="200"
+                  [readonly]="!canAuthorize"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
+                <mat-checkbox formControlName="EmploymentDetailsAuth2" color="primary" [disabled]="!canAuthorize">
+                  Level 2 Authorization
+                </mat-checkbox>
+              </div>
+            </div>
+            <div class="col-sm-8 col-xl-8">
+              <mat-form-field appearance="outline">
+                <mat-label>Authorization 2 Remarks</mat-label>
+                <textarea matInput formControlName="EmploymentDetailsAuth2Remark"
+                  placeholder="Remarks for Level 2 authorization" rows="1" maxlength="200"
+                  [readonly]="!canAuthorize"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-sm-4 col-xl-4">
+              <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
+                <mat-checkbox formControlName="EmploymentDetailsAuth3" color="primary" [disabled]="!canAuthorize">
+                  Level 3 Authorization
+                </mat-checkbox>
+              </div>
+            </div>
+            <div class="col-sm-8 col-xl-8">
+              <mat-form-field appearance="outline">
+                <mat-label>Authorization 3 Remarks</mat-label>
+                <textarea matInput formControlName="EmploymentDetailsAuth3Remark"
+                  placeholder="Remarks for Level 3 authorization" rows="1" maxlength="200"
+                  [readonly]="!canAuthorize"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+
+          <div mat-dialog-actions align="end">
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="!isFormValidForSubmission()">
+              {{ isEditMode ? 'Update' : 'Save' }}
+            </button>
+          </div>
+        </form>
+      </mat-step>
+    </mat-stepper>
+
+    <!-- Global Action Buttons -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="d-flex justify-content-center gap-3">
+          <button mat-button type="button" class="btn-outline" (click)="onCancel()">
+            <mat-icon>close</mat-icon>
+            Cancel
+          </button>
+          @if (!isEditMode) {
+          <button mat-button type="button" class="btn-outline" (click)="onReset()">
+            <mat-icon>refresh</mat-icon>
+            Reset
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+
+  </mat-card-content>
+</mat-card>

@@ -7,6 +7,36 @@
       "icon": "people",
       "children": [
         {
+          "route": "activity",
+          "name": "activity",
+          "type": "link"
+        },
+        {
+          "route": "authoritiesmaster",
+          "name": "authoritiesmaster",
+          "type": "link"
+        },
+        {
+          "route": "citymaster",
+          "name": "citymaster",
+          "type": "link"
+        },
+        {
+          "route": "classoftravel",
+          "name": "classoftravel",
+          "type": "link"
+        },
+        {
+          "route": "company",
+          "name": "company",
+          "type": "link"
+        },
+        {
+          "route": "companyentitytype",
+          "name": "companyentitytype",
+          "type": "link"
+        },
+        {
           "route": "country",
           "name": "country",
           "type": "link"
@@ -17,193 +47,8 @@
           "type": "link"
         },
         {
-          "route": "company",
-          "name": "company",
-          "type": "link"
-        },
-        {
-          "route": "state",
-          "name": "state",
-          "type": "link"
-        },
-        {
-          "route": "division",
-          "name": "division",
-          "type": "link"
-        },
-        {
-          "route": "workstation",
-          "name": "workstation",
-          "type": "link"
-        },
-        {
-          "route": "profitcenter",
-          "name": "profitcenter",
-          "type": "link"
-        },
-        {
-          "route": "qualification",
-          "name": "qualification",
-          "type": "link"
-        },
-        {
-          "route": "recruitmentattributemaster",
-          "name": "recruitmentattributemaster",
-          "type": "link"
-        },
-        {
-          "route": "employeetypemaster",
-          "name": "employeetypemaster",
-          "type": "link"
-        },
-        {
-          "route": "companyentitytype",
-          "name": "companyentitytype",
-          "type": "link"
-        },
-        {
-          "route": "petrolallowancemaster",
-          "name": "petrolallowancemaster",
-          "type": "link"
-        },
-        {
-          "route": "employeeupdationfor",
-          "name": "employeeupdationfor",
-          "type": "link"
-        },
-        {
-          "route": "qualificationtype",
-          "name": "qualificationtype",
-          "type": "link"
-        },
-        {
-          "route": "holidaymaster",
-          "name": "holidaymaster",
-          "type": "link"
-        },
-        {
-          "route": "responsibilitiesmaster",
-          "name": "responsibilitiesmaster",
-          "type": "link"
-        },
-        {
-          "route": "departmentmaster",
-          "name": "departmentmaster",
-          "type": "link"
-        },
-        {
-          "route": "rolesmaster",
-          "name": "rolesmaster",
-          "type": "link"
-        },
-        {
-          "route": "location",
-          "name": "location",
-          "type": "link"
-        },
-        {
-          "route": "classoftravel",
-          "name": "classoftravel",
-          "type": "link"
-        },
-        {
-          "route": "facility",
-          "name": "facility",
-          "type": "link"
-        },
-        {
           "route": "ctcmaster",
           "name": "ctcmaster",
-          "type": "link"
-        },
-        {
-          "route": "authoritiesmaster",
-          "name": "authoritiesmaster",
-          "type": "link"
-        },
-        {
-          "route": "recruitmentstagestatusmaster",
-          "name": "recruitmentstagestatusmaster",
-          "type": "link"
-        },
-        {
-          "route": "activity",
-          "name": "activity",
-          "type": "link"
-        },
-        {
-          "route": "kpa",
-          "name": "kpa",
-          "type": "link"
-        },
-        {
-          "route": "citymaster",
-          "name": "citymaster",
-          "type": "link"
-        },
-        {
-          "route": "gradedesignationfacilityassignment",
-          "name": "gradedesignationfacilityassignment",
-          "type": "link"
-        },
-        {
-          "route": "recruitmentreferencemaster",
-          "name": "recruitmentreferencemaster",
-          "type": "link"
-        },
-        {
-          "route": "recruitmentmaster",
-          "name": "recruitmentmaster",
-          "type": "link"
-        },
-        {
-          "route": "profitcenterbudget",
-          "name": "profitcenterbudget",
-          "type": "link"
-        },
-        {
-          "route": "shiftmaster",
-          "name": "shiftmaster",
-          "type": "link"
-        },
-        {
-          "route": "distictmaster",
-          "name": "distictmaster",
-          "type": "link"
-        },
-        {
-          "route": "workstationbudget",
-          "name": "workstationbudget",
-          "type": "link"
-        },
-        {
-          "route": "leavetypemaster",
-          "name": "leavetypemaster",
-          "type": "link"
-        },
-        {
-          "route": "offerletter",
-          "name": "offerletter",
-          "type": "link"
-        },
-        {
-          "route": "employeeleavebalances",
-          "name": "employeeleavebalances",
-          "type": "link"
-        },
-        {
-          "route": "leaveapplications",
-          "name": "leaveapplications",
-          "type": "link"
-        },
-        {
-          "route": "positionmaster",
-          "name": "positionmaster",
-          "type": "link"
-        },
-        {
-          "route": "departmentbudget",
-          "name": "departmentbudget",
           "type": "link"
         },
         {
@@ -212,13 +57,173 @@
           "type": "link"
         },
         {
-          "route": "kalaerppagedetails",
-          "name": "kalaerppagedetails",
-          "type": "link"  
+          "route": "departmentbudget",
+          "name": "departmentbudget",
+          "type": "link"
+        },
+        {
+          "route": "departmentmaster",
+          "name": "departmentmaster",
+          "type": "link"
+        },
+        {
+          "route": "distictmaster",
+          "name": "distictmaster",
+          "type": "link"
+        },
+        {
+          "route": "division",
+          "name": "division",
+          "type": "link"
+        },
+        {
+          "route": "employee",
+          "name": "employee",
+          "type": "link"
+        },
+        {
+          "route": "employeeleavebalances",
+          "name": "employeeleavebalances",
+          "type": "link"
+        },
+        {
+          "route": "employeetypemaster",
+          "name": "employeetypemaster",
+          "type": "link"
+        },
+        {
+          "route": "employeeupdationfor",
+          "name": "employeeupdationfor",
+          "type": "link"
+        },
+        {
+          "route": "facility",
+          "name": "facility",
+          "type": "link"
         },
         {
           "route": "gatepasstype",
           "name": "gatepasstype",
+          "type": "link"
+        },
+        {
+          "route": "gradedesignationfacilityassignment",
+          "name": "gradedesignationfacilityassignment",
+          "type": "link"
+        },
+        {
+          "route": "holidaymaster",
+          "name": "holidaymaster",
+          "type": "link"
+        },
+        {
+          "route": "kalaerppagedetails",
+          "name": "kalaerppagedetails",
+          "type": "link"
+        },
+        {
+          "route": "kpa",
+          "name": "kpa",
+          "type": "link"
+        },
+        {
+          "route": "leaveapplications",
+          "name": "leaveapplications",
+          "type": "link"
+        },
+        {
+          "route": "leavetypemaster",
+          "name": "leavetypemaster",
+          "type": "link"
+        },
+        {
+          "route": "location",
+          "name": "location",
+          "type": "link"
+        },
+        {
+          "route": "offerletter",
+          "name": "offerletter",
+          "type": "link"
+        },
+        {
+          "route": "petrolallowancemaster",
+          "name": "petrolallowancemaster",
+          "type": "link"
+        },
+        {
+          "route": "positionmaster",
+          "name": "positionmaster",
+          "type": "link"
+        },
+        {
+          "route": "profitcenter",
+          "name": "profitcenter",
+          "type": "link"
+        },
+        {
+          "route": "profitcenterbudget",
+          "name": "profitcenterbudget",
+          "type": "link"
+        },
+        {
+          "route": "qualification",
+          "name": "qualification",
+          "type": "link"
+        },
+        {
+          "route": "qualificationtype",
+          "name": "qualificationtype",
+          "type": "link"
+        },
+        {
+          "route": "recruitmentattributemaster",
+          "name": "recruitmentattributemaster",
+          "type": "link"
+        },
+        {
+          "route": "recruitmentmaster",
+          "name": "recruitmentmaster",
+          "type": "link"
+        },
+        {
+          "route": "recruitmentreferencemaster",
+          "name": "recruitmentreferencemaster",
+          "type": "link"
+        },
+        {
+          "route": "recruitmentstagestatusmaster",
+          "name": "recruitmentstagestatusmaster",
+          "type": "link"
+        },
+        {
+          "route": "responsibilitiesmaster",
+          "name": "responsibilitiesmaster",
+          "type": "link"
+        },
+        {
+          "route": "rolesmaster",
+          "name": "rolesmaster",
+          "type": "link"
+        },
+        {
+          "route": "shiftmaster",
+          "name": "shiftmaster",
+          "type": "link"
+        },
+        {
+          "route": "state",
+          "name": "state",
+          "type": "link"
+        },
+        {
+          "route": "workstation",
+          "name": "workstation",
+          "type": "link"
+        },
+        {
+          "route": "workstationbudget",
+          "name": "workstationbudget",
           "type": "link"
         }
       ]

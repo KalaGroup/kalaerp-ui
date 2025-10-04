@@ -1,0 +1,30 @@
+
+<h2 mat-dialog-title class="error-dialog-title">
+  <mat-icon color="warn">error_outline</mat-icon>
+  Validation Errors
+</h2>
+
+<mat-dialog-content class="error-dialog-content">
+  <p class="error-intro">Please fix the following errors before submitting:</p>
+
+  @for (stepName of getStepKeys(); track stepName) {
+    <div class="error-step-section">
+      <h3 class="step-name">
+        <mat-icon>arrow_right</mat-icon>
+        {{ stepName }}
+      </h3>
+      <ul class="error-list">
+        @for (error of data.errorsByStep[stepName]; track error) {
+          <li>{{ error }}</li>
+        }
+      </ul>
+    </div>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="onClose()">
+    <mat-icon>check</mat-icon>
+    Got it
+  </button>
+</mat-dialog-actions>
