@@ -65,7 +65,7 @@ export class AddEditCurrency {
       CurrencyName: ['', [Validators.required]],
       CurrencySymbol: ['', [Validators.required]],
       CurrencyRemark: ['', [Validators.required]],
-      CreateBy:0
+      CreateBy: 0
 
     });
 

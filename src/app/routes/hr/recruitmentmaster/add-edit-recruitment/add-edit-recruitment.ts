@@ -322,7 +322,7 @@ export class AddEditRecruitment implements OnInit {
 
 
   private setCityForEdit(): void {
-    debugger
+
     let CityId = null;
     const companyData = this.data.recruitment;
 
@@ -369,7 +369,7 @@ export class AddEditRecruitment implements OnInit {
   }
 
   private setCompanyForEdit(): void {
-    debugger
+
     let CompanyId = null;
     const companyData = this.data.recruitment;
 
@@ -523,12 +523,12 @@ export class AddEditRecruitment implements OnInit {
     let EmployeeMasterId = null;
     const recruitmentData = this.data.recruitment;
 
-    if (recruitmentData?.EmployeeMasterFullName) {
+    if (recruitmentData?.RecruiterFullName) {
       const employee = this.EmployeeList.find(
-        e => e.EmployeeMasterFullName?.trim() === recruitmentData.EmployeeMasterFullName?.trim()
+        e => e.EmployeeMasterFullName?.trim() === recruitmentData.RecruiterFullName?.trim()
       );
       EmployeeMasterId = employee ? employee.EmployeeMasterId : null;
-      console.log('Found employee by name:', EmployeeMasterId, 'for name:', recruitmentData.EmployeeMasterFullName);
+      console.log('Found employee by name:', EmployeeMasterId, 'for name:', recruitmentData.RecruiterFullName);
     }
 
     if (EmployeeMasterId) {
@@ -560,12 +560,12 @@ export class AddEditRecruitment implements OnInit {
     let PositionMasterId = null;
     const recruitmentData = this.data.recruitment;
 
-    if (recruitmentData?.PositionMasterName) {
+    if (recruitmentData?.RecruitmentMasterPositionName) {
       const designation = this.positionList.find(
-        d => d.PositionMasterName?.trim() === recruitmentData.PositionMasterName?.trim()
+        d => d.PositionMasterName?.trim() === recruitmentData.RecruitmentMasterPositionName?.trim()
       );
       PositionMasterId = designation ? designation.PositionMasterId : null;
-      console.log('Found designation by name:', PositionMasterId, 'for name:', recruitmentData.PositionMasterName);
+      console.log('Found designation by name:', PositionMasterId, 'for name:', recruitmentData.RecruitmentMasterPositionName);
     }
 
     if (PositionMasterId) {
@@ -574,7 +574,7 @@ export class AddEditRecruitment implements OnInit {
       });
       console.log('Designation set in form:', PositionMasterId);
     } else {
-      console.log('No designation ID found for name:', recruitmentData?.PositionMasterName);
+      console.log('No designation ID found for name:', recruitmentData?.RecruitmentMasterPositionName);
     }
   }
 

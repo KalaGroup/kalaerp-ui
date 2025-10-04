@@ -72,7 +72,7 @@ export class Gatepasstype implements OnInit {
     private gatepasstypeService: Gatepasstypeservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.loadAllGatePassType();
   }
@@ -204,7 +204,7 @@ export class Gatepasstype implements OnInit {
           next: response => {
             this.toastService.showSuccess('GatePassType added successfully:', response);
             this.loadAllGatePassType();
-            alert(`GatePassType "${result.GatePassTypesTypeName}" added successfully!`);
+
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -248,7 +248,7 @@ export class Gatepasstype implements OnInit {
           this.gatepasstypeService.updateGatePassType(result).subscribe({
             next: response => {
               this.toastService.showSuccess('GatePassType updated successfully:', response);
-              alert(`GatePassType "${result.GatePassTypesTypeName}" updated successfully!`);
+
               this.loadAllGatePassType();
             },
             error: err => {
@@ -284,7 +284,7 @@ export class Gatepasstype implements OnInit {
     this.gatepasstypeService.deleteGatePassType(value.GatePassTypeId).subscribe({
       next: response => {
         this.toastService.showSuccess('GatePassType deleted successfully:', response);
-        alert(`You have deleted ${value.GatePassTypesTypeName} successfully!`);
+
         this.loadAllGatePassType();
       },
       error: err => {
