@@ -10,7 +10,7 @@ export class Toastservice {
   }
     constructor(private snackBar: MatSnackBar) {}
 
-  showSuccess(message: string, duration: number = 3000): void {
+  showSuccess(message: string, duration: number = 5000): void {
     this.snackBar.open(message, '✓', {
       duration,
       panelClass: ['success-toast'],
@@ -19,7 +19,7 @@ export class Toastservice {
     });
   }
 
-  showError(message: string, duration: number = 5000): void {
+  showError(message: string, duration: number = 10000): void {
     this.snackBar.open(message, '✗', {
       duration,
       panelClass: ['error-toast'],

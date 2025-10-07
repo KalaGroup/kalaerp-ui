@@ -530,9 +530,7 @@ export class Companymaster {
               this.toastService.showSuccess('Company updated successfully');
             },
             error: err => {
-              this.loadAllCompanies();
               console.error('Error updating company:', err);
-              this.toastService.showError('Error updating company');
             },
           });
         }
@@ -559,9 +557,7 @@ export class Companymaster {
             this.toastService.showSuccess('Company created successfully');
           },
           error: err => {
-            this.loadAllCompanies();
             console.error('Error creating company:', err);
-            this.toastService.showError('Error creating company');
           },
         });
       }

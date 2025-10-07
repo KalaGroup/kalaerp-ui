@@ -252,7 +252,6 @@ export class Currencymaster implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding Currency:', err);
-            this.toastService.showError('Failed to add Currency. Please verify Currency details and try again.');
           }
         });
       }

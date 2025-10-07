@@ -484,7 +484,8 @@ export class AddEditGradedesignationfacilityassignment {
     this.gradeForm.patchValue({
       GradeId: gradeData.GradeId,
       GradeCode: gradeData.GradeCode || '',
-      GradeName: gradeData.GradeName || '',
+      //GradeName: gradeData.GradeName || '',
+      GradeName: gradeData.GradeName ? gradeData.GradeName.replace(/\s*\(.*?\)\s*/g, '').trim() : '',
       GradeLevel: gradeData.GradeLevel || '',
       GradeDescription: gradeData.GradeDescription || '',
       MinSalCTC: gradeData.MinSalCTC || '',
