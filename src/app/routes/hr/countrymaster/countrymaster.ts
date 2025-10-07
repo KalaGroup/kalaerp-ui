@@ -218,7 +218,6 @@ export class Countrymaster implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding country:', err);
-            this.toastService.showError('Failed to add country. Please verify country details and try again.');
           }
         });
       }

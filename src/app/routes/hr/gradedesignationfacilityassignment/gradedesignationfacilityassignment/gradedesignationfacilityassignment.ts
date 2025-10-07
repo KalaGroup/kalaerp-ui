@@ -198,12 +198,6 @@ export class Gradedesignationfacilityassignment {
     },
   ];
 
-  // getFacilityNames(row: any): string {
-  //   return row?.FacilityAssignments
-  //     ? row.FacilityAssignments.map((f: any) => f.FacilityName).join(', ')
-  //     : '';
-  // }
-
   loadAllGradeCtcDesignationFacility(): void {
     this.gradeDesignationFacilityService.getAllGradeCtcDesignationFacility().subscribe({
       next: (data: any) => {
@@ -283,9 +277,7 @@ export class Gradedesignationfacilityassignment {
                 this.loadAllGradeCtcDesignationFacility();
               },
               error: err => {
-                console.error('Error adding grade details:', err);
-                this.toastService.showError('Failed to add grade details. Please try again.');
-                //this.loadAllGradeCtcDesignationFacility();
+                console.log('Error updating Grade and its details:', err); // Debug log
               },
             });
         }
@@ -303,7 +295,6 @@ export class Gradedesignationfacilityassignment {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         console.table('result', result);
         this.gradeDesignationFacilityService.creatGradeDesignationFacility(result.data).subscribe({
           next: res => {
@@ -312,7 +303,7 @@ export class Gradedesignationfacilityassignment {
             this.loadAllGradeCtcDesignationFacility();
           },
           error: err => {
-            this.toastService.showError('Failed to add Grade and its details. Please try again.');
+            console.log('Error object:', err); // Debug log
           },
         });
       }

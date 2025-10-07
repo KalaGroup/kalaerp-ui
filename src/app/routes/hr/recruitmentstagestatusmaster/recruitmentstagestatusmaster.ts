@@ -264,7 +264,7 @@ export class Recruitmentstagestatusmaster implements OnInit {
       next: (response: any) => {
         console.log('Recruitment Stage Status deleted successfully:', response);
          this.toastService.showSuccess('Recruitment Stage Status deleted successfully');
-      
+
         this.loadAllRecruitmentStageStatuses();
       },
       error: (err: any) => {
