@@ -67,51 +67,83 @@
           <mat-form-field appearance="outline">
             <mat-label>Division</mat-label>
             <mat-select formControlName="DepartmentDivisionId" placeholder="Select Division">
+
+              <!-- 🔍 Search box -->
+              <mat-option>
+                <input matInput placeholder="Search Division..." [formControl]="divisionSearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+
               <mat-option value="">Select Division</mat-option>
+
               @for (div of filtereddivisionList; track div.DivisionId) {
-              <mat-option [value]="div.DivisionId">{{ div.DivisionName }}</mat-option>
+              <mat-option [value]="div.DivisionId">
+                {{ div.DivisionName }}
+              </mat-option>
               }
-              <!-- edit as per your DivisionName text field -->
             </mat-select>
+
             @if (departmentForm.get('DepartmentDivisionId')?.invalid &&
             departmentForm.get('DepartmentDivisionId')?.touched) {
             <mat-error style="margin-top: -3.5px">Division is required</mat-error>
             }
           </mat-form-field>
+
           <br />
 
           <mat-form-field appearance="outline">
             <mat-label>Parent Department</mat-label>
+
             <mat-select formControlName="ParentDepartmentId" placeholder="Select Parent Department">
-              <mat-option value="">None</mat-option>
+              <!-- 🔍 Search box inside dropdown -->
+              <mat-option>
+                <input matInput type="text" placeholder="Search Department" [formControl]="departmentSearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+
+              <!-- Default None option -->
+              <mat-option value="">Parent Department</mat-option>
+
+              <!-- Filtered department list -->
               @for (department of filtereddepartmentList; track department.DepartmentId) {
               <mat-option [value]="department.DepartmentId">
                 {{ department.DepartmentName }}
-                <!-- edit as per your DepartmentName text field -->
               </mat-option>
               }
             </mat-select>
+
             @if (departmentForm.get('ParentDepartmentId')?.invalid &&
             departmentForm.get('ParentDepartmentId')?.touched) {
-            <mat-error style="margin-top: -3.5px">Parent Department is required</mat-error>
+            <mat-error>Parent Department is required</mat-error>
             }
           </mat-form-field>
+
           <br />
 
           <mat-form-field appearance="outline">
             <mat-label>Profit Center</mat-label>
+
             <mat-select formControlName="DepartmentProfitcenterId" placeholder="Select Profit Center">
+              <mat-option>
+                <input matInput type="text" placeholder="Search Profit Center" [formControl]="profitcenterSearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+
               <mat-option value="">Select Profit Center</mat-option>
+
               @for (profitcenter of filteredprofitcenterList; track profitcenter.ProfitCenterId) {
-              <mat-option [value]="profitcenter.ProfitCenterId">{{ profitcenter.ProfitCenterName }}</mat-option>
-              <!-- edit as per your pcname text field -->
+              <mat-option [value]="profitcenter.ProfitCenterId">
+                {{ profitcenter.ProfitCenterName }}
+              </mat-option>
               }
             </mat-select>
-            @if (departmentForm.get('DepartmentProfitcenterID')?.invalid &&
-            departmentForm.get('DepartmentProfitcenterID')?.touched) {
-            <mat-error style="margin-top: -3.5px">Profit Center is required</mat-error>
+
+            @if (departmentForm.get('DepartmentProfitcenterId')?.invalid &&
+            departmentForm.get('DepartmentProfitcenterId')?.touched) {
+            <mat-error>Profit Center is required</mat-error>
             }
           </mat-form-field>
+
 
           <mat-form-field appearance="outline">
             <mat-label>Department Type</mat-label>

@@ -51,7 +51,7 @@ export class Recruitmentmaster {
   showPaginator = true;
   expandable = false;
   columnResizable = false;
-  recruitmentDetails: any[] = []; // table rows
+  recruitmentDetails: any[] = []; // table rows RecruitmentDetails
 
   isLoading = false;
   list: any[] = [];

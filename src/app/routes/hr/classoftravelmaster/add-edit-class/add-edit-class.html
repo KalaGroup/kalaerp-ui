@@ -95,17 +95,13 @@
 
 
 
-                    <mat-form-field appearance="outline" class="w-100">
+                    <mat-form-field appearance="outline">
                         <mat-label>Travel Tier Type</mat-label>
-                        <mat-select formControlName="ClassOfTravelTierType" placeholder="Select Travel Tier">
-                            <mat-option *ngFor="let tier of travelTierTypes" [value]="tier.id">
-                                {{ tier.name }}
+                        <mat-select formControlName="ClassOfTravelTierType">
+                            <mat-option *ngFor="let type of travelTierTypes" [value]="type.id">
+                                {{ type.name }}
                             </mat-option>
                         </mat-select>
-                        <mat-error
-                            *ngIf="classoftravelForm.get('ClassOfTravelTierType')?.invalid && classoftravelForm.get('ClassOfTravelTierType')?.touched">
-                            Travel Tier Type is required
-                        </mat-error>
                     </mat-form-field>
 
 

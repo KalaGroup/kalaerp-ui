@@ -89,6 +89,7 @@ export class AddEditProfitcenter {
         ParentProfitCenterId: this.data.profitcenter.ParentProfitCenterId || '',
         ProfitCenterAuth: this.data.profitcenter.ProfitCenterAuth || '',
         ProfitCenterRemark: this.data.profitcenter.ProfitCenterRemark || '',
+        ProfitCenterAuthRemark: this.data.profitcenter.ProfitCenterAuthRemark || '',
         ProfitCenterIsActive: this.data.profitcenter.ProfitCenterIsActive ?? true,
         ProfitCenterIsDiscard: this.data.profitcenter.ProfitCenterIsDiscard ?? false,
         CreatedBy: this.data.profitcenter.CreatedBy || '',

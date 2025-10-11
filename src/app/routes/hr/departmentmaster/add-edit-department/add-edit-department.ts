@@ -53,6 +53,10 @@ export class AddEditDepartment implements OnInit {
   filtereddepartmentList: any[] = [];
   filteredprofitcenterList: any[] = [];
 
+
+
+
+
   constructor(
     private departmentService: Departmentservice,
     private divisionService: Divisionservice,
@@ -77,13 +81,13 @@ export class AddEditDepartment implements OnInit {
     const currentDate = new Date();
     this.departmentForm = this.fb.group({
       DepartmentId: [''],
-       DepartmentCode: ['', [Validators.required]],
-       DepartmentName: ['', [Validators.required]],
+      DepartmentCode: ['', [Validators.required]],
+      DepartmentName: ['', [Validators.required]],
       DepartmentShortName: ['', [Validators.required]],
-       DepartmentDivisionId: ['', [Validators.required]],
+      DepartmentDivisionId: ['', [Validators.required]],
       ParentDepartmentId: ['', [Validators.required]],
       DepartmentProfitcenterId: ['', [Validators.required]],
-       DepartmentRemark: [''],
+      DepartmentRemark: [''],
       DepartmentType: ['', [Validators.required]],
       DepartmentAuthRemark: [''],
       DepartmentAuth: [{ value: true, disabled: !this.isEditMode }],
@@ -119,57 +123,52 @@ export class AddEditDepartment implements OnInit {
     }
   }
 
+
+
   loadAllDivision(): void {
     this.divisionService.getAllDivision().subscribe({
       next: res => {
         this.divisionlist = res;
-        console.log('Division loaded:', res);
         this.filtereddivisionList = [...this.divisionlist];
+
+        // ✅ live filter as user types
         this.divisionSearchControl.valueChanges.subscribe(value => {
           const filterValue = (value || '').toLowerCase();
           this.filtereddivisionList = this.divisionlist.filter(division =>
             division.DivisionName.toLowerCase().includes(filterValue)
           );
         });
-        // Handle currency selection for edit mode
+
+        // ✅ if in edit mode, preselect division
         if (this.isEditMode && this.data) {
           this.setDivisionForEdit();
         }
       },
-      error: err => {
-        console.error('Failed to load Division:', err);
-      },
+      error: err => console.error('Failed to load Division:', err),
     });
   }
 
   private setDivisionForEdit(): void {
-    let DivisionId: number | null = null;
-    const divisionData = this.data.division;
+    const divisionData = this.data?.division;
+    if (!divisionData) return;
 
-    if (divisionData?.DivisionName) {
-      const division = this.divisionlist.find(
-        c => c.DivisionName.trim().toLowerCase() === divisionData.DivisionName.trim().toLowerCase()
-      );
+    const found = this.divisionlist.find(
+      d =>
+        d.DivisionName.trim().toLowerCase() ===
+        divisionData.DivisionName.trim().toLowerCase()
+    );
 
-      DivisionId = division ? division.DivisionId : null; // 🔥 use correct property name
-
-      console.log(
-        'Found Division by name:',
-        DivisionId,
-        'for Division:',
-        divisionData.DivisionName
-      );
-    }
-
-    if (DivisionId) {
+    if (found) {
       this.departmentForm.patchValue({
-        DepartmentDivisionId: DivisionId,
+        DepartmentDivisionId: found.DivisionId,
       });
-      console.log('Division set in form:', DivisionId);
+      console.log('✅ Division set in form:', found.DivisionId);
     } else {
-      console.log('No Division ID found for Division name:', divisionData?.DivisionName);
+      console.log('⚠️ No matching Division found for:', divisionData.DivisionName);
     }
   }
+
+
 
   loadAllDepartment(): void {
     this.departmentService.getAllDepartment().subscribe({
@@ -177,12 +176,16 @@ export class AddEditDepartment implements OnInit {
         this.departmentlist = res;
         console.log('Department loaded:', res);
         this.filtereddepartmentList = [...this.departmentlist];
+
+        // 🔍 Live search filter
         this.departmentSearchControl.valueChanges.subscribe(value => {
           const filterValue = (value || '').toLowerCase();
-          this.filtereddepartmentList = this.departmentlist.filter(department =>
-            department.DepartmentName.toLowerCase().includes(filterValue)
+          this.filtereddepartmentList = this.departmentlist.filter(d =>
+            d.DepartmentName.toLowerCase().includes(filterValue)
           );
         });
+
+        // ✅ Set value when in edit mode
         if (this.isEditMode && this.data) {
           this.setDepartmentForEdit();
         }
@@ -204,14 +207,8 @@ export class AddEditDepartment implements OnInit {
           departmentData.DepartmentName.trim().toLowerCase()
       );
 
-      DepartmentId = department ? department.DepartmentId : null; // 🔥 use correct property name
-
-      console.log(
-        'Found Department by name:',
-        DepartmentId,
-        'for Department:',
-        departmentData.DepartmentName
-      );
+      DepartmentId = department ? department.DepartmentId : null;
+      console.log('Found Department by name:', DepartmentId);
     }
 
     if (DepartmentId) {
@@ -224,18 +221,24 @@ export class AddEditDepartment implements OnInit {
     }
   }
 
+
+
   loadAllProfitcenter(): void {
     this.profitcenterServices.getAllProfitcenter().subscribe({
       next: res => {
         this.profitcenterlist = res;
-        console.log('Profitcenter loaded:', res);
         this.filteredprofitcenterList = [...this.profitcenterlist];
+        console.log('Profitcenter loaded:', res);
+
+        // Setup search filter
         this.profitcenterSearchControl.valueChanges.subscribe(value => {
           const filterValue = (value || '').toLowerCase();
-          this.filteredprofitcenterList = this.profitcenterlist.filter(profitcenter =>
-            profitcenter.ProfitCenterName.toLowerCase().includes(filterValue)
+          this.filteredprofitcenterList = this.profitcenterlist.filter(p =>
+            p.ProfitCenterName.toLowerCase().includes(filterValue)
           );
         });
+
+        // Set value in edit mode
         if (this.isEditMode && this.data) {
           this.setProfitcenterForEdit();
         }
@@ -252,17 +255,13 @@ export class AddEditDepartment implements OnInit {
 
     if (profitcenterData?.ProfitCenterName) {
       const profitcenter = this.profitcenterlist.find(
-        c => c.ProfitCenterName.trim().toLowerCase() === profitcenterData.ProfitCenterName.trim().toLowerCase()
+        c =>
+          c.ProfitCenterName.trim().toLowerCase() ===
+          profitcenterData.ProfitCenterName.trim().toLowerCase()
       );
 
-      ProfitCenterId = profitcenter ? profitcenter.ProfitCenterId : null; // 🔥 use correct property name
-
-      console.log(
-        'Found Profitcenter by name:',
-        ProfitCenterId,
-        'for Profitcenter:',
-        profitcenterData.ProfitCenterName
-      );
+      ProfitCenterId = profitcenter ? profitcenter.ProfitCenterId : null;
+      console.log('Found Profitcenter by name:', ProfitCenterId);
     }
 
     if (ProfitCenterId) {
@@ -271,9 +270,10 @@ export class AddEditDepartment implements OnInit {
       });
       console.log('Profitcenter set in form:', ProfitCenterId);
     } else {
-      console.log('No Profitcenter ID found for Profitcenter name:', profitcenterData?.ProfitCenterName);
+      console.log('No Profitcenter ID found for name:', profitcenterData?.ProfitCenterName);
     }
   }
+
 
   toUpperCase(event: Event) {
     const input = event.target as HTMLInputElement;

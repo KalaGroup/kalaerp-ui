@@ -1,17 +1,18 @@
-export interface IKalaErpPageDetails{
+export interface IKalaErpPageDetails {
   KalaErppageDetailsId?: number;
-  KalaErppageDetailsDivisionId?:number;
+  KalaErppageDetailsDivisionId?: number;
   toUpperCase: string;
   PageUrl: string;
   PageType: string;
-  PageIsonumber?:string; 
+  PageIsonumber?: string;
   KalaErppageDetailsRemark: string;
+  MakerKalaErppageDetailsId: number;
   KalaErppageDetailsAuthRemark: string;
   KalaErppageDetailsAuth: boolean;
-  KalaErppageDetailsIsDiscard:boolean;
+  KalaErppageDetailsIsDiscard: boolean;
   KalaErppageDetailsIsActive: boolean;
   CreatedBy?: string;
-  CreatedDate?: string; 
+  CreatedDate?: string;
   UpdatedBy?: string;
   UpdatedDate?: string;
   [key: string]: any;

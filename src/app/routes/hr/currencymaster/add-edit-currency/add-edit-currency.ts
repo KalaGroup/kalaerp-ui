@@ -8,10 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-//import { currencyService } from '../../hr.service';
 import { Currencyservice } from '@shared/services/hr/currency/currencyservice';
 import { MatIconModule } from '@angular/material/icon';
-import { create } from 'domain';
 
 
 @Component({
@@ -60,7 +58,7 @@ export class AddEditCurrency {
       CreatedDate: [{ value: currentDate, disabled: true }],
       CurrencyId: 0,
       CurrencyAuth: [{ value: true, disabled: !this.isEditMode }],
-      CurrencyDiscard: [{ value: true, disabled: !this.isEditMode }],
+      CurrencyDiscard: [{ value: false, disabled: !this.isEditMode }],
       CurrencyIsActive: [{ value: true, disabled: !this.isEditMode }],
       CurrencyName: ['', [Validators.required]],
       CurrencySymbol: ['', [Validators.required]],
@@ -79,7 +77,7 @@ export class AddEditCurrency {
         CurrencySymbol: this.data.currency.CurrencySymbol || '',
         CurrencyIsActive: this.data.currency.CurrencyIsActive ?? true,
         CurrencyDiscard: this.data.currency.CurrencyIsDiscard ?? false,
-        CurrencyAuth: this.data.currency.CurrencyAuth ?? false
+        CurrencyAuth: this.data.currency.CurrencyAuth ?? true
       });
       this.currencyForm.get('CurrencyIsActive')?.enable();
       this.currencyForm.get('CurrencyDiscard')?.enable();

@@ -111,6 +111,7 @@ export class AddEditActivity {
         ActivityDesignationId: this.data.activity.ActivityDesignationId ?? '',
         ActivityDivisionId: this.data.activity.DivisionId ?? '',
         ActivityRemark: this.data.activity.ActivityRemark ?? '',
+        ActivityAuthRemark: this.data.activity.ActivityAuthRemark ?? '',
         ActivityAuth: this.data.activity.ActivityAuth ?? true,
         ActivityIsActive: this.data.activity.ActivityIsActive ?? true,
         ActivityIsDiscard: this.data.activity.ActivityIsDiscard ?? false,

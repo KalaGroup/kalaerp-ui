@@ -22,22 +22,38 @@
                     <!-- Location Name -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Location Name</mat-label>
-                        <input matInput formControlName="LocationName" placeholder="Enter full name" />
-                        <mat-error
-                            *ngIf="locationForm.get('LocationName')?.invalid && locationForm.get('LocationName')?.touched">
+                        <input matInput formControlName="LocationName" placeholder="Enter full name"
+                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
+
+                        <mat-error *ngIf="locationForm.get('LocationName')?.hasError('required') &&
+                    locationForm.get('LocationName')?.touched">
                             Location Name is required
                         </mat-error>
+
+                        <mat-error *ngIf="locationForm.get('LocationName')?.hasError('pattern') &&
+                    locationForm.get('LocationName')?.touched">
+                            Only letters and spaces are allowed
+                        </mat-error>
                     </mat-form-field>
+
 
                     <!-- Location Remark -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Location Remark</mat-label>
-                        <input matInput formControlName="LocationRemark" placeholder="Enter remark..." />
-                        <mat-error
-                            *ngIf="locationForm.get('LocationRemark')?.invalid && locationForm.get('LocationRemark')?.touched">
+                        <input matInput formControlName="LocationRemark" placeholder="Enter remark..."
+                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
+
+                        <mat-error *ngIf="locationForm.get('LocationRemark')?.hasError('required') &&
+                    locationForm.get('LocationRemark')?.touched">
                             Remark is required
                         </mat-error>
+
+                        <mat-error *ngIf="locationForm.get('LocationRemark')?.hasError('pattern') &&
+                    locationForm.get('LocationRemark')?.touched">
+                            Only letters, numbers, and basic punctuation are allowed
+                        </mat-error>
                     </mat-form-field>
+
                 </div>
 
                 <!-- Right Column -->

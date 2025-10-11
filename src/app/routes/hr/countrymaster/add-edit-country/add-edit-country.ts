@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule,FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -32,7 +32,7 @@ export class AddEditCountry {
   countryForm!: FormGroup;
   isEditMode: boolean = false;
   currencyList: any[] = [];
-  code: string ='';
+  code: string = '';
   currencySearchControl = new FormControl('');
   filteredCurrencyList: any[] = [];
 
@@ -68,15 +68,15 @@ export class AddEditCountry {
     if (this.isEditMode && this.data.country) {
       console.log('Patching form with country data:', this.data.country);
       this.countryForm.patchValue({
-         code: this.data.country.code || this.data.country.CountryCode || '',
+        code: this.data.country.code || this.data.country.CountryCode || '',
         CountryCode: this.data.country.CountryCode || '',
         CountryName: this.data.country.CountryName || '',
         CountryShortName: this.data.country.CountryShortName || '',
         IsActive: this.data.country.IsActive ?? true
       });
-       this.countryForm.get('code')?.enable();
+      this.countryForm.get('code')?.enable();
       this.countryForm.get('IsActive')?.enable();
-      console.log('Form values after patch:', this.countryForm.value);
+      console.log('Form values after patch:', this.countryForm.value); 
     }
   }
 
@@ -85,13 +85,13 @@ export class AddEditCountry {
       next: (res) => {
         this.currencyList = res;
         console.log('Loaded currencies:', res);
-         this.filteredCurrencyList = [...this.currencyList];
-         this.currencySearchControl.valueChanges.subscribe(value => {
-        const filterValue = (value || '').toLowerCase();
-        this.filteredCurrencyList = this.currencyList.filter(currency =>
-          currency.CurrencyName.toLowerCase().includes(filterValue)
-        );
-      });
+        this.filteredCurrencyList = [...this.currencyList];
+        this.currencySearchControl.valueChanges.subscribe(value => {
+          const filterValue = (value || '').toLowerCase();
+          this.filteredCurrencyList = this.currencyList.filter(currency =>
+            currency.CurrencyName.toLowerCase().includes(filterValue)
+          );
+        });
         // Handle currency selection for edit mode
         if (this.isEditMode && this.data) {
           this.setCurrencyForEdit();
@@ -103,7 +103,7 @@ export class AddEditCountry {
     });
   }
 
-   private setCurrencyForEdit(): void {
+  private setCurrencyForEdit(): void {
     let currencyId = null;
     const countryData = this.data.country;
     // Find currency by name (trim whitespace for comparison)
@@ -125,12 +125,24 @@ export class AddEditCountry {
     }
   }
 
+  // onSubmit(): void {
+  //   if (this.countryForm.valid) {
+  //     this.dialogRef.close(this.countryForm.value);
+  //   } else {
+  //     this.countryForm.markAllAsTouched();
+  //   }
+  // }
+
+
   onSubmit(): void {
-    if (this.countryForm.valid) {
-      this.dialogRef.close(this.countryForm.value);
-    } else {
+    if (this.countryForm.invalid) {
       this.countryForm.markAllAsTouched();
+      return;
     }
+    const formData = this.countryForm.getRawValue();
+    formData.IsActive = formData.IsActive ?? true;
+    console.log('Final Payload:', formData);
+    this.dialogRef.close(formData);
   }
 
   onCancel(): void {

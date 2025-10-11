@@ -46,6 +46,7 @@ import { Departmentbudget } from './departmentbudget/departmentbudget';
 import { Dailyattendance } from './dailyattendance/dailyattendance';
 import { Kalaerppagedetails } from './kalaerppagedetails/kalaerppagedetails';
 import { Gatepasstype } from './gatepasstype/gatepasstype';
+import { Erppageassignmentrelationship } from './erppageassignmentrelationship/erppageassignmentrelationship';
 
 export const routes: Routes = [
   {
@@ -228,5 +229,9 @@ export const routes: Routes = [
   {
     path: 'gatepasstype',
     component: Gatepasstype,
+  },
+  {
+    path: 'ERPPageAssignmentRelationship',
+    component: Erppageassignmentrelationship,
   }
 ];

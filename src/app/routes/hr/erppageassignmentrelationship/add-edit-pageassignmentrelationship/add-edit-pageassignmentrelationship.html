@@ -1,0 +1,393 @@
+<mat-card>
+    <mat-card-title>
+        {{ isEditMode ? 'Edit Page Assignment Relationship' : 'Add Page Assignment Relationship' }}
+    </mat-card-title>
+
+    <mat-card-content>
+        <form [formGroup]="ERPForm" class="form-field-full">
+
+            <!-- -- Checkbox row - -->
+            <div class="row mb-3">
+                <div class="col-sm-4 col-xl-3"></div>
+                <div class="col-sm-8 col-xl-9">
+                    <div class="d-flex checkbox-group">
+
+                        <mat-checkbox formControlName="ErppageAssignmentRelationshipIsActive" color="primary"
+                            [disabled]="!isEditMode">
+                            Active
+                        </mat-checkbox>
+                        <mat-checkbox formControlName="ErppageAssignmentRelationshipIsDiscard" color="warn"
+                            [disabled]="!isEditMode" *ngIf="isEditMode">
+                            Discard
+                        </mat-checkbox>
+                        <mat-checkbox formControlName="ErppageAssignmentRelationshipAuth1" color="primary"
+                            [disabled]="!isEditMode" *ngIf="isEditMode">
+                            Auth 1
+                        </mat-checkbox>
+                        <mat-checkbox formControlName="ErppageAssignmentRelationshipAuth2" color="primary"
+                            [disabled]="!isEditMode" *ngIf="isEditMode">
+                            Auth 2
+                        </mat-checkbox>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form fields row - -->
+            <div class="row mb-3">
+                <!-- Left -- -->
+                <div class="col-sm-6 col-xl-6">
+                    <!-- 
+                    Division Dropdown -- -->
+                    <mat-form-field appearance="outline" class="full-width-field">
+                        <mat-label>Division Name</mat-label>
+                        <mat-select formControlName="ErppageAssignmentRelationshipDivisionId">
+                            <mat-option *ngFor="let div of divisionList" [value]="div.DivisionId">
+                                {{ div.DivisionName }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Department</mat-label>
+                        <mat-select formControlName="ErppageAssignmentRelationshipDepartmentId"
+                            placeholder="Select Department">
+                            <mat-option value="">Select Department</mat-option>
+                            <mat-option *ngFor="let dept of departmentList" [value]="dept.DepartmentId">
+                                {{ dept.DepartmentName }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="ERPForm.get('ErppageAssignmentRelationshipDepartmentId')?.invalid && ERPForm.get('ErppageAssignmentRelationshipDepartmentId')?.touched">
+                            Department is required
+                        </mat-error>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Auth 1 Remark</mat-label>
+                        <input matInput formControlName="ErppageAssignmentRelationshipAuth1Remark"
+                            placeholder="Enter Auth 1 Remark..." />
+                        <mat-error
+                            *ngIf="ERPForm.get('ErppageAssignmentRelationshipAuth1Remark')?.hasError('required') && ERPForm.get('ErppageAssignmentRelationshipAuth1Remark')?.touched">
+                            Auth 1 Remark is required
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+
+
+                <div class="col-sm-6 col-xl-6">
+
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Profit Center</mat-label>
+                        <mat-select formControlName="ErppageAssignmentRelationshipProfitcenterId"
+                            placeholder="Select Profit Center">
+                            <mat-option value="">Select Profit Center</mat-option>
+                            <mat-option *ngFor="let pc of profitCenterList" [value]="pc.ProfitCenterId">
+                                {{ pc.ProfitCenterName }}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error
+                            *ngIf="ERPForm.get('ErppageAssignmentRelationshipProfitcenterId')?.invalid && ERPForm.get('ErppageAssignmentRelationshipProfitcenterId')?.touched">
+                            Profit Center is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Remark</mat-label>
+                        <input matInput formControlName="ErppageAssignmentRelationshipRemark"
+                            placeholder="Enter Remark..." />
+                        <mat-error
+                            *ngIf="ERPForm.get('ErppageAssignmentRelationshipRemark')?.hasError('required') && ERPForm.get('ErppageAssignmentRelationshipRemark')?.touched">
+                            Remark is required
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Auth 2 Remark</mat-label>
+                        <input matInput formControlName="ErppageAssignmentRelationshipAuth2Remark"
+                            placeholder="Enter Auth 2 Remark..." />
+                        <mat-error
+                            *ngIf="ERPForm.get('ErppageAssignmentRelationshipAuth2Remark')?.hasError('required') && ERPForm.get('ErppageAssignmentRelationshipAuth2Remark')?.touched">
+                            Auth 2 Remark is required
+                        </mat-error>
+                    </mat-form-field>
+
+                </div>
+            </div>
+
+
+            <div class="container mt-3">
+                <mat-card>
+                    <mat-card-header>
+                        <mat-card-title style="font-size: 20px; font-weight: bold; color: #007bff;">
+                            ERP Page Assignment Details
+                        </mat-card-title>
+                    </mat-card-header>
+
+                    <mat-card-content>
+                        <form>
+                            <div class="table-scroll-container">
+                                <table class="custom-table">
+                                    <thead>
+                                        <tr class="table-header">
+                                            <th class="sr-no-column">Sr.No</th>
+                                            <th class="page-column">Page</th>
+                                            <th class="checker-column">Checker 1</th>
+                                            <th class="checker-column">Checker 2</th>
+                                            <th class="checker-column">Checker 3</th>
+                                            <th class="checker-column">Checker 4</th>
+                                            <th class="checker-column">Checker 5</th>
+                                            <th class="remark-column">Remark</th>
+                                            <th class="action-column">Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr class="input-row">
+                                            <td></td>
+
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-label>Page</mat-label>
+                                                    <mat-select [(ngModel)]="ErppageAssignmentRelationshipDetailsPageId"
+                                                        name="ErppageAssignmentRelationshipDetailsPageId">
+                                                        <mat-option *ngFor="let page of PageTittelList"
+                                                            [value]="page.ErppageAssignmentRelationshipDivisionId">
+                                                            {{ page.PageTittle }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-label>Checker 1</mat-label>
+                                                    <mat-select
+                                                        [(ngModel)]="ErppageAssignmentRelationshipDetailschecker1PositiontId"
+                                                        name="ErppageAssignmentRelationshipDetailschecker1PositiontId">
+                                                        <mat-option *ngFor="let checker of positionList"
+                                                            [value]="checker.PositionMasterId">
+                                                            {{ checker.PositionMasterName }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-label>Checker 2</mat-label>
+                                                    <mat-select
+                                                        [(ngModel)]="ErppageAssignmentRelationshipDetailschecker2PositiontId"
+                                                        name="ErppageAssignmentRelationshipDetailschecker2PositiontId">
+                                                        <mat-option *ngFor="let checker of positionList"
+                                                            [value]="checker.PositionMasterId">
+                                                            {{ checker.PositionMasterName }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-label>Checker 3</mat-label>
+                                                    <mat-select
+                                                        [(ngModel)]="ErppageAssignmentRelationshipDetailschecker3PositiontId"
+                                                        name="ErppageAssignmentRelationshipDetailschecker3PositiontId">
+                                                        <mat-option *ngFor="let checker of positionList"
+                                                            [value]="checker.PositionMasterId">
+                                                            {{ checker.PositionMasterName }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-label>Checker 4</mat-label>
+                                                    <mat-select
+                                                        [(ngModel)]="ErppageAssignmentRelationshipDetailschecker4PositiontId"
+                                                        name="ErppageAssignmentRelationshipDetailschecker4PositiontId">
+                                                        <mat-option *ngFor="let checker of positionList"
+                                                            [value]="checker.PositionMasterId">
+                                                            {{ checker.PositionMasterName }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-label>Checker 5</mat-label>
+                                                    <mat-select
+                                                        [(ngModel)]="ErppageAssignmentRelationshipDetailschecker5PositiontId"
+                                                        name="ErppageAssignmentRelationshipDetailschecker5PositiontId">
+                                                        <mat-option *ngFor="let checker of positionList"
+                                                            [value]="checker.PositionMasterId">
+                                                            {{ checker.PositionMasterName }}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-label>Remark</mat-label>
+                                                    <input matInput
+                                                        [(ngModel)]="ErppageAssignmentRelationshipDetailsRemark"
+                                                        name="ErppageAssignmentRelationshipDetailsRemark"
+                                                        placeholder="Enter remark" />
+                                                </mat-form-field>
+                                            </td>
+
+
+                                            <td>
+                                                <button mat-raised-button color="primary" (click)="addDetailRow()"
+                                                    type="button">
+                                                    <mat-icon>add</mat-icon> ADD
+                                                </button>
+                                            </td>
+                                        </tr>
+
+
+                                        <tr *ngFor="let detail of Details; let i = index"
+                                            [class.editing]="editIndex === i">
+                                            <td>{{ i + 1 }}</td>
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-select
+                                                        [(ngModel)]="detail.ErppageAssignmentRelationshipDetailsPageId"
+                                                        [disabled]="editIndex !== i" name="page{{i}}">
+                                                        <mat-option *ngFor="let page of PageTittelList"
+                                                            [value]="page.ErppageAssignmentRelationshipDivisionId">{{
+                                                            page.PageTittle }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-select
+                                                        [(ngModel)]="detail.ErppageAssignmentRelationshipDetailschecker1PositiontId"
+                                                        [disabled]="editIndex !== i" name="checker1{{i}}">
+                                                        <mat-option *ngFor="let checker of positionList"
+                                                            [value]="checker.PositionMasterId">{{
+                                                            checker.PositionMasterName
+                                                            }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-select
+                                                        [(ngModel)]="detail.ErppageAssignmentRelationshipDetailschecker2PositiontId"
+                                                        [disabled]="editIndex !== i" name="checker2{{i}}">
+                                                        <mat-option *ngFor="let checker of positionList"
+                                                            [value]="checker.PositionMasterId">{{
+                                                            checker.PositionMasterName
+                                                            }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-select
+                                                        [(ngModel)]="detail.ErppageAssignmentRelationshipDetailschecker3PositiontId"
+                                                        [disabled]="editIndex !== i" name="checker3{{i}}">
+                                                        <mat-option *ngFor="let checker of positionList"
+                                                            [value]="checker.PositionMasterId">{{
+                                                            checker.PositionMasterName
+                                                            }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-select
+                                                        [(ngModel)]="detail.ErppageAssignmentRelationshipDetailschecker4PositiontId"
+                                                        [disabled]="editIndex !== i" name="checker4{{i}}">
+                                                        <mat-option *ngFor="let checker of positionList"
+                                                            [value]="checker.PositionMasterId">{{
+                                                            checker.PositionMasterName
+                                                            }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <mat-select
+                                                        [(ngModel)]="detail.ErppageAssignmentRelationshipDetailschecker5PositiontId"
+                                                        [disabled]="editIndex !== i" name="checker5{{i}}">
+                                                        <mat-option *ngFor="let checker of positionList"
+                                                            [value]="checker.PositionMasterId">{{
+                                                            checker.PositionMasterName
+                                                            }}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </td>
+
+
+                                            <td>
+                                                <mat-form-field appearance="outline" class="full-width-field">
+                                                    <input matInput
+                                                        [(ngModel)]="detail.ErppageAssignmentRelationshipDetailsRemark"
+                                                        [readonly]="editIndex !== i" name="remark{{i}}" />
+                                                </mat-form-field>
+                                            </td>
+
+
+                                            <td>
+                                                <button mat-icon-button color="warn" (click)="deleteDetailRow(i)"
+                                                    matTooltip="Delete">
+                                                    <mat-icon>delete</mat-icon>
+                                                </button>
+
+                                                <button *ngIf="editIndex !== i" mat-icon-button color="accent"
+                                                    (click)="editDetailRow(i)" matTooltip="Edit">
+                                                    <mat-icon>edit</mat-icon>
+                                                </button>
+
+                                                <button *ngIf="editIndex === i" mat-icon-button color="primary"
+                                                    (click)="updateDetailRow(i)" matTooltip="Save">
+                                                    <mat-icon>save</mat-icon>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <button mat-flat-button color="primary" class="primary-btn" [disabled]="ERPForm.invalid"
+                            type="submit" (click)="onSubmit()">
+                            <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+                            {{ isEditMode ? 'Update' : 'Save' }}
+                        </button>
+
+                        <button mat-stroked-button color="warn" class="action-btn" type="button" (click)="onCancel()">
+                            <mat-icon>close</mat-icon>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </mat-card-content>
+</mat-card>

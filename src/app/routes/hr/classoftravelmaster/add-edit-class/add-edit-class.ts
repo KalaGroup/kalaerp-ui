@@ -64,7 +64,7 @@ export class AddEditClass {
     this.classoftravelForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
       ClassOfTravelId: [''],
-      ClassOfTravelCode: [''],
+      ClassOfTravelCode: ['', Validators.required],
       ClassOfTravelName: ['', Validators.required],
       ClassOfTravelGradeId: ['', Validators.required],
       DafoodAllowancePerday: [''],
@@ -76,21 +76,24 @@ export class AddEditClass {
       CreatedBy: ['1'],
     });
     if (this.isEditMode && this.data.classoftravel) {
+      const travel = this.data.classoftravel;
+      debugger
       this.classoftravelForm.patchValue({
-        ClassOfTravelId: this.data.classoftravel.ClassOfTravelId,
-        ClassOfTravelCode: this.data.classoftravel.ClassOfTravelCode,
-        ClassOfTravelName: this.data.classoftravel.ClassOfTravelName,
-        ClassOfTravelGradeId: this.data.classoftravel.ClassOfTravelGradeId,
-        DafoodAllowancePerday: this.data.classoftravel.DafoodAllowancePerday,
-        ClassOfTravelTierType: this.data.classoftravel.ClassOfTravelTierType,
-        ClassOfTravelRemark: this.data.classoftravel.ClassOfTravelRemark,
-        ClassOfTravelIsAuth: this.data.classoftravel.ClassOfTravelIsAuth ?? true,
-        ClassOfTravelIsDiscard: this.data.classoftravel.ClassOfTravelIsDiscard ?? false,
-        ClassOfTravelIsActive: this.data.classoftravel.ClassOfTravelIsActive ?? true,
-        CreatedBy: this.data.classoftravel.CreatedBy,
-        CreatedDate: this.data.classoftravel.CreatedDate,
+        ClassOfTravelId: travel.ClassOfTravelId,
+        ClassOfTravelCode: travel.ClassOfTravelCode,
+        ClassOfTravelName: travel.ClassOfTravelName,
+        ClassOfTravelGradeId: travel.ClassOfTravelGradeId,
+        DafoodAllowancePerday: travel.DafoodAllowancePerday,
+        ClassOfTravelTierType: String(travel.ClassOfTravelTierType), // 👈 Convert to string
+        ClassOfTravelRemark: travel.ClassOfTravelRemark,
+        ClassOfTravelIsAuth: travel.ClassOfTravelIsAuth ?? true,
+        ClassOfTravelIsDiscard: travel.ClassOfTravelIsDiscard ?? false,
+        ClassOfTravelIsActive: travel.ClassOfTravelIsActive ?? true,
+        CreatedBy: travel.CreatedBy,
+        CreatedDate: travel.CreatedDate,
       });
     }
+
   }
   loadAllClassoftravel(): void {
     this.ClassofTravelService.getAllClassOftravelGrade().subscribe({

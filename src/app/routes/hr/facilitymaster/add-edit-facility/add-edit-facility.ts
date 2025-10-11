@@ -69,7 +69,7 @@ export class AddEditFacility implements OnInit {
         FacilityName: this.data.facility.FacilityName || '',
         FacilityRemark: this.data.facility.FacilityRemark || '',
         FacilityAuth: this.data.facility.FacilityAuth ?? true,
-        // FacilityIsDiscard: this.data.facility.FacilityIsDiscard ?? true,
+        FacilityIsDiscard: this.data.facility.FacilityIsDiscard ?? false,
         FacilityIsActive: this.data.facility.FacilityIsActive ?? true,
         CreatedBy: this.data.facility.CreatedBy ?? 0
       });
@@ -78,13 +78,31 @@ export class AddEditFacility implements OnInit {
   }
 
 
+  // onSubmit(): void {
+  //   if (this.facilityForm.valid) {
+  //     console.log(this.facilityForm.value);
+  //     this.dialogRef.close(this.facilityForm.value);
+  //   } else {
+  //     this.facilityForm.markAllAsTouched();
+  //   }
+  // }
+
   onSubmit(): void {
-    if (this.facilityForm.valid) {
-      console.log(this.facilityForm.value);
-      this.dialogRef.close(this.facilityForm.value);
-    } else {
+    if (this.facilityForm.invalid) {
       this.facilityForm.markAllAsTouched();
+      return;
     }
+
+    const formData = this.facilityForm.getRawValue();
+
+    formData.CityAuth = formData.CityAuth ?? true;
+    formData.CityIsActive = formData.CityIsActive ?? true;
+    formData.CityIsDiscard = formData.CityIsDiscard ?? false;
+
+
+    console.log('Final Payload:', formData);
+
+    this.dialogRef.close(formData);
   }
   onCancel(): void {
     this.dialogRef.close();

@@ -53,8 +53,8 @@ export class AddEditPetrolallowance {
     this.petrolForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
       PetrolAllowanceId: [0],
-      TwoWheelerPerKm: ['', [Validators.required]],
-      FourWheelerPerKm: ['', [Validators.required]],
+      TwoWheelerPerKm: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
+      FourWheelerPerKm: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
       PetrolAllowanceRemark: [''],
       PetrolAllowanceAuthRemark: [''],
       PetrolAllowanceIsAuth: [{ value: true, disabled: !this.isEditMode }],
@@ -90,5 +90,31 @@ export class AddEditPetrolallowance {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+  // Allow only numbers and one dot while typing
+  allowNumbersAndDot(event: KeyboardEvent) {
+    const input = event.target as HTMLInputElement;
+    const char = event.key;
+
+    // Allow only digits
+    if (!/[0-9.]/.test(char)) {
+      event.preventDefault();
+      return;
+    }
+
+    // Allow only one dot
+    if (char === '.' && input.value.includes('.')) {
+      event.preventDefault();
+    }
+  }
+
+  // Prevent pasting invalid input
+  blockInvalidPaste(event: ClipboardEvent) {
+    const pastedInput = event.clipboardData?.getData('text') ?? '';
+    if (!/^\d+(\.\d+)?$/.test(pastedInput)) {
+      event.preventDefault();
+    }
+  }
+
 
 }

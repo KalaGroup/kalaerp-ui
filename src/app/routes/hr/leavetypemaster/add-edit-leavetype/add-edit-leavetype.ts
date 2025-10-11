@@ -62,7 +62,7 @@ export class AddEditLeavetype {
     this.leaveTypeForm = this.fb.group({
       LeaveTypeMasterId: [0],
       LeaveTypeMasterCode: [''],
-      LeaveTypeMasterName: ['', Validators.required],
+      LeaveTypeMasterName: ['', Validators.required, Validators.pattern(/^[A-Za-z]+$/)],
       LeaveTypeMasterMaxDaysPer: ['', [Validators.required, Validators.min(1)]],
       LeaveTypeMasterContinuosDaysPerYear: [''],
       LeaveTypeMasterCanCarryForward: [''],
@@ -99,5 +99,22 @@ export class AddEditLeavetype {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+  // Allow only letters and space while typing
+  allowLettersAndSpace(event: KeyboardEvent) {
+    const char = event.key;
+    if (!/^[A-Za-z ]$/.test(char)) {
+      event.preventDefault();
+    }
+  }
+
+  // Prevent pasting invalid characters
+  blockInvalidPaste(event: ClipboardEvent) {
+    const pastedInput = event.clipboardData?.getData('text') ?? '';
+    if (!/^[A-Za-z ]+$/.test(pastedInput)) {
+      event.preventDefault();
+    }
+  }
+
 
 }

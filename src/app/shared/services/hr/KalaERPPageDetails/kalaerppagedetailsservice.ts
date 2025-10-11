@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs'; 
+import { Observable } from 'rxjs';
 import { apiEnvironment } from '@core';
 import { IKalaErpPageDetails } from '@shared/interfaces/hr/kalaerppagedetails';
 
@@ -10,7 +10,7 @@ import { IKalaErpPageDetails } from '@shared/interfaces/hr/kalaerppagedetails';
 export class KalaErpPageDetailsservice {
   baseUrl = apiEnvironment.baseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // 🔹 GET all ERP Page Details
   getAllERPPageDetails(): Observable<any[]> {
@@ -18,8 +18,9 @@ export class KalaErpPageDetailsservice {
   }
 
   // 🔹 INSERT ERP Page Details
-  insertERPPageDetails(insertERPPageDetails: IKalaErpPageDetails): Observable<any> {
-    return this.http.post(`${this.baseUrl}ERPPageDetails/createerppagedetails`, insertERPPageDetails);
+  insertERPPageDetails(insertERPPageDetails: any): Observable<any> {
+    debugger
+    return this.http.post<any>(`${this.baseUrl}ERPPageDetails/createerppagedetails`, insertERPPageDetails);
   }
 
   // 🔹 UPDATE ERP Page Details
@@ -38,4 +39,10 @@ export class KalaErpPageDetailsservice {
       `${this.baseUrl}ERPPageDetails/geterppagedetailsbyid/${KalaErppageDetailsId}`
     );
   }
+
+
+  getAllPageTittle(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}ERPPageDetails/GetActiveMakers`);
+  }
+
 }

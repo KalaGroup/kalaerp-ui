@@ -31,7 +31,6 @@ interface Row {
   newAttributeId: number;
   isEdit?: boolean;
   attributeName?: string; // optional for display
-
 }
 @Component({
   selector: 'app-add-edit-recruitment',
@@ -204,6 +203,7 @@ export class AddEditRecruitment implements OnInit {
   }
 
   loadAllDetails(): void {
+    debugger
     const RecruitmentMasterId = this.data.recruitment.RecruitmentMasterId;
     this.Recruitmentmasterservice.getRecruitmentDetailsByMstId(RecruitmentMasterId).subscribe({
       next: res => {
@@ -595,6 +595,7 @@ export class AddEditRecruitment implements OnInit {
     } else {
       this.RecruitmentForm.markAllAsTouched();
     }
+
   }
 
 

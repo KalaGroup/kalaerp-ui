@@ -225,6 +225,11 @@
           "route": "workstationbudget",
           "name": "workstationbudget",
           "type": "link"
+        },
+        {
+          "route": "ERPPageAssignmentRelationship",
+          "name": "ERPPageAssignmentRelationship",
+          "type": "link"
         }
       ]
     }
