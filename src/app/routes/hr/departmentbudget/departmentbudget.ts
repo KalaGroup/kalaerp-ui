@@ -73,7 +73,7 @@ export class Departmentbudget implements OnInit {
     private fb: FormBuilder,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getAllDepartmentBudget();
@@ -224,7 +224,7 @@ export class Departmentbudget implements OnInit {
 
         this.departmentbudgetservice.updateDepartmentBudget(updatePayload).subscribe({
           next: () => {
-            alert('Department budget updated successfully!');
+
             this.toastService.showSuccess('Department budget updated successfully');
             this.getAllDepartmentBudget();
           },
@@ -266,7 +266,6 @@ export class Departmentbudget implements OnInit {
 
         this.departmentbudgetservice.insertDepartmentBudget(payload).subscribe({
           next: () => {
-            alert('Department budget added successfully!');
             this.toastService.showSuccess('Department budget added successfully');
             this.getAllDepartmentBudget();
           },
@@ -285,8 +284,8 @@ export class Departmentbudget implements OnInit {
                 this.toastService.showError(message);
               });
             }
-             else {
-              alert(` Financial Year and Department  already exists.!`);
+            else {
+
               this.toastService.showError(
                 'A budget for this Financial Year and Department already exists.'
               );
@@ -301,7 +300,6 @@ export class Departmentbudget implements OnInit {
     this.departmentbudgetservice.deleteDepartmentBudget(value.DepartmentBudgetId).subscribe({
       next: response => {
         console.log('Delete success:', response);
-        alert(`Department budget deleted successfully!`);
         this.toastService.showSuccess('budget delete successfully');
         this.getAllDepartmentBudget();
       },

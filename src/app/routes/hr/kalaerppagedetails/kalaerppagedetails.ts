@@ -75,10 +75,13 @@ export class Kalaerppagedetails {
     private kalaerppagedetailsService: KalaErpPageDetailsservice,
     private dialog: MatDialog,
     private toastService: Toastservice
-  ) {}
+  ) { }
   ngOnInit(): void {
+
     this.loadAllERPPageDetails();
+
   }
+
 
   toggleConfigSection(): void {
     this.isConfigExpanded = !this.isConfigExpanded;
@@ -122,6 +125,14 @@ export class Kalaerppagedetails {
       minWidth: 150,
       width: '280px',
     },
+    {
+      header: this.translate.stream('Maker'),
+      field: 'MakerKalaErppageDetailsId',
+      sortable: true,
+      minWidth: 150,
+      width: '280px',
+    },
+
 
     {
       header: this.translate.stream('Page ISO Number'),
@@ -137,7 +148,7 @@ export class Kalaerppagedetails {
       minWidth: 140,
       width: '180px',
     },
-        {
+    {
       header: this.translate.stream('Auth Remark'),
       field: 'KalaErppageDetailsAuthRemark',
       sortable: true,
@@ -181,6 +192,7 @@ export class Kalaerppagedetails {
     },
   ];
 
+
   loadAllERPPageDetails() {
     debugger;
     this.kalaerppagedetailsService.getAllERPPageDetails().subscribe({
@@ -196,6 +208,7 @@ export class Kalaerppagedetails {
       },
     });
   }
+  
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditKalaerppagedetails, {
@@ -203,45 +216,40 @@ export class Kalaerppagedetails {
       height: '80%',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: {},
+      data: {}, // no data for add
     });
-
+    debugger
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
-        console.log('Added City:', result);
+        // result is already the payload built inside the dialog
         console.log('Payload for adding ERP Page Detail:', result);
-        // Call the service to insert the ERP Page Detail
+
         this.kalaerppagedetailsService.insertERPPageDetails(result).subscribe({
           next: response => {
             this.toastService.showSuccess('ERP Page Detail added successfully:', response);
             this.loadAllERPPageDetails();
-         
           },
           error: err => {
-            if (err.status === 400 && err.error) {
-              // Validation errors from FluentValidation
-              err.error.forEach((validationErr: any) => {
-                const field = validationErr.PropertyName;
-                const message = validationErr.ErrorMessage;
-
-                // Mark field error in form
-                if (this.erppagedetailsForm.get(field)) {
-                  this.erppagedetailsForm.get(field)?.setErrors({ serverError: message });
+            if (err.status === 400 && err.error?.errors) {
+              // Validation errors from backend
+              for (const key in err.error.errors) {
+                if (err.error.errors.hasOwnProperty(key)) {
+                  err.error.errors[key].forEach((message: string) => {
+                    this.toastService.showError(`${key}: ${message}`);
+                  });
                 }
-                // Optionally show toast
-                this.toastService.showError(message);
-              });
+              }
             } else {
               this.toastService.showError(
-                'Failed to add ERP Page Details. Please verify ERP Page Details details and try again.'
+                'Failed to add ERP Page Details. Please verify details and try again.'
               );
             }
-          },
+          }
         });
       }
     });
   }
+
 
   edit(record: any) {
     this.dialog
@@ -255,13 +263,13 @@ export class Kalaerppagedetails {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          debugger;
+          debugger
           console.log('ERP Page Detail Updated:', result);
           console.log('Update payload:', result);
           this.kalaerppagedetailsService.updateERPPageDetails(result).subscribe({
             next: response => {
               this.toastService.showSuccess('ERP Page Detail updated successfully:', response);
-             
+
               this.loadAllERPPageDetails();
             },
             error: err => {
@@ -287,7 +295,7 @@ export class Kalaerppagedetails {
     this.kalaerppagedetailsService.deleteERPPageDetails(value.KalaErppageDetailsId).subscribe({
       next: response => {
         this.toastService.showSuccess('ERP Page Details deleted successfully:', response);
-     
+
         this.loadAllERPPageDetails();
       },
       error: err => {

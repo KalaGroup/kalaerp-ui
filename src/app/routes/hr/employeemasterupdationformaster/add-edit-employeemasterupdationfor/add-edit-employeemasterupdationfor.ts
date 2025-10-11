@@ -17,8 +17,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-//import { Country } from '@shared/interfaces/hr';
-//import { Employeetypeservice } from '@shared/services/hr/employeetype/employeetypeservice';
 import { Empmstupdationforservice } from '@shared/services/hr/empmstupdationfor/empmstupdationforservice';
 
 @Component({
@@ -60,13 +58,13 @@ export class AddEditEmployeemasterupdationfor {
   }
 
   private initializeForm(): void {
-    
+
     const currentDate = new Date().toLocaleDateString('en-GB');
     this.EmployeeMasterUpdationForForm = this.fb.group({
       EmployeeMasterUpdationForId: [''],
       EmployeeMasterUpdationForName: ['', Validators.required],
       EmployeeMasterUpdationForRemark: ['', Validators.required],
-      EmployeeMasterUpdationForAuth: [{ value: true, disabled: true }],
+      EmployeeMasterUpdationForAuth: [{ value: true, disabled: !this.isEditMode }],
       EmployeeMasterUpdationForIsActive: [{ value: true, disabled: !this.isEditMode }],
       EmployeeMasterUpdationForIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       EmployeeMasterUpdationForAuthRemark: ['NIL', Validators.required],
@@ -76,8 +74,8 @@ export class AddEditEmployeemasterupdationfor {
     });
 
     // If editing, pre-fill form with available data
-   if (this.isEditMode) {
-      
+    if (this.isEditMode) {
+
       console.log('Patching form with employeemasterupdationfor data:', this.data.employeemasterupdationfor);
       this.EmployeeMasterUpdationForForm.patchValue({
         //CreatedDate: currentDate, tommorow dicuss with Umar
@@ -92,7 +90,7 @@ export class AddEditEmployeemasterupdationfor {
         CreatedBy: this.data.employeemasterupdationfor.CreatedBy
 
       });
-       this.EmployeeMasterUpdationForForm.get('code')?.enable();
+      this.EmployeeMasterUpdationForForm.get('code')?.enable();
       this.EmployeeMasterUpdationForForm.get('CreatedDate')?.disable();
       this.EmployeeMasterUpdationForForm.get('IsActive')?.enable();
       console.log('Form values after patch:', this.EmployeeMasterUpdationForForm.value);
@@ -101,14 +99,14 @@ export class AddEditEmployeemasterupdationfor {
 
 
 
-   onSubmit(): void {
-        this.EmployeeMasterUpdationForForm.enable();//important for active boolean
-        if (this.EmployeeMasterUpdationForForm.valid) {
+  onSubmit(): void {
+    this.EmployeeMasterUpdationForForm.enable();//important for active boolean
+    if (this.EmployeeMasterUpdationForForm.valid) {
       this.dialogRef.close(this.EmployeeMasterUpdationForForm.value);
     } else {
       this.EmployeeMasterUpdationForForm.markAllAsTouched();
     }
-}
+  }
   onCancel(): void {
     this.dialogRef.close();
   }

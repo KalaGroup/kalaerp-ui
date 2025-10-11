@@ -16,8 +16,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { de, th } from 'date-fns/locale';
-import { IGatePassType } from '@shared/interfaces/hr/gatepasstype';
 import { Gatepasstypeservice } from '@shared/services/hr/gatepasstype/gatepasstype';
 
 @Component({
@@ -61,8 +59,22 @@ export class AddEditGatepasstype {
     const currentDate = new Date();
     this.gatepasstypeForm = this.fb.group({
       GatePassTypeId: [''],
-      GatePassTypesTypeCode: ['', [Validators.required]],
-      GatePassTypesTypeName: ['', [Validators.required]],
+      GatePassTypesTypeCode: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[A-Z0-9]+$/), // Only uppercase letters and numbers
+          Validators.maxLength(10),
+        ],
+      ],
+      GatePassTypesTypeName: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[A-Za-z]+$/), // Only letters, no spaces
+          Validators.maxLength(50),           // Optional max length
+        ],
+      ],
       GatePassTypesDescription: ['', [Validators.required]],
       GatePassTypesRequiresApproval: [true],
       GatePassTypesAuthRemark: ['Nil'],
@@ -108,4 +120,21 @@ export class AddEditGatepasstype {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+  restrictInvalidChars(event: KeyboardEvent): void {
+    const regex = /^[A-Z0-9]$/;
+    if (!regex.test(event.key.toUpperCase())) {
+      event.preventDefault();
+    }
+  }
+
+  restrictLettersOnly(event: KeyboardEvent): void {
+    const regex = /^[A-Za-z]$/; // Only letters, no spaces
+    if (!regex.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+
+
 }

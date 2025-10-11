@@ -198,7 +198,7 @@ export class Authoritiesmaster {
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditAuthorities, {
       width: '100%',
-      height: '80%',
+      height: '100%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {},
@@ -258,8 +258,8 @@ export class Authoritiesmaster {
   edit(record: any) {
     this.dialog
       .open(AddEditAuthorities, {
-        width: '80%',
-        height: '70%',
+        width: '100%',
+        height: '100%',
         maxWidth: '100vw',
         maxHeight: '100vh',
         data: { authorities: record },

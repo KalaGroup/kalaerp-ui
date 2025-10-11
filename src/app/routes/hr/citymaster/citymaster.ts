@@ -153,7 +153,7 @@ export class CitymasterComponent implements OnInit {
       if (result) {
         console.log('City Updated:', result);
         // Create update payload
-        const updatePayload: ICity = {
+        const updatePayload: any = {
           CityId: result.CityId,
           CityCode: result.CityCode,
           CityName: result.CityName,
@@ -169,7 +169,7 @@ export class CitymasterComponent implements OnInit {
           CityDistrictID: result.CityDistrictID,
           CityTierTypeID: result.CityTierTypeID,
           CreatedBy: result.CreatedBy,
-          CreatedDate: result.CreatedDate
+          CreatedDate: new Date().toISOString()
         };
 
         console.log('Update payload:', updatePayload);
@@ -189,6 +189,7 @@ export class CitymasterComponent implements OnInit {
   }
 
   openAddDialog() {
+    debugger
     const dialogRef = this.dialog.open(AddEditCityComponent, {
       width: '90%',
       height: '90%',

@@ -16,7 +16,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { Divisionservice } from '@shared/services/hr/division/divisionservice';
-import { debug } from 'console';
 
 @Component({
   selector: 'app-add-edit-division',
@@ -64,7 +63,7 @@ export class AddEditDivision {
     this.divisionForm = this.fb.group({
       DivisionId: [''],
       DivisionCode: ['', [Validators.required]],
-      DivisionName: ['', [Validators.required]],
+      DivisionName: ['', [Validators.required], Validators.pattern(/^[A-Za-z ]+$/)],
       DivisionShortName: ['', [Validators.required]],
       DivisionMailId: ['', [Validators.required, Validators.email]],
       DivisionRemark: [''],
@@ -123,4 +122,22 @@ export class AddEditDivision {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+
+  // Allow letters and spaces while typing
+  allowLettersAndSpace(event: KeyboardEvent) {
+    const char = event.key;
+    if (!/^[A-Za-z ]$/.test(char)) {
+      event.preventDefault();
+    }
+  }
+
+  // Prevent pasting invalid characters
+  blockInvalidPaste(event: ClipboardEvent) {
+    const pastedInput = event.clipboardData?.getData('text') ?? '';
+    if (!/^[A-Za-z ]+$/.test(pastedInput)) {
+      event.preventDefault();
+    }
+  }
+
 }

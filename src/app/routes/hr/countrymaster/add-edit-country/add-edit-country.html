@@ -3,17 +3,20 @@
     {{ isEditMode ? 'Edit Country' : 'Add Country' }}
   </mat-card-title>
 
-<mat-card-content>
+  <mat-card-content>
     <form [formGroup]="countryForm" class="form-field-full">
 
       <!-- Auto-generated fields row -->
       <div class="row mb-3">
         <div class="col-sm-3 col-xl-2">
           <mat-form-field appearance="fill">
+            
             <mat-label>Country Code</mat-label>
-            <input matInput formControlName="code" [readonly]="!isEditMode" 
-                   [placeholder]="isEditMode ? 'Enter country code' : 'Auto-generated'"/>
+            <input matInput formControlName="code" readonly placeholder="Auto-generated" />
           </mat-form-field>
+
+
+
         </div>
         <div class="col-sm-4 col-xl-3">
           <mat-form-field appearance="fill">
@@ -37,7 +40,7 @@
             <mat-label>Country Name</mat-label>
             <input matInput formControlName="CountryName" placeholder="Enter full country name" />
             @if (countryForm.get('CountryName')?.invalid && countryForm.get('CountryName')?.touched) {
-              <mat-error>Country Name is required</mat-error>
+            <mat-error>Country Name is required</mat-error>
             }
           </mat-form-field>
         </div>
@@ -46,7 +49,7 @@
             <mat-label>Country Short Name</mat-label>
             <input matInput formControlName="CountryShortName" placeholder="e.g., USA, UK, IND" />
             @if (countryForm.get('CountryShortName')?.invalid && countryForm.get('CountryShortName')?.touched) {
-              <mat-error>Short Name is required</mat-error>
+            <mat-error>Short Name is required</mat-error>
             }
           </mat-form-field>
         </div>
@@ -59,21 +62,21 @@
             <mat-label>ISO Country Code</mat-label>
             <input matInput formControlName="CountryCode" placeholder="e.g., US, GB, IN" maxlength="3" />
             @if (countryForm.get('CountryCode')?.invalid && countryForm.get('CountryCode')?.touched) {
-              <mat-error>Country Code is required</mat-error>
+            <mat-error>Country Code is required</mat-error>
             }
           </mat-form-field>
         </div>
-        
-      
+
+
         <div class="col-sm-8 col-xl-9">
           <mat-form-field appearance="outline">
             <mat-label>Currency</mat-label>
             <mat-select formControlName="CurrencyId" placeholder="Select currency">
-        
+
               <mat-option>
                 <input matInput placeholder="Search currency..." [formControl]="currencySearchControl"
                   (click)="$event.stopPropagation()" />
-              </mat-option>             
+              </mat-option>
               <mat-option value="">Select currency</mat-option>
               @for (currency of filteredCurrencyList; track currency.CurrencyId) {
               <mat-option [value]="currency.CurrencyId">
@@ -81,7 +84,7 @@
               </mat-option>
               }
             </mat-select>
-        
+
             @if (countryForm.get('CurrencyId')?.invalid && countryForm.get('CurrencyId')?.touched) {
             <mat-error>Currency is required</mat-error>
             }
@@ -94,8 +97,8 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button mat-flat-button color="primary" class="btn-primary px-4"
-              [disabled]="countryForm.invalid" (click)="onSubmit()">
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="countryForm.invalid"
+              (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>

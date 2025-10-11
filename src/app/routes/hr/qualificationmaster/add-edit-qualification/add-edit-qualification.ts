@@ -60,7 +60,7 @@ export class AddEditQualification {
       CreatedDate: [{ value: currentDate, disabled: true }],
       QualificationId: [''],
       QualificationCode: [''],
-      QualificationName: ['', [Validators.required]],
+      QualificationName: ['', [Validators.required], Validators.pattern(/^[A-Za-z ]+$/)],
       MasterQualificationTypeID: ['', [Validators.required]],
       QualificationAuth: [{ value: true, disabled: !this.isEditMode }],
       QualificationRemark: [''],
@@ -146,4 +146,21 @@ export class AddEditQualification {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+  // Allow only letters and space while typing
+  allowLettersAndSpace(event: KeyboardEvent) {
+    const char = event.key;
+    if (!/^[A-Za-z ]$/.test(char)) {
+      event.preventDefault();
+    }
+  }
+
+  // Prevent pasting invalid characters
+  blockInvalidPaste(event: ClipboardEvent) {
+    const pastedInput = event.clipboardData?.getData('text') ?? '';
+    if (!/^[A-Za-z ]+$/.test(pastedInput)) {
+      event.preventDefault();
+    }
+  }
+
 }

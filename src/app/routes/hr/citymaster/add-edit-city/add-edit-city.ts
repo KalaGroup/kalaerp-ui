@@ -70,8 +70,8 @@ export class AddEditCityComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-     this.loadCountries();
-   this.loadTierTypes();
+    this.loadCountries();
+    this.loadTierTypes();
   }
 
   private initializeForm(): void {
@@ -79,9 +79,9 @@ export class AddEditCityComponent implements OnInit {
     this.cityForm = this.fb.group({
       CityId: [''],
       CreatedDate: [{ value: currentDate, disabled: true }],
-      CityAuth: [{ value: false, disabled: !this.isEditMode }],
-      CityIsActive: [{ value: true, disabled: !this.isEditMode }],
-      CityIsDiscard: [{ value: true, disabled: !this.isEditMode }],
+      // CityAuth: [{ value: true, disabled: !this.isEditMode }],
+      // CityIsActive: [{ value: true, disabled: !this.isEditMode }],
+      // CityIsDiscard: [{ value: false, disabled: !this.isEditMode }],
 
       CityName: ['', Validators.required],
       CityShortName: ['', Validators.required],
@@ -95,6 +95,10 @@ export class AddEditCityComponent implements OnInit {
       CityStateID: ['', Validators.required],
       CityDistrictID: ['', Validators.required],
       CityTierTypeID: ['', Validators.required],
+
+      CityAuth: [{ value: true, disabled: !this.isEditMode }],
+      CityIsActive: [{ value: true, disabled: !this.isEditMode }],
+      CityIsDiscard: [{ value: false, disabled: !this.isEditMode }],
 
       StateName: [''],
       CountryName: [''],
@@ -113,9 +117,9 @@ export class AddEditCityComponent implements OnInit {
         CityLatitude: this.data.City.CityLatitude,
         CityLongitude: this.data.City.CityLongitude,
         CityRemark: this.data.City.CityRemark,
-        CityIsActive: this.data.City.CityIsActive,
-        CityIsDiscard: this.data.City.CityIsDiscard,
-        CityAuth: this.data.City.CityAuth,
+        CityIsActive: this.data.City.CityIsActive ?? true,
+        CityIsDiscard: this.data.City.CityIsDiscard ?? false,
+        CityAuth: this.data.City.CityAuth ?? true,
         CityCountryID: this.data.City.CityCountryID,
         CityStateID: this.data.City.CityStateID,
         CityDistrictID: this.data.City.CityDistrictID,
@@ -134,14 +138,32 @@ export class AddEditCityComponent implements OnInit {
 
 
 
-onSubmit(): void {
+  // onSubmit(): void {
 
-      if (this.cityForm.valid) {
-      this.dialogRef.close(this.cityForm.value);
-    } else {
+  //   if (this.cityForm.valid) {
+  //     this.dialogRef.close(this.cityForm.value);
+  //   } else {
+  //     this.cityForm.markAllAsTouched();
+  //   }
+  // }
+  onSubmit(): void {
+    if (this.cityForm.invalid) {
       this.cityForm.markAllAsTouched();
+      return;
     }
-}
+
+    const formData = this.cityForm.getRawValue();
+
+    formData.CityAuth = formData.CityAuth ?? true;
+    formData.CityIsActive = formData.CityIsActive ?? true;
+    formData.CityIsDiscard = formData.CityIsDiscard ?? false;
+
+
+    console.log('Final Payload:', formData);
+
+    this.dialogRef.close(formData);
+  }
+
 
 
   onCancel(): void {
@@ -149,195 +171,195 @@ onSubmit(): void {
   }
 
 
-// ✅ Load countries
-private loadCountries(): void {
-  this.CitymasterService.getAllCountries().subscribe({
-    next: res => {
-      this.countryList = res;
-      this.filteredCountryList = [...this.countryList];
+  // ✅ Load countries
+  private loadCountries(): void {
+    this.CitymasterService.getAllCountries().subscribe({
+      next: res => {
+        this.countryList = res;
+        this.filteredCountryList = [...this.countryList];
 
-      // Search filter
-      this.countrySearchControl.valueChanges.subscribe((value: any) => {
-        const filterValue = (value || '').toLowerCase();
-        this.filteredCountryList = this.countryList.filter(country =>
-          country.CountryName.toLowerCase().includes(filterValue)
-        );
-      });
+        // Search filter
+        this.countrySearchControl.valueChanges.subscribe((value: any) => {
+          const filterValue = (value || '').toLowerCase();
+          this.filteredCountryList = this.countryList.filter(country =>
+            country.CountryName.toLowerCase().includes(filterValue)
+          );
+        });
 
-      if (this.isEditMode && this.data) {
-        this.setCountryForEdit();
-      }
-    },
-    error: err => console.error('Failed to load countries:', err),
-  });
-}
-
-
-
-// ✅ Load states
-onCountryChange(countryId: number): void {
-  if (!countryId) {
-    this.stateList = [];
-    this.filteredStateList = [];
-    this.cityForm.patchValue({ CityStateID: null, CityDistrictID: null }); // reset state & district
-    return;
+        if (this.isEditMode && this.data) {
+          this.setCountryForEdit();
+        }
+      },
+      error: err => console.error('Failed to load countries:', err),
+    });
   }
 
-  this.CitymasterService.getAllState(countryId).subscribe({
-    next: res => {
-      this.stateList = res || [];
-      this.filteredStateList = [...this.stateList];
 
-      // reset selected state & district when country changes
-      this.cityForm.patchValue({ CityStateID: null, CityDistrictID: null });
 
-      if (this.isEditMode && this.data) {
-        this.setStateForEdit();
-      }
-    },
-    error: err => console.error('Failed to load states:', err),
-  });
-}
+  // ✅ Load states
+  onCountryChange(countryId: number): void {
+    if (!countryId) {
+      this.stateList = [];
+      this.filteredStateList = [];
+      this.cityForm.patchValue({ CityStateID: null, CityDistrictID: null }); // reset state & district
+      return;
+    }
 
-// ✅ Load districts
-onStateChange(stateId: number): void {
-  if (!stateId) {
-    this.districtList = [];
-    this.filteredDistrictList = [];
-    this.cityForm.patchValue({ CityDistrictID: null });
-    return;
+    this.CitymasterService.getAllState(countryId).subscribe({
+      next: res => {
+        this.stateList = res || [];
+        this.filteredStateList = [...this.stateList];
+
+        // reset selected state & district when country changes
+        this.cityForm.patchValue({ CityStateID: null, CityDistrictID: null });
+
+        if (this.isEditMode && this.data) {
+          this.setStateForEdit();
+        }
+      },
+      error: err => console.error('Failed to load states:', err),
+    });
   }
 
-  this.CitymasterService.getAllDistrict(stateId).subscribe({
-    next: res => {
-      this.districtList = res || [];
-      this.filteredDistrictList = [...this.districtList];
-
-      // reset district
+  // ✅ Load districts
+  onStateChange(stateId: number): void {
+    if (!stateId) {
+      this.districtList = [];
+      this.filteredDistrictList = [];
       this.cityForm.patchValue({ CityDistrictID: null });
+      return;
+    }
 
-      // 🔹 if edit mode, set district only after list is loaded
-      if (this.isEditMode && this.data) {
-        this.setDistrictForEdit();
-      }
-    },
-    error: err => console.error('Failed to load districts:', err),
-  });
-}
+    this.CitymasterService.getAllDistrict(stateId).subscribe({
+      next: res => {
+        this.districtList = res || [];
+        this.filteredDistrictList = [...this.districtList];
 
+        // reset district
+        this.cityForm.patchValue({ CityDistrictID: null });
 
-// ✅ Load tier types (static)
-private loadTierTypes(): void {
-  this.tierTypeList = [
-    { tierTypeId: 1, TierTypeName: 'Tier 1' },
-    { tierTypeId: 2, TierTypeName: 'Tier 2' },
-    { tierTypeId: 3, TierTypeName: 'Tier 3' }
-  ];
-
-  this.filteredTierTypeList = [...this.tierTypeList];
-
-  this.tierTypeSearchControl.valueChanges.subscribe((value: any) => {
-    const filterValue = (value || '').toLowerCase();
-    this.filteredTierTypeList = this.tierTypeList.filter(tt =>
-      tt.TierTypeName.toLowerCase().includes(filterValue)
-    );
-  });
-
-  if (this.isEditMode && this.data) {
-    this.setTierTypeForEdit();
-  }
-}
-
-
-private setCountryForEdit(): void {
-  let countryId = null;
-  const cityData = this.data.City;
-
-  if (cityData?.CountryName) {
-    const country = this.countryList.find(
-      c => c.CountryName.trim() === cityData.CountryName.trim()
-    );
-    countryId = country ? country.CountryId : null;
-  }
-
-  if (countryId) {
-    this.cityForm.patchValue({
-      CityCountryID: countryId,
+        // 🔹 if edit mode, set district only after list is loaded
+        if (this.isEditMode && this.data) {
+          this.setDistrictForEdit();
+        }
+      },
+      error: err => console.error('Failed to load districts:', err),
     });
-    console.log('✅ Country set:', countryId);
-
-    // 🔹 Now load states for this country
-    this.onCountryChange(countryId);
-  }
-}
-
-
-private setStateForEdit(): void {
-  let stateId = null;
-  const cityData = this.data.City;
-
-  if (cityData?.StateName) {
-    const state = this.stateList.find(
-      s => s.StateName.trim() === cityData.StateName.trim()
-    );
-    stateId = state ? state.StateId : null;
   }
 
-  if (stateId) {
-    this.cityForm.patchValue({
-      CityStateID: stateId,
+
+  // ✅ Load tier types (static)
+  private loadTierTypes(): void {
+    this.tierTypeList = [
+      { tierTypeId: 1, TierTypeName: 'Tier 1' },
+      { tierTypeId: 2, TierTypeName: 'Tier 2' },
+      { tierTypeId: 3, TierTypeName: 'Tier 3' }
+    ];
+
+    this.filteredTierTypeList = [...this.tierTypeList];
+
+    this.tierTypeSearchControl.valueChanges.subscribe((value: any) => {
+      const filterValue = (value || '').toLowerCase();
+      this.filteredTierTypeList = this.tierTypeList.filter(tt =>
+        tt.TierTypeName.toLowerCase().includes(filterValue)
+      );
     });
-    console.log('✅ State set:', stateId);
 
-    // 🔹 Now load districts for this state
-    this.onStateChange(stateId);
-  }
-}
-
-
-private setDistrictForEdit(): void {
-  let districtId = null;
-  const cityData = this.data.City;
-
-  if (cityData?.DistrictName) {
-    const district = this.districtList.find(
-      d => d.DistrictName.trim() === cityData.DistrictName.trim()
-    );
-    districtId = district ? district.DistrictId : null;
+    if (this.isEditMode && this.data) {
+      this.setTierTypeForEdit();
+    }
   }
 
-  if (districtId) {
-    this.cityForm.patchValue({
-      CityDistrictID: districtId,
-    });
-    console.log('✅ District set:', districtId);
+
+  private setCountryForEdit(): void {
+    let countryId = null;
+    const cityData = this.data.City;
+
+    if (cityData?.CountryName) {
+      const country = this.countryList.find(
+        c => c.CountryName.trim() === cityData.CountryName.trim()
+      );
+      countryId = country ? country.CountryId : null;
+    }
+
+    if (countryId) {
+      this.cityForm.patchValue({
+        CityCountryID: countryId,
+      });
+      console.log('✅ Country set:', countryId);
+
+      // 🔹 Now load states for this country
+      this.onCountryChange(countryId);
+    }
   }
-}
 
 
-private setTierTypeForEdit(): void {
-  let tierTypeId = null;
-  const cityData = this.data.City;
+  private setStateForEdit(): void {
+    let stateId = null;
+    const cityData = this.data.City;
 
-  // Find tier type by ID
-  if (cityData?.CityTierTypeId) {
-    const tier = this.tierTypeList.find(
-      t => t.TierTypeId === cityData.CityTierTypeId
-    );
-    tierTypeId = tier ? tier.TierTypeId : null;
+    if (cityData?.StateName) {
+      const state = this.stateList.find(
+        s => s.StateName.trim() === cityData.StateName.trim()
+      );
+      stateId = state ? state.StateId : null;
+    }
 
-    console.log('Found tier type by ID:', tierTypeId);
+    if (stateId) {
+      this.cityForm.patchValue({
+        CityStateID: stateId,
+      });
+      console.log('✅ State set:', stateId);
+
+      // 🔹 Now load districts for this state
+      this.onStateChange(stateId);
+    }
   }
 
-  if (tierTypeId) {
-    this.cityForm.patchValue({
-      CityTierTypeId: tierTypeId,
-    });
-    console.log('Tier type set in form:', tierTypeId);
-  } else {
-    console.log('No tier type found for:', cityData?.CityTierTypeId);
+
+  private setDistrictForEdit(): void {
+    let districtId = null;
+    const cityData = this.data.City;
+
+    if (cityData?.DistrictName) {
+      const district = this.districtList.find(
+        d => d.DistrictName.trim() === cityData.DistrictName.trim()
+      );
+      districtId = district ? district.DistrictId : null;
+    }
+
+    if (districtId) {
+      this.cityForm.patchValue({
+        CityDistrictID: districtId,
+      });
+      console.log('✅ District set:', districtId);
+    }
   }
-}
+
+
+  private setTierTypeForEdit(): void {
+    let tierTypeId = null;
+    const cityData = this.data.City;
+
+    // Find tier type by ID
+    if (cityData?.CityTierTypeId) {
+      const tier = this.tierTypeList.find(
+        t => t.TierTypeId === cityData.CityTierTypeId
+      );
+      tierTypeId = tier ? tier.TierTypeId : null;
+
+      console.log('Found tier type by ID:', tierTypeId);
+    }
+
+    if (tierTypeId) {
+      this.cityForm.patchValue({
+        CityTierTypeId: tierTypeId,
+      });
+      console.log('Tier type set in form:', tierTypeId);
+    } else {
+      console.log('No tier type found for:', cityData?.CityTierTypeId);
+    }
+  }
 
 
   // loadCountries(): void {

@@ -23,12 +23,21 @@
                     <!-- Leave Type Name -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Leave Type Name</mat-label>
-                        <input matInput formControlName="LeaveTypeMasterName" placeholder="Enter name" />
-                        <mat-error
-                            *ngIf="leaveTypeForm.get('LeaveTypeMasterName')?.invalid && leaveTypeForm.get('LeaveTypeMasterName')?.touched">
+                        <input matInput formControlName="LeaveTypeMasterName" placeholder="Enter name"
+                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
+
+                        <mat-error *ngIf="leaveTypeForm.get('LeaveTypeMasterName')?.hasError('required') &&
+                    leaveTypeForm.get('LeaveTypeMasterName')?.touched">
                             Name is required
                         </mat-error>
+
+                        <mat-error *ngIf="leaveTypeForm.get('LeaveTypeMasterName')?.hasError('pattern') &&
+                    leaveTypeForm.get('LeaveTypeMasterName')?.touched">
+                            Only letters and spaces are allowed
+                        </mat-error>
                     </mat-form-field>
+
+
 
 
                     <!-- Max Days Per -->

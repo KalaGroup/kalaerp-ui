@@ -11,6 +11,9 @@ import { apiEnvironment  } from '@core';
 })
 
 export class Activityservcie {
+  getAllERPPageAssignmentRelationships() {
+    throw new Error('Method not implemented.');
+  }
 
    baseUrl = apiEnvironment.baseUrl;
 

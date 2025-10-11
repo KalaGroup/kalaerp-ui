@@ -26,12 +26,20 @@
                     <!-- Qualification Name -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Qualification Name</mat-label>
-                        <input matInput formControlName="QualificationName" placeholder="Enter full name" />
-                        <mat-error
-                            *ngIf="qualificationForm.get('QualificationName')?.hasError('required') && qualificationForm.get('QualificationName')?.touched">
+                        <input matInput formControlName="QualificationName" placeholder="Enter full name"
+                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
+
+                        <mat-error *ngIf="qualificationForm.get('QualificationName')?.hasError('required') &&
+                    qualificationForm.get('QualificationName')?.touched">
                             Qualification Name is required
                         </mat-error>
+
+                        <mat-error *ngIf="qualificationForm.get('QualificationName')?.hasError('pattern') &&
+                    qualificationForm.get('QualificationName')?.touched">
+                            Only letters and spaces are allowed
+                        </mat-error>
                     </mat-form-field>
+
 
                     <!-- Qualification Remark -->
                     <mat-form-field appearance="outline" class="w-100">

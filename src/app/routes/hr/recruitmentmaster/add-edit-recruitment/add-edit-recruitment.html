@@ -192,7 +192,7 @@
 
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Current CTC</mat-label>
-            <input matInput formControlName="RecruitmentMasterCurrentCtcpa" placeholder="Enter Current CTC" />
+            <input matInput formControlName="RecruitmentMasterCurrentCTCPA" placeholder="Enter Current CTC" />
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="w-100">
@@ -208,24 +208,33 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Expected CTC</mat-label>
-            <input matInput formControlName="RecruitmentMasterExpectedCtcpa" placeholder="Enter Expected CTC" />
+            <input matInput formControlName="RecruitmentMasterExpectedCTCPA" placeholder="Enter Expected CTC" />
           </mat-form-field>
         </div>
 
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Recommended CTC</mat-label>
-            <input matInput formControlName="RecruitmentMasterRecommendedCtcpa" placeholder="Enter Recommended CTC" />
+            <input matInput formControlName="RecruitmentMasterRecommendedCTCPA" placeholder="Enter Recommended CTC" />
           </mat-form-field>
         </div>
-
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Expected Joining Date</mat-label>
-            <input matInput [matDatepicker]="joiningDatePicker" formControlName="RecruitmentMasterExpectedJoiningDate"
-              placeholder="Select Joining Date" />
-            <mat-datepicker-toggle matSuffix [for]="joiningDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #joiningDatePicker></mat-datepicker>
+            <input matInput [matDatepicker]="picker" formControlName="RecruitmentMasterExpectedJoiningDate"
+              placeholder="Select expected joining date" />
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+
+            <!-- Local validation errors -->
+            <mat-error *ngIf="RecruitmentForm.get('RecruitmentMasterExpectedJoiningDate')?.hasError('required')">
+              Expected Joining Date is required.
+            </mat-error>
+
+            <!-- Server-side validation error -->
+            <mat-error *ngIf="RecruitmentForm.get('RecruitmentMasterExpectedJoiningDate')?.hasError('serverError')">
+              {{ RecruitmentForm.get('RecruitmentMasterExpectedJoiningDate')?.getError('serverError') }}
+            </mat-error>
           </mat-form-field>
         </div>
       </div>

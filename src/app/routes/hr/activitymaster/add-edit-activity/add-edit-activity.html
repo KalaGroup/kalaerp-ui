@@ -29,14 +29,7 @@
             <div class="row mb-3">
                 <!-- Left -->
                 <div class="col-sm-6 col-xl-6">
-                    <!-- <mat-form-field appearance="fill" class="w-100">
-                        <mat-label>Grade</mat-label>
-                        <mat-select formControlName="ActivityGradeId">
-                            <mat-option *ngFor="let grade of gradeList" [value]="grade.GradeId">
-                                {{ grade.GradeName }}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field> -->
+
 
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Grade</mat-label>
@@ -60,10 +53,10 @@
                             <mat-option [value]="div.DivisionId">{{ div.DivisionName }}</mat-option>
                             }
                         </mat-select>
-                        @if (ActivityForm.get('RolesDivisionId')?.invalid &&
-                        ActivityForm.get('RolesDivisionId')?.touched) {
-                        <mat-error>Division is required</mat-error>
-                        }
+                        <mat-error *ngIf="ActivityForm.get('ActivityDivisionId')?.invalid 
+          && ActivityForm.get('ActivityDivisionId')?.touched">
+                            Division is required
+                        </mat-error>
                     </mat-form-field>
 
                     <mat-form-field appearance="outline" class="w-100">
@@ -82,14 +75,6 @@
                 <div class="col-sm-6 col-xl-6">
 
 
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Remark</mat-label>
-                        <input matInput formControlName="ActivityRemark" placeholder="Enter Remark..." />
-                        <mat-error
-                            *ngIf="ActivityForm.get('ActivityRemark')?.hasError('required') && ActivityForm.get('ActivityRemark')?.touched">
-                            Remark is required
-                        </mat-error>
-                    </mat-form-field>
 
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Designation</mat-label>
@@ -98,9 +83,19 @@
                                 {{ desig.DesignationName }}
                             </mat-option>
                         </mat-select>
-                        <mat-error *ngIf="ActivityForm.get('RolesDesignationId')?.invalid 
-          && ActivityForm.get('RolesDesignationId')?.touched">
+                        <mat-error *ngIf="ActivityForm.get('ActivityDesignationId')?.invalid 
+          && ActivityForm.get('ActivityDesignationId')?.touched">
                             Designation is required
+                        </mat-error>
+                    </mat-form-field>
+
+
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Remark</mat-label>
+                        <input matInput formControlName="ActivityRemark" placeholder="Enter Remark..." />
+                        <mat-error
+                            *ngIf="ActivityForm.get('ActivityRemark')?.hasError('required') && ActivityForm.get('ActivityRemark')?.touched">
+                            Remark is required
                         </mat-error>
                     </mat-form-field>
 

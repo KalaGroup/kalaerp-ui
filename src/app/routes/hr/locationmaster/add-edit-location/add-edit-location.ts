@@ -58,10 +58,10 @@ export class AddEditLocation {
     this.locationForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
       LocationId: [''],
-      LocationCode: [''],
-      LocationName: ['', [Validators.required]],
+      LocationCode: ['', [Validators.required]],
+      LocationName: ['', [Validators.required, Validators.pattern(/^[A-Za-z ]+$/)]],
       ProfitcenterLocationId: ['', [Validators.required]],
-      LocationRemark: [''],
+      LocationRemark: ['', Validators.pattern(/^[A-Za-z ]+$/)],
       LocationType: [''],
       LocationAuthRemark: [''],
       LocationAuth: [{ value: true, disabled: !this.isEditMode }],
@@ -146,6 +146,24 @@ export class AddEditLocation {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+
+  // Allow only letters and space while typing
+  allowLettersAndSpace(event: KeyboardEvent) {
+    const char = event.key;
+    if (!/^[A-Za-z ]$/.test(char)) {
+      event.preventDefault();
+    }
+  }
+
+  // Prevent pasting invalid characters
+  blockInvalidPaste(event: ClipboardEvent) {
+    const pastedInput = event.clipboardData?.getData('text') ?? '';
+    if (!/^[A-Za-z ]+$/.test(pastedInput)) {
+      event.preventDefault();
+    }
+  }
+
 
 }
 

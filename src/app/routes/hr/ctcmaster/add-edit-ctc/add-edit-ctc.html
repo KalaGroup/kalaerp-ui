@@ -32,24 +32,36 @@
 
           <mat-form-field appearance="outline">
             <mat-label>HRA</mat-label>
-            <input matInput formControlName="CtcmasterHra" placeholder="Select HRA" />
-            @if (ctcForm.get('CtcmasterHra')?.invalid && ctcForm.get('CtcmasterHra')?.touched) {
+            <input matInput formControlName="CtcmasterHra" placeholder="Enter HRA" type="text" maxlength="20"
+              (keypress)="validateNumberWithCommaDot($event)" (paste)="onPasteNumberWithCommaDot($event)" />
+            @if (ctcForm.get('CtcmasterHra')?.hasError('required') && ctcForm.get('CtcmasterHra')?.touched) {
             <mat-error>HRA is required</mat-error>
+            }
+            @if (ctcForm.get('CtcmasterHra')?.hasError('pattern') && ctcForm.get('CtcmasterHra')?.touched) {
+            <mat-error>Only valid numbers are allowed</mat-error>
             }
           </mat-form-field>
 
+
+
+
           <mat-form-field appearance="outline">
             <mat-label>Leave Travel Allowance</mat-label>
-            <input matInput formControlName="CtcmasterLeaveTravelAllowance" placeholder="Select HRA" />
+            <input matInput formControlName="CtcmasterLeaveTravelAllowance" placeholder="Enter Leave Travel Allowance"
+              type="text" maxlength="20" (keypress)="validateNumberWithCommaDot($event)"
+              (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterLeaveTravelAllowance')?.invalid &&
             ctcForm.get('CtcmasterLeaveTravelAllowance')?.touched) {
             <mat-error>Leave Travel Allowance is required</mat-error>
             }
           </mat-form-field>
 
+
           <mat-form-field appearance="outline">
             <mat-label>Driver Allowance</mat-label>
-            <input matInput formControlName="CtcmasterDriverAllowance" placeholder="Enter Driver Allowance" />
+            <input matInput formControlName="CtcmasterDriverAllowance" placeholder="Enter Driver Allowance" type="text"
+              maxlength="20" (keypress)="validateNumberWithCommaDot($event)"
+              (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterDriverAllowance')?.invalid &&
             ctcForm.get('CtcmasterDriverAllowance')?.touched) {
             <mat-error>Driver Allowance is required</mat-error>
@@ -58,7 +70,9 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Pf employee</mat-label>
-            <input matInput formControlName="CtcmasterPfemployee" placeholder="Enter Pf employee" />
+            <input matInput formControlName="CtcmasterPfemployee" placeholder="Enter Pf employee" type="text"
+              maxlength="20" (keypress)="validateNumberWithCommaDot($event)"
+              (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterPfemployee')?.invalid &&
             ctcForm.get('CtcmasterPfemployee')?.touched) {
             <mat-error>Pf employee is required</mat-error>
@@ -67,7 +81,9 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Pf Employer</mat-label>
-            <input matInput formControlName="CtcmasterPfemployer" placeholder="Enter Pf Employer" />
+            <input matInput formControlName="CtcmasterPfemployer" placeholder="Enter Pf Employer" type="text"
+              maxlength="20" (keypress)="validateNumberWithCommaDot($event)"
+              (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterPfemployer')?.invalid &&
             ctcForm.get('CtcmasterPfemployer')?.touched) {
             <mat-error>Pf Employer is required</mat-error>
@@ -76,7 +92,8 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Graduity</mat-label>
-            <input matInput formControlName="CtcmasterGraduity" placeholder="Enter Graduity" />
+            <input matInput formControlName="CtcmasterGraduity" placeholder="Enter Graduity" type="text" maxlength="20"
+              (keypress)="validateNumberWithCommaDot($event)" (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterGraduity')?.invalid && ctcForm.get('CtcmasterGraduity')?.touched) {
             <mat-error>Graduity is required</mat-error>
             }
@@ -88,7 +105,8 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>CTC Basic</mat-label>
-            <input matInput formControlName="CtcmasterBasic" placeholder="Select Basic" />
+            <input matInput formControlName="CtcmasterBasic" placeholder="Select Basic" type="text" maxlength="20"
+              (keypress)="validateNumberWithCommaDot($event)" (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterBasic')?.invalid && ctcForm.get('CtcmasterBasic')?.touched) {
             <mat-error>Basic is required</mat-error>
             }
@@ -96,7 +114,9 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Conv Allowance</mat-label>
-            <input matInput formControlName="CtcmasterConvAllowance" placeholder="Enter ConvAllowance" />
+            <input matInput formControlName="CtcmasterConvAllowance" placeholder="Enter ConvAllowance" type="text"
+              maxlength="20" (keypress)="validateNumberWithCommaDot($event)"
+              (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterConvAllowance')?.invalid &&
             ctcForm.get('CtcmasterConvAllowance')?.touched){
             <mat-error>ConvAllowance is required</mat-error>
@@ -105,7 +125,9 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Car Allowance</mat-label>
-            <input matInput formControlName="CtcmasterCarAllowance" placeholder="Enter Car Allowance" />
+            <input matInput formControlName="CtcmasterCarAllowance" placeholder="Enter Car Allowance" type="text"
+              maxlength="20" (keypress)="validateNumberWithCommaDot($event)"
+              (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterCarAllowance')?.invalid &&
             ctcForm.get('CtcmasterCarAllowance')?.touched){
             <mat-error>Car Allowance is required</mat-error>
@@ -114,7 +136,9 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Misc Allowance</mat-label>
-            <input matInput formControlName="CtcmasterMiscAllowance" placeholder="Enter Misc Allowance" />
+            <input matInput formControlName="CtcmasterMiscAllowance" placeholder="Enter Misc Allowance" type="text"
+              maxlength="20" (keypress)="validateNumberWithCommaDot($event)"
+              (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterMiscAllowance')?.invalid &&
             ctcForm.get('CtcmasterMiscAllowance')?.touched){
             <mat-error>Misc Allowance is required</mat-error>
@@ -123,7 +147,8 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Personal Tax</mat-label>
-            <input matInput formControlName="CtcmasterPt" placeholder="Enter Personal Tax" />
+            <input matInput formControlName="CtcmasterPt" placeholder="Enter Personal Tax" type="text" maxlength="20"
+              (keypress)="validateNumberWithCommaDot($event)" (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterPt')?.invalid && ctcForm.get('CtcmasterPt')?.touched){
             <mat-error>Personal Tax is required</mat-error>
             }
@@ -131,7 +156,9 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Medical Insurance</mat-label>
-            <input matInput formControlName="CtcmasterMedicalInsurance" placeholder="Enter Medical Insurance" />
+            <input matInput formControlName="CtcmasterMedicalInsurance" placeholder="Enter Medical Insurance"
+              type="text" maxlength="20" (keypress)="validateNumberWithCommaDot($event)"
+              (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterMedicalInsurance')?.invalid &&
             ctcForm.get('CtcmasterMedicalInsurance')?.touched){
             <mat-error>Medical Insurance is required</mat-error>
@@ -140,7 +167,8 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Bonus</mat-label>
-            <input matInput formControlName="CtcmasterBonus" placeholder="Enter Bonus" />
+            <input matInput formControlName="CtcmasterBonus" placeholder="Enter Bonus" type="text" maxlength="20"
+              (keypress)="validateNumberWithCommaDot($event)" (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterBonus')?.invalid && ctcForm.get('CtcmasterBonus')?.touched){
             <mat-error>Bonus is required</mat-error>
             }
@@ -152,7 +180,8 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>CTC DA</mat-label>
-            <input matInput formControlName="CtcmasterDa" placeholder="Select Basic" />
+            <input matInput formControlName="CtcmasterDa" placeholder="Select Basic" type="text" maxlength="20"
+              (keypress)="validateNumberWithCommaDot($event)" (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterDa')?.invalid && ctcForm.get('CtcmasterDa')?.touched) {
             <mat-error>DA is required</mat-error>
             }
@@ -161,7 +190,8 @@
           <mat-form-field appearance="outline">
             <mat-label>City Compensatory Alowance</mat-label>
             <input matInput formControlName="CtcmasterCityCompensatoryAlowance"
-              placeholder="Enter CityCompensatoryAlowance" />
+              placeholder="Enter CityCompensatoryAlowance" type="text" maxlength="20"
+              (keypress)="validateNumberWithCommaDot($event)" (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterCityCompensatoryAlowance')?.invalid &&
             ctcForm.get('CtcmasterCityCompensatoryAlowance')?.touched) {
             <mat-error>CityCompensatoryAlowance is required</mat-error>
@@ -170,7 +200,9 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Fuel Allowance</mat-label>
-            <input matInput formControlName="CtcmasterFuelAllowance" placeholder="Enter Fuel Allowance" />
+            <input matInput formControlName="CtcmasterFuelAllowance" placeholder="Enter Fuel Allowance" type="text"
+              maxlength="20" (keypress)="validateNumberWithCommaDot($event)"
+              (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterFuelAllowance')?.invalid &&
             ctcForm.get('CtcmasterFuelAllowance')?.touched) {
             <mat-error>Fuel Allowance is required</mat-error>
@@ -179,7 +211,8 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Gross</mat-label>
-            <input matInput formControlName="CtcmasterGross" placeholder="Enter Gross" />
+            <input matInput formControlName="CtcmasterGross" placeholder="Enter Gross" type="text" maxlength="20"
+              (keypress)="validateNumberWithCommaDot($event)" (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterGross')?.invalid && ctcForm.get('CtcmasterGross')?.touched) {
             <mat-error>Gross is required</mat-error>
             }
@@ -187,7 +220,8 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Esic</mat-label>
-            <input matInput formControlName="CtcmasterEsic" placeholder="Enter Esic" />
+            <input matInput formControlName="CtcmasterEsic" placeholder="Enter Esic" type="text" maxlength="20"
+              (keypress)="validateNumberWithCommaDot($event)" (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterEsic')?.invalid && ctcForm.get('CtcmasterEsic')?.touched) {
             <mat-error>Esic is required</mat-error>
             }
@@ -195,7 +229,9 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Performance KPA</mat-label>
-            <input matInput formControlName="CtcmasterPerformanceKpa" placeholder="Enter Performance KPA" />
+            <input matInput formControlName="CtcmasterPerformanceKpa" placeholder="Enter Performance KPA" type="text"
+              maxlength="20" (keypress)="validateNumberWithCommaDot($event)"
+              (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterPerformanceKpa')?.invalid && ctcForm.get('CtcmasterPerformanceKpa')?.touched) {
             <mat-error>Performance KPA is required</mat-error>
             }
@@ -203,7 +239,8 @@
 
           <mat-form-field appearance="outline">
             <mat-label>Mlwf</mat-label>
-            <input matInput formControlName="CtcmasterMlwf" placeholder="Enter Mlwf" />
+            <input matInput formControlName="CtcmasterMlwf" placeholder="Enter Mlwf" type="text" maxlength="20"
+              (keypress)="validateNumberWithCommaDot($event)" (paste)="onPasteNumberWithCommaDot($event)" />
             @if (ctcForm.get('CtcmasterMlwf')?.invalid && ctcForm.get('CtcmasterMlwf')?.touched) {
             <mat-error>Mlwf is required</mat-error>
             }

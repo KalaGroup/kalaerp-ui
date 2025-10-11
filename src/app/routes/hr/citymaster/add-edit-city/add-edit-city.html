@@ -31,44 +31,40 @@
       <div class="row mb-3">
         <!-- Left side (City Name, Short Name, Latitude, Longitude, Remark) -->
         <div class="col-sm-6 col-xl-6">
-       <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline">
             <mat-label>City Name</mat-label>
             <input matInput formControlName="CityName" placeholder="Enter full City name" />
-            @if (cityForm.get('CityName')?.invalid && cityForm.get('CityName')?.touched) {
-              <mat-error>City Name is required</mat-error>
-            }
+
+            <mat-error *ngIf="cityForm.get('CityName')?.invalid 
+          && cityForm.get('CityName')?.touched">
+              City is required
+            </mat-error>
           </mat-form-field>
 
-       <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline">
             <mat-label>City Short Name</mat-label>
             <input matInput formControlName="CityShortName" placeholder="Enter short name" />
+            <mat-error *ngIf="cityForm.get('CityShortName')?.invalid 
+          && cityForm.get('CityShortName')?.touched">
+              CityShortName is required
+            </mat-error>
           </mat-form-field>
 
-       <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline">
             <mat-label>Latitude</mat-label>
-            <input
-              matInput
-              formControlName="CityLatitude"
-              placeholder="Enter latitude"
-              type="number"
-            />
+            <input matInput formControlName="CityLatitude" placeholder="Enter latitude" type="number" />
           </mat-form-field>
 
-       <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline">
             <mat-label>Longitude</mat-label>
-            <input
-              matInput
-              formControlName="CityLongitude"
-              placeholder="Enter longitude"
-              type="number"
-            />
+            <input matInput formControlName="CityLongitude" placeholder="Enter longitude" type="number" />
           </mat-form-field>
 
-       <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline">
             <mat-label>City Remark</mat-label>
             <input matInput formControlName="CityRemark" placeholder="Enter remark..." />
             @if (cityForm.get('CityRemark')?.invalid && cityForm.get('CityRemark')?.touched) {
-              <mat-error>City Remark is required</mat-error>
+            <mat-error>City Remark is required</mat-error>
             }
           </mat-form-field>
 
@@ -78,11 +74,11 @@
         <!-- Right side (Country, State, District, Tier Type) -->
 
         <div class="col-sm-6 col-xl-6">
-       <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline">
             <mat-label>City Code</mat-label>
             <input matInput formControlName="CityCode" placeholder="Enter full City Code" />
             @if (cityForm.get('CityCode')?.invalid && cityForm.get('CityCode')?.touched) {
-              <mat-error>City Code is required</mat-error>
+            <mat-error>City Code is required</mat-error>
             }
           </mat-form-field>
           <br />
@@ -90,23 +86,24 @@
           <!-- Dropdowns START -->
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Country</mat-label>
-            <mat-select formControlName="CityCountryID" placeholder="Select country"  (selectionChange)="onCountryChange($event.value)">
+            <mat-select formControlName="CityCountryID" placeholder="Select country"
+              (selectionChange)="onCountryChange($event.value)">
               <mat-option>
-                <input
-                  matInput
-                  placeholder="Search country..."
-                  (click)="$event.stopPropagation()"
-                />
+                <input matInput placeholder="Search country..." (click)="$event.stopPropagation()" />
               </mat-option>
               <mat-option *ngFor="let country of filteredCountryList" [value]="country.CountryId">
                 {{ country.CountryName }}
               </mat-option>
+              @if (cityForm.get('CityCountryID')?.invalid && cityForm.get('CityCountryID')?.touched) {
+              <mat-error>Country name is required</mat-error>
+              }
             </mat-select>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>State</mat-label>
-            <mat-select formControlName="CityStateID" placeholder="Select state" (selectionChange)="onStateChange($event.value)">
+            <mat-select formControlName="CityStateID" placeholder="Select state"
+              (selectionChange)="onStateChange($event.value)">
               <mat-option *ngFor="let state of filteredStateList" [value]="state.StateId">
                 {{ state.StateName }}
               </mat-option>
@@ -116,10 +113,7 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>District</mat-label>
             <mat-select formControlName="CityDistrictID" placeholder="Select district">
-              <mat-option
-                *ngFor="let district of filteredDistrictList"
-                [value]="district.DistrictId"
-              >
+              <mat-option *ngFor="let district of filteredDistrictList" [value]="district.DistrictId">
                 {{ district.DistrictName }}
               </mat-option>
             </mat-select>
@@ -141,13 +135,8 @@
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
-            <button
-              mat-flat-button
-              color="primary"
-              class="btn-primary px-4"
-              [disabled]="cityForm.invalid"
-              (click)="onSubmit()"
-            >
+            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="cityForm.invalid"
+              (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>
