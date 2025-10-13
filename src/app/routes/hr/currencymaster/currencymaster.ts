@@ -179,8 +179,6 @@ export class Currencymaster implements OnInit {
   }
 
   edit(record: any) {
-    debugger
-
     this.dialog.open(AddEditCurrency, {
       width: '80%',
       height: '70%',
@@ -228,7 +226,6 @@ export class Currencymaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         console.log('Added Currency:', result);
         const payload: ICurrency = {
           CurrencyName: result.CurrencyName,
@@ -259,7 +256,6 @@ export class Currencymaster implements OnInit {
   }
 
   delete(record: ICurrency): void {
-    debugger
     console.log('Deleting currency:', record.CurrencyName);
     // Implement actual delete logic here
     this.currencyService.deleteCurrency(record.CurrencyId).subscribe({
@@ -269,7 +265,6 @@ export class Currencymaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting currency:', err);
-        this.toastService.showError('Failed to delete currency. It might be in use.');
         // Show error message
       }
     });

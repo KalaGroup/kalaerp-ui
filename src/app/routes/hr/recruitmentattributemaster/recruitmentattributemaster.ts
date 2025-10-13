@@ -173,8 +173,8 @@ export class Recruitmentattributemaster implements OnInit {
     this.dialog.open(AddEditRecruitmentattribute, {
       width: '70%',
       height: '70%',
-      maxWidth: '100vw',
-      maxHeight: '100vh',
+      maxWidth: '80vw',
+      maxHeight: '80vh',
       data: { recruitmentattribute: record },
     })
       .afterClosed()
@@ -199,7 +199,7 @@ export class Recruitmentattributemaster implements OnInit {
         console.log('Update payload:', updatePayload);
         this.RecruitmentAttributeServices.updateRecruitmentAttribute(updatePayload).subscribe({
           next: () => {
-           
+
             this.toastService.showSuccess("updated successfully");
             this.getAllRecruitmentAttribute();
           },
@@ -237,13 +237,12 @@ export class Recruitmentattributemaster implements OnInit {
 
         this.RecruitmentAttributeServices.insertRecruitmentAttribute(payload).subscribe({
           next: () => {
-           
+
             this.toastService.showSuccess("recruitment added successfully ");
             this.getAllRecruitmentAttribute();
           },
           error: (err) => {
             console.error('Error while adding recruitment:', err);
-            this.toastService.showError('Failed to add recruitment. Please check inputs.');
           }
         });
       }
@@ -255,7 +254,7 @@ export class Recruitmentattributemaster implements OnInit {
     this.RecruitmentAttributeServices.deleteRecruitmentAttribute(value.RecruitmentAttributeId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-      
+
         this.toastService.showSuccess("delete success ");
         this.getAllRecruitmentAttribute();
       },

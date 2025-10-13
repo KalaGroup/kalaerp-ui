@@ -54,22 +54,57 @@
 
       <div class="row mb-3">
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Company Name</mat-label>
-            <input matInput formControlName="CompanyName" placeholder="Enter full company name"
-                   maxlength="200"/>
-            @if (companyForm.get('CompanyName')?.invalid && companyForm.get('CompanyName')?.touched) {
-              <mat-error>Company Name is required</mat-error>
-            }
+            <input matInput formControlName="CompanyName" placeholder="Enter full company name" maxlength="200"
+              (keypress)="allowCompanyNameChars($event)" />
+
+            <!-- Required -->
+            <mat-error
+              *ngIf="companyForm.get('CompanyName')?.hasError('required') && companyForm.get('CompanyName')?.touched">
+              Company Name is required
+            </mat-error>
+
+            <!-- Pattern -->
+            <mat-error
+              *ngIf="companyForm.get('CompanyName')?.hasError('pattern') && companyForm.get('CompanyName')?.touched">
+              Only letters, numbers, and single spaces allowed (min 2 characters)
+            </mat-error>
+
+            <!-- Max Length -->
+            <mat-error
+              *ngIf="companyForm.get('CompanyName')?.hasError('maxlength') && companyForm.get('CompanyName')?.touched">
+              Company Name cannot exceed 200 characters
+            </mat-error>
           </mat-form-field>
+
         </div>
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
             <mat-label>Short Name</mat-label>
-            <input matInput formControlName="ShortName" placeholder="e.g., ABC Corp, XYZ Ltd"
-                   maxlength="50"/>
+            <input matInput formControlName="ShortName" placeholder="e.g., ABC Corp, XYZ Ltd" maxlength="50"
+              (keypress)="allowShortNameChars($event)" />
+
+            <!-- Required -->
+            <mat-error
+              *ngIf="companyForm.get('ShortName')?.hasError('required') && companyForm.get('ShortName')?.touched">
+              Short Name is required
+            </mat-error>
+
+            <!-- Pattern -->
+            <mat-error
+              *ngIf="companyForm.get('ShortName')?.hasError('pattern') && companyForm.get('ShortName')?.touched">
+              Only letters, numbers, spaces, and ., - are allowed (2-50 characters)
+            </mat-error>
+
+            <!-- Max Length -->
+            <mat-error
+              *ngIf="companyForm.get('ShortName')?.hasError('maxlength') && companyForm.get('ShortName')?.touched">
+              Short Name cannot exceed 50 characters
+            </mat-error>
           </mat-form-field>
         </div>
+
       </div>
 
       <div class="row mb-3">
@@ -81,7 +116,7 @@
                 <input matInput placeholder="Search company entity type..." [formControl]="compEntityTypeSearchControl"
                   (click)="$event.stopPropagation()" />
               </mat-option>
-             <mat-option value="">Select Company Entity</mat-option>
+              <mat-option value="">Select Company Entity</mat-option>
               @for (compEntityType of filteredCompEntityTypeList; track compEntityType.CompEntityTypeId) {
               <mat-option [value]="compEntityType.CompEntityTypeId">
                 {{ compEntityType.CompanyEntityTypeName }}
@@ -91,23 +126,23 @@
           </mat-form-field>
         </div>
         <div class="col-sm-4 col-xl-4">
-            <mat-form-field appearance="outline">
-              <mat-label>Established Date</mat-label>
-              <input matInput [matDatepicker]="establishedDatePicker" formControlName="EstablishedDate"
-                [max]="maxDate" [min]="minDate" readonly>
-              <mat-datepicker-toggle matIconSuffix [for]="establishedDatePicker">
-                <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
-              </mat-datepicker-toggle>
-              <mat-datepicker #establishedDatePicker></mat-datepicker>
-              @if (companyForm.get('EstablishedDate')?.hasError('required')) {
-              <mat-error>
-                Established date is required
-              </mat-error>
-              }
-            </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Established Date</mat-label>
+            <input matInput [matDatepicker]="establishedDatePicker" formControlName="EstablishedDate" [max]="maxDate"
+              [min]="minDate" readonly>
+            <mat-datepicker-toggle matIconSuffix [for]="establishedDatePicker">
+              <mat-icon matDatepickerToggleIcon>calendar_today</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #establishedDatePicker></mat-datepicker>
+            @if (companyForm.get('EstablishedDate')?.hasError('required')) {
+            <mat-error>
+              Established date is required
+            </mat-error>
+            }
+          </mat-form-field>
         </div>
         <div class="col-sm-4 col-xl-4">
-           <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline">
             <mat-label>Currency</mat-label>
             <mat-select formControlName="CurrencyId" placeholder="Select currency">
               <mat-option>
@@ -166,11 +201,11 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Ownership Percentage</mat-label>
-            <input matInput formControlName="OwnershipPercentage" type="number"
-                   min="0" max="100" step="0.01" placeholder="100.00" />
+            <input matInput formControlName="OwnershipPercentage" type="number" min="0" max="100" step="0.01"
+              placeholder="100.00" />
             <mat-hint>Enter percentage (0-100)</mat-hint>
             @if (companyForm.get('OwnershipPercentage')?.invalid && companyForm.get('OwnershipPercentage')?.touched) {
-              <mat-error>Ownership Percentage is required</mat-error>
+            <mat-error>Ownership Percentage is required</mat-error>
             }
           </mat-form-field>
         </div>
@@ -184,27 +219,24 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Email ID</mat-label>
-            <input matInput formControlName="EmailID" placeholder="company@example.com"
-                   type="email" maxlength="100"/>
+            <input matInput formControlName="EmailID" placeholder="company@example.com" type="email" maxlength="100" />
             @if (companyForm.get('EmailID')?.invalid && companyForm.get('EmailID')?.touched) {
-              <mat-error>Valid Email ID is required</mat-error>
+            <mat-error>Valid Email ID is required</mat-error>
             }
           </mat-form-field>
         </div>
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Phone Number</mat-label>
-            <input matInput formControlName="PhoneNumber" placeholder="+91-1234567890"
-                   maxlength="20"/>
+            <input matInput formControlName="PhoneNumber" placeholder="+91-1234567890" maxlength="20" />
           </mat-form-field>
         </div>
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Website</mat-label>
-            <input matInput formControlName="Website" placeholder="https://www.company.com"
-                   maxlength="200"/>
+            <input matInput formControlName="Website" placeholder="https://www.company.com" maxlength="200" />
             @if (companyForm.get('Website')?.invalid && companyForm.get('Website')?.touched) {
-              <mat-error>Enter valid website URL</mat-error>
+            <mat-error>Enter valid website URL</mat-error>
             }
           </mat-form-field>
         </div>
@@ -215,7 +247,7 @@
           <mat-form-field appearance="outline">
             <mat-label>Social Media Link</mat-label>
             <input matInput formControlName="SocialMedialink" placeholder="@companyname or social media URL"
-                   maxlength="200"/>
+              maxlength="200" />
           </mat-form-field>
         </div>
         <div class="col-sm-6 col-xl-6">
@@ -227,7 +259,7 @@
               <mat-icon>cloud_upload</mat-icon>
               Choose Logo File
             </button>
-             <!-- Show selected file name -->
+            <!-- Show selected file name -->
             @if (selectedLogoFile) {
             <div class="selected-file">
               <mat-icon>image</mat-icon>
@@ -235,17 +267,17 @@
               <button mat-icon-button (click)="clearLogo()" class="clear-file-btn">
                 <mat-icon>close</mat-icon>
               </button>
-               @if (logoPreview) {
-            <div class="logo-preview">
-              <img [src]="logoPreview" alt="Logo preview" class="preview-image">
-            </div>
-            }
+              @if (logoPreview) {
+              <div class="logo-preview">
+                <img [src]="logoPreview" alt="Logo preview" class="preview-image">
+              </div>
+              }
             </div>
             }
             <div class="file-upload-hint">Upload company logo (image files only)</div>
 
           </div>
-       </div>
+        </div>
       </div>
 
       <!-- Legal Information -->
@@ -256,30 +288,30 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>PAN</mat-label>
-            <input matInput formControlName="PAN" placeholder="ABCDE1234F"
-                   maxlength="10" style="text-transform: uppercase"/>
+            <input matInput formControlName="PAN" placeholder="ABCDE1234F" maxlength="10"
+              style="text-transform: uppercase" />
             @if (companyForm.get('PAN')?.invalid && companyForm.get('PAN')?.touched) {
-              <mat-error>Enter valid PAN number (ABCDE1234F format)</mat-error>
+            <mat-error>Enter valid PAN number (ABCDE1234F format)</mat-error>
             }
           </mat-form-field>
         </div>
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>GST Number</mat-label>
-            <input matInput formControlName="GST" placeholder="27ABCDE1234F1Z5"
-                   maxlength="15" style="text-transform: uppercase"/>
+            <input matInput formControlName="GST" placeholder="27ABCDE1234F1Z5" maxlength="15"
+              style="text-transform: uppercase" />
             @if (companyForm.get('GST')?.invalid && companyForm.get('GST')?.touched) {
-              <mat-error>Enter valid GST number</mat-error>
+            <mat-error>Enter valid GST number</mat-error>
             }
           </mat-form-field>
         </div>
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>CIN</mat-label>
-            <input matInput formControlName="CIN" placeholder="U72900DL2020PTC123456"
-                   maxlength="21" style="text-transform: uppercase"/>
+            <input matInput formControlName="CIN" placeholder="U72900DL2020PTC123456" maxlength="21"
+              style="text-transform: uppercase" />
             @if (companyForm.get('CIN')?.invalid && companyForm.get('CIN')?.touched) {
-              <mat-error>Enter valid CIN number</mat-error>
+            <mat-error>Enter valid CIN number</mat-error>
             }
           </mat-form-field>
         </div>
@@ -293,9 +325,8 @@
         <div class="col-sm-12 col-xl-12">
           <mat-form-field appearance="outline">
             <mat-label>Registered Address</mat-label>
-            <textarea matInput formControlName="RegisteredAddress"
-                     placeholder="Enter complete registered address"
-                     rows="2" maxlength="500"></textarea>
+            <textarea matInput formControlName="RegisteredAddress" placeholder="Enter complete registered address"
+              rows="2" maxlength="500"></textarea>
           </mat-form-field>
         </div>
       </div>
@@ -327,8 +358,7 @@
         <div class="col-sm-3 col-xl-3">
           <mat-form-field appearance="outline">
             <mat-label>State</mat-label>
-            <mat-select formControlName="RegisteredStateID"
-              (selectionChange)="onRegisteredStateChange($event.value)">
+            <mat-select formControlName="RegisteredStateID" (selectionChange)="onRegisteredStateChange($event.value)">
               <mat-option>
                 <input matInput placeholder="Search state..." [formControl]="registeredStateSearchControl"
                   (click)="$event.stopPropagation()" />
@@ -369,7 +399,7 @@
           </mat-form-field>
         </div>
         <div class="col-sm-3 col-xl-3">
-            <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline">
             <mat-label>City</mat-label>
             <mat-select formControlName="RegisteredCityID">
               <mat-option>
@@ -396,10 +426,9 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Pin Code</mat-label>
-            <input matInput formControlName="RegisteredPinCode" placeholder="123456"
-                   maxlength="10"/>
+            <input matInput formControlName="RegisteredPinCode" placeholder="123456" maxlength="10" />
             @if (companyForm.get('RegisteredPinCode')?.invalid && companyForm.get('RegisteredPinCode')?.touched) {
-              <mat-error>Pin Code is required</mat-error>
+            <mat-error>Pin Code is required</mat-error>
             }
           </mat-form-field>
         </div>
@@ -422,8 +451,7 @@
           <mat-form-field appearance="outline">
             <mat-label>Corporate Address</mat-label>
             <textarea matInput formControlName="CorporateAddress"
-                     placeholder="Enter corporate address (if different from registered)"
-                     rows="2" maxlength="500"></textarea>
+              placeholder="Enter corporate address (if different from registered)" rows="2" maxlength="500"></textarea>
           </mat-form-field>
         </div>
       </div>
@@ -432,8 +460,8 @@
         <div class="col-sm-3 col-xl-3">
           <mat-form-field appearance="outline">
             <mat-label>Country</mat-label>
-            <mat-select formControlName="CorporateCountryID"
-              (selectionChange)="onCorporateCountryChange($event.value)" placeholder="Select country">
+            <mat-select formControlName="CorporateCountryID" (selectionChange)="onCorporateCountryChange($event.value)"
+              placeholder="Select country">
               <mat-option>
                 <input matInput placeholder="Search country..." [formControl]="corporateCountrySearchControl"
                   (click)="$event.stopPropagation()" />
@@ -452,10 +480,10 @@
           </mat-form-field>
         </div>
         <div class="col-sm-3 col-xl-3">
-           <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline">
             <mat-label>State</mat-label>
-            <mat-select formControlName="CorporateStateID"
-              (selectionChange)="onCorporateStateChange($event.value)" placeholder="Select state">
+            <mat-select formControlName="CorporateStateID" (selectionChange)="onCorporateStateChange($event.value)"
+              placeholder="Select state">
               <mat-option>
                 <input matInput placeholder="Search state..." [formControl]="corporateStateSearchControl"
                   (click)="$event.stopPropagation()" />
@@ -474,47 +502,47 @@
           </mat-form-field>
         </div>
         <div class="col-sm-3 col-xl-3">
-            <mat-form-field appearance="outline">
-              <mat-label>District</mat-label>
-              <mat-select formControlName="CorporateDistrictID"
-                (selectionChange)="onCorporateDistrictChange($event.value)" placeholder="Select district">
-                <mat-option>
-                  <input matInput placeholder="Search district..." [formControl]="corporateDistrictSearchControl"
-                    (click)="$event.stopPropagation()" />
-                </mat-option>
-                <mat-option value="">Select District</mat-option>
-                @for (corDistrict of filteredCorporateDistrictList; track corDistrict.DistrictId) {
-                <mat-option [value]="corDistrict.DistrictId">
-                  {{ corDistrict.DistrictName }}
-                </mat-option>
-                }
-              </mat-select>
-              @if (companyForm.get('CorporateDistrictID')?.invalid &&
-              companyForm.get('CorporateDistrictID')?.touched) {
-              <mat-error>District is required</mat-error>
+          <mat-form-field appearance="outline">
+            <mat-label>District</mat-label>
+            <mat-select formControlName="CorporateDistrictID"
+              (selectionChange)="onCorporateDistrictChange($event.value)" placeholder="Select district">
+              <mat-option>
+                <input matInput placeholder="Search district..." [formControl]="corporateDistrictSearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+              <mat-option value="">Select District</mat-option>
+              @for (corDistrict of filteredCorporateDistrictList; track corDistrict.DistrictId) {
+              <mat-option [value]="corDistrict.DistrictId">
+                {{ corDistrict.DistrictName }}
+              </mat-option>
               }
-            </mat-form-field>
+            </mat-select>
+            @if (companyForm.get('CorporateDistrictID')?.invalid &&
+            companyForm.get('CorporateDistrictID')?.touched) {
+            <mat-error>District is required</mat-error>
+            }
+          </mat-form-field>
         </div>
         <div class="col-sm-3 col-xl-3">
-           <mat-form-field appearance="outline">
-              <mat-label>City</mat-label>
-              <mat-select formControlName="CorporateCityID">
-                <mat-option>
-                  <input matInput placeholder="Search city..." [formControl]="corporateCitySearchControl"
-                    (click)="$event.stopPropagation()" />
-                </mat-option>
-                <mat-option value="">Select City</mat-option>
-                @for (corDistrict of filteredCorporateCityList; track corDistrict.CityId) {
-                <mat-option [value]="corDistrict.CityId">
-                  {{ corDistrict.CityName }}
-                </mat-option>
-                }
-              </mat-select>
-              @if (companyForm.get('CorporateCityID')?.invalid &&
-              companyForm.get('CorporateCityID')?.touched) {
-              <mat-error>City is required</mat-error>
+          <mat-form-field appearance="outline">
+            <mat-label>City</mat-label>
+            <mat-select formControlName="CorporateCityID">
+              <mat-option>
+                <input matInput placeholder="Search city..." [formControl]="corporateCitySearchControl"
+                  (click)="$event.stopPropagation()" />
+              </mat-option>
+              <mat-option value="">Select City</mat-option>
+              @for (corDistrict of filteredCorporateCityList; track corDistrict.CityId) {
+              <mat-option [value]="corDistrict.CityId">
+                {{ corDistrict.CityName }}
+              </mat-option>
               }
-            </mat-form-field>
+            </mat-select>
+            @if (companyForm.get('CorporateCityID')?.invalid &&
+            companyForm.get('CorporateCityID')?.touched) {
+            <mat-error>City is required</mat-error>
+            }
+          </mat-form-field>
         </div>
       </div>
 
@@ -522,8 +550,7 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Pin Code</mat-label>
-            <input matInput formControlName="CorporatePinCode" placeholder="123456"
-                   maxlength="10"/>
+            <input matInput formControlName="CorporatePinCode" placeholder="123456" maxlength="10" />
           </mat-form-field>
         </div>
       </div>
@@ -568,24 +595,24 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Location Advantage Score</mat-label>
-            <input matInput formControlName="LocationAdvantageScore" type="number"
-                   min="0" max="10" step="0.01" placeholder="0.00" />
+            <input matInput formControlName="LocationAdvantageScore" type="number" min="0" max="10" step="0.01"
+              placeholder="0.00" />
             <mat-hint>Scale: 0-10</mat-hint>
           </mat-form-field>
         </div>
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Talent Accessibility Score</mat-label>
-            <input matInput formControlName="TalentAccessibilityScore" type="number"
-                   min="0" max="10" step="0.01" placeholder="0.00" />
+            <input matInput formControlName="TalentAccessibilityScore" type="number" min="0" max="10" step="0.01"
+              placeholder="0.00" />
             <mat-hint>Scale: 0-10</mat-hint>
           </mat-form-field>
         </div>
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Cost Efficiency Rating</mat-label>
-            <input matInput formControlName="CostEfficiencyRating" type="number"
-                   min="0" max="10" step="0.01" placeholder="0.00" />
+            <input matInput formControlName="CostEfficiencyRating" type="number" min="0" max="10" step="0.01"
+              placeholder="0.00" />
             <mat-hint>Scale: 0-10</mat-hint>
           </mat-form-field>
         </div>
@@ -599,20 +626,18 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
             <mat-label>Company Remarks</mat-label>
-            <textarea matInput formControlName="CompanyRemark"
-                     placeholder="Company remarks and notes"
-                     rows="3" maxlength="200"></textarea>
+            <textarea matInput formControlName="CompanyRemark" placeholder="Company remarks and notes" rows="3"
+              maxlength="200"></textarea>
             @if (companyForm.get('CompanyRemark')?.invalid && companyForm.get('CompanyRemark')?.touched) {
-              <mat-error>Company Remarks is required</mat-error>
+            <mat-error>Company Remarks is required</mat-error>
             }
           </mat-form-field>
         </div>
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
             <mat-label>Additional Remarks</mat-label>
-            <textarea matInput formControlName="CompanyRemark2"
-                     placeholder="Additional remarks (optional)"
-                     rows="3" maxlength="200"></textarea>
+            <textarea matInput formControlName="CompanyRemark2" placeholder="Additional remarks (optional)" rows="3"
+              maxlength="200"></textarea>
           </mat-form-field>
         </div>
       </div>
@@ -626,7 +651,7 @@
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
             <button mat-flat-button color="primary" class="btn-primary px-4"
-               [disabled]="!isEditMode && companyForm.invalid" (click)="onSubmit()">
+              [disabled]="!isEditMode && companyForm.invalid" (click)="onSubmit()">
               <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
               {{ isEditMode ? 'Update' : 'Save' }}
             </button>
@@ -636,12 +661,12 @@
               Cancel
             </button>
 
-          @if (!isEditMode) {
-          <button mat-button type="button" class="btn-outline px-4" (click)="onReset()">
-            <mat-icon>refresh</mat-icon>
-            Reset
-          </button>
-         }
+            @if (!isEditMode) {
+            <button mat-button type="button" class="btn-outline px-4" (click)="onReset()">
+              <mat-icon>refresh</mat-icon>
+              Reset
+            </button>
+            }
           </div>
         </div>
       </div>

@@ -181,7 +181,6 @@ export class Rolesmaster {
   ];
 
   loadAllRole() {
-    debugger;
     this.roleService.getAllRole().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
@@ -198,8 +197,8 @@ export class Rolesmaster {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditRole, {
-      width: '80%',
-      height: '80%',
+      width: '100%',
+      height: '100%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {},
@@ -245,9 +244,7 @@ export class Rolesmaster {
                 this.toastService.showError(message);
               });
             } else {
-              this.toastService.showError(
-                'Failed to add Role. Please verify Role details and try again.'
-              );
+
             }
           },
         });
@@ -256,11 +253,10 @@ export class Rolesmaster {
   }
 
   edit(record: any) {
-    debugger;
     this.dialog
       .open(AddEditRole, {
-        width: '80%',
-        height: '80%',
+        width: '100%',
+        height: '100%',
         maxWidth: '100vw',
         maxHeight: '100vh',
         data: { role: record },
@@ -283,7 +279,6 @@ export class Rolesmaster {
             CreatedBy: result.CreatedBy,
             descriptions: result.descriptions,
           };
-          debugger;
           console.log('Update payload:', updatePayload);
           this.roleService.updateRole(updatePayload).subscribe({
             next: response => {
@@ -305,7 +300,7 @@ export class Rolesmaster {
   }
 
   save(record: any): void {
-    
+
     console.log('Saving record:', record);
     this.closeDialog();
   }

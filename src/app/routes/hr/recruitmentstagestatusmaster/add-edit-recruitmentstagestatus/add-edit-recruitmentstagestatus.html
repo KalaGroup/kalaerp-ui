@@ -30,11 +30,16 @@
           <mat-form-field appearance="outline">
             <mat-label>Recruitment Stage Status Name</mat-label>
             <input matInput formControlName="RecruitmentStageStatusName"
-              placeholder="Enter Recruitment Stage Status Name" />
-            @if (RecruitmentStageStatusForm.get('RecruitmentStageStatusName')?.invalid &&
-            RecruitmentStageStatusForm.get('RecruitmentStageStatusName')?.touched) {
-            <mat-error>Recruitment Stage Status Name is required</mat-error>
-            }
+              placeholder="Enter Recruitment Stage Status Name" maxlength="50" (keypress)="allowLettersAndSpace($event)"
+              (paste)="blockInvalidPaste($event)" />
+            <mat-error
+              *ngIf="RecruitmentStageStatusForm.get('RecruitmentStageStatusName')?.hasError('required') && RecruitmentStageStatusForm.get('RecruitmentStageStatusName')?.touched">
+              Recruitment Stage Status Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="RecruitmentStageStatusForm.get('RecruitmentStageStatusName')?.hasError('pattern') && RecruitmentStageStatusForm.get('RecruitmentStageStatusName')?.touched">
+              Only letters and spaces allowed (2–50 characters)
+            </mat-error>
           </mat-form-field>
 
 

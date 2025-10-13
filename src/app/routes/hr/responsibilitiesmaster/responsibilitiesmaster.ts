@@ -182,7 +182,6 @@ export class Responsibilitiesmaster {
   }
 
   edit(record: any) {
-    debugger;
     // Open dialog, pass in the record
     this.dialog
       .open(AddEditResponsibilities, {
@@ -195,7 +194,6 @@ export class Responsibilitiesmaster {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          debugger;
           const payload = {
             ResposibilitiesId: record.ResponsibilitiesId,
             ResposibilitiesGradeId: result.GradeID,
@@ -216,7 +214,6 @@ export class Responsibilitiesmaster {
             },
             error: err => {
               console.error('Error updating responsibilities:', err);
-              this.toastService.showError('Failed to update responsibilities. Please try again.');
               this.loadAllResponsibilities();
             },
           });
@@ -256,7 +253,6 @@ export class Responsibilitiesmaster {
           },
           error: err => {
             console.error('Error adding responsibilities:', err);
-            this.toastService.showError('Failed to add responsibilities. Please try again.');
             this.loadAllResponsibilities();
           },
         });
@@ -274,7 +270,6 @@ export class Responsibilitiesmaster {
   }
 
   delete(value: any) {
-    debugger;
     console.log('Deleting record:', value);
     this.responsibilitiesmstService.deleteResponsibilities(value.ResponsibilitiesId).subscribe({
       next: res => {
@@ -284,7 +279,6 @@ export class Responsibilitiesmaster {
       },
       error: err => {
         console.error('Error deleting responsibilities:', err);
-        this.toastService.showError('Failed to delete responsibilities. Please try again.');
         this.loadAllResponsibilities();
       },
     });

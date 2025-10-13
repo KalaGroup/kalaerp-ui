@@ -221,7 +221,6 @@ export class Positionmaster {
   ];
 
   loadAllPosition() {
-    debugger;
     this.positionService.getAllPosition().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
@@ -237,7 +236,6 @@ export class Positionmaster {
   }
 
   openAddDialog() {
-    debugger;
     const dialogRef = this.dialog.open(AddEditPosition, {
       width: '100%',
       height: '100%',
@@ -248,7 +246,6 @@ export class Positionmaster {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         console.log('Added Position:', result);
       }
       this.positionService.insertPosition(result).subscribe({
@@ -259,7 +256,6 @@ export class Positionmaster {
         },
         error: err => {
           console.error('Error while adding Position:', err);
-          this.toastService.showError('Failed to add Position. Please check inputs.');
         },
       });
     });
@@ -277,7 +273,6 @@ export class Positionmaster {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          debugger; 
           console.log('Position Updated:', result);
           // Create update payload as per your reqirements
           console.log('Update payload:', result);
@@ -289,7 +284,6 @@ export class Positionmaster {
             },
             error: err => {
               console.error('Error updating Position:', err);
-              this.toastService.showError('Failed to update Position. Please check inputs.');
               this.loadAllPosition();
             },
           });
@@ -315,7 +309,6 @@ export class Positionmaster {
       },
       error: err => {
         console.error('Error deleting Position:', err);
-        this.toastService.showError('Failed to delete Position. It might be in use.');
         this.loadAllPosition();
       },
     });

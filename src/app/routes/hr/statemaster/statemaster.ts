@@ -159,7 +159,6 @@ export class Statemaster implements OnInit {
   ];
 
   loadAllState() {
-    debugger;
     this.stateService.getAllState().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
@@ -184,7 +183,6 @@ export class Statemaster implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      debugger;
       if (result) {
         console.log('Added state:', result);
         const payload: IState = {
@@ -202,7 +200,6 @@ export class Statemaster implements OnInit {
         // Call the service to insert the state
         this.stateService.insertState(payload).subscribe({
           next: response => {
-            debugger;
 
             console.log('Line 229');
             this.toastService.showSuccess('State added successfully:', response);
@@ -246,7 +243,6 @@ export class Statemaster implements OnInit {
       })
       .afterClosed()
       .subscribe(result => {
-        debugger;
         if (result) {
           console.log('State Updated:', result);
           // Create update payload
@@ -285,7 +281,6 @@ export class Statemaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger;
     this.stateService.deleteState(value.StateId).subscribe({
       next: response => {
         console.log('State deleted successfully:', response);

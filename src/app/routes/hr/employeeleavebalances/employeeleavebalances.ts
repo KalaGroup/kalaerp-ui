@@ -256,7 +256,6 @@ export class Employeeleavebalances {
   }
 
   edit(record: any) {
-    debugger;
     this.dialog
       .open(AddEditEmployeeleavebalances, {
         width: '80%',
@@ -268,7 +267,6 @@ export class Employeeleavebalances {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          debugger;
           console.log('Leave Balance Updated:', result);
           console.log('Update payload:', result);
           this.employeeleavebalanceService.updateEmployeeLeaveBalance(result).subscribe({
@@ -279,7 +277,6 @@ export class Employeeleavebalances {
             },
             error: err => {
               console.error('Error updating Leave Balance:', err);
-              this.toastService.showError('Failed to update Leave Balance. Please check inputs.');
             },
           });
         }
@@ -296,7 +293,6 @@ export class Employeeleavebalances {
   }
 
   delete(value: any) {
-    debugger;
     this.employeeleavebalanceService.deleteEmployeeLeaveBalance(value.LeaveBalancesId).subscribe({
       next: response => {
         this.toastService.showSuccess('Leave Balance deleted successfully:', response);
@@ -305,7 +301,6 @@ export class Employeeleavebalances {
       },
       error: err => {
         console.error('Error deleting Leave Balance:', err);
-        this.toastService.showError('Failed to delete Leave Balance. It might be in use.');
       },
     });
   }

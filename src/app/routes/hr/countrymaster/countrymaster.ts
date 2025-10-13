@@ -154,7 +154,6 @@ export class Countrymaster implements OnInit {
 
 
   edit(record: any) {
-    debugger
     // Open dialog, pass in the record
     this.dialog.open(AddEditCountry, {
       width: '60%',
@@ -200,7 +199,6 @@ export class Countrymaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         console.log('Added country:', result);
         const payload: ICountry = {
           CountryCode: result.CountryCode,

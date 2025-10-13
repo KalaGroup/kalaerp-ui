@@ -184,7 +184,6 @@ export class Erppageassignmentrelationship implements OnInit {
   ];
 
   loadAllERPPageAssignmentRelationship() {
-    debugger
     this.ERPpageassignmentrelationshipservice.getAllERPPageAssignmentRelationships().subscribe({
       next: (data) => {
 
@@ -204,7 +203,6 @@ export class Erppageassignmentrelationship implements OnInit {
 
 
   edit(record: any) {
-    debugger
     this.dialog.open(AddEditPageassignmentrelationship, {
       width: '100%',
       height: '100%',
@@ -247,7 +245,6 @@ export class Erppageassignmentrelationship implements OnInit {
           },
           error: (err) => {
             console.error('Error updating record:', err);
-            this.toastService.showError('Failed to update record. Please check inputs.');
             this.loadAllERPPageAssignmentRelationship();
           }
         });
@@ -255,7 +252,6 @@ export class Erppageassignmentrelationship implements OnInit {
   }
 
   openAddDialog() {
-    debugger
     const dialogRef = this.dialog.open(AddEditPageassignmentrelationship, {
       width: '100%',
       height: '100%',
@@ -266,7 +262,6 @@ export class Erppageassignmentrelationship implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         console.log('payload', result);
         const payload: any = {
           ErppageAssignmentRelationshipId: 0, // New entry
@@ -295,7 +290,6 @@ export class Erppageassignmentrelationship implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding record:', err);
-            this.toastService.showError('Failed to add record. Please check inputs.');
           }
         });
       }
@@ -303,7 +297,6 @@ export class Erppageassignmentrelationship implements OnInit {
   }
 
   delete(value: any) {
-    debugger
     this.ERPpageassignmentrelationshipservice.deleteERPPageAssignmentRelationship(value.ErppageAssignmentRelationshipId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
@@ -313,7 +306,6 @@ export class Erppageassignmentrelationship implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting activity:', err);
-        this.toastService.showError('Failed to delete activity. It might be in use.');
       }
     });
   }

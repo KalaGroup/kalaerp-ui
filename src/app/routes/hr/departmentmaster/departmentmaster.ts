@@ -250,9 +250,6 @@ export class Departmentmaster implements OnInit {
                 this.toastService.showError(message);
               });
             } else {
-              this.toastService.showError(
-                'Failed to add Department. Please verify Department details and try again.'
-              );
             }
           },
         });
@@ -300,7 +297,6 @@ export class Departmentmaster implements OnInit {
             },
             error: err => {
               console.error('Error updating state:', err);
-              this.toastService.showError('Failed to update Department. Please check inputs.');
             },
           });
         }
@@ -325,7 +321,6 @@ export class Departmentmaster implements OnInit {
       },
       error: err => {
         console.error('Error deleting Department:', err);
-        this.toastService.showError('Failed to delete Department. It might be in use.');
       },
     });
   }

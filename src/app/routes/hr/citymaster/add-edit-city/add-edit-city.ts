@@ -6,6 +6,8 @@ import {
   Validators,
   ReactiveFormsModule,
   FormControl,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -79,10 +81,6 @@ export class AddEditCityComponent implements OnInit {
     this.cityForm = this.fb.group({
       CityId: [''],
       CreatedDate: [{ value: currentDate, disabled: true }],
-      // CityAuth: [{ value: true, disabled: !this.isEditMode }],
-      // CityIsActive: [{ value: true, disabled: !this.isEditMode }],
-      // CityIsDiscard: [{ value: false, disabled: !this.isEditMode }],
-
       CityName: ['', Validators.required],
       CityShortName: ['', Validators.required],
       CityCode: ['', Validators.required],
@@ -250,6 +248,7 @@ export class AddEditCityComponent implements OnInit {
 
   // ✅ Load tier types (static)
   private loadTierTypes(): void {
+    debugger
     this.tierTypeList = [
       { tierTypeId: 1, TierTypeName: 'Tier 1' },
       { tierTypeId: 2, TierTypeName: 'Tier 2' },
@@ -338,6 +337,7 @@ export class AddEditCityComponent implements OnInit {
 
 
   private setTierTypeForEdit(): void {
+    debugger
     let tierTypeId = null;
     const cityData = this.data.City;
 
@@ -360,6 +360,41 @@ export class AddEditCityComponent implements OnInit {
       console.log('No tier type found for:', cityData?.CityTierTypeId);
     }
   }
+
+  preventSpecialChar(event: KeyboardEvent) {
+    const pattern = /[A-Za-z]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+  blockSpaces(event: KeyboardEvent) {
+    const pattern = /[A-Za-z0-9]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+  allowOnlyLettersAndSpaces(event: KeyboardEvent) {
+    const inputChar = event.key;
+    const pattern = /^[A-Za-z ]$/;
+
+    // Block anything not a letter or space
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+
+    // Prevent leading space
+    const input = event.target as HTMLInputElement;
+    if (input.selectionStart === 0 && inputChar === ' ') {
+      event.preventDefault();
+    }
+  }
+
+
+
+
+
 
 
   // loadCountries(): void {

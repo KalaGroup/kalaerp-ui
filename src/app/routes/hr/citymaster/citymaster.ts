@@ -149,7 +149,6 @@ export class CitymasterComponent implements OnInit {
       maxHeight: '100vh',
       data: { City: record },
     }).afterClosed().subscribe(result => {
-      debugger;
       if (result) {
         console.log('City Updated:', result);
         // Create update payload
@@ -181,15 +180,13 @@ export class CitymasterComponent implements OnInit {
           },
           error: (err) => {
             console.error('Error updating City:', err);
-            this.toastService.showError('Failed to update City. Please check inputs.');
           }
         });
       }
     });
   }
 
-  openAddDialog() {
-    debugger
+  openAddDialog() {    
     const dialogRef = this.dialog.open(AddEditCityComponent, {
       width: '90%',
       height: '90%',
@@ -197,7 +194,6 @@ export class CitymasterComponent implements OnInit {
       maxHeight: '100vh',
       data: {}
     });
-    debugger
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Added City:', result);
@@ -229,7 +225,6 @@ export class CitymasterComponent implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding country:', err);
-            this.toastService.showError('Failed to add country. Please verify country details and try again.');
           }
         });
       }
@@ -245,7 +240,6 @@ export class CitymasterComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting City:', err);
-        this.toastService.showError('Failed to delete City. It might be in use.');
       }
     });
   }

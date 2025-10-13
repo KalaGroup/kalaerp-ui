@@ -25,12 +25,28 @@
         </div>
       </div>
 
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="w-100">
         <mat-label>Currency Name</mat-label>
-        <input matInput formControlName="CurrencyName" placeholder="Enter full currency name" />
-        @if (currencyForm.get('CurrencyName')?.invalid && currencyForm.get('CurrencyName')?.touched) {
-        <mat-error>Currency Name is required</mat-error>
-        }
+        <input matInput formControlName="CurrencyName" placeholder="Enter full currency name" maxlength="50"
+          (keypress)="allowOnlyLettersAndSpaces($event)" />
+
+        <!-- Required -->
+        <mat-error
+          *ngIf="currencyForm.get('CurrencyName')?.hasError('required') && currencyForm.get('CurrencyName')?.touched">
+          Currency Name is required
+        </mat-error>
+
+        <!-- Pattern -->
+        <mat-error
+          *ngIf="currencyForm.get('CurrencyName')?.hasError('pattern') && currencyForm.get('CurrencyName')?.touched">
+          Only letters and single spaces allowed (minimum 2 characters)
+        </mat-error>
+
+        <!-- Max Length -->
+        <mat-error
+          *ngIf="currencyForm.get('CurrencyName')?.hasError('maxlength') && currencyForm.get('CurrencyName')?.touched">
+          Currency Name cannot exceed 50 characters
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">

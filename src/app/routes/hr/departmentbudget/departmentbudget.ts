@@ -230,7 +230,6 @@ export class Departmentbudget implements OnInit {
           },
           error: err => {
             console.error('Error updating Department budget:', err);
-            this.toastService.showError('Error updating Department budget');
           },
         });
       });
@@ -285,10 +284,6 @@ export class Departmentbudget implements OnInit {
               });
             }
             else {
-
-              this.toastService.showError(
-                'A budget for this Financial Year and Department already exists.'
-              );
             }
           },
         });

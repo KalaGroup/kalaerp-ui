@@ -338,7 +338,7 @@ export class AddEditAuthorities {
     const desc = this.newDescription.trim();
 
     if (this.newDescription.trim() == undefined || this.newDescription.trim() == '') {
-      alert('Please Add Description.');
+      alert('Please Add Description.');//show msg 
       return;
     }
 

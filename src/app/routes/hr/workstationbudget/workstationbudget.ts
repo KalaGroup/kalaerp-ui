@@ -177,7 +177,6 @@ export class Workstationbudget implements OnInit {
   }
 
   edit(record: IWorkstationBudget) {
-    debugger;
     this.dialog.open(AddEditBudget, {
       width: '80%',
       height: '70%',
@@ -218,14 +217,12 @@ export class Workstationbudget implements OnInit {
           },
           error: (err) => {
             console.error('Error updating workstation budget:', err);
-            this.toastService.showError('Error updating workstation budget');
           }
         });
       });
   }
 
   openAddDialog() {
-    debugger;
     const dialogRef = this.dialog.open(AddEditBudget, {
       width: '60%',
       height: '60%',
@@ -236,7 +233,6 @@ export class Workstationbudget implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         const payload: IWorkstationBudget = {
           WorkstationBudgetId: 0, // New entry
           WorkstationBudgetWorkstationId: result.WorkstationBudgetWorkstationId,
@@ -275,8 +271,6 @@ export class Workstationbudget implements OnInit {
                 this.toastService.showError(message);
               });
             } else {
-              alert(` Financial Year and workstation  already exists.!`);
-              this.toastService.showError('A budget for this Financial Year and workstation already exists.');
 
             }
           },
@@ -286,7 +280,6 @@ export class Workstationbudget implements OnInit {
   }
 
   delete(value: any) {
-    debugger
     this.WorkstationBudgetservice.deleteworkstationbudget(value.WorkstationBudgetId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);

@@ -177,7 +177,6 @@ export class Profitcenterbudget implements OnInit {
   }
 
   edit(record: IProfitcenterBudget) {
-    debugger
     this.dialog.open(AddEditBudget, {
       width: '80%',
       height: '70%',
@@ -217,14 +216,12 @@ export class Profitcenterbudget implements OnInit {
           },
           error: (err) => {
             console.error('Error updating budget:', err);
-            this.toastService.showError('Failed to update budget. Please check inputs.');
           }
         });
       });
   }
 
   openAddDialog() {
-    debugger
     const dialogRef = this.dialog.open(AddEditBudget, {
       width: '60%',
       height: '60%',
@@ -235,7 +232,6 @@ export class Profitcenterbudget implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger
         const payload: IProfitcenterBudget = {
           ProfitcenterBudgetId: 0, // New entry
           ProfitcenterBudgetProfitcenterId: result.ProfitcenterBudgetProfitcenterId,
@@ -275,7 +271,6 @@ export class Profitcenterbudget implements OnInit {
               });
             } else {
           
-              this.toastService.showError('A budget for this Financial Year and  profit center budegt already exists.');
 
             }
           },
@@ -285,7 +280,6 @@ export class Profitcenterbudget implements OnInit {
   }
 
   delete(value: any) {
-    debugger
     this.Profitcenterbudgetservice.deleteProfitcenterbudget(value.ProfitcenterBudgetId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
@@ -295,7 +289,6 @@ export class Profitcenterbudget implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting Petrol:', err);
-        this.toastService.showError('Failed to delete budget. It might be in use.');
       }
     });
   }

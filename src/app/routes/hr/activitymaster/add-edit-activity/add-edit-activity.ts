@@ -123,24 +123,7 @@ export class AddEditActivity {
   }
 
 
-  // loadAllDescriptions(): void {
-  //   const activityMstId = this.data.activity.ActivityId;
-  //   this.ActivityServices.getActivityByMstId(activityMstId).subscribe({
-  //     next: res => {
-  //       console.log('Responsibilities Details Fetched successfully:', res);
-  //       this.descriptionDetails = res;
-  //       console
-  //       this.description = res.map((d: any) => ({
-  //         srno: d.SrNo,
-  //         desc: d.Description,
-  //       }));
-  //     },
-  //     error: err => {
-  //       console.error('Error fetch responsibilities details:', err);
-  //     },
-  //   });
-  // }
-
+ 
   loadAllDescriptions(): void {
     debugger
     const activityMstId = this.data.activity.ActivityId;
@@ -249,7 +232,6 @@ export class AddEditActivity {
   }
 
   private setactivityDivisionForEdit(): void {
-    debugger
     let DivisionId = null;
     const activityData = this.data.activity;
     if (activityData?.DivisionName) {

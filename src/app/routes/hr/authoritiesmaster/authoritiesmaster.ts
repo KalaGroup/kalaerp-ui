@@ -245,9 +245,7 @@ export class Authoritiesmaster {
                 this.toastService.showError(message);
               });
             } else {
-              this.toastService.showError(
-                'Failed to add Authorities. Please verify Authorities details and try again.'
-              );
+
             }
           },
         });
@@ -291,7 +289,6 @@ export class Authoritiesmaster {
             },
             error: err => {
               console.error('Error updating Authorities:', err);
-              this.toastService.showError('Failed to update Authorities. Please check inputs.');
               this.loadAllAuthorities();
             },
           });
@@ -317,7 +314,6 @@ export class Authoritiesmaster {
       },
       error: err => {
         console.error('Error deleting Authorities:', err);
-        this.toastService.showError('Failed to delete Authorities. It might be in use.');
         this.loadAllAuthorities();
       },
     });

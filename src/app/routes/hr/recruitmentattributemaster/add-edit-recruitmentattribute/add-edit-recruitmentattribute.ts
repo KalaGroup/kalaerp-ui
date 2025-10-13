@@ -99,7 +99,23 @@ export class AddEditRecruitmentattribute {
     }
   }
 
+  // Real-time typing restriction
+  allowLettersAndSpace(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    const input = event.target as HTMLInputElement;
+    if (!pattern.test(event.key) || (input.selectionStart === 0 && event.key === ' ')) {
+      event.preventDefault();
+    }
+  }
 
+  // Optional: prevent invalid paste
+  blockInvalidPaste(event: ClipboardEvent) {
+    const clipboardData = event.clipboardData?.getData('text') || '';
+    const pattern = /^[A-Za-z ]+$/;
+    if (!pattern.test(clipboardData)) {
+      event.preventDefault();
+    }
+  }
 
 
   onSubmit(): void {

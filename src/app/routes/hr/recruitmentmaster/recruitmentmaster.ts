@@ -334,7 +334,6 @@ export class Recruitmentmaster {
         },
         error: (err) => {
           console.error('Error updating Recruitment:', err);
-          this.toastService.showError('Failed to update recruitment');
           this.loadAllRecruitment();
         }
       });
@@ -353,7 +352,6 @@ export class Recruitmentmaster {
 
     dialogRef.afterClosed().subscribe(result => {
       if (!result) {
-        debugger
         console.log('payload', result);
         return;
       }
@@ -401,7 +399,6 @@ export class Recruitmentmaster {
         },
         error: (err) => {
           console.error('Error while adding Recruitment:', err);
-          this.toastService.showError('Failed to add Recruitment. Please check inputs.');
         }
       });
     });
@@ -420,7 +417,6 @@ export class Recruitmentmaster {
       },
       error: (err) => {
         console.error('Error deleting Recruitment:', err);
-        this.toastService.showError('Failed to delete recruitment');
       }
     });
   }

@@ -165,7 +165,6 @@ export class Qualificationmaster implements OnInit {
   }
 
   edit(record: IQualification) { // If you have a Qualification interface, use it here
-    // debugger; // Remove before production
 
     this.dialog.open<AddEditQualification, { qualification: IQualification }, IQualification>(AddEditQualification, {
       width: '70%',
@@ -202,7 +201,6 @@ export class Qualificationmaster implements OnInit {
           },
           error: (err) => {
             console.error('Error updating Qualification:', err);
-            this.toastService.showError('Failed to update Qualification. Please check inputs.');
           }
         });
       }
@@ -223,7 +221,6 @@ export class Qualificationmaster implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log(' Qualification data:', result);
-        debugger
         const payload: IQualification = {
           QualificationId: 0,
           QualificationCode: result.QualificationCode,
@@ -249,7 +246,6 @@ export class Qualificationmaster implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding Qualification:', err);
-            this.toastService.showError('Failed to add Qualification. Please verify the details and try again.');
           }
         });
       }
@@ -276,7 +272,6 @@ export class Qualificationmaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting Qualification:', err);
-        this.toastService.showError('Failed to delete Qualification. It might be in use.');
       }
     });
   }

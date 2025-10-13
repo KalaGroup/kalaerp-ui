@@ -33,14 +33,36 @@
         <!-- Left side  -->
         <div class="col-sm-6 col-xl-6">
           <!-- Company Entity Type Name -->
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Company Entity Type Name</mat-label>
-            <input matInput formControlName="CompanyEntityTypeName" placeholder="Enter Company EntityType Name" />
-            <mat-error
-              *ngIf="companyentitytypeForm.get('CompanyEntityTypeName')?.hasError('required') && companyentitytypeForm.get('CompanyEntityTypeName')?.touched">
-              Company Name is required
+            <input matInput formControlName="CompanyEntityTypeName" placeholder="Enter Company Entity Type Name"
+              maxlength="50" (keypress)="allowOnlyLettersAndSpaces($event)" />
+
+            <!-- Required -->
+            <mat-error *ngIf="
+      companyentitytypeForm.get('CompanyEntityTypeName')?.hasError('required') &&
+      companyentitytypeForm.get('CompanyEntityTypeName')?.touched
+    ">
+              Company Entity Type Name is required
+            </mat-error>
+
+            <!-- Pattern -->
+            <mat-error *ngIf="
+      companyentitytypeForm.get('CompanyEntityTypeName')?.hasError('pattern') &&
+      companyentitytypeForm.get('CompanyEntityTypeName')?.touched
+    ">
+              Only letters and single spaces allowed (minimum 2 characters)
+            </mat-error>
+
+            <!-- Max Length -->
+            <mat-error *ngIf="
+      companyentitytypeForm.get('CompanyEntityTypeName')?.hasError('maxlength') &&
+      companyentitytypeForm.get('CompanyEntityTypeName')?.touched
+    ">
+              Company Entity Type Name cannot exceed 50 characters
             </mat-error>
           </mat-form-field>
+
 
 
           <!-- Company Entity Type Remark -->

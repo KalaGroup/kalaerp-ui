@@ -273,7 +273,7 @@ export class Employeemaster {
         .afterClosed()
         .subscribe(result => {
           if (result) {
-            debugger;
+           
             console.table('result', result);
             this.gradeDesignationFacilityService
               .updateAllGradeCtcDesignationFacility(result.data)
@@ -304,7 +304,6 @@ export class Employeemaster {
 
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          debugger;
           console.table('result', result);
           this.gradeDesignationFacilityService.creatGradeDesignationFacility(result.data).subscribe({
             next: res => {
@@ -313,7 +312,6 @@ export class Employeemaster {
               this.loadAllGradeCtcDesignationFacility();
             },
             error: err => {
-              this.toastService.showError('Failed to add Grade and its details. Please try again.');
             },
           });
         }
@@ -330,7 +328,6 @@ export class Employeemaster {
     }
 
     delete(value: any) {
-      debugger;
       console.log('Deleting record:', value);
       this.gradeDesignationFacilityService.deleteGrade(value.GradeId).subscribe({
         next: res => {
@@ -340,7 +337,6 @@ export class Employeemaster {
         },
         error: err => {
           console.error('Error deleting grade:', err);
-          this.toastService.showError('Failed to delete grade. Please try again.');
           this.loadAllGradeCtcDesignationFacility();
         },
       });

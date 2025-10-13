@@ -147,18 +147,25 @@ export class AddEditQualification {
     this.dialogRef.close();
   }
 
-  // Allow only letters and space while typing
   allowLettersAndSpace(event: KeyboardEvent) {
-    const char = event.key;
-    if (!/^[A-Za-z ]$/.test(char)) {
+    const pattern = /^[A-Za-z ]$/;
+    const input = event.target as HTMLInputElement;
+    if (!pattern.test(event.key) || (input.selectionStart === 0 && event.key === ' ')) {
       event.preventDefault();
     }
   }
-
   // Prevent pasting invalid characters
   blockInvalidPaste(event: ClipboardEvent) {
     const pastedInput = event.clipboardData?.getData('text') ?? '';
     if (!/^[A-Za-z ]+$/.test(pastedInput)) {
+      event.preventDefault();
+    }
+  }
+
+  // Real-time typing restriction
+  allowAlphanumeric(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z0-9]$/;
+    if (!pattern.test(event.key)) {
       event.preventDefault();
     }
   }

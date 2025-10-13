@@ -32,12 +32,18 @@
                     <mat-form-field appearance="outline">
                         <mat-label>Recruitment Reference Name</mat-label>
                         <input matInput formControlName="RecruitmentReferenceName"
-                            placeholder="Enter Recruitment Reference Name" />
-                        @if (RecruitmentReferenceMasterForm.get('RecruitmentReferenceName')?.invalid &&
-                        RecruitmentReferenceMasterForm.get('RecruitmentReferenceName')?.touched) {
-                        <mat-error>Recruitment Reference Name is required</mat-error>
-                        }
+                            placeholder="Enter Recruitment Reference Name" maxlength="50"
+                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
+                        <mat-error
+                            *ngIf="RecruitmentReferenceMasterForm.get('RecruitmentReferenceName')?.hasError('required') && RecruitmentReferenceMasterForm.get('RecruitmentReferenceName')?.touched">
+                            Recruitment Reference Name is required
+                        </mat-error>
+                        <mat-error
+                            *ngIf="RecruitmentReferenceMasterForm.get('RecruitmentReferenceName')?.hasError('pattern') && RecruitmentReferenceMasterForm.get('RecruitmentReferenceName')?.touched">
+                            Only letters and spaces allowed (2–50 characters)
+                        </mat-error>
                     </mat-form-field>
+
 
 
                 </div>

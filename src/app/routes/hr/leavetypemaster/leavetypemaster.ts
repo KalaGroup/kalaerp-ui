@@ -193,7 +193,6 @@ export class Leavetypemaster implements OnInit {
 
   }
   edit(record: ILeaveTypeMaster) {
-    debugger;
     this.dialog.open(AddEditLeavetype, {
       width: '80%',
       height: '70%',
@@ -207,7 +206,6 @@ export class Leavetypemaster implements OnInit {
           console.log('Leave Type update cancelled:', result);
           return;
         }
-        debugger
         const updatePayload: ILeaveTypeMaster = {
           LeaveTypeMasterId: record.LeaveTypeMasterId,
           LeaveTypeMasterCode: result.LeaveTypeMasterCode,
@@ -242,7 +240,6 @@ export class Leavetypemaster implements OnInit {
       });
   }
   openAddDialog() {
-    debugger;
     const dialogRef = this.dialog.open(AddEditLeavetype, {
       width: '70%',
       height: '70%',
@@ -253,7 +250,6 @@ export class Leavetypemaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         const payload: ILeaveTypeMaster = {
           LeaveTypeMasterId: 0, // New entry
           LeaveTypeMasterCode: result.LeaveTypeMasterCode,
@@ -284,7 +280,6 @@ export class Leavetypemaster implements OnInit {
           },
           error: (err) => {
             console.error('Error adding Leave Type:', err);
-            this.toastService.showError("Failed to add Leave Type.");
           }
         });
       }
@@ -292,7 +287,6 @@ export class Leavetypemaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger
     this.LeaveTypeMasterservice.deleteLeaveTypemaster(value.LeaveTypeMasterId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
@@ -302,7 +296,6 @@ export class Leavetypemaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting Leave:', err);
-        this.toastService.showError('Failed to delete Leave Type. It might be in use.');
       }
     });
   }

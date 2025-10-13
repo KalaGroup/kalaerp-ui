@@ -47,11 +47,6 @@
           "type": "link"
         },
         {
-          "route": "ctcmaster",
-          "name": "ctcmaster",
-          "type": "link"
-        },
-        {
           "route": "dailyattendance",
           "name": "dailyattendance",
           "type": "link"

@@ -19,29 +19,27 @@
             <div class="row mb-3">
                 <!-- Left Column -->
                 <div class="col-md-6">
-                    <!-- Location Name -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Location Name</mat-label>
                         <input matInput formControlName="LocationName" placeholder="Enter full name"
-                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
-
-                        <mat-error *ngIf="locationForm.get('LocationName')?.hasError('required') &&
-                    locationForm.get('LocationName')?.touched">
+                            (keypress)="allowLettersAndSpace($event)" maxlength="50" />
+                        <mat-error
+                            *ngIf="locationForm.get('LocationName')?.hasError('required') && locationForm.get('LocationName')?.touched">
                             Location Name is required
                         </mat-error>
-
-                        <mat-error *ngIf="locationForm.get('LocationName')?.hasError('pattern') &&
-                    locationForm.get('LocationName')?.touched">
-                            Only letters and spaces are allowed
+                        <mat-error
+                            *ngIf="locationForm.get('LocationName')?.hasError('pattern') && locationForm.get('LocationName')?.touched">
+                            Only letters and spaces are allowed (2–50 characters)
                         </mat-error>
                     </mat-form-field>
+
 
 
                     <!-- Location Remark -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Location Remark</mat-label>
                         <input matInput formControlName="LocationRemark" placeholder="Enter remark..."
-                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
+                            (keypress)="allowLettersAndSpace($event)" />
 
                         <mat-error *ngIf="locationForm.get('LocationRemark')?.hasError('required') &&
                     locationForm.get('LocationRemark')?.touched">
@@ -61,12 +59,18 @@
                     <!-- Location Code -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Location Code</mat-label>
-                        <input matInput formControlName="LocationCode" placeholder="Enter location code" />
+                        <input matInput formControlName="LocationCode" placeholder="Enter location code" maxlength="20"
+                            (keypress)="allowAlphanumeric($event)" />
                         <mat-error
-                            *ngIf="locationForm.get('LocationCode')?.invalid && locationForm.get('LocationCode')?.touched">
+                            *ngIf="locationForm.get('LocationCode')?.hasError('required') && locationForm.get('LocationCode')?.touched">
                             Location Code is required
                         </mat-error>
+                        <mat-error
+                            *ngIf="locationForm.get('LocationCode')?.hasError('pattern') && locationForm.get('LocationCode')?.touched">
+                            Only letters and numbers allowed (2–20 characters)
+                        </mat-error>
                     </mat-form-field>
+
 
                     <!-- Profit Center Dropdown -->
                     <mat-form-field appearance="outline" class="w-100">

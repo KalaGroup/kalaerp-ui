@@ -35,7 +35,8 @@
                     <!-- Travel Class Code -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Travel Class Code</mat-label>
-                        <input matInput formControlName="ClassOfTravelCode" placeholder="Enter travel class code" />
+                        <input matInput formControlName="ClassOfTravelCode" placeholder="Enter travel class code"
+                            (keypress)="blockSpaces($event)" />
                         <mat-error
                             *ngIf="classoftravelForm.get('ClassOfTravelCode')?.hasError('required') && classoftravelForm.get('ClassOfTravelCode')?.touched">
                             Travel Class Code is required
@@ -45,12 +46,34 @@
                     <!-- Travel Class Name -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Travel Class Name</mat-label>
-                        <input matInput formControlName="ClassOfTravelName" placeholder="Enter travel class name" />
-                        <mat-error
-                            *ngIf="classoftravelForm.get('ClassOfTravelName')?.hasError('required') && classoftravelForm.get('ClassOfTravelName')?.touched">
+                        <input matInput formControlName="ClassOfTravelName" placeholder="Enter travel class name"
+                            maxlength="50" (keypress)="allowOnlyLettersAndSpaces($event)" />
+
+                        <!-- Required -->
+                        <mat-error *ngIf="
+      classoftravelForm.get('ClassOfTravelName')?.hasError('required') &&
+      classoftravelForm.get('ClassOfTravelName')?.touched
+    ">
                             Travel Class Name is required
                         </mat-error>
+
+                        <!-- Pattern -->
+                        <mat-error *ngIf="
+      classoftravelForm.get('ClassOfTravelName')?.hasError('pattern') &&
+      classoftravelForm.get('ClassOfTravelName')?.touched
+    ">
+                            Only letters and spaces allowed (minimum 2 characters)
+                        </mat-error>
+
+                        <!-- Max Length -->
+                        <mat-error *ngIf="
+      classoftravelForm.get('ClassOfTravelName')?.hasError('maxlength') &&
+      classoftravelForm.get('ClassOfTravelName')?.touched
+    ">
+                            Travel Class Name cannot exceed 50 characters
+                        </mat-error>
                     </mat-form-field>
+
 
                     <!-- DA Food Allowance Per Day -->
                     <mat-form-field appearance="outline" class="w-100">

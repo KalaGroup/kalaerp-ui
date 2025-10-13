@@ -27,7 +27,7 @@
                 <div class="col-md-6">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Two Wheeler Rate (per km)</mat-label>
-                        <input matInput formControlName="TwoWheelerPerKm" placeholder="e.g., 2.50"
+                        <input matInput formControlName="TwoWheelerPerKm" placeholder="e.g., 5 KM"
                             (keypress)="allowNumbersAndDot($event)" (paste)="blockInvalidPaste($event)" />
 
                         <mat-error *ngIf="petrolForm.get('TwoWheelerPerKm')?.hasError('required') &&
@@ -46,7 +46,7 @@
                 <div class="col-md-6">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Four Wheeler Rate (per km)</mat-label>
-                        <input matInput formControlName="FourWheelerPerKm" placeholder="e.g., 5.00"
+                        <input matInput formControlName="FourWheelerPerKm" placeholder="e.g., 5 KM"
                             (keypress)="allowNumbersAndDot($event)" (paste)="blockInvalidPaste($event)" />
 
                         <mat-error *ngIf="petrolForm.get('FourWheelerPerKm')?.hasError('required') &&

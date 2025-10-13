@@ -194,7 +194,6 @@ export class Kalaerppagedetails {
 
 
   loadAllERPPageDetails() {
-    debugger;
     this.kalaerppagedetailsService.getAllERPPageDetails().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
@@ -218,7 +217,6 @@ export class Kalaerppagedetails {
       maxHeight: '100vh',
       data: {}, // no data for add
     });
-    debugger
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         // result is already the payload built inside the dialog
@@ -240,9 +238,7 @@ export class Kalaerppagedetails {
                 }
               }
             } else {
-              this.toastService.showError(
-                'Failed to add ERP Page Details. Please verify details and try again.'
-              );
+             
             }
           }
         });
@@ -263,7 +259,6 @@ export class Kalaerppagedetails {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          debugger
           console.log('ERP Page Detail Updated:', result);
           console.log('Update payload:', result);
           this.kalaerppagedetailsService.updateERPPageDetails(result).subscribe({
@@ -274,7 +269,6 @@ export class Kalaerppagedetails {
             },
             error: err => {
               console.error('Error updating ERP Page Details:', err);
-              this.toastService.showError('Failed to update ERP Page Details. Please check inputs.');
             },
           });
         }
@@ -291,7 +285,6 @@ export class Kalaerppagedetails {
   }
 
   delete(value: any) {
-    debugger;
     this.kalaerppagedetailsService.deleteERPPageDetails(value.KalaErppageDetailsId).subscribe({
       next: response => {
         this.toastService.showSuccess('ERP Page Details deleted successfully:', response);

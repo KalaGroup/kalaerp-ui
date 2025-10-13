@@ -28,13 +28,17 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Position Code</mat-label>
-            <input matInput formControlName="PositionMasterCode" placeholder="Enter Code" />
+            <input matInput formControlName="PositionMasterCode" placeholder="Enter Code" maxlength="20"
+              (keypress)="allowAlphanumeric($event)" />
             <mat-error
-              *ngIf="positionForm.get('PositionMasterCode')?.invalid && positionForm.get('PositionMasterCode')?.touched">
+              *ngIf="positionForm.get('PositionMasterCode')?.hasError('required') && positionForm.get('PositionMasterCode')?.touched">
               Position Code is required
             </mat-error>
+            <mat-error
+              *ngIf="positionForm.get('PositionMasterCode')?.hasError('pattern') && positionForm.get('PositionMasterCode')?.touched">
+              Only letters and numbers allowed (2–20 characters)
+            </mat-error>
           </mat-form-field>
-
           <mat-form-field appearance="outline">
             <mat-label>Company Name</mat-label>
             <mat-select formControlName="PositionMasterCompanyId" placeholder="Select Company Name">
@@ -83,8 +87,18 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline">
             <mat-label>Position Name</mat-label>
-            <input matInput formControlName="PositionMasterName" placeholder="Enter Position Name" />
+            <input matInput formControlName="PositionMasterName" placeholder="Enter Position Name" maxlength="50"
+              (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
+            <mat-error
+              *ngIf="positionForm.get('PositionMasterName')?.hasError('required') && positionForm.get('PositionMasterName')?.touched">
+              Position Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="positionForm.get('PositionMasterName')?.hasError('pattern') && positionForm.get('PositionMasterName')?.touched">
+              Only letters and spaces are allowed (2–50 characters)
+            </mat-error>
           </mat-form-field>
+
 
           <mat-form-field appearance="outline">
             <mat-label>ProfitCenter Name</mat-label>

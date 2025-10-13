@@ -482,7 +482,6 @@ export class Companymaster {
   loadAllCompanies() {
     this.companyService.getAllCompanies().subscribe({
       next: data => {
-        debugger;
         this.list = data.map((item: any, index: number) => ({
           ...item,
           SNo: index + 1,
@@ -589,7 +588,6 @@ export class Companymaster {
       error: err => {
         this.loadAllCompanies();
         console.error('Error deleting company:', err);
-        this.toastService.showError('Error deleting company');
       },
     });
   }

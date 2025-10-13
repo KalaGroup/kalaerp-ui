@@ -120,7 +120,7 @@ export class AddEditDistrictComponent implements OnInit {
       console.log('Form values after patch:', this.DistrictForm.value);
     }
   }
-onSubmit(): void {
+  onSubmit(): void {
     this.DistrictForm.enable(); //important for active boolean
 
     if (this.DistrictForm.valid) {
@@ -161,7 +161,7 @@ onSubmit(): void {
     if (!countryId) {
       this.stateList = [];
       this.filteredStateList = [];
-     // this.DistrictForm.patchValue({ StateId: null, DistrictId: null }); // reset state & district
+      // this.DistrictForm.patchValue({ StateId: null, DistrictId: null }); // reset state & district
       return;
     }
 
@@ -243,4 +243,31 @@ onSubmit(): void {
       this.onStateChange(stateId);
     }
   }
+
+  allowLettersAndSpaces(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    const input = event.target as HTMLInputElement;
+    if (!pattern.test(event.key) || (input.selectionStart === 0 && event.key === ' ')) {
+      event.preventDefault();
+    }
+  }
+
+  allowUppercaseLetters(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  allowAlphanumeric(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z0-9]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  toUpperCase(event: any) {
+    event.target.value = event.target.value.toUpperCase();
+  }
+
 }

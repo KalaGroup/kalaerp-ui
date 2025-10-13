@@ -19,10 +19,15 @@
           <!-- WorkStation Code -->
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>WorkStation Code</mat-label>
-            <input matInput formControlName="WorkStationCode" placeholder="Enter WorkStation Code" />
+            <input matInput formControlName="WorkStationCode" placeholder="Enter WorkStation Code" maxlength="20"
+              (keypress)="allowAlphanumeric($event)" />
             <mat-error
               *ngIf="workstationForm.get('WorkStationCode')?.hasError('required') && workstationForm.get('WorkStationCode')?.touched">
               WorkStation Code is required
+            </mat-error>
+            <mat-error
+              *ngIf="workstationForm.get('WorkStationCode')?.hasError('pattern') && workstationForm.get('WorkStationCode')?.touched">
+              Only letters and numbers allowed (2–20 characters)
             </mat-error>
           </mat-form-field>
 
@@ -67,10 +72,15 @@
           <!-- WorkStation Name -->
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>WorkStation Name</mat-label>
-            <input matInput formControlName="WorkStationName" placeholder="Enter WorkStation Name" />
+            <input matInput formControlName="WorkStationName" placeholder="Enter WorkStation Name" maxlength="50"
+              (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
             <mat-error
               *ngIf="workstationForm.get('WorkStationName')?.hasError('required') && workstationForm.get('WorkStationName')?.touched">
               WorkStation Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="workstationForm.get('WorkStationName')?.hasError('pattern') && workstationForm.get('WorkStationName')?.touched">
+              Only letters and spaces allowed (2–50 characters)
             </mat-error>
           </mat-form-field>
 
@@ -78,12 +88,17 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>WorkStation Short Name</mat-label>
             <input matInput formControlName="WorkStationShortName" placeholder="Enter WorkStation Short Name"
-              (input)="toUpperCase($event)" />
+              maxlength="5" (keypress)="allowUppercase($event)" (input)="toUpperCase($event)" />
             <mat-error
               *ngIf="workstationForm.get('WorkStationShortName')?.hasError('required') && workstationForm.get('WorkStationShortName')?.touched">
               WorkStation Short Name is required
             </mat-error>
+            <mat-error
+              *ngIf="workstationForm.get('WorkStationShortName')?.hasError('pattern') && workstationForm.get('WorkStationShortName')?.touched">
+              Only uppercase letters allowed (1–5 characters)
+            </mat-error>
           </mat-form-field>
+
 
         </div>
       </div>
