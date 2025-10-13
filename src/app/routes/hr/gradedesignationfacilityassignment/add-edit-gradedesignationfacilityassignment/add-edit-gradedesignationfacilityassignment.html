@@ -16,8 +16,20 @@
             <div class="col-sm-3 col-xl-3">
               <mat-form-field appearance="outline">
                 <mat-label>Grade Code</mat-label>
-                <input matInput formControlName="GradeCode"
-                  placeholder="Enter grade code" maxlength="10" />
+                <input matInput formControlName="GradeCode" placeholder="Enter grade code" maxlength="10" (keypress)="preventSpecialChar($event)"/>
+                <!-- Whitespace error -->
+                @if (gradeForm.get('GradeCode')?.hasError('whitespace') && gradeForm.get('GradeCode')?.touched) {
+                <mat-error>Grade Code cannot be blank.</mat-error>
+                }
+                <!-- Leading/trailing space error -->
+                @if (gradeForm.get('GradeCode')?.hasError('leadingOrTrailingSpace') &&
+                gradeForm.get('GradeCode')?.touched) {
+                <mat-error>Grade Code cannot start or end with spaces</mat-error>
+                }
+                <!-- Max length error -->
+                @if (gradeForm.get('GradeCode')?.hasError('maxlength') && gradeForm.get('GradeCode')?.touched) {
+                <mat-error>Grade Code cannot exceed 6 characters</mat-error>
+                }
                 @if (gradeForm.get('GradeCode')?.invalid && gradeForm.get('GradeCode')?.touched) {
                 <mat-error>Grade Code is required</mat-error>
                 }
@@ -51,7 +63,20 @@
             <div class="col-sm-6 col-xl-6">
               <mat-form-field appearance="outline">
                 <mat-label>Grade Name</mat-label>
-                <input matInput formControlName="GradeName" placeholder="Enter grade name" maxlength="100"/>
+                <input matInput formControlName="GradeName" placeholder="Enter grade name" maxlength="100" (keypress)="preventSpecialChar($event)"/>
+                <!-- Whitespace error -->
+                @if (gradeForm.get('GradeName')?.hasError('whitespace') && gradeForm.get('GradeName')?.touched) {
+                <mat-error>Grade Name cannot be blank.</mat-error>
+                }
+                <!-- Leading/trailing space error -->
+                @if (gradeForm.get('GradeName')?.hasError('leadingOrTrailingSpace') &&
+                gradeForm.get('GradeName')?.touched) {
+                <mat-error>Grade Name cannot start or end with spaces</mat-error>
+                }
+                <!-- Max length error -->
+                @if (gradeForm.get('GradeName')?.hasError('maxlength') && gradeForm.get('GradeName')?.touched) {
+                <mat-error>Grade Name cannot exceed 100 characters</mat-error>
+                }
                 @if (gradeForm.get('GradeName')?.invalid && gradeForm.get('GradeName')?.touched) {
                 <mat-error>Grade Name is required</mat-error>
                 }
@@ -79,9 +104,18 @@
             <div class="col-sm-12 col-xl-12">
               <mat-form-field appearance="outline">
                 <mat-label>Grade Description</mat-label>
-                <textarea matInput formControlName="GradeDescription"
-                         placeholder="Enter grade description"
-                         rows="3" maxlength="100"></textarea>
+                <textarea matInput formControlName="GradeDescription" placeholder="Enter grade description" rows="3"
+                  maxlength="100"></textarea>
+                <!-- Whitespace error -->
+                @if (gradeForm.get('GradeDescription')?.hasError('whitespace') &&
+                gradeForm.get('GradeDescription')?.touched) {
+                <mat-error>Grade Description cannot be blank </mat-error>
+                }
+                <!-- Leading/trailing space error -->
+                @if (gradeForm.get('GradeDescription')?.hasError('leadingOrTrailingSpace') &&
+                gradeForm.get('GradeDescription')?.touched) {
+                <mat-error>Grade Description cannot start or end with spaces</mat-error>
+                }
                 @if (gradeForm.get('GradeDescription')?.invalid && gradeForm.get('GradeDescription')?.touched) {
                 <mat-error>Grade Description is required</mat-error>
                 }
@@ -96,8 +130,7 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Minimum Salary (CTC)</mat-label>
-                <input matInput formControlName="MinSalCTC" type="number"
-                       placeholder="0" min="0"/>
+                <input matInput formControlName="MinSalCTC" type="number" placeholder="0" min="0" />
                 @if (gradeForm.get('MinSalCTC')?.invalid && gradeForm.get('MinSalCTC')?.touched) {
                 <mat-error>Minimum Salary is required</mat-error>
                 }
@@ -106,8 +139,7 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Maximum Salary (CTC)</mat-label>
-                <input matInput formControlName="MaxSalCTC" type="number"
-                       placeholder="0" min="0"/>
+                <input matInput formControlName="MaxSalCTC" type="number" placeholder="0" min="0" />
                 @if (gradeForm.get('MaxSalCTC')?.invalid && gradeForm.get('MaxSalCTC')?.touched) {
                 <mat-error>Maximum Salary is required</mat-error>
                 }
@@ -118,24 +150,24 @@
             </div>
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
-            <mat-label>Currency</mat-label>
-            <mat-select formControlName="GradeCurrencyId" placeholder="Select currency">
-              <mat-option>
-                <input matInput placeholder="Search currency..." [formControl]="currencySearchControl"
-                  (click)="$event.stopPropagation()" />
-              </mat-option>
-              <mat-option value="">Select currency</mat-option>
-              @for (currency of filteredCurrencyList; track currency.CurrencyId) {
-              <mat-option [value]="currency.CurrencyId">
-                {{ currency.CurrencyName }}
-              </mat-option>
-              }
-            </mat-select>
+                <mat-label>Currency</mat-label>
+                <mat-select formControlName="GradeCurrencyId" placeholder="Select currency">
+                  <mat-option>
+                    <input matInput placeholder="Search currency..." [formControl]="currencySearchControl"
+                      (click)="$event.stopPropagation()" />
+                  </mat-option>
+                  <mat-option value="">Select currency</mat-option>
+                  @for (currency of filteredCurrencyList; track currency.CurrencyId) {
+                  <mat-option [value]="currency.CurrencyId">
+                    {{ currency.CurrencyName }}
+                  </mat-option>
+                  }
+                </mat-select>
 
-            @if (gradeForm.get('GradeCurrencyId')?.invalid && gradeForm.get('GradeCurrencyId')?.touched) {
-            <mat-error>Currency is required</mat-error>
-            }
-          </mat-form-field>
+                @if (gradeForm.get('GradeCurrencyId')?.invalid && gradeForm.get('GradeCurrencyId')?.touched) {
+                <mat-error>Currency is required</mat-error>
+                }
+              </mat-form-field>
             </div>
           </div>
 
@@ -154,10 +186,11 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Leave Entitlement (Annual)</mat-label>
-                <input matInput formControlName="LeaveEntitlementAnnual" type="number"
-                       placeholder="0" min="0" max="365"/>
+                <input matInput formControlName="LeaveEntitlementAnnual" type="number" placeholder="0" min="0"
+                  max="365" />
                 <mat-hint>Number of leave days per year</mat-hint>
-                @if (gradeForm.get('LeaveEntitlementAnnual')?.invalid && gradeForm.get('LeaveEntitlementAnnual')?.touched) {
+                @if (gradeForm.get('LeaveEntitlementAnnual')?.invalid &&
+                gradeForm.get('LeaveEntitlementAnnual')?.touched) {
                 <mat-error>Leave Entitlement is required</mat-error>
                 }
               </mat-form-field>
@@ -165,8 +198,7 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Probation Period</mat-label>
-                <input matInput formControlName="ProbationPeriod" type="number"
-                       placeholder="0" min="0" max="24"/>
+                <input matInput formControlName="ProbationPeriod" type="number" placeholder="0" min="0" max="24" />
                 <mat-hint>Duration in months</mat-hint>
                 @if (gradeForm.get('ProbationPeriod')?.invalid && gradeForm.get('ProbationPeriod')?.touched) {
                 <mat-error>Probation Period is required</mat-error>
@@ -176,8 +208,7 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Notice Period</mat-label>
-                <input matInput formControlName="NoticePeriod" type="number"
-                       placeholder="0" min="0" max="12"/>
+                <input matInput formControlName="NoticePeriod" type="number" placeholder="0" min="0" max="12" />
                 <mat-hint>Duration in months</mat-hint>
                 @if (gradeForm.get('NoticePeriod')?.invalid && gradeForm.get('NoticePeriod')?.touched) {
                 <mat-error>Notice Period is required</mat-error>
@@ -193,8 +224,8 @@
             <div class="col-sm-6 col-xl-6">
               <mat-form-field appearance="outline">
                 <mat-label>Experience Required</mat-label>
-                <input matInput formControlName="ExperiencedRequired" type="number"
-                       placeholder="0" min="0" max="50" step="0.5"/>
+                <input matInput formControlName="ExperiencedRequired" type="number" placeholder="0" min="0" max="50"
+                  step="0.5" />
                 <mat-hint>Years of experience required</mat-hint>
                 @if (gradeForm.get('ExperiencedRequired')?.invalid && gradeForm.get('ExperiencedRequired')?.touched) {
                 <mat-error>Experience Required is required</mat-error>
@@ -205,8 +236,7 @@
               <mat-form-field appearance="outline">
                 <mat-label>Experience Remarks</mat-label>
                 <textarea matInput formControlName="ExperiencedRemark"
-                         placeholder="Specify experience requirements and preferences"
-                         rows="3" maxlength="300"></textarea>
+                  placeholder="Specify experience requirements and preferences" rows="3" maxlength="300"></textarea>
                 @if (gradeForm.get('ExperiencedRemark')?.invalid && gradeForm.get('ExperiencedRemark')?.touched) {
                 <mat-error>Experience Remarks is required</mat-error>
                 }
@@ -221,9 +251,8 @@
             <div class="col-sm-12 col-xl-12">
               <mat-form-field appearance="outline">
                 <mat-label>Grade Remarks</mat-label>
-                <textarea matInput formControlName="GradeRemark"
-                         placeholder="Additional remarks about the grade"
-                         rows="3" maxlength="100"></textarea>
+                <textarea matInput formControlName="GradeRemark" placeholder="Additional remarks about the grade"
+                  rows="3" maxlength="100"></textarea>
                 @if (gradeForm.get('GradeRemark')?.invalid && gradeForm.get('GradeRemark')?.touched) {
                 <mat-error>Grade Remarks is required</mat-error>
                 }
@@ -270,8 +299,23 @@
                   <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Designation Code</mat-label>
-                      <input matInput formControlName="DesignationCode"
-                             placeholder="Enter designation code" maxlength="10"/>
+                      <input matInput formControlName="DesignationCode" placeholder="Enter designation code"
+                        maxlength="10" (keypress)="preventSpecialChar($event)"/>
+                      <!-- Whitespace error -->
+                      @if (designation.get('DesignationCode')?.hasError('whitespace') &&
+                      designation.get('DesignationCode')?.touched) {
+                      <mat-error>Designation Code cannot be blank.</mat-error>
+                      }
+                      <!-- Leading/trailing space error -->
+                      @if (designation.get('DesignationCode')?.hasError('leadingOrTrailingSpace') &&
+                      designation.get('DesignationCode')?.touched) {
+                      <mat-error>Designation Code cannot start or end with spaces</mat-error>
+                      }
+                      <!-- Max length error -->
+                      @if (designation.get('DesignationCode')?.hasError('maxlength') &&
+                      designation.get('DesignationCode')?.touched) {
+                      <mat-error>Designation Code cannot exceed 100 characters</mat-error>
+                      }
                       @if (designation.get('DesignationCode')?.invalid && designation.get('DesignationCode')?.touched) {
                       <mat-error>Designation Code is required</mat-error>
                       }
@@ -280,33 +324,49 @@
                   <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Designation Name</mat-label>
-                      <input matInput formControlName="DesignationName"
-                             placeholder="Enter designation name" maxlength="100"/>
+                      <input matInput formControlName="DesignationName" placeholder="Enter designation name"
+                        maxlength="100" (keypress)="preventSpecialChar($event)"/>
+                      <!-- Whitespace error -->
+                      @if (designation.get('DesignationName')?.hasError('whitespace') &&
+                      designation.get('DesignationName')?.touched) {
+                      <mat-error>Designation Name cannot be blank.</mat-error>
+                      }
+                      <!-- Leading/trailing space error -->
+                      @if (designation.get('DesignationName')?.hasError('leadingOrTrailingSpace') &&
+                      designation.get('DesignationName')?.touched) {
+                      <mat-error>Designation Name cannot start or end with spaces</mat-error>
+                      }
+                      <!-- Max length error -->
+                      @if (designation.get('DesignationName')?.hasError('maxlength') &&
+                      designation.get('DesignationName')?.touched) {
+                      <mat-error>Designation Name cannot exceed 100 characters</mat-error>
+                      }
                       @if (designation.get('DesignationName')?.invalid && designation.get('DesignationName')?.touched) {
                       <mat-error>Designation Name is required</mat-error>
                       }
                     </mat-form-field>
                   </div>
                   <div class="col-sm-4 col-xl-4">
-                      <mat-form-field appearance="outline">
-                        <mat-label>Qualification</mat-label>
-                        <mat-select formControlName="DesignationQualificationId" placeholder="Select Qualification">
-                          <mat-option>
-                            <input matInput placeholder="Search Qualification..." [formControl]="qualificationSearchControl"
-                              (click)="$event.stopPropagation()" />
-                          </mat-option>
-                          <mat-option value="">Select Qualification</mat-option>
-                          @for (qualification of filteredQualificationList; track qualification.QualificationId) {
-                          <mat-option [value]="qualification.QualificationId">
-                            {{ qualification.QualificationName }}
-                          </mat-option>
-                          }
-                        </mat-select>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Qualification</mat-label>
+                      <mat-select formControlName="DesignationQualificationId" placeholder="Select Qualification">
+                        <mat-option>
+                          <input matInput placeholder="Search Qualification..."
+                            [formControl]="qualificationSearchControl" (click)="$event.stopPropagation()" />
+                        </mat-option>
+                        <mat-option value="">Select Qualification</mat-option>
+                        @for (qualification of filteredQualificationList; track qualification.QualificationId) {
+                        <mat-option [value]="qualification.QualificationId">
+                          {{ qualification.QualificationName }}
+                        </mat-option>
+                        }
+                      </mat-select>
 
-                        @if (designation.get('DesignationQualificationId')?.invalid && designation.get('DesignationQualificationId')?.touched) {
+                      @if (designation.get('DesignationQualificationId')?.invalid &&
+                      designation.get('DesignationQualificationId')?.touched) {
                       <mat-error>Qualification is required</mat-error>
                       }
-                      </mat-form-field>
+                    </mat-form-field>
                   </div>
                 </div>
 
@@ -315,10 +375,20 @@
                     <mat-form-field appearance="outline">
                       <mat-label>Designation Description</mat-label>
                       <textarea matInput formControlName="DesignationDescription"
-                               placeholder="Enter designation description"
-                               rows="2" maxlength="100"></textarea>
-                      @if (designation.get('DesignationDescription')?.invalid && designation.get('DesignationDescription')?.touched) {
-                      <mat-error>Designation Description is required</mat-error>
+                        placeholder="Enter designation description" rows="2" maxlength="100"></textarea>
+                      <!-- Whitespace error -->
+                      @if (designation.get('DesignationDescription')?.hasError('whitespace') &&
+                      designation.get('DesignationDescription')?.touched) {
+                      <mat-error>Designation description cannot be blank.</mat-error>
+                      }
+                      <!-- Leading/trailing space error -->
+                      @if (designation.get('DesignationDescription')?.hasError('leadingOrTrailingSpace') &&
+                      designation.get('DesignationDescription')?.touched) {
+                      <mat-error>Designation description cannot start or end with spaces</mat-error>
+                      }
+                      @if (designation.get('DesignationDescription')?.invalid &&
+                      designation.get('DesignationDescription')?.touched) {
+                      <mat-error>Designation description is required</mat-error>
                       }
                     </mat-form-field>
                   </div>
@@ -329,19 +399,38 @@
                     <mat-form-field appearance="outline">
                       <mat-label>Qualification Remarks</mat-label>
                       <textarea matInput formControlName="GradeQualificationRemark"
-                               placeholder="Enter qualification remarks"
-                               rows="2" maxlength="100"></textarea>
-                      @if (designation.get('GradeQualificationRemark')?.invalid && designation.get('GradeQualificationRemark')?.touched) {
-                      <mat-error>Qualification Remarks is required</mat-error>
+                        placeholder="Enter qualification remarks" rows="2" maxlength="100"></textarea>
+                      <!-- Whitespace error -->
+                      @if (designation.get('GradeQualificationRemark')?.hasError('whitespace') &&
+                      designation.get('GradeQualificationRemark')?.touched) {
+                      <mat-error>Grade qualification remark cannot be blank.</mat-error>
+                      }
+                      <!-- Leading/trailing space error -->
+                      @if (designation.get('GradeQualificationRemark')?.hasError('leadingOrTrailingSpace') &&
+                      designation.get('GradeQualificationRemark')?.touched) {
+                      <mat-error>Grade qualification remark cannot start or end with spaces</mat-error>
+                      }
+                      @if (designation.get('GradeQualificationRemark')?.invalid &&
+                      designation.get('GradeQualificationRemark')?.touched) {
+                      <mat-error>Grade qualification remark is required</mat-error>
                       }
                     </mat-form-field>
                   </div>
                   <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Required Skills</mat-label>
-                      <textarea matInput formControlName="RequiredSkills"
-                               placeholder="Enter required skills"
-                               rows="2" maxlength="100"></textarea>
+                      <textarea matInput formControlName="RequiredSkills" placeholder="Enter required skills" rows="2"
+                        maxlength="100"></textarea>
+                      <!-- Whitespace error -->
+                      @if (designation.get('RequiredSkills')?.hasError('whitespace') &&
+                      designation.get('RequiredSkills')?.touched) {
+                      <mat-error>Required skills cannot be blank.</mat-error>
+                      }
+                      <!-- Leading/trailing space error -->
+                      @if (designation.get('RequiredSkills')?.hasError('leadingOrTrailingSpace') &&
+                      designation.get('RequiredSkills')?.touched) {
+                      <mat-error>Required skills cannot start or end with spaces</mat-error>
+                      }
                       @if (designation.get('RequiredSkills')?.invalid && designation.get('RequiredSkills')?.touched) {
                       <mat-error>Required Skills is required</mat-error>
                       }
@@ -350,11 +439,21 @@
                   <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline">
                       <mat-label>Designation Remarks</mat-label>
-                      <textarea matInput formControlName="DesignationRemark"
-                               placeholder="Enter designation remarks"
-                               rows="2" maxlength="100"></textarea>
-                      @if (designation.get('DesignationRemark')?.invalid && designation.get('DesignationRemark')?.touched) {
-                      <mat-error>Designation Remarks is required</mat-error>
+                      <textarea matInput formControlName="DesignationRemark" placeholder="Enter designation remarks"
+                        rows="2" maxlength="100"></textarea>
+                      <!-- Whitespace error -->
+                      @if (designation.get('DesignationRemark')?.hasError('whitespace') &&
+                      designation.get('DesignationRemark')?.touched) {
+                      <mat-error>Designation Remark cannot be blank.</mat-error>
+                      }
+                      <!-- Leading/trailing space error -->
+                      @if (designation.get('DesignationRemark')?.hasError('leadingOrTrailingSpace') &&
+                      designation.get('DesignationRemark')?.touched) {
+                      <mat-error>Designation Remark cannot start or end with spaces</mat-error>
+                      }
+                      @if (designation.get('DesignationRemark')?.invalid &&
+                      designation.get('DesignationRemark')?.touched) {
+                      <mat-error>Designation Remark is required</mat-error>
                       }
                     </mat-form-field>
                   </div>
@@ -379,9 +478,8 @@
 
           <div class="facility-grid">
             @for (facility of facilityList; track facility.FacilityId) {
-            <mat-checkbox [checked]="selectedFacilities.includes(facility.FacilityId)"
-                         [value]="facility.FacilityId"
-                         (change)="onFacilityChange($event)">
+            <mat-checkbox [checked]="selectedFacilities.includes(facility.FacilityId)" [value]="facility.FacilityId"
+              (change)="onFacilityChange($event)">
               {{ facility.FacilityName }}
             </mat-checkbox>
             }
@@ -428,8 +526,8 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Basic Salary</mat-label>
-                <input matInput formControlName="CTCMasterBasic" type="number"
-                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <input matInput formControlName="CTCMasterBasic" type="number" placeholder="0" min="0"
+                  (input)="calculateGross()" />
                 <mat-hint>Basic salary component</mat-hint>
                 @if (gradeForm.get('CTCMasterBasic')?.invalid && gradeForm.get('CTCMasterBasic')?.touched) {
                 <mat-error>Basic Salary is required</mat-error>
@@ -439,8 +537,8 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Dearness Allowance (DA)</mat-label>
-                <input matInput formControlName="CTCMasterDA" type="number"
-                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <input matInput formControlName="CTCMasterDA" type="number" placeholder="0" min="0"
+                  (input)="calculateGross()" />
                 <mat-hint>Dearness allowance component</mat-hint>
                 @if (gradeForm.get('CTCMasterDA')?.invalid && gradeForm.get('CTCMasterDA')?.touched) {
                 <mat-error>DA is required</mat-error>
@@ -450,8 +548,8 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>House Rent Allowance (HRA)</mat-label>
-                <input matInput formControlName="CTCMasterHRA" type="number"
-                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <input matInput formControlName="CTCMasterHRA" type="number" placeholder="0" min="0"
+                  (input)="calculateGross()" />
                 <mat-hint>House rent allowance component</mat-hint>
                 @if (gradeForm.get('CTCMasterHRA')?.invalid && gradeForm.get('CTCMasterHRA')?.touched) {
                 <mat-error>HRA is required</mat-error>
@@ -468,24 +566,24 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Conveyance Allowance</mat-label>
-                <input matInput formControlName="CTCMasterConvAllowance" type="number"
-                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <input matInput formControlName="CTCMasterConvAllowance" type="number" placeholder="0" min="0"
+                  (input)="calculateGross()" />
                 <mat-hint>Conveyance allowance</mat-hint>
               </mat-form-field>
             </div>
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>City Compensatory Allowance</mat-label>
-                <input matInput formControlName="CTCMasterCityCompensatoryAlowance" type="number"
-                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <input matInput formControlName="CTCMasterCityCompensatoryAlowance" type="number" placeholder="0"
+                  min="0" (input)="calculateGross()" />
                 <mat-hint>City compensatory allowance</mat-hint>
               </mat-form-field>
             </div>
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Leave Travel Allowance (LTA)</mat-label>
-                <input matInput formControlName="CTCMasterLeaveTravelAllowance" type="number"
-                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <input matInput formControlName="CTCMasterLeaveTravelAllowance" type="number" placeholder="0" min="0"
+                  (input)="calculateGross()" />
                 <mat-hint>Leave travel allowance</mat-hint>
               </mat-form-field>
             </div>
@@ -495,24 +593,24 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Car Allowance</mat-label>
-                <input matInput formControlName="CTCMasterCarAllowance" type="number"
-                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <input matInput formControlName="CTCMasterCarAllowance" type="number" placeholder="0" min="0"
+                  (input)="calculateGross()" />
                 <mat-hint>Car allowance</mat-hint>
               </mat-form-field>
             </div>
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Fuel Allowance</mat-label>
-                <input matInput formControlName="CTCMasterFuelAllowance" type="number"
-                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <input matInput formControlName="CTCMasterFuelAllowance" type="number" placeholder="0" min="0"
+                  (input)="calculateGross()" />
                 <mat-hint>Fuel allowance</mat-hint>
               </mat-form-field>
             </div>
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Driver Allowance</mat-label>
-                <input matInput formControlName="CTCMasterDriverAllowance" type="number"
-                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <input matInput formControlName="CTCMasterDriverAllowance" type="number" placeholder="0" min="0"
+                  (input)="calculateGross()" />
                 <mat-hint>Driver allowance</mat-hint>
               </mat-form-field>
             </div>
@@ -522,16 +620,16 @@
             <div class="col-sm-6 col-xl-6">
               <mat-form-field appearance="outline">
                 <mat-label>Miscellaneous Allowance</mat-label>
-                <input matInput formControlName="CTCMasterMiscAllowance" type="number"
-                       placeholder="0" min="0" (input)="calculateGross()"/>
+                <input matInput formControlName="CTCMasterMiscAllowance" type="number" placeholder="0" min="0"
+                  (input)="calculateGross()" />
                 <mat-hint>Miscellaneous allowance</mat-hint>
               </mat-form-field>
             </div>
             <div class="col-sm-6 col-xl-6">
               <mat-form-field appearance="outline">
                 <mat-label>Gross Salary</mat-label>
-                <input matInput formControlName="CTCMasterGross" type="number"
-                       placeholder="0" readonly class="readonly-normal"/>
+                <input matInput formControlName="CTCMasterGross" type="number" placeholder="0" readonly
+                  class="readonly-normal" />
                 <mat-hint>Auto-calculated gross salary</mat-hint>
               </mat-form-field>
             </div>
@@ -545,8 +643,7 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>PF Employee Contribution</mat-label>
-                <input matInput formControlName="CTCMasterPFEmployee" type="number"
-                       placeholder="0" min="0"/>
+                <input matInput formControlName="CTCMasterPFEmployee" type="number" placeholder="0" min="0" />
                 <mat-hint>Employee PF contribution</mat-hint>
                 @if (gradeForm.get('CTCMasterPFEmployee')?.invalid && gradeForm.get('CTCMasterPFEmployee')?.touched) {
                 <mat-error>PF Employee Contribution is required</mat-error>
@@ -556,8 +653,7 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Professional Tax (PT)</mat-label>
-                <input matInput formControlName="CTCMasterPT" type="number"
-                       placeholder="0" min="0"/>
+                <input matInput formControlName="CTCMasterPT" type="number" placeholder="0" min="0" />
                 <mat-hint>Professional tax deduction</mat-hint>
                 @if (gradeForm.get('CTCMasterPT')?.invalid && gradeForm.get('CTCMasterPT')?.touched) {
                 <mat-error>Professional Tax is required</mat-error>
@@ -567,8 +663,7 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>ESIC Employee Contribution</mat-label>
-                <input matInput formControlName="CTCMasterEsic" type="number"
-                       placeholder="0" min="0"/>
+                <input matInput formControlName="CTCMasterEsic" type="number" placeholder="0" min="0" />
                 <mat-hint>Employee ESIC contribution</mat-hint>
                 @if (gradeForm.get('CTCMasterEsic')?.invalid && gradeForm.get('CTCMasterEsic')?.touched) {
                 <mat-error>ESIC is required</mat-error>
@@ -585,8 +680,7 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>PF Employer Contribution</mat-label>
-                <input matInput formControlName="CTCMasterPFEmployer" type="number"
-                       placeholder="0" min="0"/>
+                <input matInput formControlName="CTCMasterPFEmployer" type="number" placeholder="0" min="0" />
                 <mat-hint>Employer PF contribution</mat-hint>
                 @if (gradeForm.get('CTCMasterPFEmployer')?.invalid && gradeForm.get('CTCMasterPFEmployer')?.touched) {
                 <mat-error>PF Employer Contribution is required</mat-error>
@@ -596,10 +690,10 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Medical Insurance</mat-label>
-                <input matInput formControlName="CTCMasterMedicalInsurance" type="number"
-                       placeholder="0" min="0"/>
+                <input matInput formControlName="CTCMasterMedicalInsurance" type="number" placeholder="0" min="0" />
                 <mat-hint>Medical insurance premium</mat-hint>
-                @if (gradeForm.get('CTCMasterMedicalInsurance')?.invalid && gradeForm.get('CTCMasterMedicalInsurance')?.touched) {
+                @if (gradeForm.get('CTCMasterMedicalInsurance')?.invalid &&
+                gradeForm.get('CTCMasterMedicalInsurance')?.touched) {
                 <mat-error>Medical Insurance is required</mat-error>
                 }
               </mat-form-field>
@@ -607,8 +701,7 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Gratuity</mat-label>
-                <input matInput formControlName="CTCMasterGraduity" type="number"
-                       placeholder="0" min="0"/>
+                <input matInput formControlName="CTCMasterGraduity" type="number" placeholder="0" min="0" />
                 <mat-hint>Gratuity provision</mat-hint>
                 @if (gradeForm.get('CTCMasterGraduity')?.invalid && gradeForm.get('CTCMasterGraduity')?.touched) {
                 <mat-error>Gratuity is required</mat-error>
@@ -621,10 +714,10 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Performance KPA</mat-label>
-                <input matInput formControlName="CTCMasterPerformanceKPA" type="number"
-                       placeholder="0" min="0"/>
+                <input matInput formControlName="CTCMasterPerformanceKPA" type="number" placeholder="0" min="0" />
                 <mat-hint>Performance KPA component</mat-hint>
-                @if (gradeForm.get('CTCMasterPerformanceKPA')?.invalid && gradeForm.get('CTCMasterPerformanceKPA')?.touched) {
+                @if (gradeForm.get('CTCMasterPerformanceKPA')?.invalid &&
+                gradeForm.get('CTCMasterPerformanceKPA')?.touched) {
                 <mat-error>Performance KPA is required</mat-error>
                 }
               </mat-form-field>
@@ -632,8 +725,7 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>Bonus</mat-label>
-                <input matInput formControlName="CTCMasterBonus" type="number"
-                       placeholder="0" min="0"/>
+                <input matInput formControlName="CTCMasterBonus" type="number" placeholder="0" min="0" />
                 <mat-hint>Annual bonus component</mat-hint>
                 @if (gradeForm.get('CTCMasterBonus')?.invalid && gradeForm.get('CTCMasterBonus')?.touched) {
                 <mat-error>Bonus is required</mat-error>
@@ -643,8 +735,7 @@
             <div class="col-sm-4 col-xl-4">
               <mat-form-field appearance="outline">
                 <mat-label>MLWF (Labour Welfare Fund)</mat-label>
-                <input matInput formControlName="CTCMasterMLWF" type="number"
-                       placeholder="0" min="0"/>
+                <input matInput formControlName="CTCMasterMLWF" type="number" placeholder="0" min="0" />
                 <mat-hint>Labour welfare fund contribution</mat-hint>
                 @if (gradeForm.get('CTCMasterMLWF')?.invalid && gradeForm.get('CTCMasterMLWF')?.touched) {
                 <mat-error>MLWF is required</mat-error>

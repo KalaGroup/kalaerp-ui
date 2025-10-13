@@ -1,7 +1,14 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { ReactiveFormsModule, FormsModule, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, FormArray, Validators, AbstractControl } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatStepper } from '@angular/material/stepper';
 import { MatCardModule } from '@angular/material/card';
@@ -87,23 +94,49 @@ export class AddEditGradedesignationfacilityassignment {
     this.loadFacilityDetails();
   }
 
+  noWhitespaceValidator(control: AbstractControl): ValidationErrors | null {
+    // const isWhitespace = (control.value || '').trim().length === 0;
+    // const isValid = !isWhitespace;
+    // return isValid ? null : { whitespace: true };
+    const value = control.value || '';
+    const trimmedValue = value.trim();
+
+    // ❌ Invalid if empty after trim
+    if (trimmedValue.length === 0) {
+      return { whitespace: true };
+    }
+
+    // ❌ Invalid if leading or trailing spaces exist
+    if (value !== trimmedValue) {
+      return { leadingOrTrailingSpace: true };
+    }
+
+    // ✅ Valid
+    return null;
+  }
+
+  preventSpecialChar(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z0-9]*$/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault(); // ❌ block special character input
+    }
+  }
+
   private initializeForm(): void {
-    debugger;
     const currentDate = new Date().toLocaleDateString('en-GB'); // dd/mm/yyyy format
     this.gradeForm = this.fb.group({
       GradeId: [''],
       CreatedDate: [{ value: currentDate, disabled: true }],
       // Basic Information - Step 1
-      GradeCode: [
-        {
-          value: '',
-          disabled: false,
-        },
-        [],
-      ],
-      GradeName: ['', [Validators.required, Validators.maxLength(100)]],
+      // GradeCode: [ { value: '', disabled: false, }, [Validators.maxLength(6), this.noWhitespaceValidator]],
+      GradeCode: ['', [Validators.required, Validators.maxLength(6), this.noWhitespaceValidator]],
+      GradeName: ['', [Validators.required, Validators.maxLength(100), this.noWhitespaceValidator]],
       GradeLevel: ['', [Validators.required, Validators.maxLength(100)]],
-      GradeDescription: ['', [Validators.required, Validators.maxLength(100)]],
+      GradeDescription: [
+        '',
+        [Validators.required, Validators.maxLength(100), this.noWhitespaceValidator],
+      ],
       MinSalCTC: ['', [Validators.required, Validators.min(0)]],
       MaxSalCTC: ['', [Validators.required, Validators.min(0)]],
       GradeCurrencyId: ['', [Validators.required]],
@@ -153,9 +186,11 @@ export class AddEditGradedesignationfacilityassignment {
     // Add custom validator for salary range
     this.gradeForm.addValidators(this.salaryRangeValidator);
 
+    // ✅ ADD THESE VALUE CHANGE SUBSCRIPTIONS
+    this.setupSalaryValidation();
+
     // If editing, pre-fill form with available data
     if (this.isEditMode) {
-      debugger;
       this.patchFormData();
     }
 
@@ -169,28 +204,78 @@ export class AddEditGradedesignationfacilityassignment {
     });
   }
 
+  // ✅ ADD THIS NEW METHOD
+  private setupSalaryValidation(): void {
+    // Trigger validation when MinSalCTC changes
+    this.gradeForm.get('MinSalCTC')?.valueChanges.subscribe(() => {
+      // Update MaxSalCTC validation without triggering its valueChanges
+      this.gradeForm.get('MaxSalCTC')?.updateValueAndValidity({ emitEvent: false });
+    });
+
+    // Trigger validation when MaxSalCTC changes
+    this.gradeForm.get('MaxSalCTC')?.valueChanges.subscribe(() => {
+      // Re-validate the entire form
+      this.gradeForm.updateValueAndValidity();
+    });
+  }
+
   // Create designation form group
   private createDesignationGroup(): FormGroup {
     return this.fb.group({
       DesignationId: [''],
-      DesignationCode: ['', [Validators.required, Validators.maxLength(10)]],
-      DesignationName: ['', [Validators.required, Validators.maxLength(100)]],
+      DesignationCode: [
+        '',
+        [Validators.required, Validators.maxLength(6), this.noWhitespaceValidator],
+      ],
+      DesignationName: [
+        '',
+        [Validators.required, Validators.maxLength(100), this.noWhitespaceValidator],
+      ],
       DesignationQualificationId: ['', [Validators.required]],
-      DesignationDescription: ['', [Validators.required, Validators.maxLength(100)]],
-      GradeQualificationRemark: ['', [Validators.required, Validators.maxLength(100)]],
-      RequiredSkills: ['', [Validators.required, Validators.maxLength(100)]],
-      DesignationRemark: ['', [Validators.required, Validators.maxLength(100)]],
+      DesignationDescription: [
+        '',
+        [Validators.required, Validators.maxLength(100), this.noWhitespaceValidator],
+      ],
+      GradeQualificationRemark: [
+        '',
+        [Validators.required, Validators.maxLength(100), this.noWhitespaceValidator],
+      ],
+      RequiredSkills: [
+        '',
+        [Validators.required, Validators.maxLength(100), this.noWhitespaceValidator],
+      ],
+      DesignationRemark: [
+        '',
+        [Validators.required, Validators.maxLength(100), this.noWhitespaceValidator],
+      ],
     });
   }
 
   // Custom validator for salary range
-  private salaryRangeValidator = (control: AbstractControl): { [key: string]: any } | null => {
+  // private salaryRangeValidator = (control: AbstractControl): { [key: string]: any } | null => {
+  //   const minSal = control.get('MinSalCTC')?.value;
+  //   const maxSal = control.get('MaxSalCTC')?.value;
+
+  //   if (minSal && maxSal && minSal >= maxSal) {
+  //     return { salaryRangeInvalid: true };
+  //   }
+  //   return null;
+  // };
+
+  private salaryRangeValidator = (control: AbstractControl): ValidationErrors | null => {
     const minSal = control.get('MinSalCTC')?.value;
     const maxSal = control.get('MaxSalCTC')?.value;
 
-    if (minSal && maxSal && minSal >= maxSal) {
-      return { salaryRangeInvalid: true };
+    // Check if both values exist and are numbers
+    if (minSal && maxSal) {
+      const minValue = Number(minSal);
+      const maxValue = Number(maxSal);
+
+      if (minValue >= maxValue) {
+        return { salaryRangeInvalid: true };
+      }
     }
+
     return null;
   };
 
@@ -485,7 +570,9 @@ export class AddEditGradedesignationfacilityassignment {
       GradeId: gradeData.GradeId,
       GradeCode: gradeData.GradeCode || '',
       //GradeName: gradeData.GradeName || '',
-      GradeName: gradeData.GradeName ? gradeData.GradeName.replace(/\s*\(.*?\)\s*/g, '').trim() : '',
+      GradeName: gradeData.GradeName
+        ? gradeData.GradeName.replace(/\s*\(.*?\)\s*/g, '').trim()
+        : '',
       GradeLevel: gradeData.GradeLevel || '',
       GradeDescription: gradeData.GradeDescription || '',
       MinSalCTC: gradeData.MinSalCTC || '',
