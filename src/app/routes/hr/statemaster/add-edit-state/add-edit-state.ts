@@ -17,6 +17,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { Stateservice } from '@shared/services/hr/state/stateservice';
 import { Countryservice } from '@shared/services/hr/country/countryservice';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-state',
@@ -31,6 +32,7 @@ import { Countryservice } from '@shared/services/hr/country/countryservice';
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,
+    CommonModule
   ],
   templateUrl: './add-edit-state.html',
   styleUrl: './add-edit-state.scss',

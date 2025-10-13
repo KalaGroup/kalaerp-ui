@@ -155,11 +155,7 @@ export class AddEditWorkstation {
     }
   }
 
-  toUpperCase(event: Event) {
-    const input = event.target as HTMLInputElement;
-    input.value = input.value.toUpperCase();
-    this.workstationForm.get('WorkStationShortName')?.setValue(input.value, { emitEvent: false });
-  }
+
 
   onSubmit(): void {
     this.workstationForm.enable();//important for active boolean
@@ -188,12 +184,26 @@ export class AddEditWorkstation {
       event.preventDefault();
     }
   }
+  // Convert input to uppercase automatically
+  toUpperCase(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.toUpperCase();
+    this.workstationForm.get('WorkStationShortName')?.setValue(input.value, { emitEvent: false });
+  }
 
   // Optional: prevent invalid paste
   blockInvalidPaste(event: ClipboardEvent) {
     const clipboardData = event.clipboardData?.getData('text') || '';
     const pattern = /^[A-Za-z ]+$/;
     if (!pattern.test(clipboardData)) {
+      event.preventDefault();
+    }
+  }
+  // Allow only uppercase letters on keypress
+  allowUppercase(event: KeyboardEvent) {
+    const pattern = /[A-Z]/;
+    const inputChar = event.key;
+    if (!pattern.test(inputChar)) {
       event.preventDefault();
     }
   }
