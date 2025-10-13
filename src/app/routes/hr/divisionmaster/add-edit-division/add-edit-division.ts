@@ -126,13 +126,26 @@ export class AddEditDivision {
   }
 
 
-  // Allow letters and spaces while typing
-  allowLettersAndSpace(event: KeyboardEvent) {
+
+  // Allow only uppercase letters while typing
+  allowUppercaseLetters(event: KeyboardEvent) {
     const char = event.key;
-    if (!/^[A-Za-z ]$/.test(char)) {
+    const pattern = /^[A-Z]$/;
+    if (!pattern.test(char)) {
+      event.preventDefault(); // blocks lowercase, numbers, symbols
+    }
+  }
+
+
+  
+  // Real-time typing restrictions
+  allowAlphanumeric(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z0-9]$/;
+    if (!pattern.test(event.key)) {
       event.preventDefault();
     }
   }
+
 
   // Prevent pasting invalid characters
   blockInvalidPaste(event: ClipboardEvent) {
@@ -141,5 +154,20 @@ export class AddEditDivision {
       event.preventDefault();
     }
   }
+
+// Allow only letters and spaces while typing
+allowLettersAndSpaces(event: KeyboardEvent) {
+  const pattern = /^[A-Za-z ]$/;
+  if (!pattern.test(event.key)) {
+    event.preventDefault();
+  }
+}
+
+// Ensure input contains only letters and spaces (for paste handling)
+validateLettersAndSpaces(event: Event) {
+  const input = event.target as HTMLInputElement;
+  input.value = input.value.replace(/[^A-Za-z ]/g, '');
+  this.divisionForm.get('DivisionName')?.setValue(input.value, { emitEvent: false });
+}
 
 }
