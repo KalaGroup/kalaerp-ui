@@ -23,7 +23,7 @@ import { Companyentitytypeservice } from '@shared/services/hr/companyentitytype/
 @Component({
   selector: 'app-add-edit-companyentitytype',
   standalone: true,
- imports: [
+  imports: [
     CommonModule,
     ReactiveFormsModule,
     MatCardModule,
@@ -61,7 +61,7 @@ export class AddEditCompanyentitytype implements OnInit {
     this.initializeForm();
   }
 
-private initializeForm(): void {
+  private initializeForm(): void {
     debugger;
     const currentDate = new Date();
     this.companyentitytypeForm = this.fb.group({
@@ -104,7 +104,7 @@ private initializeForm(): void {
   }
 
   onSubmit(): void {
-        this.companyentitytypeForm.enable();//important for active boolean
+    this.companyentitytypeForm.enable();//important for active boolean
     if (this.companyentitytypeForm.valid) {
       this.dialogRef.close(this.companyentitytypeForm.value);
     } else {
@@ -114,4 +114,22 @@ private initializeForm(): void {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+  allowOnlyLettersAndSpaces(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    const inputChar = event.key;
+
+    // Block special characters and numbers
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+
+    // Block leading space
+    const input = event.target as HTMLInputElement;
+    if (input.selectionStart === 0 && inputChar === ' ') {
+      event.preventDefault();
+    }
+  }
+
+
 }

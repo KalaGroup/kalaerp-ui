@@ -172,7 +172,6 @@ export class Gatepasstype implements OnInit {
   ];
 
   loadAllGatePassType() {
-    debugger;
     this.gatepasstypeService.getAllGatePassType().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
@@ -198,7 +197,6 @@ export class Gatepasstype implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         console.log('Added City:', result);
         this.gatepasstypeService.insertGatePassType(result).subscribe({
           next: response => {
@@ -221,9 +219,7 @@ export class Gatepasstype implements OnInit {
                 this.toastService.showError(message);
               });
             } else {
-              this.toastService.showError(
-                'Failed to add GatePassType. Please verify GatePassType details and try again.'
-              );
+             
             }
           },
         });
@@ -243,7 +239,6 @@ export class Gatepasstype implements OnInit {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          debugger;
           console.log('GatePassType Updated:', result);
           this.gatepasstypeService.updateGatePassType(result).subscribe({
             next: response => {
@@ -266,9 +261,7 @@ export class Gatepasstype implements OnInit {
                   this.toastService.showError(message);
                 });
               } else {
-                this.toastService.showError(
-                  'Failed to add GatePassType. Please verify GatePassType details and try again.'
-                );
+                
               }
             },
           });

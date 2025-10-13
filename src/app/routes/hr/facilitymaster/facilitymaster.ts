@@ -171,7 +171,6 @@ export class Facilitymaster implements OnInit {
           console.log('facility Updated:', result);
           return;
         }
-        debugger
         const updatePayload: IFacilityMaster = {
           FacilityId: record.FacilityId,
           FaciltyCode: result.FaciltyCode,
@@ -187,12 +186,11 @@ export class Facilitymaster implements OnInit {
         this.Facilityservices.updateFacility(updatePayload).subscribe({
           next: () => {
 
-            this.toastService.showSuccess("updating facility");
+            this.toastService.showSuccess("Updating Facility Successfully");
             this.getAllFacility();
           },
           error: (err) => {
             console.error('Error updating facility:', err);
-            this.toastService.showError('Failed to update facility. Please check inputs.');
           }
         });
       });
@@ -223,12 +221,11 @@ export class Facilitymaster implements OnInit {
         this.Facilityservices.insertFacility(payload).subscribe({
           next: () => {
 
-            this.toastService.showSuccess("added facility");
+            this.toastService.showSuccess("Added Facility Successfully");
             this.getAllFacility();
           },
           error: (err) => {
             console.error('Error while adding facility:', err);
-            this.toastService.showError('Failed to add facility. Please check inputs.');
           }
         });
       }
@@ -236,18 +233,16 @@ export class Facilitymaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger
     this.Facilityservices.deleteFacility(value.FacilityId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
         this.toastService.showSuccess;
 
-        this.toastService.showSuccess("delete facility");
+        this.toastService.showSuccess("delete facility Successfully");
         this.getAllFacility();
       },
       error: (err) => {
         console.error('Error deleting Faciltiy:', err);
-        this.toastService.showError('Failed to delete facility. It might be in use.');
       }
     });
   }

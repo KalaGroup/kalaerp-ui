@@ -192,7 +192,6 @@ export class Leaveapplications {
   }
 
   edit(record: ILeaveApplication) {
-    debugger
     // Ensure Angular Material datepickers receive Date objects
     const dialogRef = this.dialog.open(AddEditLeaveapplications, {
 
@@ -209,7 +208,6 @@ export class Leaveapplications {
         }
       }
     });
-    debugger
     dialogRef.afterClosed().subscribe(result => {
       if (!result) {
         console.log('Leave Application update canceled.');
@@ -260,9 +258,7 @@ export class Leaveapplications {
           this.getAllLeaveApplication();
         },
         error: (err) => {
-          console.error('Error updating Leave Application:', err);
-          this.toastService.showError("Error updating Leave Application");
-        }
+          console.error('Error updating Leave Application:', err);        }
       });
     });
   }
@@ -275,7 +271,6 @@ export class Leaveapplications {
       maxHeight: '100vh',
       data: {} // empty for add
     });
-    debugger
     dialogRef.afterClosed().subscribe(result => {
       if (!result) return; // user cancelled
 
@@ -294,7 +289,6 @@ export class Leaveapplications {
         leaveCount = Math.floor((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24)) + 1;
       }
       console.log('Dialog result:', result);
-      debugger
       const payload: ILeaveApplication = {
         LeaveApplicationId: 0,
         LeaveApplicationsEmployeeId: result.LeaveApplicationsEmployeeId,
@@ -321,7 +315,6 @@ export class Leaveapplications {
         },
         error: (err) => {
           console.error('Error adding Leave application:', err);
-          this.toastService.showError('Failed to add leave application. Check inputs.');
         }
       });
     });
@@ -332,7 +325,6 @@ export class Leaveapplications {
 
 
   delete(value: any) {
-    debugger
     this.LeaveApplicationServices.deleteLeaveApplication(value.LeaveApplicationId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
@@ -342,7 +334,6 @@ export class Leaveapplications {
       },
       error: (err) => {
         console.error('Error deleting Petrol:', err);
-        this.toastService.showError('Failed to delete Leave Application. It might be in use.');
       }
     });
   }

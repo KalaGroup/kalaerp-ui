@@ -38,25 +38,36 @@
         </div> -->
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
-            <mat-label>EmployeeTypeName</mat-label>
-            <input matInput formControlName="EmployeeTypeName" placeholder="Employee Type name" />
-            @if (employeetypeForm.get('employeetypeForm')?.invalid && employeetypeForm.get('EmployeeTypeName')?.touched)
-            {
-            <mat-error>EmployeeTypeName is required</mat-error>
-            }
+            <mat-label>Employee Type Name</mat-label>
+            <input matInput formControlName="EmployeeTypeName" placeholder="Employee Type Name"
+              (keypress)="allowLettersAndSpaces($event)" maxlength="50" />
+            <mat-error
+              *ngIf="employeetypeForm.get('EmployeeTypeName')?.hasError('required') && employeetypeForm.get('EmployeeTypeName')?.touched">
+              Employee Type Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="employeetypeForm.get('EmployeeTypeName')?.hasError('pattern') && employeetypeForm.get('EmployeeTypeName')?.touched">
+              Only letters and spaces allowed (2–50 characters)
+            </mat-error>
           </mat-form-field>
         </div>
 
         <div class="col-sm-4 col-xl-3">
           <mat-form-field appearance="outline">
-            <mat-label>EmployeeTypeDescription</mat-label>
-            <input matInput formControlName="EmployeeTypeDescription" placeholder="Employee TypeDescription" />
-            @if (employeetypeForm.get('EmployeeTypeDescription')?.invalid &&
-            employeetypeForm.get('EmployeeTypeDescription')?.touched) {
-            <mat-error>EmployeeTypeDescription is required</mat-error>
-            }
+            <mat-label>Employee Type Description</mat-label>
+            <input matInput formControlName="EmployeeTypeDescription" placeholder="Employee Type Description"
+              (keypress)="allowLettersNumbersAndPunctuation($event)" maxlength="200" />
+            <mat-error
+              *ngIf="employeetypeForm.get('EmployeeTypeDescription')?.hasError('required') && employeetypeForm.get('EmployeeTypeDescription')?.touched">
+              Employee Type Description is required
+            </mat-error>
+            <mat-error
+              *ngIf="employeetypeForm.get('EmployeeTypeDescription')?.hasError('pattern') && employeetypeForm.get('EmployeeTypeDescription')?.touched">
+              Only letters, numbers, spaces, and .,- allowed (2–200 characters)
+            </mat-error>
           </mat-form-field>
         </div>
+
       </div>
 
       <!-- Employee desciption and remark row -->

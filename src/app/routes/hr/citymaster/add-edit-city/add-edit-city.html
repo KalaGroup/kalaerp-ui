@@ -31,15 +31,27 @@
       <div class="row mb-3">
         <!-- Left side (City Name, Short Name, Latitude, Longitude, Remark) -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>City Name</mat-label>
-            <input matInput formControlName="CityName" placeholder="Enter full City name" />
+            <input matInput formControlName="CityName" placeholder="Enter full City name" maxlength="50"
+              (keypress)="allowOnlyLettersAndSpaces($event)" />
 
-            <mat-error *ngIf="cityForm.get('CityName')?.invalid 
-          && cityForm.get('CityName')?.touched">
-              City is required
+            <!-- Required Error -->
+            <mat-error *ngIf="cityForm.get('CityName')?.hasError('required') && cityForm.get('CityName')?.touched">
+              City Name is required
+            </mat-error>
+
+            <!-- Pattern Error -->
+            <mat-error *ngIf="cityForm.get('CityName')?.hasError('pattern') && cityForm.get('CityName')?.touched">
+              Only letters and single spaces allowed (minimum 2 characters)
+            </mat-error>
+
+            <!-- Max Length Error -->
+            <mat-error *ngIf="cityForm.get('CityName')?.hasError('maxlength') && cityForm.get('CityName')?.touched">
+              City Name cannot exceed 50 characters
             </mat-error>
           </mat-form-field>
+
 
           <mat-form-field appearance="outline">
             <mat-label>City Short Name</mat-label>
@@ -76,7 +88,8 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
             <mat-label>City Code</mat-label>
-            <input matInput formControlName="CityCode" placeholder="Enter full City Code" />
+            <input matInput formControlName="CityCode" placeholder="Enter full City Code"
+              (keypress)="blockSpaces($event)" />
             @if (cityForm.get('CityCode')?.invalid && cityForm.get('CityCode')?.touched) {
             <mat-error>City Code is required</mat-error>
             }

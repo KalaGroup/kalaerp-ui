@@ -63,7 +63,7 @@ export class AddEditGatepasstype {
         '',
         [
           Validators.required,
-          Validators.pattern(/^[A-Z0-9]+$/), // Only uppercase letters and numbers
+          Validators.pattern(/^[A-Za-z0-9]+$/), // Only uppercase letters and numbers
           Validators.maxLength(10),
         ],
       ],
@@ -77,7 +77,7 @@ export class AddEditGatepasstype {
       ],
       GatePassTypesDescription: ['', [Validators.required]],
       GatePassTypesRequiresApproval: [true],
-      GatePassTypesAuthRemark: ['Nil'],
+      GatePassTypesAuthRemark: [''],
       GatePassTypesIsAuth: [{ value: true, disabled: !this.isEditMode }],
       GatePassTypesIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       GatePassTypesIsActive: [{ value: true, disabled: !this.isEditMode }],

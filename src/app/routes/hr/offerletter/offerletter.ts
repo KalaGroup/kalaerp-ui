@@ -447,7 +447,6 @@ export class Offerletter {
             error: err => {
               this.loadAllOfferLetters();
               console.error('Error updating offer letter:', err);
-              this.toastService.showError('Error updating offer letter');
             },
           });
         }
@@ -476,7 +475,6 @@ export class Offerletter {
           error: err => {
             this.loadAllOfferLetters();
             console.error('Error generating offer letter:', err);
-            this.toastService.showError('Error generating offer letter');
           },
         });
       }
@@ -508,7 +506,6 @@ export class Offerletter {
       error: err => {
         this.loadAllOfferLetters();
         console.error('Error deleting offer letter:', err);
-        this.toastService.showError('Error deleting offer letter');
       },
     });
   }

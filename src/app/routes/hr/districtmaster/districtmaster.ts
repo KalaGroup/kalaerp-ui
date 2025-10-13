@@ -187,7 +187,6 @@ export class Districtmaster implements OnInit {
           },
           error: (err) => {
             console.error('Error updating District:', err);
-            this.toastService.showError('Failed to update District. Please check inputs.');
           }
         });
       }
@@ -245,9 +244,6 @@ export class Districtmaster implements OnInit {
                 this.toastService.showError(message);
               });
             } else {
-              this.toastService.showError(
-                'Failed to add District. Please verify District details and try again.'
-              );
             }
           },
         });
@@ -264,7 +260,6 @@ export class Districtmaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting District:', err);
-        this.toastService.showError('Failed to delete District. It might be in use.');
       }
     });
   }

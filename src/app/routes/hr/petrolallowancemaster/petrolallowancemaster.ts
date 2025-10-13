@@ -198,7 +198,6 @@ export class Petrolallowancemaster implements OnInit {
           },
           error: (err) => {
             console.error('Error updating petrolallowance:', err);
-            this.toastService.showError('Failed to update petrolallowance. Please check inputs.');
           }
         });
       });
@@ -235,7 +234,6 @@ export class Petrolallowancemaster implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding petrolallowance:', err);
-            this.toastService.showError('Failed to add petrolallowance. Please check inputs.');
           }
         });
       }
@@ -253,7 +251,6 @@ export class Petrolallowancemaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting Petrol:', err);
-        this.toastService.showError('Failed to delete Petrol Allowance. It might be in use.');
       }
     });
   }

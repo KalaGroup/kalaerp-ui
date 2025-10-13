@@ -25,38 +25,38 @@
       </div>
 
       <div class="row">
-        <!-- Country -->
+        <!-- Division Name -->
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Division Name</mat-label>
             <input matInput formControlName="DivisionName" placeholder="Enter Division Name"
-              (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
-
-            <mat-error *ngIf="divisionForm.get('DivisionName')?.hasError('required') &&
-                      divisionForm.get('DivisionName')?.touched">
+              (keypress)="allowLettersAndSpaces($event)" />
+            <mat-error
+              *ngIf="divisionForm.get('DivisionName')?.hasError('required') && divisionForm.get('DivisionName')?.touched">
               Division Name is required
             </mat-error>
-
-            <mat-error *ngIf="divisionForm.get('DivisionName')?.hasError('pattern') &&
-                      divisionForm.get('DivisionName')?.touched">
-              Only letters and spaces are allowed
+            <mat-error
+              *ngIf="divisionForm.get('DivisionName')?.hasError('pattern') && divisionForm.get('DivisionName')?.touched">
+              Only letters and spaces are allowed (2–50 characters)
             </mat-error>
           </mat-form-field>
         </div>
 
-        <!-- State -->
+        <!-- Division Short Name -->
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
             <mat-label>Division Short Name</mat-label>
-            <input matInput formControlName="DivisionShortName" placeholder="Enter Division name"
-              (input)="toUpperCase($event)" />
-            @if (
-            divisionForm.get('DivisionShortName')?.invalid && divisionForm.get('DivisionShortName')?.touched
-            ) {
-            <mat-error>Division Short Name is required</mat-error>
-            }
+            <input matInput formControlName="DivisionShortName" placeholder="Enter Division Short Name"
+              (input)="toUpperCase($event)" (keypress)="allowUppercaseLetters($event)" />
+            <mat-error
+              *ngIf="divisionForm.get('DivisionShortName')?.hasError('required') && divisionForm.get('DivisionShortName')?.touched">
+              Division Short Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="divisionForm.get('DivisionShortName')?.hasError('pattern') && divisionForm.get('DivisionShortName')?.touched">
+              Only uppercase letters allowed (2–10 characters)
+            </mat-error>
           </mat-form-field>
-
         </div>
       </div>
 
@@ -78,21 +78,25 @@
             <input matInput formControlName="DivisionRemark" placeholder="Enter Remark" />
           </mat-form-field>
 
-          <mat-form-field *ngIf="isEditMode" appearance="outline">
+          <!-- <mat-form-field *ngIf="isEditMode" appearance="outline">
             <mat-label>Auth Remark</mat-label>
             <input matInput formControlName="DivisionAuthRemark" placeholder="Enter Remark" [disabled]="!isEditMode" />
-          </mat-form-field>
+          </mat-form-field> -->
         </div>
 
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
             <mat-label>Division Code</mat-label>
-            <input matInput formControlName="DivisionCode" placeholder="Enter  Division Code" />
-            @if (
-            divisionForm.get('DivisionCode')?.invalid && divisionForm.get('DivisionCode')?.touched
-            ) {
-            <mat-error>Division Code is required</mat-error>
-            }
+            <input matInput formControlName="DivisionCode" placeholder="Enter Division Code" maxlength="20"
+              (keypress)="allowAlphanumeric($event)" />
+            <mat-error
+              *ngIf="divisionForm.get('DivisionCode')?.hasError('required') && divisionForm.get('DivisionCode')?.touched">
+              Division Code is required
+            </mat-error>
+            <mat-error
+              *ngIf="divisionForm.get('DivisionCode')?.hasError('pattern') && divisionForm.get('DivisionCode')?.touched">
+              Only letters and numbers allowed (2–20 characters)
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">

@@ -152,7 +152,6 @@ export class Companyentitytypemaster implements OnInit {
   ];
 
   loadAllCompanyentitytype() {
-    debugger;
     this.companyentitytypeService.getAllCompanyentitytype().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
@@ -178,7 +177,6 @@ export class Companyentitytypemaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         console.log('Added Companyentitytype:', result);
         const payload: ICompanyentitytype = {
           CompEntityTypeId: 0,
@@ -215,9 +213,6 @@ export class Companyentitytypemaster implements OnInit {
                 this.toastService.showError(message);
               });
             } else {
-              this.toastService.showError(
-                'Failed to add Companyentitytype. Please verify Workstation details and try again.'
-              );
             }
           },
         });
@@ -226,7 +221,6 @@ export class Companyentitytypemaster implements OnInit {
   }
 
   edit(record: any) {
-    debugger;
     this.dialog
       .open(AddEditCompanyentitytype, {
         width: '80%',
@@ -238,7 +232,6 @@ export class Companyentitytypemaster implements OnInit {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          debugger;
           console.log('Companyentitytype Updated:', result);
           const updatePayload = {
             CompEntityTypeId: result.CompEntityTypeId,
@@ -260,7 +253,6 @@ export class Companyentitytypemaster implements OnInit {
             },
             error: err => {
               console.error('Error updating Companyentitytype:', err);
-              this.toastService.showError('Failed to update Companyentitytype. Please check inputs.');
             },
           });
         }
@@ -277,7 +269,6 @@ export class Companyentitytypemaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger;
     this.companyentitytypeService.deleteCompanyentitytype(value.CompEntityTypeId).subscribe({
       next: response => {
         this.toastService.showSuccess('Companyentitytype deleted successfully:', response);
@@ -286,7 +277,6 @@ export class Companyentitytypemaster implements OnInit {
       },
       error: err => {
         console.error('Error deleting Companyentitytype:', err);
-        this.toastService.showError('Failed to delete Companyentitytype. It might be in use.');
       },
     });
   }

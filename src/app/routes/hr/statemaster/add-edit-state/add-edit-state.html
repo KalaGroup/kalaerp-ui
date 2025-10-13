@@ -15,23 +15,27 @@
       </div>
       <div class="row mb-3">
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>State Code</mat-label>
-            <input matInput formControlName="StateCode" placeholder="Enter full State Code" />
-            @if (stateForm.get('StateCode')?.invalid && stateForm.get('StateCode')?.touched) {
-            <mat-error>State Code is required</mat-error>
-            }
+            <input matInput formControlName="StateCode" placeholder="Enter  State Code" maxlength="10"
+              (keypress)="allowAlphanumeric($event)" />
+            <mat-error *ngIf="stateForm.get('StateCode')?.hasError('required') && stateForm.get('StateCode')?.touched">
+              State Code is required
+            </mat-error>
           </mat-form-field>
         </div>
-
-        <!-- State Name -->
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline">
+          <!-- State Name -->
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>State Name</mat-label>
-            <input matInput formControlName="StateName" placeholder="Enter full State Name" />
-            @if (stateForm.get('StateName')?.invalid && stateForm.get('StateName')?.touched) {
-            <mat-error>State Name is required</mat-error>
-            }
+            <input matInput formControlName="StateName" placeholder="Enter full State Name" maxlength="50"
+              (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
+            <mat-error *ngIf="stateForm.get('StateName')?.hasError('required') && stateForm.get('StateName')?.touched">
+              State Name is required
+            </mat-error>
+            <mat-error *ngIf="stateForm.get('StateName')?.hasError('pattern') && stateForm.get('StateName')?.touched">
+              Only letters and spaces allowed (2–50 characters)
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
@@ -39,13 +43,7 @@
       <!--State Short Name-->
       <div class="row mb-3">
         <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline">
-            <mat-label>State Short Name</mat-label>
-            <input matInput formControlName="ShortName" placeholder="e.g., MH, KA, DL" (input)="toUpperCase($event)" />
-          </mat-form-field>
-        </div>
-        <!--Country Selection-->
-        <div class="col-sm-6 col-xl-6">
+
           <mat-form-field appearance="outline">
             <mat-label>Country</mat-label>
             <mat-select formControlName="CountryID" placeholder="Select Country">
@@ -67,6 +65,20 @@
             @if (stateForm.get('CountryID')?.invalid && stateForm.get('CountryID')?.touched) {
             <mat-error>Country is required</mat-error>
             }
+          </mat-form-field>
+        </div>
+        <!--Country Selection-->
+        <div class="col-sm-6 col-xl-6">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>State Short Name</mat-label>
+            <input matInput formControlName="ShortName" placeholder="e.g., MH, KA, DL" maxlength="5"
+              (keypress)="allowUppercase($event)" (input)="toUpperCase($event)" />
+            <mat-error *ngIf="stateForm.get('ShortName')?.hasError('required') && stateForm.get('ShortName')?.touched">
+              State Short Name is required
+            </mat-error>
+            <mat-error *ngIf="stateForm.get('ShortName')?.hasError('pattern') && stateForm.get('ShortName')?.touched">
+              Only uppercase letters allowed (1–5 characters)
+            </mat-error>
           </mat-form-field>
         </div>
       </div>

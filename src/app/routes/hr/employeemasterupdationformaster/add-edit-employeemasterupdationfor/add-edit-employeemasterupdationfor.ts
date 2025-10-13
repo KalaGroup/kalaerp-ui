@@ -67,7 +67,7 @@ export class AddEditEmployeemasterupdationfor {
       EmployeeMasterUpdationForAuth: [{ value: true, disabled: !this.isEditMode }],
       EmployeeMasterUpdationForIsActive: [{ value: true, disabled: !this.isEditMode }],
       EmployeeMasterUpdationForIsDiscard: [{ value: false, disabled: !this.isEditMode }],
-      EmployeeMasterUpdationForAuthRemark: ['NIL', Validators.required],
+      EmployeeMasterUpdationForAuthRemark: ['', Validators.required],
       CreatedBy: ['10'],
       CreatedDate: [{ value: currentDate, disabled: true }],
 
@@ -110,4 +110,15 @@ export class AddEditEmployeemasterupdationfor {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+  allowLettersAndSpaces(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    const input = event.target as HTMLInputElement;
+
+    // Block invalid characters and leading space
+    if (!pattern.test(event.key) || (input.selectionStart === 0 && event.key === ' ')) {
+      event.preventDefault();
+    }
+  }
+
 }

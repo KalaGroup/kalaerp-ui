@@ -264,7 +264,6 @@ export class Shiftmaster implements OnInit {
 
 
   openAddDialog() {
-    debugger
     const dialogRef = this.dialog.open(AddEditShift, {
       width: '80%',
       height: '77%',
@@ -287,7 +286,6 @@ export class Shiftmaster implements OnInit {
           return value.substring(0, 5); // take only "HH:mm"
         }
 
-        debugger;
         const payload: IShiftMaster = {
           ShiftMasterId: 0, // New entry
           ShiftMasterCompanyId: result.ShiftMasterCompanyId,
@@ -316,7 +314,6 @@ export class Shiftmaster implements OnInit {
             this.GetAllShiftMaster();
           },
           error: (err) => {
-            alert(`Shift name already exists `);
 
           }
         });
@@ -325,7 +322,6 @@ export class Shiftmaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger
     this.ShiftMasterservice.deleteShiftMaster(value.ShiftMasterId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);

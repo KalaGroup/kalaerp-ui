@@ -35,12 +35,18 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Recruitment Attribute Name</mat-label>
-            <input matInput formControlName="RecruitmentAttributeName" placeholder="Enter Recruitment Attribute Name" />
+            <input matInput formControlName="RecruitmentAttributeName" placeholder="Enter Recruitment Attribute Name"
+              maxlength="50" (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
             <mat-error
               *ngIf="recruitmentattributeForm.get('RecruitmentAttributeName')?.hasError('required') && recruitmentattributeForm.get('RecruitmentAttributeName')?.touched">
               Recruitment Attribute Name is required
             </mat-error>
+            <mat-error
+              *ngIf="recruitmentattributeForm.get('RecruitmentAttributeName')?.hasError('pattern') && recruitmentattributeForm.get('RecruitmentAttributeName')?.touched">
+              Only letters and spaces are allowed (2–50 characters)
+            </mat-error>
           </mat-form-field>
+
 
 
 

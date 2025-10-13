@@ -186,7 +186,6 @@ export class Profitcentermaster implements OnInit {
     });
   }
   edit(record: Iprofitcentermaster) { // If you have a Qualification interface, use it here
-    // debugger; // Remove before production
 
     this.dialog.open<AddEditProfitcenter, { profitcenter: Iprofitcentermaster }, Iprofitcentermaster>(AddEditProfitcenter, {
       width: '80%',
@@ -225,7 +224,6 @@ export class Profitcentermaster implements OnInit {
           },
           error: (err) => {
             console.error('Error updating profit:', err);
-            this.toastService.showError('Failed to update profit center. Please check inputs.');
           }
         });
       }
@@ -272,7 +270,6 @@ export class Profitcentermaster implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding profitcenter:', err);
-            this.toastService.showError('Failed to add profitcenter. Please verify the details and try again.');
           }
         });
       }
@@ -299,7 +296,6 @@ export class Profitcentermaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting profitcenter:', err);
-        this.toastService.showError('Failed to delete profitcenter. It might be in use.');
       }
     });
   }

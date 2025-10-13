@@ -31,12 +31,18 @@
           <!-- Qualification Code -->
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Qualification Code</mat-label>
-            <input matInput formControlName="QualificationTypeCode" placeholder="Enter Company Entity Type Name" />
+            <input matInput formControlName="QualificationTypeCode" placeholder="Enter Qualification Type Code"
+              maxlength="20" (keypress)="allowAlphanumeric($event)" />
             <mat-error
               *ngIf="qualificationtypeForm.get('QualificationTypeCode')?.hasError('required') && qualificationtypeForm.get('QualificationTypeCode')?.touched">
               Qualification Code is required
             </mat-error>
+            <mat-error
+              *ngIf="qualificationtypeForm.get('QualificationTypeCode')?.hasError('pattern') && qualificationtypeForm.get('QualificationTypeCode')?.touched">
+              Only letters and numbers allowed (2–20 characters)
+            </mat-error>
           </mat-form-field>
+
 
           <!-- Remark -->
           <mat-form-field appearance="outline" class="w-100">
@@ -55,11 +61,15 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Qualification Name</mat-label>
-            <input matInput formControlName="QualificationTypeName"
-              placeholder="Enter Company Entity Type Short Name" />
+            <input matInput formControlName="QualificationTypeName" placeholder="Enter Qualification Name"
+              maxlength="50" (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
             <mat-error
               *ngIf="qualificationtypeForm.get('QualificationTypeName')?.hasError('required') && qualificationtypeForm.get('QualificationTypeName')?.touched">
               Qualification Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="qualificationtypeForm.get('QualificationTypeName')?.hasError('pattern') && qualificationtypeForm.get('QualificationTypeName')?.touched">
+              Only letters and spaces are allowed (2–50 characters)
             </mat-error>
           </mat-form-field>
 

@@ -184,7 +184,6 @@ export class Holidaymaster implements OnInit {
   ];
 
   loadAllHoliday() {
-    debugger;
     this.holidayService.getAllHoliday().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
@@ -210,7 +209,6 @@ export class Holidaymaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         console.log('Added Holiday:', result);
         const payload: IHoliday = {
           HolidayId: 0,
@@ -249,9 +247,7 @@ export class Holidaymaster implements OnInit {
                 this.toastService.showError(message);
               });
             } else {
-              this.toastService.showError(
-                'Failed to add Holiday. Please verify Holiday details and try again.'
-              );
+              
             }
           },
         });
@@ -260,7 +256,6 @@ export class Holidaymaster implements OnInit {
   }
 
   edit(record: any) {
-    debugger;
     this.dialog
       .open(AddEditHoliday, {
         width: '80%',
@@ -272,7 +267,6 @@ export class Holidaymaster implements OnInit {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          debugger;
           console.log('Holiday Updated:', result);
           // Create update payload as per your reqirements
           const updatePayload = {
@@ -296,9 +290,7 @@ export class Holidaymaster implements OnInit {
               this.loadAllHoliday();
             },
             error: err => {
-              console.error('Error updating Holiday:', err);
-              this.toastService.showError('Failed to update Holiday. Please check inputs.');
-            },
+              console.error('Error updating Holiday:', err);            },
           });
         }
       });
@@ -314,7 +306,6 @@ export class Holidaymaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger;
     this.holidayService.deleteHoliday(value.HolidayId).subscribe({
       next: response => {
         console.log('Holiday deleted successfully:', response);
@@ -325,7 +316,6 @@ export class Holidaymaster implements OnInit {
 
       error: err => {
         console.error('Error deleting Holiday:', err);
-        this.toastService.showError('Failed to delete Holiday. It might be in use.');
       },
     });
   }

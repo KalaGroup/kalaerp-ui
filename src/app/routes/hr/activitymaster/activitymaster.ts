@@ -169,7 +169,7 @@ export class Activitymaster implements OnInit {
 
 
   loadAllActivity() {
-    debugger
+    
     this.ActivityServices.getAllActivity().subscribe({
       next: (data) => {
         this.list = data.map((item: any, index: number) => ({
@@ -184,7 +184,7 @@ export class Activitymaster implements OnInit {
   }
 
   edit(record: any) {
-    debugger
+    
     this.dialog.open(AddEditActivity, {
       width: '100%',
       height: '100%',
@@ -224,7 +224,6 @@ export class Activitymaster implements OnInit {
           },
           error: (err) => {
             console.error('Error updating activity:', err);
-            this.toastService.showError('Failed to update activity. Please check inputs.');
             this.loadAllActivity();
           }
         });
@@ -241,7 +240,7 @@ export class Activitymaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger
+        
         const payload = {
           ActivityId: 0, // New entry
           ActivityGradeId: result.ActivityGradeId,
@@ -265,14 +264,13 @@ export class Activitymaster implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding activity:', err);
-            this.toastService.showError('Failed to add activity. Please check inputs.');
+           
           }
         });
       }
     });
   }
   delete(value: any) {
-    debugger
     this.ActivityServices.deleteActivity(value.ActivityId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
@@ -282,7 +280,6 @@ export class Activitymaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting activity:', err);
-        this.toastService.showError('Failed to delete activity. It might be in use.');
       }
     });
   }

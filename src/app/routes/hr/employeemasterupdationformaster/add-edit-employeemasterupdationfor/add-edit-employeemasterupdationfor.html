@@ -37,13 +37,18 @@
         <!-- Left side  -->
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
-            <mat-label>Name</mat-label>
+            <mat-label>Employee Master Updation Name</mat-label>
             <input matInput formControlName="EmployeeMasterUpdationForName"
-              placeholder="Enter Employee Master Updation For Name" />
-            @if (EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForName')?.invalid &&
-            EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForName')?.touched) {
-            <mat-error>Name is required</mat-error>
-            }
+              placeholder="Enter Employee Master Updation For Name" maxlength="50"
+              (keypress)="allowLettersAndSpaces($event)" />
+            <mat-error
+              *ngIf="EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForName')?.hasError('required') && EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForName')?.touched">
+              Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForName')?.hasError('pattern') && EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForName')?.touched">
+              Only letters and single spaces allowed (2–50 characters)
+            </mat-error>
           </mat-form-field>
 
 
@@ -56,6 +61,17 @@
           <mat-form-field appearance="outline">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="EmployeeMasterUpdationForRemark" placeholder="Enter remark..." />
+            @if (EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForRemark')?.invalid &&
+            EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForRemark')?.touched) {
+            <mat-error>Remark is required</mat-error>
+            }
+          </mat-form-field>
+
+        </div>
+        <div class="col-sm-12 col-xl-12">
+          <mat-form-field appearance="outline">
+            <mat-label> Auth Remark </mat-label>
+            <input matInput formControlName="EmployeeMasterUpdationForAuthRemark" placeholder="Enter remark..." />
             @if (EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForRemark')?.invalid &&
             EmployeeMasterUpdationForForm.get('EmployeeMasterUpdationForRemark')?.touched) {
             <mat-error>Remark is required</mat-error>

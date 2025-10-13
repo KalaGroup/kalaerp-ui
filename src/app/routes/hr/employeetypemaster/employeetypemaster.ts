@@ -152,7 +152,6 @@ export class employeetypemaster implements OnInit {
 
 
   edit(record: any) {
-    debugger
     // Open dialog, pass in the record
     this.dialog.open(AddEditEmployeetype, {
       width: '65%',
@@ -161,7 +160,6 @@ export class employeetypemaster implements OnInit {
       maxHeight: '100vh',
       data: { employeetype: record },
     }).afterClosed().subscribe(result => {
-      debugger
       if (result) {
         console.log('employeetype Updated:', result);
         // Create update payload
@@ -185,7 +183,6 @@ export class employeetypemaster implements OnInit {
           },
           error: (err) => {
             console.error('Error updating employeetype:', err);
-            this.toastService.showError('Failed to update employee type. Please check inputs.');
           }
         });
       }
@@ -203,7 +200,6 @@ export class employeetypemaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         console.log('Added employeetype:', result);
         const payload: IEmployeetype = {
           // EmployeeTypeCode: result.EmployeeTypeCode,
@@ -225,7 +221,6 @@ export class employeetypemaster implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding employee type:', err);
-            this.toastService.showError('Failed to add employee type. Please verify employee type details and try again.');
           }
         });
       }
@@ -242,7 +237,6 @@ export class employeetypemaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger
     this.employeetypeService.deleteemployeetype(value.EmployeeTypeId).subscribe({
       next: (response) => {
         console.log('employeetype deleted successfully:', response);
@@ -252,7 +246,6 @@ export class employeetypemaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting employeetype:', err);
-        this.toastService.showError('Failed to delete employee type. It might be in use.');
       }
     });
   }

@@ -23,23 +23,34 @@
             </div>
 
             <div class="row mb-3 option-section">
+                <!-- Facility Code -->
                 <div class="col-md-6">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Facility Code</mat-label>
-                        <input matInput formControlName="FaciltyCode" placeholder="Enter Facility Code" />
+                        <input matInput formControlName="FaciltyCode" placeholder="Enter Facility Code" maxlength="20"
+                            (keypress)="allowAlphanumeric($event)" />
+                        <mat-error *ngIf="facilityForm.get('FaciltyCode')?.hasError('pattern')">
+                            Only letters and numbers allowed (2–20 characters)
+                        </mat-error>
                     </mat-form-field>
                 </div>
 
+                <!-- Facility Name -->
                 <div class="col-md-6">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Facility Name</mat-label>
-                        <input matInput formControlName="FacilityName" placeholder="Enter facility name" />
+                        <input matInput formControlName="FacilityName" placeholder="Enter facility name" maxlength="50"
+                            (keypress)="allowLettersAndSpaces($event)" />
                         <mat-error *ngIf="facilityForm.get('FacilityName')?.hasError('required')">
                             Facility Name is required
+                        </mat-error>
+                        <mat-error *ngIf="facilityForm.get('FacilityName')?.hasError('pattern')">
+                            Only letters and single spaces allowed (2–50 characters)
                         </mat-error>
                     </mat-form-field>
                 </div>
             </div>
+
 
             <!-- Row: Remark -->
             <div class="row mb-3 option-section">

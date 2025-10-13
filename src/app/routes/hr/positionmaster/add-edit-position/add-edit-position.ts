@@ -1145,4 +1145,30 @@ export class AddEditPosition {
   deleteRow(index: number): void {
     this.description.splice(index, 1);
   }
+
+  // Real-time typing restriction for Position Code
+  allowAlphanumeric(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z0-9]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  // Real-time typing restriction
+  allowLettersAndSpace(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    const input = event.target as HTMLInputElement;
+    if (!pattern.test(event.key) || (input.selectionStart === 0 && event.key === ' ')) {
+      event.preventDefault();
+    }
+  }
+
+  // Optional: block invalid paste
+  blockInvalidPaste(event: ClipboardEvent) {
+    const clipboardData = event.clipboardData?.getData('text') || '';
+    const pattern = /^[A-Za-z ]+$/;
+    if (!pattern.test(clipboardData)) {
+      event.preventDefault();
+    }
+  }
 }

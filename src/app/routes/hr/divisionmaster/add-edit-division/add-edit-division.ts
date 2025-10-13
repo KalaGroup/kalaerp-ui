@@ -60,12 +60,12 @@ export class AddEditDivision {
   }
 
   private initializeForm(): void {
-    debugger;
+
     const currentDate = new Date();
     this.divisionForm = this.fb.group({
       DivisionId: [''],
       DivisionCode: ['', [Validators.required]],
-      DivisionName: ['', [Validators.required], Validators.pattern(/^[A-Za-z ]+$/)],
+      DivisionName: ['', [Validators.required]],
       DivisionShortName: ['', [Validators.required]],
       DivisionMailId: ['', [Validators.required, Validators.email]],
       DivisionRemark: [''],
@@ -110,7 +110,7 @@ export class AddEditDivision {
   }
 
   onSubmit(): void {
-    debugger;
+
     this.divisionForm.enable(); //important for active boolean
 
     if (this.divisionForm.valid) {

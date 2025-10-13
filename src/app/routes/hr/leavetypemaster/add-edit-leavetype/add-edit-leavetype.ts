@@ -115,6 +115,13 @@ export class AddEditLeavetype {
       event.preventDefault();
     }
   }
+  allowAlphanumeric(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z0-9]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
 
 
 }

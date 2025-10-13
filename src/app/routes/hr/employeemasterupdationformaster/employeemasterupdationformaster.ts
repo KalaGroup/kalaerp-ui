@@ -202,7 +202,6 @@ export class Employeemasterupdationformaster implements OnInit {
           },
           error: (err) => {
             console.error('Error updating Employeemasterupdationfor:', err);
-            this.toastService.showError('Failed to update Employeemasterupdationfor. Please check inputs.');
           }
         });
       }
@@ -242,7 +241,6 @@ export class Employeemasterupdationformaster implements OnInit {
             console.log('Employeemasterupdationfor type added successfully:', response);
             this.toastService.showSuccess('Employeemasterupdationfor added successfully:', response);
             this.loadAllemployeemasterupdationfor();
-            //alert(`Employeemasterupdationfor "${result.EmployeeMasterUpdationForName}" added successfully!`);
           },
           error: (err) => {
             if (err.status === 400 && err.error) {
@@ -259,7 +257,6 @@ export class Employeemasterupdationformaster implements OnInit {
                 this.toastService.showError(message);
               });
             } else {
-              this.toastService.showError('Failed to add Employeemasterupdationfor. Please verify Employeemasterupdationfor details and try again.');
             }
           }
         });
@@ -286,7 +283,6 @@ export class Employeemasterupdationformaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting Employeemasterupdationfor:', err);
-        this.toastService.showError('Failed to delete Employeemasterupdationfor. It might be in use.');
       }
     });
   }

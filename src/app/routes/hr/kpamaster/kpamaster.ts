@@ -171,7 +171,6 @@ export class Kpamaster implements OnInit {
 
 
   loadAllKPA() {
-    debugger
     this.KPAservice.getAllKpa().subscribe({
       next: (data) => {
         this.list = data.map((item: any, index: number) => ({
@@ -201,7 +200,6 @@ export class Kpamaster implements OnInit {
           console.log('No update performed');
           return;
         }
-        debugger
         const updatePayload = {
           Kpaid: record.Kpaid,
           KpagradeId: result.KpagradeId,
@@ -226,7 +224,6 @@ export class Kpamaster implements OnInit {
           },
           error: (err) => {
             console.error('Error updating kpa:', err);
-            this.toastService.showError('Failed to update kpa. Please check inputs.');
           }
         });
       });
@@ -244,7 +241,6 @@ export class Kpamaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger
         const payload = {
           Kpaid: 0, // New entry
           KpagradeId: result.KpagradeId,
@@ -270,7 +266,6 @@ export class Kpamaster implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding kpa:', err);
-            this.toastService.showError('Failed to add kpa. Please check inputs.');
           }
         });
       }
@@ -286,7 +281,6 @@ export class Kpamaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting Petrol:', err);
-        this.toastService.showError('Failed to delete kpa. It might be in use.');
       }
     });
   }

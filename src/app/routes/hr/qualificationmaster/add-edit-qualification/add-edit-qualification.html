@@ -69,10 +69,15 @@
                     <!-- Qualification Code -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Qualification Code</mat-label>
-                        <input matInput formControlName="QualificationCode" placeholder="Enter qualification code" />
+                        <input matInput formControlName="QualificationCode" placeholder="Enter qualification code"
+                            maxlength="20" (keypress)="allowAlphanumeric($event)" />
                         <mat-error
                             *ngIf="qualificationForm.get('QualificationCode')?.hasError('required') && qualificationForm.get('QualificationCode')?.touched">
                             Qualification Code is required
+                        </mat-error>
+                        <mat-error
+                            *ngIf="qualificationForm.get('QualificationCode')?.hasError('pattern') && qualificationForm.get('QualificationCode')?.touched">
+                            Only letters and numbers allowed (2–20 characters)
                         </mat-error>
                     </mat-form-field>
 

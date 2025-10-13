@@ -197,8 +197,8 @@ export class Recruitmentreferencemaster implements OnInit {
           console.log('Update payload:', updatePayload);
           this.recruitmentreferencemasterservice.updateRecruitmentreference(updatePayload).subscribe({
             next: () => {
-        
-              this.toastService.showSuccess("updated successfully");
+
+              this.toastService.showSuccess("Recruitment reference updated successfully");
               this.loadAllRecruitmentReference();
             },
             error: (err) => {
@@ -235,13 +235,12 @@ export class Recruitmentreferencemaster implements OnInit {
 
         this.recruitmentreferencemasterservice.insertRecruitmentReference(payload).subscribe({
           next: () => {
-           
-            this.toastService.showSuccess("recruitment added successfully ");
+
+            this.toastService.showSuccess("Recruitment reference added successfully ");
             this.loadAllRecruitmentReference();
           },
           error: (err) => {
             console.error('Error while adding recruitment:', err);
-            this.toastService.showError('Failed to add recruitment. Please check inputs.');
           }
         });
       }
@@ -253,8 +252,8 @@ export class Recruitmentreferencemaster implements OnInit {
     this.recruitmentreferencemasterservice.deleteRecruitmentreference(value.RecruitmentReferenceId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-       
-        this.toastService.showSuccess("delete success ");
+
+        this.toastService.showSuccess(" Recruitment reference delete success ");
         this.loadAllRecruitmentReference();
       },
       error: (err) => {

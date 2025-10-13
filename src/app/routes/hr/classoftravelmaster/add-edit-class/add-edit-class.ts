@@ -1,66 +1,66 @@
-import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { Component, Inject, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { classoftravelservice } from '@shared/services/hr/classoftravel/classoftravelservice';
 
-
 @Component({
   selector: 'app-add-edit-class',
-  imports: [ReactiveFormsModule,
+  templateUrl: './add-edit-class.html',
+  styleUrls: ['./add-edit-class.scss'],
+  standalone: true,
+  imports: [
+    ReactiveFormsModule,
     MatCardModule,
-    MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
     MatCheckboxModule,
-    CommonModule,
-    MatIconModule],
-  templateUrl: './add-edit-class.html',
-  styleUrl: './add-edit-class.scss'
+    MatIconModule,
+    CommonModule
+  ]
 })
-export class AddEditClass {
+export class AddEditClass implements OnInit {
 
   classoftravelForm!: FormGroup;
   isEditMode: boolean = false;
 
-  classoftravelList: any[] = [];
-  code: string = '';
+  // Search controls
   classoftravelSearchControl = new FormControl('');
-  filteredclassoftravelList: any[] = [];
-  travelTierTypes = [
-    { id: '1', name: 'Economy' },
-    { id: '2', name: 'Business' },
-    { id: '3', name: 'First Class' }
-  ];
+  travelTypeSearchControl = new FormControl('');
 
-  constructor(private ClassofTravelService: classoftravelservice, private http: HttpClient,
+  // Lists
+  classoftravelList: any[] = [];
+  filteredclassoftravelList: any[] = [];
+  travelTierTypes: any[] = [];
+  filteredtravelTypeList: any[] = [];
+
+  constructor(
     private fb: FormBuilder,
+    private ClassofTravelService: classoftravelservice,
     public dialogRef: MatDialogRef<AddEditClass>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.isEditMode = !!this.data && !!this.data.classoftravel;
-    console.log('Edit mode:', this.isEditMode);
-    console.log('Data received:', this.data);
+    this.isEditMode = !!this.data?.classoftravel;
   }
 
   ngOnInit(): void {
     this.initializeForm();
     this.loadAllClassoftravel();
+    this.loadTierTypes();
   }
 
+  /** Initialize the reactive form */
   private initializeForm(): void {
-    const currentDate = new Date().toLocaleDateString('en-GB'); // dd/mm/yyyy format
+    const currentDate = new Date().toLocaleDateString('en-GB'); // dd/mm/yyyy
     this.classoftravelForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
       ClassOfTravelId: [''],
@@ -75,16 +75,17 @@ export class AddEditClass {
       ClassOfTravelIsActive: [{ value: true, disabled: !this.isEditMode }],
       CreatedBy: ['1'],
     });
-    if (this.isEditMode && this.data.classoftravel) {
+
+    // If edit mode, patch values from data
+    if (this.isEditMode && this.data?.classoftravel) {
       const travel = this.data.classoftravel;
-      debugger
       this.classoftravelForm.patchValue({
         ClassOfTravelId: travel.ClassOfTravelId,
         ClassOfTravelCode: travel.ClassOfTravelCode,
         ClassOfTravelName: travel.ClassOfTravelName,
         ClassOfTravelGradeId: travel.ClassOfTravelGradeId,
         DafoodAllowancePerday: travel.DafoodAllowancePerday,
-        ClassOfTravelTierType: String(travel.ClassOfTravelTierType), // 👈 Convert to string
+        ClassOfTravelTierType: travel.ClassOfTravelTierType?.toString(),
         ClassOfTravelRemark: travel.ClassOfTravelRemark,
         ClassOfTravelIsAuth: travel.ClassOfTravelIsAuth ?? true,
         ClassOfTravelIsDiscard: travel.ClassOfTravelIsDiscard ?? false,
@@ -93,8 +94,8 @@ export class AddEditClass {
         CreatedDate: travel.CreatedDate,
       });
     }
-
   }
+
   loadAllClassoftravel(): void {
     this.ClassofTravelService.getAllClassOftravelGrade().subscribe({
       next: res => {
@@ -119,7 +120,7 @@ export class AddEditClass {
   }
 
   private setclassoftravelForEdit(): void {
-    debugger;
+
     let GradeId = null;
     const classoftravelData = this.data.classoftravel;
 
@@ -143,7 +144,45 @@ export class AddEditClass {
     console.log('Form patched with:', this.classoftravelForm.value);
   }
 
+  /** Load tier types (static) */
+  private loadTierTypes(): void {
+    this.travelTierTypes = [
+      { id: '1', name: 'Economy' },
+      { id: '2', name: 'Business' },
+      { id: '3', name: 'First Class' }
+    ];
 
+    this.filteredtravelTypeList = [...this.travelTierTypes];
+
+    // Filter while typing
+    this.travelTypeSearchControl.valueChanges.subscribe((value: any) => {
+      const filterValue = (value || '').toLowerCase();
+      this.filteredtravelTypeList = this.travelTierTypes.filter(t =>
+        t.name.toLowerCase().includes(filterValue)
+      );
+    });
+
+    if (this.isEditMode && this.data) {
+      this.setTierTypeForEdit();
+    }
+  }
+
+  private setTierTypeForEdit(): void {
+    const classData = this.data?.classoftravel;
+    if (!classData?.ClassOfTravelTierType) return;
+
+    const tier = this.travelTierTypes.find(
+      t => t.id === classData.ClassOfTravelTierType?.toString()
+    );
+
+    if (tier) {
+      this.classoftravelForm.patchValue({
+        ClassOfTravelTierType: tier.id
+      });
+    }
+  }
+
+  /** Form submit */
   onSubmit(): void {
     if (this.classoftravelForm.valid) {
       this.dialogRef.close(this.classoftravelForm.value);
@@ -151,6 +190,32 @@ export class AddEditClass {
       this.classoftravelForm.markAllAsTouched();
     }
   }
+
+  blockSpaces(event: KeyboardEvent) {
+    const pattern = /[A-Za-z0-9]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  allowOnlyLettersAndSpaces(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    const inputChar = event.key;
+
+    // Block special characters and numbers
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+
+    // Block leading space
+    const input = event.target as HTMLInputElement;
+    if (input.selectionStart === 0 && inputChar === ' ') {
+      event.preventDefault();
+    }
+  }
+
+  /** Cancel dialog */
   onCancel(): void {
     this.dialogRef.close();
   }

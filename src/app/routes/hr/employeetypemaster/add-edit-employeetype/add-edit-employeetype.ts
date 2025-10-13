@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule,FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,6 +12,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 //import { employeetypeservice } from '@shared/services/hr/emplpoyeetype/employeetypeservice';
 import { Employeetypeservice } from '@shared/services/hr/employeetype/employeetypeservice';
 import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-employeetype',
@@ -25,7 +26,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatIconModule
+    MatIconModule,
+    CommonModule
   ],
   templateUrl: './add-edit-employeetype.html',
   styleUrl: './add-edit-employeetype.scss',
@@ -34,8 +36,8 @@ export class AddEditEmployeetype {
   employeetypeForm!: FormGroup;
   isEditMode: boolean = false;
   //currencyList: any[] = [];
-  code: string ='';
-//  currencySearchControl = new FormControl('');
+  code: string = '';
+  //  currencySearchControl = new FormControl('');
   //filteredCurrencyList: any[] = [];
 
 
@@ -51,16 +53,16 @@ export class AddEditEmployeetype {
 
   ngOnInit(): void {
     this.initializeForm();
-   // this.loadAllCurrencies();
+    // this.loadAllCurrencies();
   }
 
   private initializeForm(): void {
-    
+
     const currentDate = new Date().toLocaleDateString('en-GB'); // dd/mm/yyyy format
     this.employeetypeForm = this.fb.group({
       CreatedDate: [{ value: currentDate, disabled: true }],
       //code: [{ value: '', disabled: !this.isEditMode }],
-     // EmployeeTypeCode: ['', [Validators.required]],
+      // EmployeeTypeCode: ['', [Validators.required]],
       EmployeeTypeName: ['', [Validators.required]],
       EmployeeTypeDescription: ['', [Validators.required]],
       EmployeeTypeRemark: ['', [Validators.required]],
@@ -91,7 +93,7 @@ export class AddEditEmployeetype {
     debugger
     if (this.employeetypeForm.valid) {
       this.employeetypeForm.enable();
-      console.log('Form Values',this.employeetypeForm.value);
+      console.log('Form Values', this.employeetypeForm.value);
       this.dialogRef.close(this.employeetypeForm.value);
     } else {
       this.employeetypeForm.markAllAsTouched();
@@ -101,4 +103,20 @@ export class AddEditEmployeetype {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+  allowLettersAndSpaces(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    const input = event.target as HTMLInputElement;
+    if (!pattern.test(event.key) || (input.selectionStart === 0 && event.key === ' ')) {
+      event.preventDefault();
+    }
+  }
+
+  allowLettersNumbersAndPunctuation(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z0-9.,\- ]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
 }

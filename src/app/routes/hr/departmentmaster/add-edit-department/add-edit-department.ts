@@ -293,4 +293,27 @@ export class AddEditDepartment implements OnInit {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+
+  allowAlphanumeric(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z0-9]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  allowLettersAndSpaces(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  allowUppercaseLetters(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
 }

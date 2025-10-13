@@ -170,7 +170,6 @@ export class Locationmaster implements OnInit {
     });
   }
   edit(record: Ilocationmaster) { // If you have a Qualification interface, use it here
-    // debugger; // Remove before production
 
     this.dialog.open<AddEditLocation, { location: Ilocationmaster }, Ilocationmaster>(AddEditLocation, {
       width: '80%',
@@ -211,7 +210,6 @@ export class Locationmaster implements OnInit {
           },
           error: (err) => {
             console.error('Error updating location:', err);
-            this.toastService.showError('Failed to update Location. Please check inputs.');
           }
         });
       }
@@ -231,7 +229,6 @@ export class Locationmaster implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log(' location data:', result);
-        debugger
         const payload: Ilocationmaster = {
           LocationId: 0,
           LocationCode: result.LocationCode,
@@ -258,7 +255,6 @@ export class Locationmaster implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding Location:', err);
-            this.toastService.showError('Failed to add Location. Please verify the details and try again.');
           }
         });
       }
@@ -285,7 +281,6 @@ export class Locationmaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting Location:', err);
-        this.toastService.showError('Failed to delete Location. It might be in use.');
       }
     });
   }

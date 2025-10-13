@@ -66,28 +66,28 @@ export class AddEditCtc {
     this.ctcForm = this.fb.group({
       CtcstructureId: [''],
       CtcmasterGradeId: ['', [Validators.required]],
-      CtcmasterBasic: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterDa: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterHra: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterLeaveTravelAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterDriverAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterPfemployee: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterPfemployer: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterGraduity: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
+      CtcmasterBasic: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterDa: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterHra: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterLeaveTravelAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterDriverAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterPfemployee: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterPfemployer: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterGraduity: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
 
-      CtcmasterConvAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterCarAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterMiscAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterPt: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterMedicalInsurance: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterBonus: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
+      CtcmasterConvAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterCarAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterMiscAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterPt: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterMedicalInsurance: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterBonus: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
 
-      CtcmasterCityCompensatoryAlowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterFuelAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterGross: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterEsic: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterPerformanceKpa: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]],
-      CtcmasterMlwf: ['', [Validators.required, Validators.pattern(/^[0-9]+([.,][0-9]+)*$/)]]
+      CtcmasterCityCompensatoryAlowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterFuelAllowance: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterGross: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterEsic: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterPerformanceKpa: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]],
+      CtcmasterMlwf: ['', [Validators.required, Validators.pattern(/^[0-9]+([,][0-9]+)*$/)]]
     });
     if (this.isEditMode) {
       console.log('Patching form with CTC Structure data:', this.data.ctc);
@@ -125,7 +125,7 @@ export class AddEditCtc {
 
   // Allow only numbers, commas, and decimals while typing
   validateNumberWithCommaDot(event: KeyboardEvent) {
-    const allowedChars = /[0-9.,]/;
+    const allowedChars = /[0-9,]/;
     const inputChar = String.fromCharCode(event.keyCode);
     if (!allowedChars.test(inputChar)) {
       event.preventDefault();
@@ -135,10 +135,11 @@ export class AddEditCtc {
   // Prevent pasting invalid values
   onPasteNumberWithCommaDot(event: ClipboardEvent) {
     const pastedInput: string = event.clipboardData?.getData('text') ?? '';
-    if (!/^[0-9]+([.,][0-9]+)*$/.test(pastedInput)) {
+    if (!/^[0-9]+([,][0-9]+)*$/.test(pastedInput)) {
       event.preventDefault();
     }
   }
+
 
 
 

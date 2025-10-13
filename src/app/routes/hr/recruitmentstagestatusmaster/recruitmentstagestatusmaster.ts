@@ -250,9 +250,7 @@ export class Recruitmentstagestatusmaster implements OnInit {
                 this.toastService.showError(message);
               });
             } else {
-              this.toastService.showError(
-                'Failed to add Recruitment Stage Status. Please verify Recruitment Stage Status details and try again.'
-              );
+             
             }
           },
         });

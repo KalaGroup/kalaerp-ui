@@ -61,51 +61,66 @@
       </div>
 
       <div class="row mb-3">
-        <!-- Left side (District Name, Short Name, Latitude, Longitude, Remark) -->
         <div class="col-sm-6 col-xl-6">
+          <!-- District Name -->
           <mat-form-field appearance="outline">
             <mat-label>District Name</mat-label>
-            <input matInput formControlName="DistrictName" placeholder="Enter full District name" />
-            @if (
-            DistrictForm.get('DistrictName')?.invalid && DistrictForm.get('DistrictName')?.touched
-            ) {
-            <mat-error>District Name is required</mat-error>
-            }
+            <input matInput formControlName="DistrictName" placeholder="Enter full District name"
+              (keypress)="allowLettersAndSpaces($event)" />
+            <mat-error
+              *ngIf="DistrictForm.get('DistrictName')?.hasError('required') && DistrictForm.get('DistrictName')?.touched">
+              District Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="DistrictForm.get('DistrictName')?.hasError('pattern') && DistrictForm.get('DistrictName')?.touched">
+              Only letters and spaces allowed (2–50 characters)
+            </mat-error>
           </mat-form-field>
 
+          <!-- Short Name -->
           <mat-form-field appearance="outline">
             <mat-label>Short Name</mat-label>
-            <input matInput formControlName="ShortName" placeholder="Enter short name" />
-            @if (DistrictForm.get('ShortName')?.invalid && DistrictForm.get('ShortName')?.touched) {
-            <mat-error>Short Name Code is required</mat-error>
-            }
+            <input matInput formControlName="ShortName" placeholder="Enter short name" (input)="toUpperCase($event)"
+              (keypress)="allowUppercaseLetters($event)" />
+            <mat-error
+              *ngIf="DistrictForm.get('ShortName')?.hasError('required') && DistrictForm.get('ShortName')?.touched">
+              Short Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="DistrictForm.get('ShortName')?.hasError('pattern') && DistrictForm.get('ShortName')?.touched">
+              Only uppercase letters allowed (2–10 characters)
+            </mat-error>
           </mat-form-field>
-
-
         </div>
 
         <div class="col-sm-6 col-xl-6">
+          <!-- District Code -->
           <mat-form-field appearance="outline">
             <mat-label>District Code</mat-label>
-            <input matInput formControlName="DistrictCode" placeholder="Enter full District Code" />
-            @if (
-            DistrictForm.get('DistrictCode')?.invalid && DistrictForm.get('DistrictCode')?.touched
-            ) {
-            <mat-error>District Code is required</mat-error>
-            }
+            <input matInput formControlName="DistrictCode" placeholder="Enter District Code"
+              (keypress)="allowAlphanumeric($event)" />
+            <mat-error
+              *ngIf="DistrictForm.get('DistrictCode')?.hasError('required') && DistrictForm.get('DistrictCode')?.touched">
+              District Code is required
+            </mat-error>
+            <mat-error
+              *ngIf="DistrictForm.get('DistrictCode')?.hasError('pattern') && DistrictForm.get('DistrictCode')?.touched">
+              Only letters and numbers allowed (2–20 characters)
+            </mat-error>
           </mat-form-field>
 
+          <!-- Remark -->
           <mat-form-field appearance="outline">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="DistrictMasterRemark" placeholder="Enter Remark" />
-            <!-- @if (
-              DistrictForm.get('Remark')?.invalid && DistrictForm.get('Remark')?.touched
-            ) {
-              <mat-error>Remark is required</mat-error>
-            } -->
+            <mat-error
+              *ngIf="DistrictForm.get('DistrictMasterRemark')?.hasError('maxlength') && DistrictForm.get('DistrictMasterRemark')?.touched">
+              Remark cannot exceed 200 characters
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
+
 
       <!-- Action buttons -->
       <div class="row">

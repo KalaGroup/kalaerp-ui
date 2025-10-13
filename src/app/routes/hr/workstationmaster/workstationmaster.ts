@@ -176,7 +176,6 @@ export class Workstationmaster implements OnInit {
   ];
 
   loadAllWorkstation() {
-    debugger;
     this.workstationService.getAllWorkstation().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
@@ -202,7 +201,6 @@ export class Workstationmaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
         console.log('Added City:', result);
         const payload: IWorkstation = {
           WorkStationId: 0,
@@ -221,10 +219,10 @@ export class Workstationmaster implements OnInit {
         console.log('Payload for adding Workstation:', payload);
         // Call the service to insert the Workstation
         this.workstationService.insertWorkstation(payload).subscribe({
-          next: response => {
-            this.toastService.showSuccess('Workstation added successfully:', response);
-            this.loadAllWorkstation();
+          next: (response) => {
+            this.toastService.showSuccess('Workstation Added successfully:', response);
 
+            this.loadAllWorkstation();
           },
           error: err => {
             if (err.status === 400 && err.error) {
@@ -241,9 +239,7 @@ export class Workstationmaster implements OnInit {
                 this.toastService.showError(message);
               });
             } else {
-              this.toastService.showError(
-                'Failed to add Workstation. Please verify Workstation details and try again.'
-              );
+
             }
           },
         });
@@ -263,7 +259,6 @@ export class Workstationmaster implements OnInit {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          debugger;
           console.log('workstation Updated:', result);
           // Create update payload as per your reqirements
           const updatePayload = {
@@ -304,7 +299,6 @@ export class Workstationmaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger;
     this.workstationService.deleteWorkstation(value.WorkStationId).subscribe({
       next: response => {
         this.toastService.showSuccess('Workstation deleted successfully:', response);

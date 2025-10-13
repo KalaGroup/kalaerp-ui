@@ -52,6 +52,14 @@
               Designation is required
             </mat-error>
           </mat-form-field>
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Remark</mat-label>
+            <input matInput formControlName="RolesRemark" placeholder="Enter Remark" />
+            <mat-error
+              *ngIf="roleForm.get('RolesRemark')?.hasError('required') && roleForm.get('RolesRemark')?.touched">
+              Remark is required
+            </mat-error>
+          </mat-form-field>
         </div>
 
         <!-- Right Side -->
@@ -71,13 +79,14 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Remark</mat-label>
-            <input matInput formControlName="RolesRemark" placeholder="Enter Remark" />
+            <mat-label>Auth Remark</mat-label>
+            <input matInput formControlName="RolesAuthRemark" placeholder="Enter Authorization Remark..." />
             <mat-error
-              *ngIf="roleForm.get('RolesRemark')?.hasError('required') && roleForm.get('RolesRemark')?.touched">
-              Remark is required
+              *ngIf="roleForm.get('RolesAuthRemark')?.hasError('required') && roleForm.get('RolesAuthRemark')?.touched">
+              Authorization Remark is required
             </mat-error>
           </mat-form-field>
+
 
           <br />
         </div>

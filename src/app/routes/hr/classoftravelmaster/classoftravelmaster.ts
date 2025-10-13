@@ -183,8 +183,6 @@ export class Classoftravelmaster implements OnInit {
   }
 
   edit(record: Iclassoftravelmaster) { // If you have a Qualification interface, use it here
-    // debugger; // Remove before production
-
     this.dialog.open<AddEditClass, { classoftravel: Iclassoftravelmaster }, Iclassoftravelmaster>(AddEditClass, {
       width: '80%',
       height: '70%',
@@ -221,7 +219,6 @@ export class Classoftravelmaster implements OnInit {
           },
           error: (err) => {
             console.error('Error updating class:', err);
-            this.toastService.showError('Failed to update class. Please check inputs.');
           }
         });
       }
@@ -238,7 +235,6 @@ export class Classoftravelmaster implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      debugger
       if (result) {
         console.log(' class data:', result);
         const payload: Iclassoftravelmaster = {
@@ -268,7 +264,6 @@ export class Classoftravelmaster implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding class:', err);
-            this.toastService.showError('Failed to add class. Please verify the details and try again.');
           }
         });
       }
@@ -283,7 +278,6 @@ export class Classoftravelmaster implements OnInit {
     this.closeDialog();
   }
   delete(value: any) {
-    debugger
     this.ClassofTravelService.deleteClassOftravel(value.ClassOfTravelId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
@@ -294,7 +288,6 @@ export class Classoftravelmaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting class:', err);
-        this.toastService.showError('Failed to delete class. It might be in use.');
       }
     });
   }

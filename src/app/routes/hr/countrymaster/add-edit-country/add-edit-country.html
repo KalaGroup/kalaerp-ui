@@ -10,7 +10,7 @@
       <div class="row mb-3">
         <div class="col-sm-3 col-xl-2">
           <mat-form-field appearance="fill">
-            
+
             <mat-label>Country Code</mat-label>
             <input matInput formControlName="code" readonly placeholder="Auto-generated" />
           </mat-form-field>
@@ -38,21 +38,35 @@
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
             <mat-label>Country Name</mat-label>
-            <input matInput formControlName="CountryName" placeholder="Enter full country name" />
-            @if (countryForm.get('CountryName')?.invalid && countryForm.get('CountryName')?.touched) {
-            <mat-error>Country Name is required</mat-error>
-            }
+            <input matInput formControlName="CountryName" placeholder="Enter full country name" maxlength="100"
+              (keypress)="allowOnlyLettersAndSpaces($event)" />
+            <mat-error
+              *ngIf="countryForm.get('CountryName')?.hasError('required') && countryForm.get('CountryName')?.touched">
+              Country Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="countryForm.get('CountryName')?.hasError('pattern') && countryForm.get('CountryName')?.touched">
+              Only letters and single spaces allowed (minimum 2 characters)
+            </mat-error>
           </mat-form-field>
         </div>
+
         <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
             <mat-label>Country Short Name</mat-label>
-            <input matInput formControlName="CountryShortName" placeholder="e.g., USA, UK, IND" />
-            @if (countryForm.get('CountryShortName')?.invalid && countryForm.get('CountryShortName')?.touched) {
-            <mat-error>Short Name is required</mat-error>
-            }
+            <input matInput formControlName="CountryShortName" placeholder="e.g., USA, UK, IND" maxlength="10"
+              (keypress)="allowOnlyUppercaseLetters($event)" />
+            <mat-error
+              *ngIf="countryForm.get('CountryShortName')?.hasError('required') && countryForm.get('CountryShortName')?.touched">
+              Short Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="countryForm.get('CountryShortName')?.hasError('pattern') && countryForm.get('CountryShortName')?.touched">
+              Only uppercase letters allowed (2-10 characters)
+            </mat-error>
           </mat-form-field>
         </div>
+
       </div>
 
       <!-- Code and Currency row -->

@@ -20,22 +20,45 @@
 
       <!-- Row 1 -->
       <div class="row mb-3">
+        <!-- RecruitmentMaster Code -->
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>RecruitmentMaster Code</mat-label>
-            <input matInput formControlName="RecruitmentMasterCode" placeholder="Enter Code" />
+            <input matInput formControlName="RecruitmentMasterCode" placeholder="Enter Code" maxlength="20"
+              (keypress)="allowAlphanumeric($event)" />
+            <mat-error
+              *ngIf="RecruitmentForm.get('RecruitmentMasterCode')?.hasError('required') && RecruitmentForm.get('RecruitmentMasterCode')?.touched">
+              RecruitmentMaster Code is required
+            </mat-error>
           </mat-form-field>
 
+          <!-- Recruitment Reference Code -->
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Recruitment Reference Code</mat-label>
-            <input matInput formControlName="RecruitmentMasterReferenceCode" placeholder="Enter Reference Code" />
+            <input matInput formControlName="RecruitmentMasterReferenceCode" placeholder="Enter Reference Code"
+              maxlength="20" (keypress)="allowAlphanumeric($event)" />
+            <mat-error
+              *ngIf="RecruitmentForm.get('RecruitmentMasterReferenceCode')?.hasError('required') && RecruitmentForm.get('RecruitmentMasterReferenceCode')?.touched">
+              Recruitment Reference Code is required
+            </mat-error>
           </mat-form-field>
 
+          <!-- Recruitment Reference Name -->
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Recruitment Reference Name</mat-label>
-            <input matInput formControlName="RecruitmentMasterReferenceName" placeholder="Enter Reference Name" />
+            <input matInput formControlName="RecruitmentMasterReferenceName" placeholder="Enter Reference Name"
+              maxlength="50" (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
+            <mat-error
+              *ngIf="RecruitmentForm.get('RecruitmentMasterReferenceName')?.hasError('required') && RecruitmentForm.get('RecruitmentMasterReferenceName')?.touched">
+              Recruitment Reference Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="RecruitmentForm.get('RecruitmentMasterReferenceName')?.hasError('pattern') && RecruitmentForm.get('RecruitmentMasterReferenceName')?.touched">
+              Only letters and spaces allowed (2–50 characters)
+            </mat-error>
           </mat-form-field>
         </div>
+
 
         <div class="col-sm-4 col-xl-4">
           <!-- Recruitment Reference -->
@@ -68,7 +91,16 @@
 
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Candidate Name</mat-label>
-            <input matInput formControlName="RecruitmentMasterNameOfCandidates" placeholder="Enter Candidate Name" />
+            <input matInput formControlName="RecruitmentMasterNameOfCandidates" placeholder="Enter Candidate Name"
+              maxlength="50" (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
+            <mat-error
+              *ngIf="RecruitmentForm.get('RecruitmentMasterNameOfCandidates')?.hasError('required') && RecruitmentForm.get('RecruitmentMasterNameOfCandidates')?.touched">
+              Candidate Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="RecruitmentForm.get('RecruitmentMasterNameOfCandidates')?.hasError('pattern') && RecruitmentForm.get('RecruitmentMasterNameOfCandidates')?.touched">
+              Only letters and spaces allowed (2–50 characters)
+            </mat-error>
           </mat-form-field>
         </div>
 
@@ -114,7 +146,16 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Contact Number</mat-label>
-            <input matInput formControlName="RecruitmentMasterCandidateContactNumber" placeholder="Enter Number" />
+            <input matInput formControlName="RecruitmentMasterCandidateContactNumber" placeholder="Enter Number"
+              maxlength="10" (keypress)="allowNumbersOnly($event)" />
+            <mat-error
+              *ngIf="RecruitmentForm.get('RecruitmentMasterCandidateContactNumber')?.hasError('required') && RecruitmentForm.get('RecruitmentMasterCandidateContactNumber')?.touched">
+              Contact Number is required
+            </mat-error>
+            <mat-error
+              *ngIf="RecruitmentForm.get('RecruitmentMasterCandidateContactNumber')?.hasError('pattern') && RecruitmentForm.get('RecruitmentMasterCandidateContactNumber')?.touched">
+              Enter a valid 10-digit number
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="w-100">

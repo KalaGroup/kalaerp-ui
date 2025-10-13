@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Countryservice } from '@shared/services/hr/country/countryservice';
 import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-country',
@@ -23,7 +24,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatSelectModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatIconModule
+    MatIconModule,
+    CommonModule
   ],
   templateUrl: './add-edit-country.html',
   styleUrl: './add-edit-country.scss',
@@ -76,7 +78,7 @@ export class AddEditCountry {
       });
       this.countryForm.get('code')?.enable();
       this.countryForm.get('IsActive')?.enable();
-      console.log('Form values after patch:', this.countryForm.value); 
+      console.log('Form values after patch:', this.countryForm.value);
     }
   }
 
@@ -132,6 +134,28 @@ export class AddEditCountry {
   //     this.countryForm.markAllAsTouched();
   //   }
   // }
+
+  allowOnlyLettersAndSpaces(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    const inputChar = event.key;
+
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+
+    const input = event.target as HTMLInputElement;
+    if (input.selectionStart === 0 && inputChar === ' ') {
+      event.preventDefault();
+    }
+  }
+
+  allowOnlyUppercaseLetters(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
 
 
   onSubmit(): void {

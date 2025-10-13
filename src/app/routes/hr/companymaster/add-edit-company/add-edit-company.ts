@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule,FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-add-edit-company',
@@ -30,6 +31,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDividerModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    CommonModule
   ],
   templateUrl: './add-edit-company.html',
   styleUrl: './add-edit-company.scss',
@@ -995,6 +997,41 @@ export class AddEditCompany {
       });
     });
   }
+
+
+
+  allowCompanyNameChars(event: KeyboardEvent) {
+    const inputChar = event.key;
+    const pattern = /^[A-Za-z ]$/;
+
+    // Block invalid characters
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+
+    // Prevent leading space
+    const input = event.target as HTMLInputElement;
+    if (input.selectionStart === 0 && inputChar === ' ') {
+      event.preventDefault();
+    }
+  }
+
+  allowShortNameChars(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z .,\- ]$/;
+    const inputChar = event.key;
+
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+
+    // Prevent leading space
+    const input = event.target as HTMLInputElement;
+    if (input.selectionStart === 0 && inputChar === ' ') {
+      event.preventDefault();
+    }
+  }
+
+
 
   onSubmit(): void {
     debugger;

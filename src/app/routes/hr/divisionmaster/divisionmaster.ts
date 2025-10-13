@@ -157,7 +157,7 @@ export class Divisionmaster implements OnInit {
   ];
 
   getAllDivision() {
-    debugger;
+   
     this.divisionService.getAllDivision().subscribe({
       next: (data) => {
         this.list = data.map((item: any, index: number) => ({
@@ -207,7 +207,6 @@ export class Divisionmaster implements OnInit {
           },
           error: (err) => {
             console.error('Error updating Division:', err)
-            this.toastService.showError('Failed to update Division. Please check inputs.');
           }
         });
       }
@@ -225,7 +224,7 @@ export class Divisionmaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        debugger;
+    
         console.log('Added Division:', result);
         const payload: IDivision = {
           DivisionId: 0,
@@ -251,9 +250,6 @@ export class Divisionmaster implements OnInit {
           },
           error: err => {
             console.error('Error while adding Division:', err);
-            this.toastService.showError(
-              'Failed to add Division. Please verify Division details and try again.'
-            );
           },
         });
       }
@@ -270,7 +266,7 @@ export class Divisionmaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger;
+   
     this.divisionService.deleteDivision(value.DivisionId).subscribe({
       next: (response) => {
         this.toastService.showSuccess('Division Deleted successfully:', response);
@@ -282,7 +278,6 @@ export class Divisionmaster implements OnInit {
       },
       error: (err) => {
         console.error('Error deleting Division:', err);
-        this.toastService.showError('Failed to delete Division. It might be in use.');
       }
     });
   }

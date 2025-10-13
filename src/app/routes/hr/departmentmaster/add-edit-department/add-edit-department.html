@@ -30,37 +30,59 @@
           <!-- Department Code -->
           <mat-form-field appearance="outline">
             <mat-label>Department Code</mat-label>
-            <input matInput formControlName="DepartmentCode" placeholder="Enter Department Code" />
-            @if (departmentForm.get('DepartmentCode')?.invalid && departmentForm.get('DepartmentCode')?.touched) {
-            <mat-error>Department Code is required</mat-error>
-            }
+            <input matInput formControlName="DepartmentCode" placeholder="Enter Department Code"
+              (keypress)="allowAlphanumeric($event)" />
+            <mat-error
+              *ngIf="departmentForm.get('DepartmentCode')?.hasError('required') && departmentForm.get('DepartmentCode')?.touched">
+              Department Code is required
+            </mat-error>
+            <mat-error
+              *ngIf="departmentForm.get('DepartmentCode')?.hasError('pattern') && departmentForm.get('DepartmentCode')?.touched">
+              Only letters and numbers allowed (2–20 characters)
+            </mat-error>
           </mat-form-field>
-
 
           <!-- Department Name -->
           <mat-form-field appearance="outline">
             <mat-label>Department Name</mat-label>
-            <input matInput formControlName="DepartmentName" placeholder="Enter Department Name" />
-            @if (departmentForm.get('DepartmentName')?.invalid && departmentForm.get('DepartmentName')?.touched) {
-            <mat-error>Department Name is required</mat-error>
-            }
+            <input matInput formControlName="DepartmentName" placeholder="Enter Department Name"
+              (keypress)="allowLettersAndSpaces($event)" />
+            <mat-error
+              *ngIf="departmentForm.get('DepartmentName')?.hasError('required') && departmentForm.get('DepartmentName')?.touched">
+              Department Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="departmentForm.get('DepartmentName')?.hasError('pattern') && departmentForm.get('DepartmentName')?.touched">
+              Only letters and spaces allowed (2–50 characters)
+            </mat-error>
           </mat-form-field>
 
+          <!-- Department Short Name -->
           <mat-form-field appearance="outline">
             <mat-label>Short Name</mat-label>
             <input matInput formControlName="DepartmentShortName" placeholder="Enter Short Name"
-              (input)="toUpperCase($event)" />
-            @if (departmentForm.get('DepartmentShortName')?.invalid &&
-            departmentForm.get('DepartmentShortName')?.touched) {
-            <mat-error>Department Short Name is required</mat-error>
-            }
+              (input)="toUpperCase($event)" (keypress)="allowUppercaseLetters($event)" />
+            <mat-error
+              *ngIf="departmentForm.get('DepartmentShortName')?.hasError('required') && departmentForm.get('DepartmentShortName')?.touched">
+              Department Short Name is required
+            </mat-error>
+            <mat-error
+              *ngIf="departmentForm.get('DepartmentShortName')?.hasError('pattern') && departmentForm.get('DepartmentShortName')?.touched">
+              Only uppercase letters allowed (2–10 characters)
+            </mat-error>
           </mat-form-field>
 
+          <!-- Department Remark -->
           <mat-form-field appearance="outline">
             <mat-label>Remark</mat-label>
             <input matInput formControlName="DepartmentRemark" placeholder="Enter Remark" />
+            <mat-error
+              *ngIf="departmentForm.get('DepartmentRemark')?.hasError('maxlength') && departmentForm.get('DepartmentRemark')?.touched">
+              Remark cannot exceed 200 characters
+            </mat-error>
           </mat-form-field>
         </div>
+
 
         <!-- Right Side -->
         <div class="col-sm-6 col-xl-6">

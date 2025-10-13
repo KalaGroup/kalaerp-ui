@@ -38,10 +38,15 @@
                     <!-- Shift Name -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Shift Name</mat-label>
-                        <input matInput formControlName="ShiftMasterName" placeholder="Enter shift name" />
+                        <input matInput formControlName="ShiftMasterName" placeholder="Enter shift name" maxlength="50"
+                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
                         <mat-error
-                            *ngIf="shiftMasterForm.get('ShiftMasterName')?.invalid && shiftMasterForm.get('ShiftMasterName')?.touched">
+                            *ngIf="shiftMasterForm.get('ShiftMasterName')?.hasError('required') && shiftMasterForm.get('ShiftMasterName')?.touched">
                             Shift Name is required
+                        </mat-error>
+                        <mat-error
+                            *ngIf="shiftMasterForm.get('ShiftMasterName')?.hasError('pattern') && shiftMasterForm.get('ShiftMasterName')?.touched">
+                            Only letters and spaces allowed (2–50 characters)
                         </mat-error>
                     </mat-form-field>
 
@@ -79,10 +84,16 @@
                     <!-- Alias Name -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Alias Name</mat-label>
-                        <input matInput formControlName="ShiftMasterAliseName" placeholder="Enter alias name" />
+                        <input matInput formControlName="ShiftMasterAliseName" placeholder="Enter alias name"
+                            maxlength="50" (keypress)="allowLettersAndSpace($event)"
+                            (paste)="blockInvalidPaste($event)" />
                         <mat-error
-                            *ngIf="shiftMasterForm.get('ShiftMasterAliseName')?.invalid && shiftMasterForm.get('ShiftMasterAliseName')?.touched">
+                            *ngIf="shiftMasterForm.get('ShiftMasterAliseName')?.hasError('required') && shiftMasterForm.get('ShiftMasterAliseName')?.touched">
                             Alias Name is required
+                        </mat-error>
+                        <mat-error
+                            *ngIf="shiftMasterForm.get('ShiftMasterAliseName')?.hasError('pattern') && shiftMasterForm.get('ShiftMasterAliseName')?.touched">
+                            Only letters and spaces allowed (2–50 characters)
                         </mat-error>
                     </mat-form-field>
 

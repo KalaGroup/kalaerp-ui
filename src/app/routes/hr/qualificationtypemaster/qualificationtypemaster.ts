@@ -157,7 +157,6 @@ export class Qualificationtypemaster implements OnInit {
   ];
 
     loadAllQualificationtype() {
-    debugger;
     this.qualificationtypeService.getAllQualificationtype().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({
@@ -183,7 +182,6 @@ export class Qualificationtypemaster implements OnInit {
   
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          debugger;
           console.log('Added Qualificationtype:', result);
           const payload: IQualificationtype = {
             QualificationTypeId: 0,
@@ -219,9 +217,7 @@ export class Qualificationtypemaster implements OnInit {
                   this.toastService.showError(message);
                 });
               } else {
-                this.toastService.showError(
-                  'Failed to add Qualificationtype. Please verify Qualificationtype details and try again.'
-                );
+              
               }
             },
           });
@@ -230,7 +226,6 @@ export class Qualificationtypemaster implements OnInit {
     }
 
   edit(record: any) {
-    debugger;
     this.dialog
       .open(AddEditQualificationtype, {
         width: '80%',
@@ -242,7 +237,6 @@ export class Qualificationtypemaster implements OnInit {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          debugger;
           console.log('Qualificationtype Updated:', result);
           // Create update payload as per your reqirements
           const updatePayload = {
@@ -281,7 +275,6 @@ export class Qualificationtypemaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger;
     this.qualificationtypeService.deleteQualificationtype(value.QualificationTypeId).subscribe({
       next: response => {
         this.toastService.showSuccess('Qualificationtype deleted successfully:', response);

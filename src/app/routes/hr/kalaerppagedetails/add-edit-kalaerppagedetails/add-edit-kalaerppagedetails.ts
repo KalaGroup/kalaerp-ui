@@ -169,8 +169,7 @@ export class AddEditKalaerppagedetails {
       KalaErppageDetailsId: [''],
       KalaErppageDetailsDivisionId: ['', [Validators.required]],
       PageTittle: ['', [Validators.required]],
-      PageUrl: ['', [Validators.required, Validators.pattern(
-        /^(https?:\/\/)?([\w-]+(\.[\w-]+)+)(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/)]],
+      PageUrl: ['', [Validators.required]],
 
 
       PageType: [null, [Validators.required]],

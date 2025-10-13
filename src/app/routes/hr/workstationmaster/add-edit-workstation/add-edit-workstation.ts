@@ -1,6 +1,6 @@
 /* eslint-disable @angular-eslint/prefer-inject */
 import { Component, Inject, OnInit } from '@angular/core';
-import {FormBuilder,FormGroup,Validators,ReactiveFormsModule,FormControl,} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl, } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -162,7 +162,7 @@ export class AddEditWorkstation {
   }
 
   onSubmit(): void {
-        this.workstationForm.enable();//important for active boolean
+    this.workstationForm.enable();//important for active boolean
     if (this.workstationForm.valid) {
       this.dialogRef.close(this.workstationForm.value);
     } else {
@@ -172,4 +172,30 @@ export class AddEditWorkstation {
   onCancel(): void {
     this.dialogRef.close();
   }
+
+  // Real-time typing restrictions
+  allowAlphanumeric(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z0-9]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  allowLettersAndSpace(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    const input = event.target as HTMLInputElement;
+    if (!pattern.test(event.key) || (input.selectionStart === 0 && event.key === ' ')) {
+      event.preventDefault();
+    }
+  }
+
+  // Optional: prevent invalid paste
+  blockInvalidPaste(event: ClipboardEvent) {
+    const clipboardData = event.clipboardData?.getData('text') || '';
+    const pattern = /^[A-Za-z ]+$/;
+    if (!pattern.test(clipboardData)) {
+      event.preventDefault();
+    }
+  }
+
 }

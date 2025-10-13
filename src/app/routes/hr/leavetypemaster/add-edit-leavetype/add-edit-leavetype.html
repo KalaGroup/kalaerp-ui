@@ -24,15 +24,14 @@
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Leave Type Name</mat-label>
                         <input matInput formControlName="LeaveTypeMasterName" placeholder="Enter name"
-                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
-
-                        <mat-error *ngIf="leaveTypeForm.get('LeaveTypeMasterName')?.hasError('required') &&
-                    leaveTypeForm.get('LeaveTypeMasterName')?.touched">
+                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)"
+                            maxlength="50" />
+                        <mat-error
+                            *ngIf="leaveTypeForm.get('LeaveTypeMasterName')?.hasError('required') && leaveTypeForm.get('LeaveTypeMasterName')?.touched">
                             Name is required
                         </mat-error>
-
-                        <mat-error *ngIf="leaveTypeForm.get('LeaveTypeMasterName')?.hasError('pattern') &&
-                    leaveTypeForm.get('LeaveTypeMasterName')?.touched">
+                        <mat-error
+                            *ngIf="leaveTypeForm.get('LeaveTypeMasterName')?.hasError('pattern') && leaveTypeForm.get('LeaveTypeMasterName')?.touched">
                             Only letters and spaces are allowed
                         </mat-error>
                     </mat-form-field>
@@ -69,10 +68,15 @@
                     <!-- Leave Type Code -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Leave Type Code</mat-label>
-                        <input matInput formControlName="LeaveTypeMasterCode" placeholder="Enter code" />
+                        <input matInput formControlName="LeaveTypeMasterCode" placeholder="Enter code" maxlength="20"
+                            (keypress)="allowAlphanumeric($event)" />
                         <mat-error
-                            *ngIf="leaveTypeForm.get('LeaveTypeMasterCode')?.invalid && leaveTypeForm.get('LeaveTypeMasterCode')?.touched">
+                            *ngIf="leaveTypeForm.get('LeaveTypeMasterCode')?.hasError('required') && leaveTypeForm.get('LeaveTypeMasterCode')?.touched">
                             Code is required
+                        </mat-error>
+                        <mat-error
+                            *ngIf="leaveTypeForm.get('LeaveTypeMasterCode')?.hasError('pattern') && leaveTypeForm.get('LeaveTypeMasterCode')?.touched">
+                            Only letters and numbers allowed (2–20 characters)
                         </mat-error>
                     </mat-form-field>
 
