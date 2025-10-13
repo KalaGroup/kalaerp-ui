@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 import { Divisionservice } from '@shared/services/hr/division/divisionservice';
 
 @Component({
@@ -30,6 +31,7 @@ import { Divisionservice } from '@shared/services/hr/division/divisionservice';
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,
+    CommonModule
   ],
   templateUrl: './add-edit-division.html',
   styleUrl: './add-edit-division.scss',
