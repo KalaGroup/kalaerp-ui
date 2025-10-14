@@ -58,7 +58,7 @@ export class AddEditRecruitmentstagestatus implements OnInit {
     this.RecruitmentStageStatusForm = this.fb.group({
       RecruitmentStageStatusId: [0],
       RecruitmentStageStatusName: ['', Validators.required],
-      RecruitmentStageStatusRemark: ['',],
+      RecruitmentStageStatusRemark: ['', [Validators.required, Validators.maxLength(200)]],
       RecruitmentStageStatusAuthRemark: ['ok'],
       RecruitmentStageStatusAuth: [{ value: true, disabled: !this.isEditMode }],
       RecruitmentStageStatusIsActive: [{ value: true, disabled: !this.isEditMode }],
@@ -117,6 +117,13 @@ export class AddEditRecruitmentstagestatus implements OnInit {
     const clipboardData = event.clipboardData?.getData('text') || '';
     const pattern = /^[A-Za-z ]+$/;
     if (!pattern.test(clipboardData)) {
+      event.preventDefault();
+    }
+  }
+
+  // 🚫 Prevent spaces while typing
+  preventSpaces(event: KeyboardEvent) {
+    if (event.key === ' ') {
       event.preventDefault();
     }
   }

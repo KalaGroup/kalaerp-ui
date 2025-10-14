@@ -46,13 +46,26 @@
         </div>
 
         <!-- Right side -->
-        <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline">
+        <form [formGroup]="RecruitmentStageStatusForm" (ngSubmit)="onSubmit()">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Remark</mat-label>
-            <input matInput formControlName="RecruitmentStageStatusRemark" placeholder="Enter remark..." />
+            <input matInput formControlName="RecruitmentStageStatusRemark" placeholder="Enter remark..."
+              (keydown)="preventSpaces($event)" />
 
+            <mat-error
+              *ngIf="RecruitmentStageStatusForm.get('RecruitmentStageStatusRemark')?.hasError('required') && RecruitmentStageStatusForm.get('RecruitmentStageStatusRemark')?.touched">
+              Remark is required
+            </mat-error>
+
+            <mat-error
+              *ngIf="RecruitmentStageStatusForm.get('RecruitmentStageStatusRemark')?.hasError('maxlength') && RecruitmentStageStatusForm.get('RecruitmentStageStatusRemark')?.touched">
+              Remark cannot exceed 200 characters
+            </mat-error>
           </mat-form-field>
-        </div>
+
+
+        </form>
+
       </div>
 
       <!-- Action buttons -->

@@ -59,7 +59,7 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Currency Remark</mat-label>
-        <input matInput formControlName="CurrencyRemark" placeholder="e.g., USA, UK, IND" />
+        <input matInput formControlName="CurrencyRemark" (keypress)="allowOnlyLettersAndSpaces($event)" />
         @if (currencyForm.get('CurrencyRemark')?.invalid && currencyForm.get('CurrencyRemark')?.touched) {
         <mat-error>Currency Remark is required</mat-error>
         }

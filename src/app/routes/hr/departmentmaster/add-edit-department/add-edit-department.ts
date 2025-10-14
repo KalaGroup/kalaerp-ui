@@ -6,6 +6,8 @@ import {
   Validators,
   ReactiveFormsModule,
   FormControl,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -87,7 +89,7 @@ export class AddEditDepartment implements OnInit {
       DepartmentDivisionId: ['', [Validators.required]],
       ParentDepartmentId: ['', [Validators.required]],
       DepartmentProfitcenterId: ['', [Validators.required]],
-      DepartmentRemark: [''],
+      DepartmentRemark: ['', [Validators.maxLength(200), this.noOnlySpacesValidator]],
       DepartmentType: ['', [Validators.required]],
       DepartmentAuthRemark: [''],
       DepartmentAuth: [{ value: true, disabled: !this.isEditMode }],
@@ -315,5 +317,17 @@ export class AddEditDepartment implements OnInit {
       event.preventDefault();
     }
   }
+  noOnlySpacesValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value && control.value.trim().length === 0) {
+      return { spacesOnly: true };
+    }
+    return null;
+  }
 
+  // 🚫 Remove leading spaces in real-time
+  removeLeadingSpaces(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/^\s+/, '');
+    this.departmentForm.get('DepartmentRemark')?.setValue(input.value, { emitEvent: false });
+  }
 }

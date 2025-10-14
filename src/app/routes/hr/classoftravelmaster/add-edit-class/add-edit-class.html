@@ -130,15 +130,25 @@
 
                     <!-- Travel Class Remark -->
                     <!-- Travel Class Remark -->
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Travel Class Remark</mat-label>
-                        <textarea matInput formControlName="ClassOfTravelRemark" rows="3"
-                            placeholder="Enter remarks about this travel class..."></textarea>
-                        <mat-error
-                            *ngIf="classoftravelForm.get('ClassOfTravelRemark')?.hasError('required') && classoftravelForm.get('ClassOfTravelRemark')?.touched">
-                            Travel Class Remark is required
-                        </mat-error>
-                    </mat-form-field>
+                    <form [formGroup]="classoftravelForm" (ngSubmit)="onSubmit()">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Travel Class Remark</mat-label>
+                            <textarea matInput formControlName="ClassOfTravelRemark" rows="3"
+                                placeholder="Enter remarks about this travel class..."
+                                (input)="removeLeadingSpaces($event)"></textarea>
+                            <mat-error
+                                *ngIf="classoftravelForm.get('ClassOfTravelRemark')?.hasError('required') && classoftravelForm.get('ClassOfTravelRemark')?.touched">
+                                Travel Class Remark is required
+                            </mat-error>
+                            <mat-error
+                                *ngIf="classoftravelForm.get('ClassOfTravelRemark')?.hasError('spacesOnly') && classoftravelForm.get('ClassOfTravelRemark')?.touched">
+                                Remark cannot be empty or spaces only
+                            </mat-error>
+                        </mat-form-field>
+
+
+                    </form>
+
 
                 </div>
             </div>

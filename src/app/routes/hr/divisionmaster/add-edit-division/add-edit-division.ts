@@ -5,6 +5,8 @@ import {
   Validators,
   ReactiveFormsModule,
   FormControl,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -68,8 +70,8 @@ export class AddEditDivision {
       DivisionName: ['', [Validators.required]],
       DivisionShortName: ['', [Validators.required]],
       DivisionMailId: ['', [Validators.required, Validators.email]],
-      DivisionRemark: [''],
-      DivisionAuthRemark: [''],
+      DivisionRemark: ['', [Validators.required, this.noLeadingTrailingSpaceValidator]],
+      DivisionAuthRemark: ['', [Validators.required, this.noLeadingTrailingSpaceValidator]],
       DivisionAuth: [{ value: true, disabled: !this.isEditMode }],
       DivisionIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       DivisionIsActive: [{ value: true, disabled: !this.isEditMode }],
@@ -137,7 +139,7 @@ export class AddEditDivision {
   }
 
 
-  
+
   // Real-time typing restrictions
   allowAlphanumeric(event: KeyboardEvent) {
     const pattern = /^[A-Za-z0-9]$/;
@@ -155,19 +157,45 @@ export class AddEditDivision {
     }
   }
 
-// Allow only letters and spaces while typing
-allowLettersAndSpaces(event: KeyboardEvent) {
-  const pattern = /^[A-Za-z ]$/;
-  if (!pattern.test(event.key)) {
-    event.preventDefault();
+  // Allow only letters and spaces while typing
+  allowLettersAndSpaces(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
   }
-}
 
-// Ensure input contains only letters and spaces (for paste handling)
-validateLettersAndSpaces(event: Event) {
-  const input = event.target as HTMLInputElement;
-  input.value = input.value.replace(/[^A-Za-z ]/g, '');
-  this.divisionForm.get('DivisionName')?.setValue(input.value, { emitEvent: false });
-}
+  // Ensure input contains only letters and spaces (for paste handling)
+  validateLettersAndSpaces(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/[^A-Za-z ]/g, '');
+    this.divisionForm.get('DivisionName')?.setValue(input.value, { emitEvent: false });
+  }
+  // Allow only letters, numbers, spaces, ., , -
+  allowLettersNumbersSpaces(event: KeyboardEvent) {
+    const pattern = /^[a-zA-Z0-9\s.,-]*$/;
+    if (!pattern.test(event.key)) {
+      event.preventDefault();
+    }
+  }
 
+  // Disallow leading/trailing spaces
+  noLeadingTrailingSpaceValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value || '';
+    if (value.trim().length !== value.length) {
+      return { invalidSpaces: true };
+    }
+    return null;
+  }
+
+  // Trim spaces on blur
+  trimRemark(controlName: string) {
+    const control = this.divisionForm.get(controlName);
+    if (control && typeof control.value === 'string') {
+      const trimmed = control.value.trim();
+      if (trimmed !== control.value) {
+        control.setValue(trimmed);
+      }
+    }
+  }
 }

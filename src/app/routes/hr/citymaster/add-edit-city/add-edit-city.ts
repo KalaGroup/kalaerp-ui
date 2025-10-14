@@ -86,7 +86,7 @@ export class AddEditCityComponent implements OnInit {
       CityCode: ['', Validators.required],
       CityLatitude: ['', Validators.required],
       CityLongitude: ['', Validators.required],
-      CityRemark: [''],
+      CityRemark: ['', Validators.required, this.noLeadingTrailingSpaceValidator],
       CreatedBy: ['10', Validators.required,],
 
       CityCountryID: ['', Validators.required],
@@ -441,4 +441,31 @@ export class AddEditCityComponent implements OnInit {
   //     { TierTypeId: 3, TierTypeName: 'Tier 3' }
   //   ];
   // }
+  // Allow only letters, numbers, spaces, and basic punctuation
+  allowLettersNumbersSpaces(event: KeyboardEvent) {
+    const pattern = /^[a-zA-Z0-9\s.,-]*$/;
+    const inputChar = event.key;
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  // Disallow leading/trailing spaces
+  noLeadingTrailingSpaceValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value || '';
+    if (value.trim().length !== value.length) {
+      return { invalidSpaces: true };
+    }
+    return null;
+  }
+  // Trim input value on blur
+  trimRemark(controlName: string) {
+    const control = this.cityForm.get(controlName);
+    if (control && typeof control.value === 'string') {
+      const trimmed = control.value.trim();
+      if (trimmed !== control.value) {
+        control.setValue(trimmed);
+      }
+    }
+  }
 }

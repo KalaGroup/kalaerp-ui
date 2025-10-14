@@ -57,12 +57,25 @@
           <!-- WorkStation Remark -->
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>WorkStation Remark</mat-label>
-            <input matInput formControlName="WorkStationRemark" placeholder="Enter remark..." />
+            <input matInput formControlName="WorkStationRemark" placeholder="Enter remark..."
+              (input)="trimLeadingSpaces($event)" />
+
             <mat-error
               *ngIf="workstationForm.get('WorkStationRemark')?.hasError('required') && workstationForm.get('WorkStationRemark')?.touched">
               Remark is required
             </mat-error>
+
+            <mat-error
+              *ngIf="workstationForm.get('WorkStationRemark')?.hasError('spacesOnly') && workstationForm.get('WorkStationRemark')?.touched">
+              Remark cannot be empty or only spaces
+            </mat-error>
+
+            <mat-error
+              *ngIf="workstationForm.get('WorkStationRemark')?.hasError('maxlength') && workstationForm.get('WorkStationRemark')?.touched">
+              Remark cannot exceed 200 characters
+            </mat-error>
           </mat-form-field>
+
 
         </div>
 
@@ -87,8 +100,9 @@
           <!-- WorkStation Short Name -->
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>WorkStation Short Name</mat-label>
-            <input matInput formControlName="WorkStationShortName" placeholder="Enter WorkStation Short Name"
-              maxlength="5" (keypress)="allowUppercase($event)" (input)="toUpperCase($event)" />
+            <input matInput formControlName="WorkStationShortName"
+              placeholder="Enter WorkStation Short Name toUpperCase" maxlength="5" (keypress)="allowUppercase($event)"
+              (input)="toUpperCase($event)" />
             <mat-error
               *ngIf="workstationForm.get('WorkStationShortName')?.hasError('required') && workstationForm.get('WorkStationShortName')?.touched">
               WorkStation Short Name is required

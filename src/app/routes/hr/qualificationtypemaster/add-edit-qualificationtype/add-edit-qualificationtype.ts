@@ -6,6 +6,8 @@ import {
   Validators,
   ReactiveFormsModule,
   FormControl,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -69,7 +71,7 @@ export class AddEditQualificationtype implements OnInit {
       QualificationTypeId: [''],
       QualificationTypeCode: ['', [Validators.required]],
       QualificationTypeName: ['', [Validators.required]],
-      QualificationTypeRemark: [''],
+      QualificationTypeRemark: ['', [Validators.required, this.noOnlySpacesValidator, Validators.maxLength(200)],],
       QualificationTypeAuth: [{ value: true, disabled: !this.isEditMode }],
       QualificationTypeIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       QualificationTypeIsActive: [{ value: true, disabled: !this.isEditMode }],
@@ -120,20 +122,36 @@ export class AddEditQualificationtype implements OnInit {
   }
 
   // Real-time typing restriction
-allowLettersAndSpace(event: KeyboardEvent) {
-  const pattern = /^[A-Za-z ]$/;
-  const input = event.target as HTMLInputElement;
-  if (!pattern.test(event.key) || (input.selectionStart === 0 && event.key === ' ')) {
-    event.preventDefault();
+  allowLettersAndSpace(event: KeyboardEvent) {
+    const pattern = /^[A-Za-z ]$/;
+    const input = event.target as HTMLInputElement;
+    if (!pattern.test(event.key) || (input.selectionStart === 0 && event.key === ' ')) {
+      event.preventDefault();
+    }
   }
-}
 
-// Optional: prevent invalid paste
-blockInvalidPaste(event: ClipboardEvent) {
-  const clipboardData = event.clipboardData?.getData('text') || '';
-  const pattern = /^[A-Za-z ]+$/;
-  if (!pattern.test(clipboardData)) {
-    event.preventDefault();
+  // Optional: prevent invalid paste
+  blockInvalidPaste(event: ClipboardEvent) {
+    const clipboardData = event.clipboardData?.getData('text') || '';
+    const pattern = /^[A-Za-z ]+$/;
+    if (!pattern.test(clipboardData)) {
+      event.preventDefault();
+    }
   }
-}
+
+  noOnlySpacesValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value && control.value.trim().length === 0) {
+      return { spacesOnly: true };
+    }
+    return null;
+  }
+
+  // 🧹 Remove leading spaces on input
+  trimLeadingSpaces(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const trimmed = input.value.replace(/^\s+/, '');
+    input.value = trimmed;
+    this.qualificationtypeForm.get('QualificationTypeRemark')?.setValue(trimmed, { emitEvent: false });
+  }
+
 }

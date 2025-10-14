@@ -6,6 +6,8 @@ import {
   Validators,
   ReactiveFormsModule,
   FormControl,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -73,7 +75,7 @@ export class AddEditProfitcenter {
       ParentProfitCenterId: [null],
       ProfitCenterAuthRemark: [''],
       ProfitCenterAuth: [{ value: true, disabled: !this.isEditMode }],
-      ProfitCenterRemark: [''],
+      ProfitCenterRemark: ['', [Validators.required, this.noOnlySpacesValidator, Validators.maxLength(200)]],
       ProfitCenterIsActive: [{ value: true, disabled: !this.isEditMode }],
       ProfitCenterIsDiscard: [false],
       CreatedBy: ['1'],
@@ -182,5 +184,20 @@ export class AddEditProfitcenter {
     if (!pattern.test(clipboardData)) {
       event.preventDefault();
     }
+  }
+
+  noOnlySpacesValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value && control.value.trim().length === 0) {
+      return { spacesOnly: true };
+    }
+    return null;
+  }
+
+  // 🧹 Remove leading spaces while typing
+  trimLeadingSpaces(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const trimmed = input.value.replace(/^\s+/, '');
+    input.value = trimmed;
+    this.profitcenterForm.get('ProfitCenterRemark')?.setValue(trimmed, { emitEvent: false });
   }
 }

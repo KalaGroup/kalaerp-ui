@@ -294,8 +294,25 @@
         <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Remark</mat-label>
-            <input matInput formControlName="RecruitmentMasterRemark" placeholder="Enter Remark" />
+            <input matInput formControlName="RecruitmentMasterRemark" placeholder="Enter Remark"
+              (input)="trimLeadingSpaces($event)" />
+
+            <mat-error
+              *ngIf="RecruitmentForm.get('RecruitmentMasterRemark')?.hasError('required') && RecruitmentForm.get('RecruitmentMasterRemark')?.touched">
+              Remark is required
+            </mat-error>
+
+            <mat-error
+              *ngIf="RecruitmentForm.get('RecruitmentMasterRemark')?.hasError('spacesOnly') && RecruitmentForm.get('RecruitmentMasterRemark')?.touched">
+              Remark cannot be empty or only spaces
+            </mat-error>
+
+            <mat-error
+              *ngIf="RecruitmentForm.get('RecruitmentMasterRemark')?.hasError('maxlength') && RecruitmentForm.get('RecruitmentMasterRemark')?.touched">
+              Remark cannot exceed 200 characters
+            </mat-error>
           </mat-form-field>
+
         </div>
       </div>
 

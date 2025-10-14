@@ -66,14 +66,28 @@
 
 
           <!-- Company Entity Type Remark -->
-          <mat-form-field appearance="outline">
-            <mat-label>Remark</mat-label>
-            <input matInput formControlName="CompanyEntityTypeRemark" placeholder="Enter remark..." />
-            <mat-error
-              *ngIf="companyentitytypeForm.get('CompanyEntityTypeRemark')?.hasError('required') && companyentitytypeForm.get('CompanyEntityTypeRemark')?.touched">
-              Remark is required
-            </mat-error>
-          </mat-form-field>
+          <form [formGroup]="companyentitytypeForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Remark</mat-label>
+              <input matInput formControlName="CompanyEntityTypeRemark" placeholder="Enter remark..."
+                (input)="removeLeadingSpaces($event)" />
+
+              <!-- Required error -->
+              <mat-error
+                *ngIf="companyentitytypeForm.get('CompanyEntityTypeRemark')?.hasError('required') && companyentitytypeForm.get('CompanyEntityTypeRemark')?.touched">
+                Remark is required
+              </mat-error>
+
+              <!-- Spaces-only error -->
+              <mat-error
+                *ngIf="companyentitytypeForm.get('CompanyEntityTypeRemark')?.hasError('spacesOnly') && companyentitytypeForm.get('CompanyEntityTypeRemark')?.touched">
+                Remark cannot be empty or contain only spaces
+              </mat-error>
+            </mat-form-field>
+
+
+          </form>
+
 
         </div>
 

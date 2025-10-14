@@ -6,6 +6,8 @@ import {
   Validators,
   ReactiveFormsModule,
   FormControl,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -68,7 +70,7 @@ export class AddEditCompanyentitytype implements OnInit {
       CompEntityTypeId: [''],
       CompanyEntityTypeName: ['', [Validators.required]],
       CompanyEntityTypeShortName: ['', [Validators.required]],
-      CompanyEntityTypeRemark: [''],
+      CompanyEntityTypeRemark: ['', [Validators.required, this.noOnlySpacesValidator]],
       CompanyEntityTypeAuth: [{ value: true, disabled: !this.isEditMode }],
       CompanyEntityTypeIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       CompanyEntityTypeIsActive: [{ value: true, disabled: !this.isEditMode }],
@@ -130,6 +132,18 @@ export class AddEditCompanyentitytype implements OnInit {
       event.preventDefault();
     }
   }
+  noOnlySpacesValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value && control.value.trim().length === 0) {
+      return { spacesOnly: true };
+    }
+    return null;
+  }
 
+  // 🚫 Prevent leading spaces while typing
+  removeLeadingSpaces(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/^\s+/, '');
+    this.companyentitytypeForm.get('CompanyEntityTypeRemark')?.setValue(input.value, { emitEvent: false });
+  }
 
 }

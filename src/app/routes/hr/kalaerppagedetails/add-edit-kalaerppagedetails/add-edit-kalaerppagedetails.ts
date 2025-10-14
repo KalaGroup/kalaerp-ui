@@ -5,6 +5,8 @@ import {
   Validators,
   ReactiveFormsModule,
   FormControl,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -175,7 +177,7 @@ export class AddEditKalaerppagedetails {
       PageType: [null, [Validators.required]],
       PageIsonumber: ['', Validators.pattern(/^[0-9]+$/)],
       MakerKalaErppageDetailsId: ['1'],
-      KalaErppageDetailsRemark: [''],
+      KalaErppageDetailsRemark: ['', [Validators.required, this.noOnlySpacesValidator, Validators.maxLength(500)],],
       KalaErppageDetailsAuthRemark: ['ok'],
       KalaErppageDetailsAuth: [{ value: true, disabled: !this.isEditMode }],
       KalaErppageDetailsIsActive: [{ value: true, disabled: !this.isEditMode }],
@@ -367,4 +369,19 @@ export class AddEditKalaerppagedetails {
     }
   }
 
+
+  noOnlySpacesValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value && control.value.trim().length === 0) {
+      return { spacesOnly: true };
+    }
+    return null;
+  }
+
+  // 🧹 Remove leading spaces on input
+  trimLeadingSpaces(event: Event) {
+    const input = event.target as HTMLTextAreaElement;
+    const trimmed = input.value.replace(/^\s+/, '');
+    input.value = trimmed;
+    this.erppagedetailsForm.get('KalaErppageDetailsRemark')?.setValue(trimmed, { emitEvent: false });
+  }
 }
