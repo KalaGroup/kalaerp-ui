@@ -43,10 +43,31 @@
             }
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Remark</mat-label>
-            <input matInput formControlName="HolidayRemark" placeholder="Enter Remark" />
-          </mat-form-field>
+          <form [formGroup]="holidayForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Remark</mat-label>
+              <input matInput formControlName="HolidayRemark" placeholder="Enter Remark"
+                (input)="removeLeadingSpaces($event)" />
+
+              <mat-error
+                *ngIf="holidayForm.get('HolidayRemark')?.hasError('required') && holidayForm.get('HolidayRemark')?.touched">
+                Remark is required
+              </mat-error>
+
+              <mat-error
+                *ngIf="holidayForm.get('HolidayRemark')?.hasError('spacesOnly') && holidayForm.get('HolidayRemark')?.touched">
+                Remark cannot be empty or contain only spaces
+              </mat-error>
+
+              <mat-error
+                *ngIf="holidayForm.get('HolidayRemark')?.hasError('maxlength') && holidayForm.get('HolidayRemark')?.touched">
+                Remark cannot exceed 200 characters
+              </mat-error>
+            </mat-form-field>
+
+
+          </form>
+
         </div>
 
         <!-- Right side  -->

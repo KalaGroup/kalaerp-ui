@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,7 +15,7 @@ import { DepartmentbudgetServices } from '@shared/services/hr/Departmentbudget/d
 
 @Component({
   selector: 'app-add-edit-departmentbudget',
- imports: [ReactiveFormsModule,
+  imports: [ReactiveFormsModule,
     MatCardModule,
     MatDialogModule,
     MatFormFieldModule,
@@ -69,8 +69,8 @@ export class AddEditDepartmentbudget {
       DepartmentBudgetHeadId: ['', Validators.required],
       DepartmentFy: ['', Validators.required],
       DepartmentBudgetAmt: [0, [Validators.required, Validators.min(1)]],
-      DepartmentBudgetRemark: [''],
-      DepartmentBudgetAuthRemark: [''],
+      DepartmentBudgetRemark: ['', [Validators.required, this.noLeadingTrailingSpaceValidator]],
+      DepartmentBudgetAuthRemark: ['', [Validators.required, this.noLeadingTrailingSpaceValidator]],
       DepartmentBudgetAuth: [{ value: true, disabled: !this.isEditMode }],
       DepartmentBudgetIsActive: [{ value: true, disabled: !this.isEditMode }],
       DepartmentBudgetIsDiscard: [{ value: false, disabled: !this.isEditMode }],
@@ -193,6 +193,34 @@ export class AddEditDepartmentbudget {
 
   onCancel(): void {
     this.dialogRef.close();
+  }
+  // ✅ Allow only valid characters (letters, numbers, spaces, punctuation)
+  allowLettersNumbersSpaces(event: KeyboardEvent) {
+    const pattern = /^[a-zA-Z0-9\s.,-]*$/;
+    const inputChar = event.key;
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  // ✅ Disallow leading/trailing spaces
+  noLeadingTrailingSpaceValidator(control: AbstractControl): ValidationErrors | null {
+    const value = control.value || '';
+    if (value.trim().length !== value.length) {
+      return { invalidSpaces: true };
+    }
+    return null;
+  }
+
+  // ✅ Trim on blur
+  trimRemark(controlName: string) {
+    const control = this.DepartmentBudgetForm.get(controlName);
+    if (control && typeof control.value === 'string') {
+      const trimmed = control.value.trim();
+      if (trimmed !== control.value) {
+        control.setValue(trimmed);
+      }
+    }
   }
 
 

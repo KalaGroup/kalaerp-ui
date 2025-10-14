@@ -123,4 +123,10 @@ export class AddEditFacility implements OnInit {
     }
   }
 
+  removeLeadingSpaces(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/^\s+/, '');
+    this.facilityForm.get('FacilityRemark')?.setValue(input.value, { emitEvent: false });
+  }
+
 }

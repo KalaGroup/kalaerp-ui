@@ -73,9 +73,25 @@
             }
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Remark </mat-label>
-            <input matInput formControlName="DivisionRemark" placeholder="Enter Remark" />
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Remark</mat-label>
+            <input matInput formControlName="DivisionRemark" placeholder="Enter Remark"
+              (keypress)="allowLettersNumbersSpaces($event)" (blur)="trimRemark('DivisionRemark')" />
+
+            <mat-error
+              *ngIf="divisionForm.get('DivisionRemark')?.hasError('required') && divisionForm.get('DivisionRemark')?.touched">
+              Remark is required
+            </mat-error>
+
+            <mat-error
+              *ngIf="divisionForm.get('DivisionRemark')?.hasError('maxlength') && divisionForm.get('DivisionRemark')?.touched">
+              Remark cannot exceed 200 characters
+            </mat-error>
+
+            <mat-error
+              *ngIf="divisionForm.get('DivisionRemark')?.hasError('invalidSpaces') && divisionForm.get('DivisionRemark')?.touched">
+              Remark cannot start or end with a space
+            </mat-error>
           </mat-form-field>
 
           <!-- <mat-form-field *ngIf="isEditMode" appearance="outline">
@@ -99,14 +115,25 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Auth Remark</mat-label>
-            <input matInput formControlName="DivisionAuthRemark" placeholder="Enter Remark" />
-            @if (
-            divisionForm.get('Remark')?.invalid && divisionForm.get('Remark')?.touched
-            ) {
-            <mat-error>Remark is required</mat-error>
-            }
+            <input matInput formControlName="DivisionAuthRemark" placeholder="Enter Remark"
+              (keypress)="allowLettersNumbersSpaces($event)" (blur)="trimRemark('DivisionAuthRemark')" />
+
+            <mat-error
+              *ngIf="divisionForm.get('DivisionAuthRemark')?.hasError('required') && divisionForm.get('DivisionAuthRemark')?.touched">
+              Auth Remark is required
+            </mat-error>
+
+            <mat-error
+              *ngIf="divisionForm.get('DivisionAuthRemark')?.hasError('maxlength') && divisionForm.get('DivisionAuthRemark')?.touched">
+              Auth Remark cannot exceed 200 characters
+            </mat-error>
+
+            <mat-error
+              *ngIf="divisionForm.get('DivisionAuthRemark')?.hasError('invalidSpaces') && divisionForm.get('DivisionAuthRemark')?.touched">
+              Auth Remark cannot start or end with a space
+            </mat-error>
           </mat-form-field>
         </div>
       </div>

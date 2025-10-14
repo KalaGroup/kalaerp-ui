@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -69,7 +69,7 @@ export class AddEditClass implements OnInit {
       ClassOfTravelGradeId: ['', Validators.required],
       DafoodAllowancePerday: [''],
       ClassOfTravelTierType: [''],
-      ClassOfTravelRemark: [''],
+      ClassOfTravelRemark: ['', [Validators.required, this.noOnlySpacesValidator]],
       ClassOfTravelIsAuth: [{ value: true, disabled: !this.isEditMode }],
       ClassOfTravelIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       ClassOfTravelIsActive: [{ value: true, disabled: !this.isEditMode }],
@@ -218,5 +218,20 @@ export class AddEditClass implements OnInit {
   /** Cancel dialog */
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  // Validator to disallow only spaces
+  noOnlySpacesValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value && control.value.trim().length === 0) {
+      return { spacesOnly: true };
+    }
+    return null;
+  }
+
+  // Prevent leading spaces while typing
+  removeLeadingSpaces(event: Event) {
+    const input = event.target as HTMLTextAreaElement;
+    input.value = input.value.replace(/^\s+/, '');
+    this.classoftravelForm.get('ClassOfTravelRemark')?.setValue(input.value, { emitEvent: false });
   }
 }

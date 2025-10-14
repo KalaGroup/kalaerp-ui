@@ -66,10 +66,26 @@
             <!-- Row: Remarks -->
             <div class="row mb-3 option-section">
                 <div class="col-md-6">
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Remark</mat-label>
-                        <input matInput formControlName="PetrolAllowanceRemark" placeholder="Enter remark (optional)" />
-                    </mat-form-field>
+                    <form [formGroup]="petrolForm" (ngSubmit)="onSubmit()">
+                        <mat-form-field appearance="outline" class="w-100">
+                            <mat-label>Remark</mat-label>
+                            <input matInput formControlName="PetrolAllowanceRemark"
+                                placeholder="Enter remark (optional)" (input)="trimLeadingSpaces($event)" />
+
+                            <mat-error
+                                *ngIf="petrolForm.get('PetrolAllowanceRemark')?.hasError('spacesOnly') && petrolForm.get('PetrolAllowanceRemark')?.touched">
+                                Remark cannot be only spaces
+                            </mat-error>
+
+                            <mat-error
+                                *ngIf="petrolForm.get('PetrolAllowanceRemark')?.hasError('maxlength') && petrolForm.get('PetrolAllowanceRemark')?.touched">
+                                Remark cannot exceed 200 characters
+                            </mat-error>
+                        </mat-form-field>
+
+
+                    </form>
+
                 </div>
 
                 <div class="col-md-6">

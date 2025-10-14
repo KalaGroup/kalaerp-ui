@@ -156,13 +156,34 @@
               placeholder="Enter remark..."></textarea>
           </mat-form-field>
         </div>
-        <div class="col-6">
-          <mat-form-field appearance="outline">
-            <mat-label>Remark</mat-label>
-            <textarea matInput rows="3" formControlName="KalaErppageDetailsRemark"
-              placeholder="Enter remark..."></textarea>
-          </mat-form-field>
-        </div>
+        <form [formGroup]="erppagedetailsForm" (ngSubmit)="onSubmit()">
+          <div class="col-sm-12 ">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Remark</mat-label>
+              <textarea matInput rows="3" formControlName="KalaErppageDetailsRemark" placeholder="Enter remark..."
+                (input)="trimLeadingSpaces($event)">
+             </textarea>
+
+              <mat-error
+                *ngIf="erppagedetailsForm.get('KalaErppageDetailsRemark')?.hasError('required') && erppagedetailsForm.get('KalaErppageDetailsRemark')?.touched">
+                Remark is required
+              </mat-error>
+
+              <mat-error
+                *ngIf="erppagedetailsForm.get('KalaErppageDetailsRemark')?.hasError('spacesOnly') && erppagedetailsForm.get('KalaErppageDetailsRemark')?.touched">
+                Remark cannot be empty or only spaces
+              </mat-error>
+
+              <mat-error
+                *ngIf="erppagedetailsForm.get('KalaErppageDetailsRemark')?.hasError('maxlength') && erppagedetailsForm.get('KalaErppageDetailsRemark')?.touched">
+                Remark cannot exceed 500 characters
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+
+        </form>
+
       </div>
 
       <!-- Action buttons -->

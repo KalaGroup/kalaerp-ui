@@ -45,14 +45,31 @@
 
 
           <!-- Remark -->
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Remark</mat-label>
-            <input matInput formControlName="QualificationTypeRemark" placeholder="Enter remark..." />
-            <mat-error
-              *ngIf="qualificationtypeForm.get('QualificationTypeRemark')?.hasError('required') && qualificationtypeForm.get('QualificationTypeRemark')?.touched">
-              Remark is required
-            </mat-error>
-          </mat-form-field>
+          <form [formGroup]="qualificationtypeForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Remark</mat-label>
+              <input matInput formControlName="QualificationTypeRemark" placeholder="Enter remark..."
+                (input)="trimLeadingSpaces($event)" />
+
+              <mat-error
+                *ngIf="qualificationtypeForm.get('QualificationTypeRemark')?.hasError('required') && qualificationtypeForm.get('QualificationTypeRemark')?.touched">
+                Remark is required
+              </mat-error>
+
+              <mat-error
+                *ngIf="qualificationtypeForm.get('QualificationTypeRemark')?.hasError('spacesOnly') && qualificationtypeForm.get('QualificationTypeRemark')?.touched">
+                Remark cannot be empty or only spaces
+              </mat-error>
+
+              <mat-error
+                *ngIf="qualificationtypeForm.get('QualificationTypeRemark')?.hasError('maxlength') && qualificationtypeForm.get('QualificationTypeRemark')?.touched">
+                Remark cannot exceed 200 characters
+              </mat-error>
+            </mat-form-field>
+
+           
+          </form>
+
 
         </div>
 

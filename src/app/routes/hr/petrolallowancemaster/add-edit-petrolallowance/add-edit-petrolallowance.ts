@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -55,7 +55,7 @@ export class AddEditPetrolallowance {
       PetrolAllowanceId: [0],
       TwoWheelerPerKm: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
       FourWheelerPerKm: ['', [Validators.required, Validators.pattern(/^\d+(\.\d+)?$/)]],
-      PetrolAllowanceRemark: [''],
+      PetrolAllowanceRemark: ['', [this.noOnlySpacesValidator, Validators.maxLength(200)]],
       PetrolAllowanceAuthRemark: [''],
       PetrolAllowanceIsAuth: [{ value: true, disabled: !this.isEditMode }],
       PetrolAllowanceIsDiscard: [{ value: false, disabled: !this.isEditMode }],
@@ -114,6 +114,21 @@ export class AddEditPetrolallowance {
     if (!/^\d+(\.\d+)?$/.test(pastedInput)) {
       event.preventDefault();
     }
+  }
+  // ❌ Custom validator: reject only spaces
+  noOnlySpacesValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value && control.value.trim().length === 0) {
+      return { spacesOnly: true };
+    }
+    return null;
+  }
+
+  // 🧹 Remove leading spaces while typing
+  trimLeadingSpaces(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const trimmed = input.value.replace(/^\s+/, '');
+    input.value = trimmed;
+    this.petrolForm.get('PetrolAllowanceRemark')?.setValue(trimmed, { emitEvent: false });
   }
 
 

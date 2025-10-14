@@ -60,14 +60,30 @@
           </mat-form-field>
 
           <!-- Remark -->
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Remark</mat-label>
-            <input matInput formControlName="ProfitCenterRemark" placeholder="Enter remark..." />
-            <mat-error
-              *ngIf="profitcenterForm.get('ProfitCenterRemark')?.hasError('required') && profitcenterForm.get('ProfitCenterRemark')?.touched">
-              Remark is required
-            </mat-error>
-          </mat-form-field>
+          <form [formGroup]="profitcenterForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Remark</mat-label>
+              <input matInput formControlName="ProfitCenterRemark" placeholder="Enter remark..."
+                (input)="trimLeadingSpaces($event)" />
+
+              <mat-error
+                *ngIf="profitcenterForm.get('ProfitCenterRemark')?.hasError('required') && profitcenterForm.get('ProfitCenterRemark')?.touched">
+                Remark is required
+              </mat-error>
+
+              <mat-error
+                *ngIf="profitcenterForm.get('ProfitCenterRemark')?.hasError('spacesOnly') && profitcenterForm.get('ProfitCenterRemark')?.touched">
+                Remark cannot be empty or only spaces
+              </mat-error>
+
+              <mat-error
+                *ngIf="profitcenterForm.get('ProfitCenterRemark')?.hasError('maxlength') && profitcenterForm.get('ProfitCenterRemark')?.touched">
+                Remark cannot exceed 200 characters
+              </mat-error>
+            </mat-form-field>
+
+          </form>
+
 
         </div>
 

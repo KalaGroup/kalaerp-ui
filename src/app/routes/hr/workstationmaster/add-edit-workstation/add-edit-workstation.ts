@@ -1,6 +1,6 @@
 /* eslint-disable @angular-eslint/prefer-inject */
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl, } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormControl, AbstractControl, ValidationErrors, } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -68,7 +68,7 @@ export class AddEditWorkstation {
       WorkStationCode: ['', [Validators.required]],
       WorkStationName: ['', [Validators.required]],
       WorkStationShortName: ['', [Validators.required]],
-      WorkStationRemark: [''],
+      WorkStationRemark: ['', [Validators.required, this.noOnlySpacesValidator, Validators.maxLength(200)],],
       WorkStationAuthRemark: [''],
       WorkStationIsDiscard: [{ value: false, disabled: !this.isEditMode }],
       WorkStationIsActive: [{ value: true, disabled: !this.isEditMode }],
@@ -206,6 +206,21 @@ export class AddEditWorkstation {
     if (!pattern.test(inputChar)) {
       event.preventDefault();
     }
+  }
+  // ❌ Prevent only spaces
+  noOnlySpacesValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value && control.value.trim().length === 0) {
+      return { spacesOnly: true };
+    }
+    return null;
+  }
+
+  // 🧹 Remove leading spaces as user types
+  trimLeadingSpaces(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const trimmed = input.value.replace(/^\s+/, '');
+    input.value = trimmed;
+    this.workstationForm.get('WorkStationRemark')?.setValue(trimmed, { emitEvent: false });
   }
 
 }

@@ -6,6 +6,8 @@ import {
   Validators,
   ReactiveFormsModule,
   FormControl,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -79,7 +81,7 @@ export class AddEditHoliday implements OnInit {
       HolidayDate: ['', Validators.required],
       HolidayFor: ['', Validators.required],
       HolidayCompanyId: ['', Validators.required],
-      HolidayRemark: [''],
+      HolidayRemark: ['', [Validators.required, this.noOnlySpacesValidator, Validators.maxLength(200)]],
       HolidayAuth: [{ value: true, disabled: !this.isEditMode }],
       HolidayAuthRemark: ['NIL'],
       HolidayIsDiscard: [{ value: false, disabled: !this.isEditMode }],
@@ -203,5 +205,20 @@ export class AddEditHoliday implements OnInit {
   }
   onCancel(): void {
     this.dialogRef.close();
+  }
+
+  // ❌ Custom validator to disallow spaces-only input
+  noOnlySpacesValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value && control.value.trim().length === 0) {
+      return { spacesOnly: true };
+    }
+    return null;
+  }
+
+  // 🚫 Remove leading spaces while typing
+  removeLeadingSpaces(event: Event) {
+    const input = event.target as HTMLInputElement;
+    input.value = input.value.replace(/^\s+/, '');
+    this.holidayForm.get('HolidayRemark')?.setValue(input.value, { emitEvent: false });
   }
 }

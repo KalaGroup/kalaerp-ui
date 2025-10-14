@@ -73,14 +73,28 @@
           </mat-form-field>
 
           <!-- Department Remark -->
-          <mat-form-field appearance="outline">
-            <mat-label>Remark</mat-label>
-            <input matInput formControlName="DepartmentRemark" placeholder="Enter Remark" />
-            <mat-error
-              *ngIf="departmentForm.get('DepartmentRemark')?.hasError('maxlength') && departmentForm.get('DepartmentRemark')?.touched">
-              Remark cannot exceed 200 characters
-            </mat-error>
-          </mat-form-field>
+          <form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Remark</mat-label>
+              <input matInput formControlName="DepartmentRemark" placeholder="Enter Remark"
+                (input)="removeLeadingSpaces($event)" />
+
+              <!-- Max length validation -->
+              <mat-error
+                *ngIf="departmentForm.get('DepartmentRemark')?.hasError('maxlength') && departmentForm.get('DepartmentRemark')?.touched">
+                Remark cannot exceed 200 characters
+              </mat-error>
+
+              <!-- Spaces-only validation -->
+              <mat-error
+                *ngIf="departmentForm.get('DepartmentRemark')?.hasError('spacesOnly') && departmentForm.get('DepartmentRemark')?.touched">
+                Remark cannot be empty or contain only spaces
+              </mat-error>
+            </mat-form-field>
+
+
+          </form>
+
         </div>
 
 

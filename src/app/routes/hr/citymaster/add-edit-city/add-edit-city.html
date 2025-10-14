@@ -72,13 +72,22 @@
             <input matInput formControlName="CityLongitude" placeholder="Enter longitude" type="number" />
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>City Remark</mat-label>
-            <input matInput formControlName="CityRemark" placeholder="Enter remark..." />
-            @if (cityForm.get('CityRemark')?.invalid && cityForm.get('CityRemark')?.touched) {
+            <input matInput formControlName="CityRemark" placeholder="Enter remark..."
+              (keypress)="allowLettersNumbersSpaces($event)" (blur)="trimRemark('CityRemark')" />
+
+            @if (cityForm.get('CityRemark')?.hasError('required') && cityForm.get('CityRemark')?.touched) {
             <mat-error>City Remark is required</mat-error>
             }
+            @if (cityForm.get('CityRemark')?.hasError('maxlength')) {
+            <mat-error>City Remark cannot exceed 200 characters</mat-error>
+            }
+            @if (cityForm.get('CityRemark')?.hasError('invalidSpaces')) {
+            <mat-error>City Remark cannot start or end with a space</mat-error>
+            }
           </mat-form-field>
+
 
 
         </div>

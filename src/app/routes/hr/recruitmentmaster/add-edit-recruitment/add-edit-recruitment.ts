@@ -9,6 +9,8 @@ import {
   ReactiveFormsModule,
   FormControl,
   FormsModule,
+  AbstractControl,
+  ValidationErrors,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -145,7 +147,7 @@ export class AddEditRecruitment implements OnInit {
       RecruitmentMasterHrcomment: [''],
       RecruitmentMasterRecruitmentStageStatusId: ['', Validators.required],
       RecruitmentMasterOfferLetterStatus: [''],
-      RecruitmentMasterRemark: [''],
+      RecruitmentMasterRemark: ['', [Validators.required, this.noOnlySpacesValidator, Validators.maxLength(200)],],
       RecruitmentMasterAuthRemark: ['ok'],
       RecruitmentMasterAuth: [{ value: true, disabled: !this.isEditMode }],
       RecruitmentMasterIsActive: [{ value: true, disabled: !this.isEditMode }],
@@ -727,7 +729,21 @@ export class AddEditRecruitment implements OnInit {
       event.preventDefault();
     }
   }
+  // ❌ Custom validator to prevent space-only input
+  noOnlySpacesValidator(control: AbstractControl): ValidationErrors | null {
+    if (control.value && control.value.trim().length === 0) {
+      return { spacesOnly: true };
+    }
+    return null;
+  }
 
+  // 🧹 Trim leading spaces on input
+  trimLeadingSpaces(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const trimmed = input.value.replace(/^\s+/, '');
+    input.value = trimmed;
+    this.RecruitmentForm.get('RecruitmentMasterRemark')?.setValue(trimmed, { emitEvent: false });
+  }
 
 }
 

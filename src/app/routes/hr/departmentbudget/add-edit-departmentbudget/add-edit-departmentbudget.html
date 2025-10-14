@@ -48,7 +48,7 @@
                 <!-- Right Column -->
                 <div class="col-md-6">
 
-                  <!-- Financial Year -->
+                    <!-- Financial Year -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Financial Year</mat-label>
                         <mat-select formControlName="DepartmentFy" placeholder="Select Financial Year">
@@ -65,7 +65,7 @@
                     <!-- Budget Head Dropdown -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Employee</mat-label>
-                        <mat-select formControlName="DepartmentBudgetHeadId" placeholder="Select Employee" >
+                        <mat-select formControlName="DepartmentBudgetHeadId" placeholder="Select Employee">
                             <mat-option *ngFor="let employee of EmployeeList" [value]="employee.EmployeeMasterId">
                                 {{ employee.EmployeeMasterFullName }}
                             </mat-option>
@@ -81,10 +81,23 @@
                 <div class="col-md-6">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Budget Remark</mat-label>
-                        <textarea matInput formControlName="DepartmentBudgetRemark" placeholder="Enter Reason"></textarea>
+                        <textarea matInput formControlName="DepartmentBudgetRemark" placeholder="Enter reason..."
+                            rows="3" (keypress)="allowLettersNumbersSpaces($event)"
+                            (blur)="trimRemark('DepartmentBudgetRemark')">
+    </textarea>
+
                         <mat-error
-                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetRemark')?.invalid && DepartmentBudgetForm.get('DepartmentBudgetRemark')?.touched">
+                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetRemark')?.hasError('required') && DepartmentBudgetForm.get('DepartmentBudgetRemark')?.touched">
                             Remark is required
+                        </mat-error>
+
+                        <mat-error *ngIf="DepartmentBudgetForm.get('DepartmentBudgetRemark')?.hasError('maxlength')">
+                            Remark cannot exceed 200 characters
+                        </mat-error>
+
+                        <mat-error
+                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetRemark')?.hasError('invalidSpaces')">
+                            Remark cannot start or end with a space
                         </mat-error>
                     </mat-form-field>
                 </div>
@@ -94,13 +107,27 @@
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Auth Remark</mat-label>
                         <textarea matInput formControlName="DepartmentBudgetAuthRemark"
-                            placeholder="Enter auth remark..." ></textarea>
+                            placeholder="Enter auth remark..." rows="3" (keypress)="allowLettersNumbersSpaces($event)"
+                            (blur)="trimRemark('DepartmentBudgetAuthRemark')">
+    </textarea>
+
                         <mat-error
-                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetAuthRemark')?.invalid && DepartmentBudgetForm.get('DepartmentBudgetAuthRemark')?.touched">
+                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetAuthRemark')?.hasError('required') && DepartmentBudgetForm.get('DepartmentBudgetAuthRemark')?.touched">
                             Auth Remark is required
+                        </mat-error>
+
+                        <mat-error
+                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetAuthRemark')?.hasError('maxlength')">
+                            Auth Remark cannot exceed 200 characters
+                        </mat-error>
+
+                        <mat-error
+                            *ngIf="DepartmentBudgetForm.get('DepartmentBudgetAuthRemark')?.hasError('invalidSpaces')">
+                            Auth Remark cannot start or end with a space
                         </mat-error>
                     </mat-form-field>
                 </div>
+
             </div>
 
             <!-- Action Buttons -->
