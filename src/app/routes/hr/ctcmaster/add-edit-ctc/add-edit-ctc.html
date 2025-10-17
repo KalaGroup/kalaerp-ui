@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-card-title>{{ isEditMode ? 'Edit CTC' : 'Add CTC' }}</mat-card-title>
+  <mat-card-title>{{ isEditMode ? ' CTC' : ' CTC' }}</mat-card-title>
 
   <!-- Please Note Change Form control as per your Requirements  -->
   <mat-card-content>
@@ -24,6 +24,7 @@
               </mat-option>
               }
             </mat-select>
+
 
             @if (ctcForm.get('GradeId')?.invalid && ctcForm.get('GradeId')?.touched) {
             <mat-error>Grade is required</mat-error>

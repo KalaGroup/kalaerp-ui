@@ -44,7 +44,7 @@ export class Leavetypemaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -228,7 +228,7 @@ export class Leavetypemaster implements OnInit {
         console.log('Update payload (LeaveType):', updatePayload);
         this.LeaveTypeMasterservice.updateLeaveTypemaster(updatePayload).subscribe({
           next: () => {
-            
+
             this.toastService.showSuccess("Leave Type updated successfully!");
             this.getAllLeaveTypemaster();
           },
@@ -274,7 +274,7 @@ export class Leavetypemaster implements OnInit {
 
         this.LeaveTypeMasterservice.insertLeaveTypemaster(payload).subscribe({
           next: () => {
-         
+
             this.toastService.showSuccess("Leave Type added successfully!");
             this.getAllLeaveTypemaster();
           },
@@ -290,7 +290,7 @@ export class Leavetypemaster implements OnInit {
     this.LeaveTypeMasterservice.deleteLeaveTypemaster(value.LeaveTypeMasterId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-      
+
         this.toastService.showSuccess("Leave delete successfully");
         this.getAllLeaveTypemaster();
       },

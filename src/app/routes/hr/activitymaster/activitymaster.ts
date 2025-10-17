@@ -45,10 +45,12 @@ export class Activitymaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
+
+
 
   isLoading = false;
   list: any[] = [];
@@ -169,7 +171,7 @@ export class Activitymaster implements OnInit {
 
 
   loadAllActivity() {
-    
+
     this.ActivityServices.getAllActivity().subscribe({
       next: (data) => {
         this.list = data.map((item: any, index: number) => ({
@@ -184,7 +186,7 @@ export class Activitymaster implements OnInit {
   }
 
   edit(record: any) {
-    
+
     this.dialog.open(AddEditActivity, {
       width: '100%',
       height: '100%',
@@ -240,7 +242,7 @@ export class Activitymaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        
+
         const payload = {
           ActivityId: 0, // New entry
           ActivityGradeId: result.ActivityGradeId,
@@ -264,7 +266,7 @@ export class Activitymaster implements OnInit {
           },
           error: (err) => {
             console.error('Error while adding activity:', err);
-           
+
           }
         });
       }
@@ -274,7 +276,7 @@ export class Activitymaster implements OnInit {
     this.ActivityServices.deleteActivity(value.ActivityId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-        this.toastService.showSuccess('Delete  successfully:');
+        this.toastService.showSuccess('Activity Delete  successfully:');
 
         this.loadAllActivity();
       },

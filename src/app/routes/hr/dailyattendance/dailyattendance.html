@@ -3,13 +3,10 @@
 <div class="container-fluid">
     <mat-card class="mb-4">
         <mat-card-content>
-            <!-- Action Buttons Card -->
+
             <form [formGroup]="filterForm" class="d-flex flex-wrap gap-2 align-items-center">
 
-
                 <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-
-
                     <mat-label>From Date</mat-label>
                     <input matInput placeholder="From Date" [matDatepicker]="pickerFrom" formControlName="fromDate"
                         class="small-input">
@@ -21,27 +18,6 @@
                         class="small-input">
                     <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
                     <mat-datepicker #pickerTo></mat-datepicker>
-                    <!-- <mat-label>Company Name</mat-label>
-                    <input matInput placeholder="Company Name" formControlName="CompanyName" class="Small-input"> -->
-                    <!-- <label for="companyId">Company Name:</label>
-                    <select id="companyId" formControlName="companyId" class="form-control dropdown-select">
-                        <option value="">Select Company</option>
-                        <option *ngFor="let company of companyList" [value]="company.CompanyId">
-                            {{ company.CompanyName }}
-                        </option>
-                    </select> -->
-                    <!-- <mat-label>Employee Name</mat-label>
-                    <input matInput placeholder="Employee Name" formControlName="EmployeeMasterFullName"
-                        class="Small-input"> -->
-
-                    <!-- <label for="employeeId">Employee Name:</label>
-                    <select id="EmployeeMasterId" formControlName="AttendanceId" class="form-control dropdown-select"
-                        [disabled]="filteredEmployeeList.length === 0">
-                        <option value="">Select Employee</option>
-                        <option *ngFor="let employee of filteredEmployeeList" [value]="employee.EmployeeMasterId">
-                            {{ employee.EmployeeMasterFullName }}
-                        </option>
-                    </select> -->
 
                     <button mat-raised-button color="primary" (click)="filterByDate()">
                         <mat-icon>search</mat-icon>
@@ -53,13 +29,9 @@
                     </button>
                 </div>
 
-
-
-
             </form>
         </mat-card-content>
     </mat-card>
-
 
 
     <!-- Data Grid Card -->

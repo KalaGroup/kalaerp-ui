@@ -47,7 +47,7 @@ export class Recruitmentmaster {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -254,7 +254,7 @@ export class Recruitmentmaster {
   ];
 
   loadAllRecruitment() {
-    
+
     this.isLoading = true;
     this.Recruitmentmasterservice.getAllRecruitmentMaster().subscribe({
       next: (data) => {
@@ -274,7 +274,7 @@ export class Recruitmentmaster {
   }
 
   edit(record: any) {
-    
+
     const dialogRef = this.dialog.open(AddEditRecruitment, {
       width: '100%',
       height: '100%',
@@ -288,7 +288,7 @@ export class Recruitmentmaster {
         console.log('payload', result);
         return;
       }
-      
+
       const updatePayload = {
         RecruitmentMasterId: record.RecruitmentMasterId,
         RecruitmentMasterPositionId: result.RecruitmentMasterPositionId,
@@ -372,9 +372,9 @@ export class Recruitmentmaster {
         RecruitmentMasterInterviewerComment: result.RecruitmentMasterInterviewerComment,
         RecruitmentMasterGradeId: result.RecruitmentMasterGradeId,
         RecruitmentMasterDesignationId: result.RecruitmentMasterDesignationId,
-        RecruitmentMasterCurrentCtcpa: result.RecruitmentMasterCurrentCtcpa,
-        RecruitmentMasterExpectedCtcpa: result.RecruitmentMasterExpectedCtcpa,
-        RecruitmentMasterRecommendedCtcpa: result.RecruitmentMasterRecommendedCtcpa,
+        RecruitmentMasterCurrentCTCPA: result.RecruitmentMasterCurrentCTCPA,
+        RecruitmentMasterExpectedCTCPA: result.RecruitmentMasterExpectedCTCPA,
+        RecruitmentMasterRecommendedCTCPA: result.RecruitmentMasterRecommendedCTCPA,
         RecruitmentMasterExpectedJoiningDate: result.RecruitmentMasterExpectedJoiningDate,
         RecruitmentMasterHrcomment: result.RecruitmentMasterHrcomment,
         RecruitmentMasterRecruitmentStageStatusId: result.RecruitmentMasterRecruitmentStageStatusId,

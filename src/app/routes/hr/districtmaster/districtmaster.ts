@@ -59,7 +59,7 @@ export class Districtmaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   //expandable = false;
   columnResizable = false;
@@ -106,7 +106,7 @@ export class Districtmaster implements OnInit {
     {
       header: this.translate.stream('Action'),
       field: 'action',
-      minWidth: 140,
+      width: '140px',
       pinned: 'right',
       type: 'button',
       buttons: [
@@ -126,7 +126,7 @@ export class Districtmaster implements OnInit {
             closeText: this.translate.stream('close'),
             okText: this.translate.stream('ok'),
           },
-          click: record => this.delete(record),
+          click: (record: any) => this.delete(record),
         },
       ],
     },
@@ -149,7 +149,7 @@ export class Districtmaster implements OnInit {
     this.dialog.open(AddEditDistrictComponent, {
 
       width: '80%',
-      height: '70%',
+      height: '60%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: { District: record },
@@ -196,8 +196,8 @@ export class Districtmaster implements OnInit {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditDistrictComponent, {
-      width: '70%',
-      height: '65%',
+      width: '80%',
+      height: '60%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {}

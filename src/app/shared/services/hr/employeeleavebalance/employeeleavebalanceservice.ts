@@ -4,42 +4,51 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IEmployeeLeaveBalance } from '@shared/interfaces/hr/employeeleavebalance';
 import { de } from 'date-fns/locale';
+import { apiEnvironment } from '@core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EmployeeLeaveBalanceservice {
-  private EmployeeLeaveBalanceUrl = 'https://localhost:7019/api/EmployeeLeaveBalance/GetAllEmployeeLeaveBalance';
-  private insertEmployeeLeaveBalanceUrl = 'https://localhost:7019/api/EmployeeLeaveBalance/CreateEmployeeLeaveBalance';
-  private updateEmployeeLeaveBalanceUrl = 'https://localhost:7019/api/EmployeeLeaveBalance/UpdateEmployeeLeaveBalance';
-  private deleteEmployeeLeaveBalanceUrl = 'https://localhost:7019/api/EmployeeLeaveBalance/DeleteEmployeeLeaveBalance';
-  private getEmployeeLeaveBalanceByIdUrl = 'https://localhost:7019/api/EmployeeLeaveBalance/getEmployeeLeaveBalancebyid';
-  private EmployeeMasterPersonalDetailsUrl = 'https://localhost:7019/api/EmployeeMaster/GetAllEmployeeMasterPersonalDetails';
+ 
+
+  private baseUrl = apiEnvironment.baseUrl;
 
   constructor(private http: HttpClient) { }
 
   getAllEmployeeLeaveBalance(): Observable<any[]> {
-    debugger;
-    return this.http.get<any[]>(this.EmployeeLeaveBalanceUrl)
-  }
-  insertEmployeeLeaveBalance(insertEmployeeLeaveBalance: IEmployeeLeaveBalance): Observable<any> {
-    return this.http.post(this.insertEmployeeLeaveBalanceUrl, insertEmployeeLeaveBalance);
-  }
-  updateEmployeeLeaveBalance(updateEmployeeLeaveBalance: IEmployeeLeaveBalance): Observable<any> {
-    return this.http.put(this.updateEmployeeLeaveBalanceUrl, updateEmployeeLeaveBalance);
-  }
-  deleteEmployeeLeaveBalance(EmployeeLeaveBalanceId: number): Observable<any> {
-    return this.http.delete(`${this.deleteEmployeeLeaveBalanceUrl}/${EmployeeLeaveBalanceId}`);
-  }
-  getEmployeeLeaveBalanceById(EmployeeLeaveBalanceId: number): Observable<IEmployeeLeaveBalance> {
-    return this.http.get<IEmployeeLeaveBalance>(`${this.getEmployeeLeaveBalanceByIdUrl}/${EmployeeLeaveBalanceId}`);
-  }
-getEmployeeMasterPersonalDetails(): Observable<any[]> {
-    return this.http.get<any[]>(this.EmployeeMasterPersonalDetailsUrl)
+    return this.http.get<any[]>(
+      `${this.baseUrl}EmployeeLeaveBalance/GetAllEmployeeLeaveBalance`
+    );
   }
 
-      private employeeurl = 'https://localhost:7019/api/RecruitmentMaster'
-    getAllEmployeeId(): Observable<any[]> {
-        return this.http.get<any[]>(`${this.employeeurl}/getemployeeidandname`);
-    }
+  insertEmployeeLeaveBalance(insertEmployeeLeaveBalance: any): Observable<any> {
+    return this.http.post(
+      `${this.baseUrl}EmployeeLeaveBalance/CreateEmployeeLeaveBalance`,
+      insertEmployeeLeaveBalance
+    );
+  }
+
+  updateEmployeeLeaveBalance(updateEmployeeLeaveBalance: any): Observable<any> {
+    return this.http.put(
+      `${this.baseUrl}EmployeeLeaveBalance/UpdateEmployeeLeaveBalance`,
+      updateEmployeeLeaveBalance
+    );
+  }
+
+  deleteEmployeeLeaveBalance(EmployeeLeaveBalanceId: number): Observable<any> {
+    return this.http.delete(
+      `${this.baseUrl}EmployeeLeaveBalance/DeleteEmployeeLeaveBalance/${EmployeeLeaveBalanceId}`
+    );
+  }
+
+  getEmployeeLeaveBalanceById(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}EmployeeLeaveBalance/getEmployeeLeaveBalancebyid`);
+  }
+
+  getEmployeeMasterPersonalDetails(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.baseUrl}EmployeeMaster/GetAllEmployeeMasterPersonalDetails`);
+  }
+
+
 }

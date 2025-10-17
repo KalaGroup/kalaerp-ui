@@ -1,34 +1,30 @@
 <mat-card>
   <mat-card-title>
-    {{ isEditMode ? 'Edit Department Master' : 'Add Department Master' }}
+    {{ isEditMode ? ' Department Master' : ' Department Master' }}
   </mat-card-title>
 
   <mat-card-content>
     <form [formGroup]="departmentForm" class="form-field-full">
-      <div class="row mb-3">
-        <div class="col-sm-4 col-xl-3"></div>
 
-        <div class="col-sm-4 col-xl-3">
-          <div class="d-flex align-items-center justify-content-end" style="height: 56px">
-            <mat-checkbox formControlName="DepartmentAuth" color="primary" [disabled]="!isEditMode">
-              Auth
-            </mat-checkbox>
-            <mat-checkbox formControlName="DepartmentIsActive" color="primary" [disabled]="!isEditMode">
-              Active
-            </mat-checkbox>
-            <mat-checkbox formControlName="DepartmentIsDiscard" color="primary" [disabled]="!isEditMode"
-              *ngIf="isEditMode">
-              Discard
-            </mat-checkbox>
-          </div>
+      <!-- Checkboxes row -->
+      <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-end gap-3">
+          <mat-checkbox formControlName="DepartmentAuth" color="primary" [disabled]="!isEditMode">
+            Auth
+          </mat-checkbox>
+          <mat-checkbox formControlName="DepartmentIsActive" color="primary" [disabled]="!isEditMode">
+            Active
+          </mat-checkbox>
+          <mat-checkbox formControlName="DepartmentIsDiscard" color="primary" *ngIf="isEditMode">
+            Discard
+          </mat-checkbox>
         </div>
       </div>
 
+      <!-- 3-column layout row 1 -->
       <div class="row mb-3">
-        <!-- Left Side -->
-        <div class="col-sm-6 col-xl-6">
-          <!-- Department Code -->
-          <mat-form-field appearance="outline">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Department Code</mat-label>
             <input matInput formControlName="DepartmentCode" placeholder="Enter Department Code"
               (keypress)="allowAlphanumeric($event)" />
@@ -36,14 +32,11 @@
               *ngIf="departmentForm.get('DepartmentCode')?.hasError('required') && departmentForm.get('DepartmentCode')?.touched">
               Department Code is required
             </mat-error>
-            <mat-error
-              *ngIf="departmentForm.get('DepartmentCode')?.hasError('pattern') && departmentForm.get('DepartmentCode')?.touched">
-              Only letters and numbers allowed (2–20 characters)
-            </mat-error>
           </mat-form-field>
+        </div>
 
-          <!-- Department Name -->
-          <mat-form-field appearance="outline">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Department Name</mat-label>
             <input matInput formControlName="DepartmentName" placeholder="Enter Department Name"
               (keypress)="allowLettersAndSpaces($event)" />
@@ -51,14 +44,11 @@
               *ngIf="departmentForm.get('DepartmentName')?.hasError('required') && departmentForm.get('DepartmentName')?.touched">
               Department Name is required
             </mat-error>
-            <mat-error
-              *ngIf="departmentForm.get('DepartmentName')?.hasError('pattern') && departmentForm.get('DepartmentName')?.touched">
-              Only letters and spaces allowed (2–50 characters)
-            </mat-error>
           </mat-form-field>
+        </div>
 
-          <!-- Department Short Name -->
-          <mat-form-field appearance="outline">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Short Name</mat-label>
             <input matInput formControlName="DepartmentShortName" placeholder="Enter Short Name"
               (input)="toUpperCase($event)" (keypress)="allowUppercaseLetters($event)" />
@@ -66,145 +56,88 @@
               *ngIf="departmentForm.get('DepartmentShortName')?.hasError('required') && departmentForm.get('DepartmentShortName')?.touched">
               Department Short Name is required
             </mat-error>
-            <mat-error
-              *ngIf="departmentForm.get('DepartmentShortName')?.hasError('pattern') && departmentForm.get('DepartmentShortName')?.touched">
-              Only uppercase letters allowed (2–10 characters)
-            </mat-error>
           </mat-form-field>
+        </div>
+      </div>
 
-          <!-- Department Remark -->
-          <form [formGroup]="departmentForm" (ngSubmit)="onSubmit()">
-            <mat-form-field appearance="outline" class="w-100">
-              <mat-label>Remark</mat-label>
-              <input matInput formControlName="DepartmentRemark" placeholder="Enter Remark"
-                (input)="removeLeadingSpaces($event)" />
-
-              <!-- Max length validation -->
-              <mat-error
-                *ngIf="departmentForm.get('DepartmentRemark')?.hasError('maxlength') && departmentForm.get('DepartmentRemark')?.touched">
-                Remark cannot exceed 200 characters
-              </mat-error>
-
-              <!-- Spaces-only validation -->
-              <mat-error
-                *ngIf="departmentForm.get('DepartmentRemark')?.hasError('spacesOnly') && departmentForm.get('DepartmentRemark')?.touched">
-                Remark cannot be empty or contain only spaces
-              </mat-error>
-            </mat-form-field>
-
-
-          </form>
-
+      <!-- 3-column layout row 2 -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Division</mat-label>
+            <mat-select formControlName="DepartmentDivisionId">
+              <mat-option value="">Select Division</mat-option>
+              @for (div of filtereddivisionList; track div.DivisionId) {
+              <mat-option [value]="div.DivisionId">{{ div.DivisionName }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
         </div>
 
-
-        <!-- Right Side -->
-        <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline">
-            <mat-label>Division</mat-label>
-            <mat-select formControlName="DepartmentDivisionId" placeholder="Select Division">
-
-              <!-- 🔍 Search box -->
-              <mat-option>
-                <input matInput placeholder="Search Division..." [formControl]="divisionSearchControl"
-                  (click)="$event.stopPropagation()" />
-              </mat-option>
-
-              <mat-option value="">Select Division</mat-option>
-
-              @for (div of filtereddivisionList; track div.DivisionId) {
-              <mat-option [value]="div.DivisionId">
-                {{ div.DivisionName }}
-              </mat-option>
-              }
-            </mat-select>
-
-            @if (departmentForm.get('DepartmentDivisionId')?.invalid &&
-            departmentForm.get('DepartmentDivisionId')?.touched) {
-            <mat-error style="margin-top: -3.5px">Division is required</mat-error>
-            }
-          </mat-form-field>
-
-          <br />
-
-          <mat-form-field appearance="outline">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Parent Department</mat-label>
-
-            <mat-select formControlName="ParentDepartmentId" placeholder="Select Parent Department">
-              <!-- 🔍 Search box inside dropdown -->
-              <mat-option>
-                <input matInput type="text" placeholder="Search Department" [formControl]="departmentSearchControl"
-                  (click)="$event.stopPropagation()" />
-              </mat-option>
-
-              <!-- Default None option -->
+            <mat-select formControlName="ParentDepartmentId">
               <mat-option value="">Parent Department</mat-option>
-
-              <!-- Filtered department list -->
               @for (department of filtereddepartmentList; track department.DepartmentId) {
-              <mat-option [value]="department.DepartmentId">
-                {{ department.DepartmentName }}
-              </mat-option>
+              <mat-option [value]="department.DepartmentId">{{ department.DepartmentName }}</mat-option>
               }
             </mat-select>
-
-            @if (departmentForm.get('ParentDepartmentId')?.invalid &&
-            departmentForm.get('ParentDepartmentId')?.touched) {
-            <mat-error>Parent Department is required</mat-error>
-            }
           </mat-form-field>
+        </div>
 
-          <br />
-
-          <mat-form-field appearance="outline">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Profit Center</mat-label>
-
-            <mat-select formControlName="DepartmentProfitcenterId" placeholder="Select Profit Center">
-              <mat-option>
-                <input matInput type="text" placeholder="Search Profit Center" [formControl]="profitcenterSearchControl"
-                  (click)="$event.stopPropagation()" />
-              </mat-option>
-
+            <mat-select formControlName="DepartmentProfitcenterId">
               <mat-option value="">Select Profit Center</mat-option>
-
               @for (profitcenter of filteredprofitcenterList; track profitcenter.ProfitCenterId) {
-              <mat-option [value]="profitcenter.ProfitCenterId">
-                {{ profitcenter.ProfitCenterName }}
-              </mat-option>
+              <mat-option [value]="profitcenter.ProfitCenterId">{{ profitcenter.ProfitCenterName }}</mat-option>
               }
             </mat-select>
-
-            @if (departmentForm.get('DepartmentProfitcenterId')?.invalid &&
-            departmentForm.get('DepartmentProfitcenterId')?.touched) {
-            <mat-error>Profit Center is required</mat-error>
-            }
           </mat-form-field>
+        </div>
+      </div>
 
-
-          <mat-form-field appearance="outline">
+      <!-- 3-column layout row 3 -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Department Type</mat-label>
             <input matInput formControlName="DepartmentType" placeholder="Enter Department Type" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Remark</mat-label>
+            <input matInput formControlName="DepartmentRemark" placeholder="Enter Remark"
+              (input)="removeLeadingSpaces($event)" />
+          </mat-form-field>
+        </div>
+
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Auth Remark</mat-label>
+            <input matInput formControlName="DepartmentAuthRemark" placeholder="Enter Auth Remark" />
           </mat-form-field>
         </div>
       </div>
 
       <!-- Action buttons -->
       <div class="row">
-        <div class="col-12">
-          <div class="d-flex justify-content-center gap-3 mt-4">
-            <button mat-flat-button color="primary" class="btn-primary px-4" [disabled]="departmentForm.invalid"
-              (click)="onSubmit()">
-              <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
-              {{ isEditMode ? 'Update' : 'Save' }}
-            </button>
-
-            <button mat-button type="button" class="btn-outline px-4" (click)="onCancel()">
-              <mat-icon>close</mat-icon>
-              Cancel
-            </button>
-          </div>
+        <div class="col-12 d-flex justify-content-center gap-3 mt-4">
+          <button mat-flat-button color="primary" [disabled]="departmentForm.invalid" (click)="onSubmit()">
+            <mat-icon>{{ isEditMode ? 'update' : 'save' }}</mat-icon>
+            {{ isEditMode ? 'Update' : 'Save' }}
+          </button>
+          <button mat-button type="button" (click)="onCancel()">
+            <mat-icon>close</mat-icon>
+            Cancel
+          </button>
         </div>
       </div>
+
     </form>
   </mat-card-content>
 </mat-card>

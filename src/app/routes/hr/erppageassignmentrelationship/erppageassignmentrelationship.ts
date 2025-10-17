@@ -44,7 +44,7 @@ export class Erppageassignmentrelationship implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -208,7 +208,7 @@ export class Erppageassignmentrelationship implements OnInit {
       height: '100%',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: { relationship: record }, 
+      data: { relationship: record },
     })
       .afterClosed()
       .subscribe(result => {

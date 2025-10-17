@@ -1,111 +1,93 @@
 <mat-card>
-  <mat-card-title>
-    {{ isEditMode ? 'Edit City' : 'Add City' }}
-  </mat-card-title>
+  <!-- Title -->
 
   <mat-card-content>
+
+
     <form [formGroup]="cityForm" class="form-field-full">
-      <!-- Auto-generated fields row -->
-      <div class="row mb-3">
-        <div class="col-sm-4 col-xl-3">
 
-        </div>
+      <!-- Checkbox Row (right aligned) -->
+      <div class="row mb-3 align-items-center">
         <div class="col-sm-4 col-xl-3">
+          <mat-card-title>
+            {{ isEditMode ? ' City' : ' City' }}
+          </mat-card-title>
+        </div>
 
-        </div>
-        <div class="col-sm-4 col-xl-3">
-          <div class="d-flex align-items-center justify-content-start" style="height: 56px">
-            <mat-checkbox formControlName="CityAuth" color="primary" [disabled]="!isEditMode">
-              Auth
-            </mat-checkbox>
-            <mat-checkbox formControlName="CityIsActive" color="primary" [disabled]="!isEditMode">
-              Active
-            </mat-checkbox>
-            <mat-checkbox formControlName="CityIsDiscard" color="primary" [disabled]="!isEditMode">
-              Discard
-            </mat-checkbox>
-          </div>
+        <div class="col-sm-8 col-xl-9 d-flex justify-content-end align-items-center gap-3">
+          <mat-checkbox formControlName="CityAuth" color="primary" [disabled]="!isEditMode">Auth</mat-checkbox>
+          <mat-checkbox formControlName="CityIsActive" color="primary" [disabled]="!isEditMode">Active</mat-checkbox>
+          <mat-checkbox formControlName="CityIsDiscard" color="primary" [disabled]="!isEditMode">Discard</mat-checkbox>
         </div>
       </div>
 
+      <!-- Row 1 -->
       <div class="row mb-3">
-        <!-- Left side (City Name, Short Name, Latitude, Longitude, Remark) -->
-        <div class="col-sm-6 col-xl-6">
+        <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>City Name</mat-label>
-            <input matInput formControlName="CityName" placeholder="Enter full City name" maxlength="50"
+            <input matInput formControlName="CityName" placeholder="Enter City Name" maxlength="50"
               (keypress)="allowOnlyLettersAndSpaces($event)" />
-
-            <!-- Required Error -->
             <mat-error *ngIf="cityForm.get('CityName')?.hasError('required') && cityForm.get('CityName')?.touched">
               City Name is required
             </mat-error>
-
-            <!-- Pattern Error -->
-            <mat-error *ngIf="cityForm.get('CityName')?.hasError('pattern') && cityForm.get('CityName')?.touched">
-              Only letters and single spaces allowed (minimum 2 characters)
-            </mat-error>
-
-            <!-- Max Length Error -->
-            <mat-error *ngIf="cityForm.get('CityName')?.hasError('maxlength') && cityForm.get('CityName')?.touched">
-              City Name cannot exceed 50 characters
-            </mat-error>
+            <mat-error *ngIf="cityForm.get('CityName')?.hasError('pattern')">Only letters and single spaces
+              allowed</mat-error>
           </mat-form-field>
+        </div>
 
-
-          <mat-form-field appearance="outline">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>City Short Name</mat-label>
             <input matInput formControlName="CityShortName" placeholder="Enter short name" />
-            <mat-error *ngIf="cityForm.get('CityShortName')?.invalid 
-          && cityForm.get('CityShortName')?.touched">
-              CityShortName is required
+            <mat-error *ngIf="cityForm.get('CityShortName')?.invalid && cityForm.get('CityShortName')?.touched">
+              City Short Name is required
             </mat-error>
           </mat-form-field>
+        </div>
 
-          <mat-form-field appearance="outline">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>City Code</mat-label>
+            <input matInput formControlName="CityCode" placeholder="Enter City Code" (keypress)="blockSpaces($event)" />
+            <mat-error *ngIf="cityForm.get('CityCode')?.invalid && cityForm.get('CityCode')?.touched">
+              City Code is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Latitude</mat-label>
             <input matInput formControlName="CityLatitude" placeholder="Enter latitude" type="number" />
           </mat-form-field>
+        </div>
 
-          <mat-form-field appearance="outline">
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
             <mat-label>Longitude</mat-label>
             <input matInput formControlName="CityLongitude" placeholder="Enter longitude" type="number" />
           </mat-form-field>
-
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>City Remark</mat-label>
-            <input matInput formControlName="CityRemark" placeholder="Enter remark..."
-              (keypress)="allowLettersNumbersSpaces($event)" (blur)="trimRemark('CityRemark')" />
-
-            @if (cityForm.get('CityRemark')?.hasError('required') && cityForm.get('CityRemark')?.touched) {
-            <mat-error>City Remark is required</mat-error>
-            }
-            @if (cityForm.get('CityRemark')?.hasError('maxlength')) {
-            <mat-error>City Remark cannot exceed 200 characters</mat-error>
-            }
-            @if (cityForm.get('CityRemark')?.hasError('invalidSpaces')) {
-            <mat-error>City Remark cannot start or end with a space</mat-error>
-            }
-          </mat-form-field>
-
-
-
         </div>
 
-        <!-- Right side (Country, State, District, Tier Type) -->
-
-        <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline">
-            <mat-label>City Code</mat-label>
-            <input matInput formControlName="CityCode" placeholder="Enter full City Code"
-              (keypress)="blockSpaces($event)" />
-            @if (cityForm.get('CityCode')?.invalid && cityForm.get('CityCode')?.touched) {
-            <mat-error>City Code is required</mat-error>
-            }
+        <div class="col-sm-4 col-xl-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>City Remark</mat-label>
+            <input matInput formControlName="CityRemark" placeholder="Enter remark..." maxlength="200"
+              (keypress)="allowLettersNumbersSpaces($event)" (blur)="trimRemark('CityRemark')" />
+            <mat-error *ngIf="cityForm.get('CityRemark')?.hasError('maxlength')">
+              Remark cannot exceed 200 characters
+            </mat-error>
           </mat-form-field>
-          <br />
+        </div>
+      </div>
 
-          <!-- Dropdowns START -->
+      <!-- Row 3 -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Country</mat-label>
             <mat-select formControlName="CityCountryID" placeholder="Select country"
@@ -116,12 +98,14 @@
               <mat-option *ngFor="let country of filteredCountryList" [value]="country.CountryId">
                 {{ country.CountryName }}
               </mat-option>
-              @if (cityForm.get('CityCountryID')?.invalid && cityForm.get('CityCountryID')?.touched) {
-              <mat-error>Country name is required</mat-error>
-              }
             </mat-select>
+            <mat-error *ngIf="cityForm.get('CityCountryID')?.invalid && cityForm.get('CityCountryID')?.touched">
+              Country is required
+            </mat-error>
           </mat-form-field>
+        </div>
 
+        <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>State</mat-label>
             <mat-select formControlName="CityStateID" placeholder="Select state"
@@ -131,7 +115,9 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+        </div>
 
+        <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>District</mat-label>
             <mat-select formControlName="CityDistrictID" placeholder="Select district">
@@ -140,7 +126,12 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+        </div>
+      </div>
 
+      <!-- Row 4 -->
+      <div class="row mb-3">
+        <div class="col-sm-4 col-xl-4">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>City Tier Type</mat-label>
             <mat-select formControlName="CityTierTypeID" placeholder="Select tier type">
@@ -151,9 +142,8 @@
           </mat-form-field>
         </div>
       </div>
-      <!-- Dropdowns END -->
 
-      <!-- Action buttons -->
+      <!-- Action Buttons -->
       <div class="row">
         <div class="col-12">
           <div class="d-flex justify-content-center gap-3 mt-4">
@@ -170,6 +160,7 @@
           </div>
         </div>
       </div>
+
     </form>
   </mat-card-content>
 </mat-card>

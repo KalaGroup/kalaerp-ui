@@ -48,7 +48,7 @@ export class Facilitymaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -159,7 +159,7 @@ export class Facilitymaster implements OnInit {
 
   edit(record: IFacilityMaster) {
     this.dialog.open(AddEditFacility, {
-      width: '50%',
+      width: '60%',
       height: '50%',
       maxWidth: '80vw',
       maxHeight: '80vh',
@@ -197,7 +197,7 @@ export class Facilitymaster implements OnInit {
   }
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditFacility, {
-      width: '50%',
+      width: '60%',
       height: '50%',
       maxWidth: '80vw',
       maxHeight: '80vh',
@@ -233,6 +233,7 @@ export class Facilitymaster implements OnInit {
   }
 
   delete(value: any) {
+    debugger
     this.Facilityservices.deleteFacility(value.FacilityId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);

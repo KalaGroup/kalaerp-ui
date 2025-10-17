@@ -506,3 +506,131 @@ input[readonly] {
 .data-row {
     animation: slideIn 0.3s ease-out;
 }
+
+
+/* Reduce outer margin/padding around Activity Details card */
+.container.mt-3 {
+    margin-top: 10px !important;
+    padding: 0 !important;
+}
+
+/* Compact mat-card inside Activity Details */
+.container.mt-3 mat-card {
+    padding: 10px 15px !important;
+    box-shadow: none !important;
+    background: #fff;
+}
+
+/* Make Activity Details header more compact */
+.container.mt-3 mat-card-header {
+    padding: 8px 12px !important;
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #ddd !important;
+}
+
+/* Reduce spacing inside card content */
+.container.mt-3 mat-card-content {
+    padding: 0 !important;
+    margin-top: 0 !important;
+}
+
+/* Remove unnecessary table container margin */
+.table-container {
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+}
+
+/* Align table neatly within card */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 !important;
+}
+
+/* Make the table header and rows tighter */
+.custom-table th,
+.custom-table td {
+    padding: 8px 10px !important;
+}
+
+/* Wraps the table inside a scrollable area */
+.table-container {
+    max-height: 350px;
+    /* set scrollable height */
+    overflow-y: auto;
+    /* vertical scroll */
+    overflow-x: auto;
+    /* horizontal scroll if needed */
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Optional: style the scrollbar */
+.table-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background-color: #90a4ae;
+    border-radius: 10px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background-color: #607d8b;
+}
+
+/* Table styling */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+.custom-table th,
+.custom-table td {
+    padding: 10px 12px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.table-header {
+    background-color: #f5f5f5;
+    position: sticky;
+    top: 0;
+    /* keeps the header visible while scrolling */
+    z-index: 2;
+}
+
+/* Column widths (optional) */
+.sr-no-column {
+    width: 10%;
+}
+
+.description-column {
+    width: 70%;
+}
+
+.action-column {
+    width: 20%;
+}
+
+/* Input and button adjustments */
+.full-width-field {
+    width: 100%;
+}
+
+.add-button,
+.delete-button,
+.edit-button,
+.update-button {
+    min-width: 40px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}

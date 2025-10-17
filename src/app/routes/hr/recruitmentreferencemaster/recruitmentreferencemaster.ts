@@ -59,7 +59,7 @@ export class Recruitmentreferencemaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   columnResizable = false;
 
@@ -171,7 +171,7 @@ export class Recruitmentreferencemaster implements OnInit {
 
     this.dialog
       .open(AddEditRecruitmentreference, {
-        width: '80%',
+        width: '60%',
         height: '40%',
         maxWidth: '100vw',
         maxHeight: '100vh',
@@ -212,7 +212,7 @@ export class Recruitmentreferencemaster implements OnInit {
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditRecruitmentreference, {
       width: '60%',
-      height: '60%',
+      height: '30%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {}

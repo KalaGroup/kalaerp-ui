@@ -48,7 +48,7 @@ export class Divisionmaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -157,7 +157,7 @@ export class Divisionmaster implements OnInit {
   ];
 
   getAllDivision() {
-   
+
     this.divisionService.getAllDivision().subscribe({
       next: (data) => {
         this.list = data.map((item: any, index: number) => ({
@@ -176,7 +176,7 @@ export class Divisionmaster implements OnInit {
     // Open dialog, pass in the record
     this.dialog.open(AddEditDivision, {
       width: '80%',
-      height: '70%',
+      height: '60%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: { division: record },
@@ -215,7 +215,7 @@ export class Divisionmaster implements OnInit {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditDivision, {
-      width: '60%',
+      width: '80%',
       height: '60%',
       maxWidth: '100vw',
       maxHeight: '100vh',
@@ -224,7 +224,7 @@ export class Divisionmaster implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-    
+
         console.log('Added Division:', result);
         const payload: IDivision = {
           DivisionId: 0,
@@ -266,7 +266,7 @@ export class Divisionmaster implements OnInit {
   }
 
   delete(value: any) {
-   
+
     this.divisionService.deleteDivision(value.DivisionId).subscribe({
       next: (response) => {
         this.toastService.showSuccess('Division Deleted successfully:', response);

@@ -45,7 +45,7 @@ export class Currencymaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -54,6 +54,7 @@ export class Currencymaster implements OnInit {
   list: ICurrency[] = [];
   selectedCurrency: ICurrency | null = null;
   currencyForm: FormGroup;
+  isConfigExpanded: boolean = false;
 
   constructor(private fb: FormBuilder, private currencyService: Currencyservice, private dialog: MatDialog, private toastService: Toastservice) {
     this.currencyForm = this.fb.group({
@@ -69,6 +70,10 @@ export class Currencymaster implements OnInit {
   ngOnInit(): void {
     this.loadAllCurrencies();
   }
+  toggleConfigSection(): void {
+    this.isConfigExpanded = !this.isConfigExpanded;
+  }
+
 
   columns: MtxGridColumn[] = [
     {
@@ -180,8 +185,8 @@ export class Currencymaster implements OnInit {
 
   edit(record: any) {
     this.dialog.open(AddEditCurrency, {
-      width: '80%',
-      height: '70%',
+      width: '70%',
+      height: '60%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: { currency: record },
@@ -217,8 +222,8 @@ export class Currencymaster implements OnInit {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditCurrency, {
-      width: '80%',
-      height: '70%',
+      width: '70%',
+      height: '60%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {} // empty for add

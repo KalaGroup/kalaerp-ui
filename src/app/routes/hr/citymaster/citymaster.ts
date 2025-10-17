@@ -59,7 +59,7 @@ export class CitymasterComponent implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   //expandable = false;
   columnResizable = false;
@@ -101,7 +101,7 @@ export class CitymasterComponent implements OnInit {
     {
       header: this.translate.stream('Action'),
       field: 'action',
-      minWidth: 140,
+      width: '140px',
       pinned: 'right',
       type: 'button',
       buttons: [
@@ -121,7 +121,7 @@ export class CitymasterComponent implements OnInit {
             closeText: this.translate.stream('close'),
             okText: this.translate.stream('ok'),
           },
-          click: record => this.delete(record),
+          click: (record: any) => this.delete(record),
         },
       ],
     },
@@ -186,7 +186,7 @@ export class CitymasterComponent implements OnInit {
     });
   }
 
-  openAddDialog() {    
+  openAddDialog() {
     const dialogRef = this.dialog.open(AddEditCityComponent, {
       width: '90%',
       height: '90%',

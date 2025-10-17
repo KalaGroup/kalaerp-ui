@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-title>
-        {{ isEditMode ? 'Edit Class of Travel' : 'Add Class of Travel' }}
+        {{ isEditMode ? ' Class of Travel' : ' Class of Travel' }}
     </mat-card-title>
 
     <mat-card-content>
@@ -8,23 +8,12 @@
 
             <!-- Auto-generated Fields -->
             <div class="row mb-3">
+                <div class="col-md-8"></div>
 
-                <div class="col-md-4">
-                    <!-- Class of Travel ID -->
-                    <!-- <mat-form-field appearance="fill" class="w-100">
-                        <mat-label>Class of Travel ID</mat-label>
-                        <input matInput formControlName="ClassOfTravelId" readonly
-                            [placeholder]="isEditMode ? 'Enter ID' : 'Auto-generated'" />
-                    </mat-form-field> -->
-                </div>
-
-                <div class="col-md-4">
-                    <!-- Checkboxes -->
-                    <div class="d-flex gap-3 align-items-center mt-2">
-                        <mat-checkbox formControlName="ClassOfTravelIsAuth" color="primary">Auth</mat-checkbox>
-                        <mat-checkbox formControlName="ClassOfTravelIsActive" color="primary">Active</mat-checkbox>
-                        <mat-checkbox formControlName="ClassOfTravelIsDiscard" color="primary">Discard</mat-checkbox>
-                    </div>
+                <div class="col-md-4 d-flex justify-content-end align-items-center gap-3 mt-2">
+                    <mat-checkbox formControlName="ClassOfTravelIsAuth" color="primary">Auth</mat-checkbox>
+                    <mat-checkbox formControlName="ClassOfTravelIsActive" color="primary">Active</mat-checkbox>
+                    <mat-checkbox formControlName="ClassOfTravelIsDiscard" color="primary">Discard</mat-checkbox>
                 </div>
             </div>
 

@@ -18,9 +18,39 @@ mat-checkbox {
   margin-bottom: 10px;
 }
 
+style>mat-card-header {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+mat-card-header mat-card-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Responsive - stack on mobile */
+@media (max-width: 768px) {
+  mat-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
 /* Make readonly fields look disabled but still accessible */
 input[readonly] {
-//  background-color: #f8f9fa !important;
+  //  background-color: #f8f9fa !important;
   color: #6c757d !important;
   cursor: default !important;
 }
@@ -32,4 +62,41 @@ input[readonly] {
 
 .readonly-checkbox .mat-checkbox-inner-container {
   background-color: #f8f9fa;
+}
+
+.city-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #007bff;
+}
+
+.city-checkbox-group {
+  background-color: #f8f9fa;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+mat-card {
+  padding: 1rem 1.5rem;
+}
+
+mat-form-field {
+  font-size: 14px;
+}
+
+mat-checkbox {
+  font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  .d-flex.justify-content-between {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0.75rem;
+  }
+
+  .city-checkbox-group {
+    width: 100%;
+    justify-content: flex-start;
+  }
 }

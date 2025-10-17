@@ -53,7 +53,7 @@ export class AddEditDepartmentbudget {
 
   ngOnInit(): void {
     this.initializeForm();
-    this.loadAllDepartmentBudget();
+    //this.loadAllDepartmentBudget();
     this.loadAllEmployee();
     this.loadAllFinancialYear();
     this.loadAllDepartments();
@@ -86,21 +86,22 @@ export class AddEditDepartmentbudget {
   }
 
 
-  loadAllDepartmentBudget(): void {
-    this.departmentbudgetservice.getAllDepartmentBudget().subscribe({
-      next: res => {
-        this.DepartmentList = res;
-        console.log('All Department budgets:', this.DepartmentList);
-        if (this.isEditMode && this.data) {
-          this.setDepartmentbudgetForEdit();
-        }
-      },
-      error: err => console.error('Error loading Department', err)
-    });
-  }
+  // loadAllDepartmentBudget(): void {
+  //   this.departmentbudgetservice.getAllDepartmentBudget().subscribe({
+  //     next: res => {
+  //       this.DepartmentList = res;
+  //       console.log('All Department budgets:', this.DepartmentList);
+  //       if (this.isEditMode && this.data) {
+  //         //this.setDepartmentbudgetForEdit();
+  //       }
+  //     },
+  //     error: err => console.error('Error loading Department', err)
+  //   });
+  // }
 
 
   loadAllDepartments(): void {
+    debugger
     this.departmentbudgetservice.getAllDepartments().subscribe({
       next: res => {
         this.DepartmentList = res;
@@ -116,6 +117,7 @@ export class AddEditDepartmentbudget {
 
 
   private setDepartmentbudgetForEdit(): void {
+    debugger
     const ProfitCenterData = this.data.Departmentbudget;
     if (ProfitCenterData?.DepartmentName) {
       const match = this.DepartmentList.find(

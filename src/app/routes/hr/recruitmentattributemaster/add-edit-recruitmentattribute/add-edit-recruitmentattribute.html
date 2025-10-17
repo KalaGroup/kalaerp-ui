@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-card-title>{{ isEditMode ? 'Edit Recruitment Attributes' : 'Add Recruitment Attributes' }}</mat-card-title>
+  <mat-card-title>{{ isEditMode ? ' Recruitment Attributes' : ' Recruitment Attributes' }}</mat-card-title>
 
   <!-- Please Note Change Form control as per your Requirements  -->
   <mat-card-content>
@@ -7,11 +7,11 @@
       <!-- Auto-generated fields row -->
       <div class="row mb-3">
         <div class="col-sm-4 col-xl-3">
-          <mat-form-field *ngIf="isEditMode" appearance="fill">
+          <!-- <mat-form-field *ngIf="isEditMode" appearance="fill">
             <mat-label>Attribute ID</mat-label>
             <input matInput formControlName="RecruitmentAttributeId" [readonly]="true"
               placeholder="Enter Recruitment Attribute ID" />
-          </mat-form-field>
+          </mat-form-field> -->
         </div>
 
         <div class="col-sm-4 col-xl-3">

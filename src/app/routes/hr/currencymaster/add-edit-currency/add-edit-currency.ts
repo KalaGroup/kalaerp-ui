@@ -146,19 +146,19 @@ export class AddEditCurrency {
   }
 
 
-  allowOnlyLettersAndSpaces(event: KeyboardEvent) {
-    const pattern = /^[A-Za-z ]$/;
-    const inputChar = event.key;
+  // allowOnlyLettersAndSpaces(event: KeyboardEvent) {
+  //   const pattern = /^[A-Za-z ]$/;
+  //   const inputChar = event.key;
 
-    if (!pattern.test(inputChar)) {
-      event.preventDefault();
-    }
+  //   if (!pattern.test(inputChar)) {
+  //     event.preventDefault();
+  //   }
 
-    // Prevent leading space
-    const input = event.target as HTMLInputElement;
-    if (input.selectionStart === 0 && inputChar === ' ') {
-      event.preventDefault();
-    }
-  }
+  //   // Prevent leading space
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.selectionStart === 0 && inputChar === ' ') {
+  //     event.preventDefault();
+  //   }
+  // }
 
 }

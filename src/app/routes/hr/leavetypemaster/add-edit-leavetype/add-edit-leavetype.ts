@@ -62,7 +62,7 @@ export class AddEditLeavetype {
     this.leaveTypeForm = this.fb.group({
       LeaveTypeMasterId: [0],
       LeaveTypeMasterCode: [''],
-      LeaveTypeMasterName: ['', Validators.required, Validators.pattern(/^[A-Za-z]+$/)],
+      LeaveTypeMasterName: ['', Validators.required ],
       LeaveTypeMasterMaxDaysPer: ['', [Validators.required, Validators.min(1)]],
       LeaveTypeMasterContinuosDaysPerYear: [''],
       LeaveTypeMasterCanCarryForward: [''],
@@ -100,27 +100,27 @@ export class AddEditLeavetype {
     this.dialogRef.close();
   }
 
-  // Allow only letters and space while typing
-  allowLettersAndSpace(event: KeyboardEvent) {
-    const char = event.key;
-    if (!/^[A-Za-z ]$/.test(char)) {
-      event.preventDefault();
-    }
-  }
+  // // Allow only letters and space while typing
+  // allowLettersAndSpace(event: KeyboardEvent) {
+  //   const char = event.key;
+  //   if (!/^[A-Za-z ]$/.test(char)) {
+  //     event.preventDefault();
+  //   }
+  // }
 
-  // Prevent pasting invalid characters
-  blockInvalidPaste(event: ClipboardEvent) {
-    const pastedInput = event.clipboardData?.getData('text') ?? '';
-    if (!/^[A-Za-z ]+$/.test(pastedInput)) {
-      event.preventDefault();
-    }
-  }
-  allowAlphanumeric(event: KeyboardEvent) {
-    const pattern = /^[A-Za-z0-9]$/;
-    if (!pattern.test(event.key)) {
-      event.preventDefault();
-    }
-  }
+  // // Prevent pasting invalid characters
+  // blockInvalidPaste(event: ClipboardEvent) {
+  //   const pastedInput = event.clipboardData?.getData('text') ?? '';
+  //   if (!/^[A-Za-z ]+$/.test(pastedInput)) {
+  //     event.preventDefault();
+  //   }
+  // }
+  // allowAlphanumeric(event: KeyboardEvent) {
+  //   const pattern = /^[A-Za-z0-9]$/;
+  //   if (!pattern.test(event.key)) {
+  //     event.preventDefault();
+  //   }
+  // }
 
 
 

@@ -3,20 +3,20 @@
 <div class="container-fluid">
   <!-- Control Panel Card -->
   <mat-card class="mb-4 shadow-lg border-0 rounded-3 overflow-hidden">
-    <div class="config-header d-flex justify-content-between align-items-center p-4 bg-gradient cursor-pointer position-relative"
-         (click)="toggleConfigSection()">
+    <div
+      class="config-header d-flex justify-content-between align-items-center p-4 bg-gradient cursor-pointer position-relative"
+      (click)="toggleConfigSection()">
       <div class="d-flex align-items-center">
         <div class="settings-icon-wrapper me-3">
           <mat-icon class="settings-icon text-white">settings</mat-icon>
         </div>
         <div>
           <h3 class="mb-1 text-white fw-bold">Grid Configuration</h3>
-          <small class="text-white-50">Customize your data grid settings</small>
+          <!-- <small class="text-white-50">Customize your data grid settings</small> -->
         </div>
       </div>
       <div class="toggle-wrapper">
-        <mat-icon class="toggle-arrow text-white transition-transform"
-                  [class.rotate-180]="!isConfigExpanded">
+        <mat-icon class="toggle-arrow text-white transition-transform" [class.rotate-180]="!isConfigExpanded">
           keyboard_arrow_down
         </mat-icon>
       </div>
@@ -76,7 +76,8 @@
             <h6 class="text-dark fw-bold mb-0">Advanced Options</h6>
           </div>
           <div class="d-flex flex-wrap gap-4 ps-1">
-            <mat-checkbox [(ngModel)]="expandable" (change)="enableRowExpandable()" class="custom-checkbox">Row Expandable</mat-checkbox>
+            <mat-checkbox [(ngModel)]="expandable" (change)="enableRowExpandable()" class="custom-checkbox">Row
+              Expandable</mat-checkbox>
           </div>
         </div>
       </div>
@@ -84,56 +85,24 @@
   </mat-card>
 
   <!-- Action Buttons Card -->
-  <mat-card class="mb-4">
-    <mat-card-content>
-  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-    <!-- Left side - Action Buttons -->
-    <div class="d-flex flex-wrap gap-2 align-items-center">
-      <button mat-button class="action-btn" (click)="updateCell()">
-        <mat-icon>edit</mat-icon>
-        Update Cell
-      </button>
-      <button mat-button class="action-btn" (click)="updateList()">
-        <mat-icon>refresh</mat-icon>
-        Update List
-      </button>
-      <button mat-raised-button  class="primary-btn" (click)="openAddDialog()">
-        <mat-icon>add</mat-icon>
-        Add New
-      </button>
-    </div>
+  <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+    <button mat-raised-button color="primary" class="px-4 d-flex align-items-center gap-1" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      Add New
+    </button>
   </div>
-</mat-card-content>
-  </mat-card>
 
   <!-- Data Grid Card -->
   <mat-card>
     <mat-card-content class="p-0">
-      <mtx-grid
-        [data]="list"
-        [columns]="columns"
-        [loading]="isLoading"
-        [columnResizable]="columnResizable"
-        [multiSelectable]="multiSelectable"
-        [rowSelectable]="rowSelectable"
-        [hideRowSelectionCheckbox]="hideRowSelectionCheckbox"
-        [rowHover]="rowHover"
-        [rowStriped]="rowStriped"
-        [showToolbar]="showToolbar"
-        [toolbarTitle]="'Data Grid Toolbar'"
-        [columnHideable]="columnHideable"
-        [columnSortable]="columnSortable"
-        [columnPinnable]="columnPinnable"
-        [expandable]="expandable"
-        [expansionTemplate]="expansionTpl"
-        [pageOnFront]="showPaginator"
-        [showPaginator]="showPaginator"
-        [pageSizeOptions]="[5, 10, 50, 100]"
-        [pageIndex]="0"
-        [pageSize]="5"
-        (sortChange)="changeSort($event)"
-        (selectionChange)="changeSelect($event)"
-      />
+      <mtx-grid [data]="list" [columns]="columns" [loading]="isLoading" [columnResizable]="columnResizable"
+        [multiSelectable]="multiSelectable" [rowSelectable]="rowSelectable"
+        [hideRowSelectionCheckbox]="hideRowSelectionCheckbox" [rowHover]="rowHover" [rowStriped]="rowStriped"
+        [showToolbar]="showToolbar" [toolbarTitle]="'Offer Letter'" [columnHideable]="columnHideable"
+        [columnSortable]="columnSortable" [columnPinnable]="columnPinnable" [expandable]="expandable"
+        [expansionTemplate]="expansionTpl" [pageOnFront]="showPaginator" [showPaginator]="showPaginator"
+        [pageSizeOptions]="[5, 10, 50, 100]" [pageIndex]="0" [pageSize]="5" (sortChange)="changeSort($event)"
+        (selectionChange)="changeSelect($event)" />
     </mat-card-content>
   </mat-card>
 </div>
@@ -199,21 +168,26 @@
         <p><strong>Dear {{ selectedOfferLetter.RecruitmentMasterNameOfCandidates }},</strong></p>
 
         <p>With reference to your application and subsequent interview you had with us, we are pleased to offer you as
-        <strong>"{{ selectedOfferLetter.PositionMasterName }}"</strong> in our organization.</p>
+          <strong>"{{ selectedOfferLetter.PositionMasterName }}"</strong> in our organization.
+        </p>
 
-        <p>Your CTC (Cost To Company) will be <strong>Rs. {{ (calculateTotalCTC(selectedOfferLetter) / 12) | number:'1.0-0' }}</strong> per month.
-        Details of the same are mentioned below:</p>
+        <p>Your CTC (Cost To Company) will be <strong>Rs. {{ (calculateTotalCTC(selectedOfferLetter) / 12) |
+            number:'1.0-0' }}</strong> per month.
+          Details of the same are mentioned below:</p>
 
-        <p>The terms and conditions of employment will remain same as mutually agreed between you and the management of this company at the time of interview.</p>
+        <p>The terms and conditions of employment will remain same as mutually agreed between you and the management of
+          this company at the time of interview.</p>
 
         <p>You will be on probation for a period of 6 months.</p>
         <p>Leave will be applicable after 6 months from date of joining with continuous service.</p>
 
-        <p>You are requested to join on or before <strong>{{ selectedOfferLetter.OfferLetterJoinindate | date:'dd/MM/yyyy' }}</strong>.
-        On joining, you are required to come with your educational certificates, 2 nos. passport size photographs,
-        previous experience certificates & relieving letter etc at the time of joining.</p>
+        <p>You are requested to join on or before <strong>{{ selectedOfferLetter.OfferLetterJoinindate |
+            date:'dd/MM/yyyy' }}</strong>.
+          On joining, you are required to come with your educational certificates, 2 nos. passport size photographs,
+          previous experience certificates & relieving letter etc at the time of joining.</p>
 
-        <p>Kindly return duplicate copy of this letter duly signed as acceptance of employment offer within next 7 working days.</p>
+        <p>Kindly return duplicate copy of this letter duly signed as acceptance of employment offer within next 7
+          working days.</p>
 
         <p>If Duplicate copy is not received within stipulated time this offer letter will stands cancelled.</p>
       </div>
@@ -252,7 +226,8 @@
               </tr> -->
               <tr>
                 <td>City Compensatory Allowances (CCA)</td>
-                <td class="amount">{{ selectedOfferLetter.OfferLetterCityCompensatoryAlowance || 0 | number:'1.0-0' }}</td>
+                <td class="amount">{{ selectedOfferLetter.OfferLetterCityCompensatoryAlowance || 0 | number:'1.0-0' }}
+                </td>
               </tr>
               <tr>
                 <td>Miscellaneous</td>
@@ -260,7 +235,8 @@
               </tr>
               <tr class="gross-total">
                 <td><strong>Gross Amount</strong></td>
-                <td class="amount"><strong>{{ selectedOfferLetter.OfferLetterGross || 18000 | number:'1.0-0' }}</strong></td>
+                <td class="amount"><strong>{{ selectedOfferLetter.OfferLetterGross || 18000 | number:'1.0-0' }}</strong>
+                </td>
               </tr>
               <tr>
                 <td>Employee Provident Fund (P.F)</td>
@@ -276,7 +252,8 @@
               </tr>
               <tr class="take-home-total">
                 <td><strong>Take Home Salary</strong></td>
-                <td class="amount"><strong>{{ calculateTakeHomeSalary(selectedOfferLetter) | number:'1.0-0' }}</strong></td>
+                <td class="amount"><strong>{{ calculateTakeHomeSalary(selectedOfferLetter) | number:'1.0-0' }}</strong>
+                </td>
               </tr>
               <tr>
                 <td>Employer ESIC</td>
@@ -328,7 +305,8 @@
               </tr> -->
               <tr class="total-ctc">
                 <td><strong>Cost To Company Per Month (CTC PM)</strong></td>
-                <td class="amount"><strong>{{ (calculateTotalCTC(selectedOfferLetter) / 12) | number:'1.0-0' }}</strong></td>
+                <td class="amount"><strong>{{ (calculateTotalCTC(selectedOfferLetter) / 12) | number:'1.0-0' }}</strong>
+                </td>
               </tr>
               <tr class="total-ctc">
                 <td><strong>Cost To Company Per Annum (CTC PA)</strong></td>

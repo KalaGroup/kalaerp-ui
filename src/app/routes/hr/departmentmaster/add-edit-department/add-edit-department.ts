@@ -19,7 +19,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { Country } from '@shared/interfaces/hr';
 import { Departmentservice } from '@shared/services/hr/department/departmentservice';
 import { Divisionservice } from '@shared/services/hr/division/divisionservice';
 import { profitcenterservices } from '@shared/services/hr/profitcenter/profitcenterservices';

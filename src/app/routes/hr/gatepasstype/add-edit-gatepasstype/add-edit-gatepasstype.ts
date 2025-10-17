@@ -71,8 +71,7 @@ export class AddEditGatepasstype {
         '',
         [
           Validators.required,
-          Validators.pattern(/^[A-Za-z]+$/), // Only letters, no spaces
-          Validators.maxLength(50),           // Optional max length
+          // Optional max length
         ],
       ],
       GatePassTypesDescription: ['', [Validators.required]],
@@ -122,19 +121,25 @@ export class AddEditGatepasstype {
   }
 
   restrictInvalidChars(event: KeyboardEvent): void {
-    const regex = /^[A-Z0-9]$/;
+    const regex = /^[A-Za-z0-9]$/;
     if (!regex.test(event.key.toUpperCase())) {
       event.preventDefault();
     }
   }
 
-  restrictLettersOnly(event: KeyboardEvent): void {
-    const regex = /^[A-Za-z]$/; // Only letters, no spaces
+
+  allowLettersAndSpaces(event: KeyboardEvent): void {
+    const regex = /^[A-Za-z ]$/;
     if (!regex.test(event.key)) {
       event.preventDefault();
     }
-  }
 
+    // prevent double space
+    const input = event.target as HTMLInputElement;
+    if (event.key === ' ' && input.value.endsWith(' ')) {
+      event.preventDefault();
+    }
+  }
 
 
 }

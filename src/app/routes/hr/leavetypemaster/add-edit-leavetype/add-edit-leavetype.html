@@ -1,6 +1,6 @@
 <mat-card class="custom-card">
     <mat-card-title class="text-center mb-3">
-        {{ isEditMode ? 'Edit Leave Type' : 'Add Leave Type' }}
+        {{ isEditMode ? ' Leave Type' : ' Leave Type' }}
     </mat-card-title>
 
     <mat-card-content>
@@ -8,12 +8,13 @@
 
             <!-- Top Checkboxes -->
             <div class="row mb-3">
-                <div class="col-12 d-flex gap-4 align-items-center justify-content-start">
+                <div class="col-12 d-flex gap-4 align-items-center justify-content-end">
                     <mat-checkbox formControlName="LeaveTypeMasterIsActive" color="primary">Active</mat-checkbox>
                     <mat-checkbox formControlName="LeaveTypeMasterAuth" color="primary">Auth</mat-checkbox>
                     <mat-checkbox formControlName="LeaveTypeMasterIsDiscard" color="primary">Discard</mat-checkbox>
                 </div>
             </div>
+
 
             <!-- Form Fields -->
             <div class="row mb-3">
@@ -23,44 +24,36 @@
                     <!-- Leave Type Name -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Leave Type Name</mat-label>
-                        <input matInput formControlName="LeaveTypeMasterName" placeholder="Enter name"
-                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)"
-                            maxlength="50" />
+                        <input matInput formControlName="LeaveTypeMasterName" placeholder="Enter name" />
                         <mat-error
                             *ngIf="leaveTypeForm.get('LeaveTypeMasterName')?.hasError('required') && leaveTypeForm.get('LeaveTypeMasterName')?.touched">
-                            Name is required
-                        </mat-error>
-                        <mat-error
-                            *ngIf="leaveTypeForm.get('LeaveTypeMasterName')?.hasError('pattern') && leaveTypeForm.get('LeaveTypeMasterName')?.touched">
-                            Only letters and spaces are allowed
+                            Leave Type Name is required
                         </mat-error>
                     </mat-form-field>
-
-
-
 
                     <!-- Max Days Per -->
                     <mat-form-field appearance="outline" class="w-100">
-                        <mat-label> Leave Max Days </mat-label>
+                        <mat-label>Leave Max Days</mat-label>
                         <input matInput type="number" formControlName="LeaveTypeMasterMaxDaysPer"
                             placeholder="Enter max days" />
                         <mat-error
-                            *ngIf="leaveTypeForm.get('LeaveTypeMasterMaxDaysPer')?.invalid && leaveTypeForm.get('LeaveTypeMasterMaxDaysPer')?.touched">
+                            *ngIf="leaveTypeForm.get('LeaveTypeMasterMaxDaysPer')?.hasError('required') && leaveTypeForm.get('LeaveTypeMasterMaxDaysPer')?.touched">
                             Max Days is required
                         </mat-error>
                     </mat-form-field>
+
                     <!-- Bottom Checkboxes -->
                     <div class="row mb-3">
                         <div class="col-12 d-flex gap-4 align-items-center justify-content-start">
-                            <mat-checkbox formControlName="LeaveTypeMasterCanEnCash" color="primary">Can
-                                EnCash</mat-checkbox>
+                            <mat-checkbox formControlName="LeaveTypeMasterCanEnCash" color="primary">
+                                Can EnCash
+                            </mat-checkbox>
                             <mat-checkbox formControlName="LeaveTypeMasterCanCarryForward" color="primary">
-                                CanCarry Forward
+                                Can Carry Forward
                             </mat-checkbox>
                         </div>
                     </div>
                 </div>
-
 
                 <!-- Right Column -->
                 <div class="col-md-6">
@@ -68,44 +61,36 @@
                     <!-- Leave Type Code -->
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Leave Type Code</mat-label>
-                        <input matInput formControlName="LeaveTypeMasterCode" placeholder="Enter code" maxlength="20"
-                            (keypress)="allowAlphanumeric($event)" />
+                        <input matInput formControlName="LeaveTypeMasterCode" placeholder="Enter code" maxlength="20" />
                         <mat-error
                             *ngIf="leaveTypeForm.get('LeaveTypeMasterCode')?.hasError('required') && leaveTypeForm.get('LeaveTypeMasterCode')?.touched">
-                            Code is required
-                        </mat-error>
-                        <mat-error
-                            *ngIf="leaveTypeForm.get('LeaveTypeMasterCode')?.hasError('pattern') && leaveTypeForm.get('LeaveTypeMasterCode')?.touched">
-                            Only letters and numbers allowed (2–20 characters)
+                            Leave Type Code is required
                         </mat-error>
                     </mat-form-field>
 
-
                     <!-- Continuous Days Per Year -->
                     <mat-form-field appearance="outline" class="w-100">
-                        <mat-label> Leave Continuous Days Per Year</mat-label>
+                        <mat-label>Continuous Days Per Year</mat-label>
                         <input matInput type="number" formControlName="LeaveTypeMasterContinuosDaysPerYear"
                             placeholder="Enter days" />
                         <mat-error
-                            *ngIf="leaveTypeForm.get('LeaveTypeMasterContinuosDaysPerYear')?.invalid && leaveTypeForm.get('LeaveTypeMasterContinuosDaysPerYear')?.touched">
+                            *ngIf="leaveTypeForm.get('LeaveTypeMasterContinuosDaysPerYear')?.hasError('required') && leaveTypeForm.get('LeaveTypeMasterContinuosDaysPerYear')?.touched">
                             Continuous Days are required
                         </mat-error>
                     </mat-form-field>
 
-                    <!-- Continuous Days Per Year -->
+                    <!-- Required Service Months -->
                     <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>RequiredServiceMonths</mat-label>
+                        <mat-label>Required Service Months</mat-label>
                         <input matInput type="number" formControlName="LeaveTypeMasterRequiredServiceMonths"
-                            placeholder="Enter days" />
+                            placeholder="Enter months" />
                         <mat-error
-                            *ngIf="leaveTypeForm.get('LeaveTypeMasterRequiredServiceMonths')?.invalid && leaveTypeForm.get('LeaveTypeMasterRequiredServiceMonths')?.touched">
-                            Continuous Days are required
+                            *ngIf="leaveTypeForm.get('LeaveTypeMasterRequiredServiceMonths')?.hasError('required') && leaveTypeForm.get('LeaveTypeMasterRequiredServiceMonths')?.touched">
+                            Required Service Months are required
                         </mat-error>
                     </mat-form-field>
                 </div>
             </div>
-
-
 
             <!-- Remarks Fields -->
             <div class="row mb-3">
@@ -124,8 +109,6 @@
                             placeholder="Enter auth remark..." />
                     </mat-form-field>
                 </div>
-
-
             </div>
 
             <!-- Action Buttons -->

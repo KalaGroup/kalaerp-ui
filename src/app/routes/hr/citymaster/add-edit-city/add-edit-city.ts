@@ -86,7 +86,7 @@ export class AddEditCityComponent implements OnInit {
       CityCode: ['', Validators.required],
       CityLatitude: ['', Validators.required],
       CityLongitude: ['', Validators.required],
-      CityRemark: ['', Validators.required, this.noLeadingTrailingSpaceValidator],
+      CityRemark: ['', Validators.required],
       CreatedBy: ['10', Validators.required,],
 
       CityCountryID: ['', Validators.required],

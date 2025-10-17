@@ -1,6 +1,6 @@
 <mat-card>
   <mat-card-title>
-    {{ isEditMode ? 'Edit Responsibilities' : 'Add Responsibilities' }}
+    {{ isEditMode ? ' Responsibilities' : ' Responsibilities' }}
   </mat-card-title>
 
   <mat-card-content>
@@ -9,10 +9,10 @@
       <!-- Auto-generated fields and status row -->
       <div class="row mb-3">
         <div class="col-sm-4 col-xl-3">
-          <mat-form-field appearance="fill">
+          <!-- <mat-form-field appearance="fill">
             <mat-label>Created Date</mat-label>
             <input matInput formControlName="CreatedDate" readonly placeholder="Auto-generated" />
-          </mat-form-field>
+          </mat-form-field> -->
         </div>
         <div class="col-sm-3 col-xl-2">
           <div class="d-flex align-items-center justify-content-start" style="height: 56px;">
@@ -107,17 +107,15 @@
 
       <!-- Type and Remarks row -->
       <div class="row mb-3">
-        <mat-form-field appearance="outline">
-          <mat-label>Responsibilities Remark</mat-label>
-          <textarea matInput formControlName="responsibilitiesRemark" placeholder="Enter responsibilities remark"
-            rows="2" maxlength="500"></textarea>
-        </mat-form-field>
+        <div class="col-sm-6 col-xl-6">
+          <mat-form-field appearance="outline">
+            <mat-label>Responsibilities Remark</mat-label>
+            <textarea matInput formControlName="responsibilitiesRemark" placeholder="Enter responsibilities remark"
+              rows="2" maxlength="500"></textarea>
+          </mat-form-field>
+        </div>
 
-      </div>
-
-      <!-- Auth Remark row -->
-      <div class="row mb-3">
-        <div class="col-sm-12 col-xl-12">
+        <div class="col-sm-6 col-xl-6">
           <mat-form-field appearance="outline">
             <mat-label>Authorization Remark</mat-label>
             <textarea matInput formControlName="responsibilitiesAuthRemark" placeholder="Enter authorization remark"
@@ -125,6 +123,8 @@
           </mat-form-field>
         </div>
       </div>
+
+
 
       <div class="container mt-3">
         <mat-card>

@@ -1,14 +1,15 @@
 <mat-card class="shadow-lg rounded-3">
-    <mat-card-title class="text-center py-3 bg-gradient text-white">
-        {{ isEditMode ? 'Edit Facility' : 'Add Facility' }}
-    </mat-card-title>
+
 
     <mat-card-content class="config-content">
         <form [formGroup]="facilityForm" class="form-field-full" (ngSubmit)="onSubmit()">
 
             <!-- Row: Code + Name -->
             <div class="row mb-3 option-section">
-                <div class="col-sm-4 d-flex align-items-center">
+                <mat-card-title>
+                    {{ isEditMode ? ' Facility' : ' Facility' }}
+                </mat-card-title>
+                <div class="col-sm-12 d-flex align-items-center justify-content-end gap-3">
                     <mat-checkbox formControlName="FacilityIsActive" color="primary">
                         Active
                     </mat-checkbox>
@@ -16,11 +17,13 @@
                     <mat-checkbox formControlName="FacilityAuth" color="primary">
                         Authorized
                     </mat-checkbox>
+
                     <mat-checkbox formControlName="FacilityIsDiscard" color="warn">
                         Discarded
                     </mat-checkbox>
                 </div>
             </div>
+
 
             <div class="row mb-3 option-section">
                 <!-- Facility Code -->
