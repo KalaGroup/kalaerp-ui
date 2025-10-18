@@ -233,7 +233,7 @@ export class Facilitymaster implements OnInit {
   }
 
   delete(value: any) {
-    debugger
+    
     this.Facilityservices.deleteFacility(value.FacilityId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);

@@ -113,7 +113,7 @@ export class AddEditBudget {
   }
 
   loadAllEmployee(): void {
-    debugger
+    
     this.WorkstationBudgetservice.getAllEmployeeId().subscribe({
       next: res => {
         this.EmployeeList = res;
@@ -127,7 +127,7 @@ export class AddEditBudget {
   }
 
   private setEmployeeForEdit(): void {
-    debugger
+    
     const profitcenterData = this.data.workstationbudget;
     if (profitcenterData?.EmployeeMasterFullName) {
       const match = this.EmployeeList.find(
@@ -157,7 +157,7 @@ export class AddEditBudget {
   }
 
   private setFinancialyearForEdit(): void {
-    debugger
+    
     const workstationdata = this.data.workstationbudget;
 
     if (workstationdata?.WorkstationFy) {

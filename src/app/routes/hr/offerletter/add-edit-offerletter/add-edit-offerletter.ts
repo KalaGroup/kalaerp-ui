@@ -495,7 +495,7 @@ export class AddEditOfferletter  implements OnDestroy {
 
   // Auto-calculate PF based on basic salary (business logic example)
   onBasicSalaryChange(): void {
-    debugger;
+    ;
     const basic = parseFloat(this.offerLetterForm.get('OfferLetterBasic')?.value) || 0;
 
     if (basic > 0) {

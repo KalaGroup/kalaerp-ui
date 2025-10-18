@@ -165,7 +165,7 @@ export class AddEditKalaerppagedetails {
 
 
   private initializeForm(): void {
-    debugger;
+    ;
     const currentDate = new Date();
     this.erppagedetailsForm = this.fb.group({
       KalaErppageDetailsId: [''],
@@ -188,7 +188,7 @@ export class AddEditKalaerppagedetails {
       UpdatedDate: [{ value: currentDate, disabled: true }],
     });
     if (this.isEditMode) {
-      debugger;
+      ;
       console.log('Patching form with ERP Page Details data:', this.data.kalaerppagedetails);
       this.erppagedetailsForm.patchValue({
         KalaErppageDetailsId: this.data.kalaerppagedetails.KalaErppageDetailsId,
@@ -305,7 +305,7 @@ export class AddEditKalaerppagedetails {
   }
 
   private setDivisionForEdit(): void {
-    debugger;
+    ;
     let DivisionId: number | null = null;
     const divisionData = this.data.kalaerppagedetails;
 

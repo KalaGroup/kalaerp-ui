@@ -16,7 +16,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
-import { Ctcstructureservice } from '@shared/services/hr/ctcstructure/ctcstructureservice';
 
 import { Gradeservice } from '@shared/services/hr/grade/gradeservice';
 import { IGrade } from '@shared/interfaces/hr/grade';
@@ -117,8 +116,7 @@ export class AddEditCtc {
         CtcmasterMlwf: this.data.ctc.CtcmasterMlwf,
       });
       this.ctcForm.get('code')?.enable();
-      // this.ctcForm.get('CreatedDate')?.disable();
-      // this.ctcForm.get('IsActive')?.enable();
+     
       console.log('Form values after patch:', this.ctcForm.value);
     }
   }

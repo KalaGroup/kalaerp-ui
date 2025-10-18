@@ -132,7 +132,7 @@ export class AddEditRole implements OnInit {
   }
 
   loadAllDescriptions(): void {
-    debugger;
+    ;
     const roleMstId = this.data.role.RolesId;
     this.roleService.getRolesDetailsByMstId(roleMstId).subscribe({
       next: res => {
@@ -313,7 +313,7 @@ export class AddEditRole implements OnInit {
   }
 
   onSubmit(): void {
-    debugger;
+    ;
     if (this.roleForm.valid && this.description.length > 0) {
       this.roleForm.enable(); //important for active boolean
       const descriptionString = this.description.map(item => ({

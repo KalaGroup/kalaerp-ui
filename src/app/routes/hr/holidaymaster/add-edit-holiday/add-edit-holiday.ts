@@ -73,7 +73,7 @@ export class AddEditHoliday implements OnInit {
   }
 
   private initializeForm(): void {
-    debugger;
+    ;
     const currentDate = new Date().toLocaleDateString('en-GB');
     this.holidayForm = this.fb.group({
       HolidayId: [''],
@@ -90,7 +90,7 @@ export class AddEditHoliday implements OnInit {
       CreatedDate: [{ value: currentDate, disabled: true }],
     });
     if (this.isEditMode) {
-      debugger;
+      ;
       console.log('Patching form with company data:', this.data.holiday);
       this.holidayForm.patchValue({
         //CreatedDate: currentDate, tommorow dicuss with Umar
@@ -138,7 +138,7 @@ export class AddEditHoliday implements OnInit {
   }
 
   private setCompanyForEdit(): void {
-    debugger;
+    ;
     let CompanyId: number | null = null;
     const companyData = this.data.holiday;
 
@@ -180,7 +180,7 @@ export class AddEditHoliday implements OnInit {
   }
 
   private setFinancialyearForEdit(): void {
-    debugger
+    
     const profitcenterData = this.data.holiday;
 
     if (profitcenterData?.ProfitcenterFy) {
@@ -194,7 +194,7 @@ export class AddEditHoliday implements OnInit {
 
 
   onSubmit(): void {
-    debugger;
+    ;
     this.holidayForm.enable(); //important for active boolean
 
     if (this.holidayForm.valid) {

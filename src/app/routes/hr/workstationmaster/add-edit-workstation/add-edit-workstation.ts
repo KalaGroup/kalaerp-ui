@@ -60,7 +60,7 @@ export class AddEditWorkstation {
   }
 
   private initializeForm(): void {
-    debugger;
+    ;
     const currentDate = new Date();
     this.workstationForm = this.fb.group({
       WorkStationId: [''],
@@ -76,7 +76,7 @@ export class AddEditWorkstation {
       CreatedDate: [{ value: currentDate, disabled: true }],
     });
     if (this.isEditMode) {
-      debugger;
+      ;
       console.log('Patching form with workstation data:', this.data.workstation);
       this.workstationForm.patchValue({
         //CreatedDate: currentDate, tommorow dicuss with Umar
@@ -100,7 +100,7 @@ export class AddEditWorkstation {
   }
 
   loadAllProfitCenter(): void {
-    debugger;
+    ;
     this.profitcenterService.getAllProfitcenter().subscribe({
       next: res => {
         this.profitcenterList = res;
@@ -124,7 +124,7 @@ export class AddEditWorkstation {
   }
 
   private setProfitCenterForEdit(): void {
-    debugger;
+    ;
     let ProfitCenterId: number | null = null;
     const stateData = this.data.workstation;
 

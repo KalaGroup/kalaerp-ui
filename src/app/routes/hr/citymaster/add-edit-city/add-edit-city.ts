@@ -248,7 +248,7 @@ export class AddEditCityComponent implements OnInit {
 
   // ✅ Load tier types (static)
   private loadTierTypes(): void {
-    debugger
+    
     this.tierTypeList = [
       { tierTypeId: 1, TierTypeName: 'Tier 1' },
       { tierTypeId: 2, TierTypeName: 'Tier 2' },
@@ -337,7 +337,7 @@ export class AddEditCityComponent implements OnInit {
 
 
   private setTierTypeForEdit(): void {
-    debugger
+    
     let tierTypeId = null;
     const cityData = this.data.City;
 

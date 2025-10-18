@@ -1034,7 +1034,7 @@ export class AddEditCompany {
 
 
   onSubmit(): void {
-    debugger;
+    ;
     const formData = { ...this.companyForm.value };
     // Convert file to base64 if logo is selected
     if (this.selectedLogoFile) {

@@ -89,7 +89,7 @@ export class AddEditEmployeeleavebalances {
     });
 
     if (this.isEditMode) {
-      debugger;
+      ;
       console.log('Patching form with Leave Balances data:', this.data.employeeleavebalances);
       this.employeeleavebalancesForm.patchValue({
         //CreatedDate: currentDate, tommorow dicuss with Umar

@@ -63,7 +63,7 @@ export class AddEditState {
   }
 
   private initializeForm(): void {
-    debugger;
+    ;
     const currentDate = new Date();
     this.stateForm = this.fb.group({
       StateId: [''],
@@ -77,7 +77,7 @@ export class AddEditState {
       CreatedDate: [{ value: currentDate, disabled: true }],
     });
     if (this.isEditMode) {
-      debugger;
+      ;
       console.log('Patching form with country data:', this.data.state);
       this.stateForm.patchValue({
         //CreatedDate: currentDate, tommorow dicuss with Umar
@@ -121,7 +121,7 @@ export class AddEditState {
   }
 
   private setCountryForEdit(): void {
-    debugger;
+    ;
     let CountryId: number | null = null;
     const stateData = this.data.state;
 

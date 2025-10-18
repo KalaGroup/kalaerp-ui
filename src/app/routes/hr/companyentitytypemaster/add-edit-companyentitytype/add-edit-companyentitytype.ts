@@ -64,7 +64,7 @@ export class AddEditCompanyentitytype implements OnInit {
   }
 
   private initializeForm(): void {
-    debugger;
+    ;
     const currentDate = new Date();
     this.companyentitytypeForm = this.fb.group({
       CompEntityTypeId: [''],
@@ -78,7 +78,7 @@ export class AddEditCompanyentitytype implements OnInit {
       CreatedDate: [{ value: currentDate, disabled: true }],
     });
     if (this.isEditMode) {
-      debugger;
+      ;
       console.log('Patching form with Companyentitytype data:', this.data.companyentitytype);
       this.companyentitytypeForm.patchValue({
         //CreatedDate: currentDate, tommorow dicuss with Umar

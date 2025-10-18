@@ -174,7 +174,7 @@ export class Departmentbudget implements OnInit {
   ];
 
   getAllDepartmentBudget() {
-    debugger
+
     this.departmentbudgetservice.getAllDepartmentBudget().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({

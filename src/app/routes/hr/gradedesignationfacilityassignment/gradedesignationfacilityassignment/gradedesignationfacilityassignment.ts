@@ -266,7 +266,7 @@ export class Gradedesignationfacilityassignment {
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          debugger;
+        
           console.table('result', result);
           this.gradeDesignationFacilityService
             .updateAllGradeCtcDesignationFacility(result.data)
@@ -320,7 +320,7 @@ export class Gradedesignationfacilityassignment {
   }
 
   delete(value: any) {
-    debugger;
+
     console.log('Deleting record:', value);
     this.gradeDesignationFacilityService.deleteGrade(value.GradeId).subscribe({
       next: res => {

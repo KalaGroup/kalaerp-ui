@@ -165,7 +165,7 @@ export class AddEditRecruitment implements OnInit {
 
   private populateFormForEdit(): void {
     const recruitment = this.data.recruitment;
-    debugger
+    
     this.RecruitmentForm.patchValue({
       RecruitmentMasterId: recruitment.RecruitmentMasterId,
       RecruitmentMasterPositionId: recruitment.RecruitmentMasterPositionId,
@@ -205,7 +205,7 @@ export class AddEditRecruitment implements OnInit {
   }
 
   loadAllDetails(): void {
-    debugger
+    
     const RecruitmentMasterId = this.data.recruitment.RecruitmentMasterId;
     this.Recruitmentmasterservice.getRecruitmentDetailsByMstId(RecruitmentMasterId).subscribe({
       next: res => {
@@ -482,7 +482,7 @@ export class AddEditRecruitment implements OnInit {
   }
 
   private setAttributeForEdit(): void {
-    debugger
+    
     let RecruitmentAttributeId = null;
     const recruitmentData = this.data.recruitment;
 
@@ -507,7 +507,7 @@ export class AddEditRecruitment implements OnInit {
 
   // Load Employee API
   loadAllEmployee(): void {
-    debugger
+    
     this.Recruitmentmasterservice.getAllEmployeeId().subscribe({
       next: res => {
         this.EmployeeList = res;
@@ -521,7 +521,7 @@ export class AddEditRecruitment implements OnInit {
   }
 
   private setEmployeeForEdit(): void {
-    debugger
+    
     let EmployeeMasterId = null;
     const recruitmentData = this.data.recruitment;
 
@@ -545,7 +545,7 @@ export class AddEditRecruitment implements OnInit {
 
   // Load Designation API
   loadAllRecruitmentPosition(): void {
-    debugger
+    
     this.Recruitmentmasterservice.getAllpositionId().subscribe({
       next: res => {
         this.positionList = res;
@@ -558,7 +558,7 @@ export class AddEditRecruitment implements OnInit {
   }
 
   private setRecruitmentpositionForEdit(): void {
-    debugger
+    
     let PositionMasterId = null;
     const recruitmentData = this.data.recruitment;
 
@@ -582,7 +582,7 @@ export class AddEditRecruitment implements OnInit {
 
 
   onSubmit(): void {
-    debugger
+    
     if (this.RecruitmentForm.valid) {
       this.RecruitmentForm.enable(); // Ensure all fields included
 
@@ -602,7 +602,7 @@ export class AddEditRecruitment implements OnInit {
 
 
   addDetailRow(): void {
-    debugger;
+    ;
 
     // validation
     if (this.newRound == null || this.newMarks == null || this.newAttributeId == null) {
@@ -662,7 +662,7 @@ export class AddEditRecruitment implements OnInit {
   }
 
   updateDetailRow(index: number): void {
-    debugger
+    
     const current = this.Details[index];
 
     // Validation

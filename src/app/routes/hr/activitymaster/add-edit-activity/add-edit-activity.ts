@@ -125,7 +125,7 @@ export class AddEditActivity {
 
  
   loadAllDescriptions(): void {
-    debugger
+    
     const activityMstId = this.data.activity.ActivityId;
     this.ActivityServices.getActivityByMstId(activityMstId).subscribe({
       next: res => {
@@ -146,7 +146,7 @@ export class AddEditActivity {
 
   // ✅ Load Grade API
   loadAllActivityGrade(): void {
-    debugger
+    
     this.ActivityServices.getAllGrade().subscribe({
       next: res => {
         this.gradeList = res;
@@ -281,7 +281,7 @@ export class AddEditActivity {
 
 
   addRow() {
-    debugger
+    
     const desc = this.newDescription.trim();
 
     if (this.newDescription.trim() == undefined || this.newDescription.trim() == '') {

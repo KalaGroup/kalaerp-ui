@@ -55,7 +55,7 @@ export class AddEditGatepasstype {
   }
 
   private initializeForm(): void {
-    debugger;
+    ;
     const currentDate = new Date();
     this.gatepasstypeForm = this.fb.group({
       GatePassTypeId: [''],
@@ -86,7 +86,7 @@ export class AddEditGatepasstype {
       UpdatedDate: [{ value: currentDate, disabled: true }],
     });
     if (this.isEditMode) {
-      debugger;
+      ;
       console.log('Patching form with GatePassType data:', this.data.gatepasstype);
       this.gatepasstypeForm.patchValue({
         GatePassTypeId: this.data.gatepasstype.GatePassTypeId,

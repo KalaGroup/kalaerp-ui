@@ -166,7 +166,7 @@ export class AddEditPageassignmentrelationship implements OnInit {
     });
   }
   loadAllDetails(): void {
-    debugger
+    
     const ErppageAssignmentRelationshipId = this.data.relationship.ErppageAssignmentRelationshipId;
     this.ERPpageassignmentrelationshipservice.getRelationshipDetailsByMstId(ErppageAssignmentRelationshipId).subscribe({
       next: res => {
@@ -226,7 +226,7 @@ export class AddEditPageassignmentrelationship implements OnInit {
 
 
   loadAllpagetittel(): void {
-    debugger
+    
     this.ERPpageassignmentrelationshipservice.getAllpagetittel().subscribe({
       next: res => {
         this.PageTittelList = res;
@@ -239,7 +239,7 @@ export class AddEditPageassignmentrelationship implements OnInit {
   }
 
   private setpagetittelForEdit(): void {
-    debugger
+    
     let KalaErppageDetailsId = null;
     const pageData = this.data.relationship;
 
@@ -263,7 +263,7 @@ export class AddEditPageassignmentrelationship implements OnInit {
 
 
   loadAllDivision(): void {
-    debugger
+    
     this.ERPpageassignmentrelationshipservice.getAllDivision().subscribe({
       next: res => {
         this.divisionList = res;
@@ -280,7 +280,7 @@ export class AddEditPageassignmentrelationship implements OnInit {
 
 
   private setDivisionForEdit(): void {
-    debugger;
+    ;
     let DivisionId: number | null = null;
     const divisionData = this.data.relationship;
 
@@ -373,7 +373,7 @@ export class AddEditPageassignmentrelationship implements OnInit {
   }
 
   onSubmit(): void {
-    debugger
+    
     if (this.ERPForm.valid) {
       this.ERPForm.enable(); // Ensure all fields included
 
@@ -391,7 +391,7 @@ export class AddEditPageassignmentrelationship implements OnInit {
   }
 
   addDetailRow(): void {
-    debugger
+    
     if (this.ErppageAssignmentRelationshipDetailsPageId == null ||
       this.ErppageAssignmentRelationshipDetailschecker1PositiontId == null ||
       this.ErppageAssignmentRelationshipDetailschecker2PositiontId == null ||
@@ -447,7 +447,7 @@ export class AddEditPageassignmentrelationship implements OnInit {
   }
 
   editDetailRow(index: number): void {
-    debugger
+    
     const current = this.Details[index];
     this.Details[index] = {
       ...current,
@@ -463,7 +463,7 @@ export class AddEditPageassignmentrelationship implements OnInit {
   }
 
   updateDetailRow(index: number): void {
-    debugger
+    
     const current = this.Details[index];
 
     // Duplicate check
