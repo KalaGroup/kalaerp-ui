@@ -61,7 +61,7 @@ export class Recruitmentattributemaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -171,8 +171,8 @@ export class Recruitmentattributemaster implements OnInit {
   }
   edit(record: IRecruitmentAttribute) {
     this.dialog.open(AddEditRecruitmentattribute, {
-      width: '70%',
-      height: '70%',
+      width: '60%',
+      height: '50%',
       maxWidth: '80vw',
       maxHeight: '80vh',
       data: { recruitmentattribute: record },
@@ -214,7 +214,7 @@ export class Recruitmentattributemaster implements OnInit {
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditRecruitmentattribute, {
       width: '60%',
-      height: '60%',
+      height: '50%',
       maxWidth: '100vw',
       maxHeight: '80vh',
       data: {}

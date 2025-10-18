@@ -49,7 +49,7 @@ export class employeetypemaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -155,7 +155,7 @@ export class employeetypemaster implements OnInit {
     // Open dialog, pass in the record
     this.dialog.open(AddEditEmployeetype, {
       width: '65%',
-      height: '65%',
+      height: '50%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: { employeetype: record },
@@ -192,7 +192,7 @@ export class employeetypemaster implements OnInit {
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditEmployeetype, {
       width: '65%',
-      height: '65%',
+      height: '50%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {} // empty for add

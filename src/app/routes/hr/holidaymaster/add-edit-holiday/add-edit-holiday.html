@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-card-title>{{ isEditMode ? 'Edit Holiday Master' : 'Add Holiday Master' }}</mat-card-title>
+  <mat-card-title>{{ isEditMode ? ' Holiday Master' : ' Holiday Master' }}</mat-card-title>
 
   <!-- Please Note Change Form control as per your Requirements  -->
   <mat-card-content>
@@ -7,8 +7,8 @@
       <div class="row mb-3">
         <div class="col-sm-4 col-xl-3"></div>
 
-        <div class="col-sm-4 col-xl-3">
-          <div class="d-flex align-items-center justify-content-end" style="height: 56px">
+        <div class="col-sm-8 col-xl-9">
+          <div class="d-flex align-items-center justify-content-end gap-3" style="height: 56px;">
             <mat-checkbox formControlName="HolidayAuth" color="primary" [disabled]="!isEditMode">
               Auth
             </mat-checkbox>
@@ -21,7 +21,9 @@
             </mat-checkbox>
           </div>
         </div>
+
       </div>
+
 
       <div class="row mb-3">
         <!-- Left side  -->

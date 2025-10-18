@@ -1,22 +1,31 @@
 <mat-card class="custom-card">
-  <mat-card-title class="text-center mb-3">
-    {{ isEditMode ? 'Edit Employee Leave Balances' : 'Add Employee Leave Balances' }}
-  </mat-card-title>
+
 
   <mat-card-content>
     <form [formGroup]="employeeleavebalancesForm" class="form-field-full">
       <!-- Checkboxes -->
-      <div class="row mb-3">
-        <div class="col-12 d-flex flex-wrap gap-3 align-items-center">
+      <div class="row mb-3 align-items-center">
+        <!-- Left side: Title -->
+        <div class="col-sm-6 col-xl-6">
+          <mat-card-title class="m-0 leave-title">
+            {{ isEditMode ? 'Employee Leave Balances' : 'Employee Leave Balances' }}
+          </mat-card-title>
+        </div>
+
+        <!-- Right side: Checkboxes -->
+        <div class="col-sm-6 col-xl-6 d-flex justify-content-end align-items-center gap-3 flex-wrap">
           <mat-checkbox formControlName="LeaveBalancesIsActive" color="primary">
             Active
           </mat-checkbox>
-          <mat-checkbox formControlName="LeaveBalancesAuth" color="primary">Auth</mat-checkbox>
+          <mat-checkbox formControlName="LeaveBalancesAuth" color="primary">
+            Auth
+          </mat-checkbox>
           <mat-checkbox formControlName="LeaveBalancesIsDiscard" color="primary">
             Discard
           </mat-checkbox>
         </div>
       </div>
+
 
       <!-- Form Fields -->
       <div class="row mb-3">

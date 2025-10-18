@@ -13,14 +13,10 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
-import { MtxDialog } from '@ng-matero/extensions/dialog';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { PageHeader } from '@shared';
 import { Toastservice } from 'app/routes/toastservice';
-import { Country, Currency } from '@shared/interfaces/hr';
-import { AddEditCurrency } from '../currencymaster/add-edit-currency/add-edit-currency';
-import { id } from 'date-fns/locale';
 import { AddEditCompanyentitytype } from './add-edit-companyentitytype/add-edit-companyentitytype';
 import { ICompanyentitytype } from '@shared/interfaces/hr/companyentitytype';
 import { Companyentitytypeservice } from '@shared/services/hr/companyentitytype/companyentitytypeservice';
@@ -64,7 +60,7 @@ export class Companyentitytypemaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -82,6 +78,9 @@ export class Companyentitytypemaster implements OnInit {
   ) { }
   ngOnInit(): void {
     this.loadAllCompanyentitytype();
+  }
+  toggleConfigSection(): void {
+    this.isConfigExpanded = !this.isConfigExpanded;
   }
 
   CompanyEntityColumns: MtxGridColumn[] = [
@@ -168,8 +167,8 @@ export class Companyentitytypemaster implements OnInit {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditCompanyentitytype, {
-      width: '70%',
-      height: '55%',
+      width: '60%',
+      height: '45%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {},
@@ -223,8 +222,8 @@ export class Companyentitytypemaster implements OnInit {
   edit(record: any) {
     this.dialog
       .open(AddEditCompanyentitytype, {
-        width: '80%',
-        height: '70%',
+        width: '60%',
+        height: '45%',
         maxWidth: '100vw',
         maxHeight: '100vh',
         data: { companyentitytype: record },
@@ -299,4 +298,8 @@ export class Companyentitytypemaster implements OnInit {
   updateList() {
     this.list = this.list.splice(-1).concat(this.list);
   }
+}
+
+function toggleConfigSection() {
+  throw new Error('Function not implemented.');
 }

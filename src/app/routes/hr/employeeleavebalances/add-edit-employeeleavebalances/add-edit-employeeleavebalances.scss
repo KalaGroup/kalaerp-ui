@@ -20,7 +20,7 @@ mat-checkbox {
 
 /* Make readonly fields look disabled but still accessible */
 input[readonly] {
-//  background-color: #f8f9fa !important;
+  //  background-color: #f8f9fa !important;
   color: #6c757d !important;
   cursor: default !important;
 }
@@ -32,4 +32,30 @@ input[readonly] {
 
 .readonly-checkbox .mat-checkbox-inner-container {
   background-color: #f8f9fa;
+}
+
+.leave-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #121313;
+}
+
+mat-checkbox {
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .row.mb-3.align-items-center {
+    flex-direction: column;
+    text-align: left;
+
+    .col-sm-6.col-xl-6 {
+      width: 100%;
+    }
+
+    .d-flex.justify-content-end {
+      justify-content: flex-start !important;
+      margin-top: 0.5rem;
+    }
+  }
 }

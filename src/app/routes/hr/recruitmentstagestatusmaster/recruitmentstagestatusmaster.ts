@@ -61,7 +61,7 @@ export class Recruitmentstagestatusmaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   columnResizable = false;
 

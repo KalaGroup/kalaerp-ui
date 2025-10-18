@@ -1,134 +1,112 @@
+<!-- Shift Master Form -->
 <mat-card class="custom-card">
     <mat-card-title class="text-center mb-3">
-        {{ isEditMode ? 'Edit Shift Master' : 'Add Shift Master' }}
+        {{ isEditMode ? ' Shift Master' : ' Shift Master' }}
     </mat-card-title>
 
     <mat-card-content>
         <form [formGroup]="shiftMasterForm" class="form-field-full">
 
-            <!-- Checkboxes -->
+            <!-- Checkboxes row -->
             <div class="row mb-3">
-                <div class="col-12 d-flex gap-4 align-items-center justify-content-start">
+                <div class="col-12 d-flex gap-4 align-items-center justify-content-end">
                     <mat-checkbox formControlName="ShiftMasterAuth" color="primary">Auth</mat-checkbox>
                     <mat-checkbox formControlName="ShiftMasterIsActive" color="primary">Active</mat-checkbox>
                     <mat-checkbox formControlName="ShiftMasterIsDiscard" color="primary">Discard</mat-checkbox>
                 </div>
             </div>
 
+            <!-- 3-column layout for Shift Master fields -->
             <div class="row mb-3">
-                <!-- Left Column -->
-                <div class="col-md-6">
-                    <!-- Company -->
+                <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Company Name</mat-label>
-                        <mat-select formControlName="ShiftMasterCompanyId" placeholder="Select Company Name">
-                            <!-- Search -->
-                            <mat-option>
-                                <input matInput placeholder="Search Company Name" [formControl]="CompanySearchControl"
-                                    (click)="$event.stopPropagation()" />
-                            </mat-option>
-
-                            <mat-option [value]="null">Select Company Name</mat-option>
+                        <mat-select formControlName="ShiftMasterCompanyId">
+                            <mat-option [value]="null">Select Company</mat-option>
                             <mat-option *ngFor="let company of filteredCompanyList" [value]="company.CompanyId">
                                 {{ company.CompanyName }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+                </div>
 
-                    <!-- Shift Name -->
+                <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Shift Name</mat-label>
-                        <input matInput formControlName="ShiftMasterName" placeholder="Enter shift name" maxlength="50"
-                            (keypress)="allowLettersAndSpace($event)" (paste)="blockInvalidPaste($event)" />
-                        <mat-error
-                            *ngIf="shiftMasterForm.get('ShiftMasterName')?.hasError('required') && shiftMasterForm.get('ShiftMasterName')?.touched">
-                            Shift Name is required
-                        </mat-error>
-                        <mat-error
-                            *ngIf="shiftMasterForm.get('ShiftMasterName')?.hasError('pattern') && shiftMasterForm.get('ShiftMasterName')?.touched">
-                            Only letters and spaces allowed (2–50 characters)
-                        </mat-error>
-                    </mat-form-field>
-
-                    <!-- Start Time -->
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Start Time</mat-label>
-                        <input matInput type="time" formControlName="ShiftMasterStartTime" />
-                    </mat-form-field>
-                    <!-- Lunch Start -->
-                    <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Lunch Start Time</mat-label>
-                        <input matInput type="time" formControlName="ShiftMasterLunchStartTime" />
+                        <input matInput formControlName="ShiftMasterName" placeholder="Enter shift name" />
                     </mat-form-field>
                 </div>
 
-                <!-- Right Column -->
-                <div class="col-md-6">
-                    <!-- Employee Type -->
+                <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Employee Type</mat-label>
-                        <mat-select formControlName="ShiftMasterEmployeeTypeId" placeholder="Select Employee Type">
-                            <!-- Search -->
-                            <mat-option>
-                                <input matInput placeholder="Search Employee Type"
-                                    [formControl]="EmployeeTypeSearchControl" (click)="$event.stopPropagation()" />
-                            </mat-option>
-
+                        <mat-select formControlName="ShiftMasterEmployeeTypeId">
                             <mat-option [value]="null">Select Employee Type</mat-option>
                             <mat-option *ngFor="let emp of filteredEmployeeTypeList" [value]="emp.EmployeeTypeId">
                                 {{ emp.EmployeeTypeName }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
+                </div>
+            </div>
 
-                    <!-- Alias Name -->
+            <!-- Second row -->
+            <div class="row mb-3">
+                <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline" class="w-100">
-                        <mat-label>Alias Name</mat-label>
-                        <input matInput formControlName="ShiftMasterAliseName" placeholder="Enter alias name"
-                            maxlength="50" (keypress)="allowLettersAndSpace($event)"
-                            (paste)="blockInvalidPaste($event)" />
-                        <mat-error
-                            *ngIf="shiftMasterForm.get('ShiftMasterAliseName')?.hasError('required') && shiftMasterForm.get('ShiftMasterAliseName')?.touched">
-                            Alias Name is required
-                        </mat-error>
-                        <mat-error
-                            *ngIf="shiftMasterForm.get('ShiftMasterAliseName')?.hasError('pattern') && shiftMasterForm.get('ShiftMasterAliseName')?.touched">
-                            Only letters and spaces allowed (2–50 characters)
-                        </mat-error>
+                        <mat-label>Start Time</mat-label>
+                        <input matInput type="time" formControlName="ShiftMasterStartTime" />
                     </mat-form-field>
+                </div>
 
-                    <!-- End Time -->
-
+                <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>End Time</mat-label>
                         <input matInput type="time" formControlName="ShiftMasterEndTime" />
                     </mat-form-field>
+                </div>
 
+                <div class="col-sm-4 col-xl-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Alias Name</mat-label>
+                        <input matInput formControlName="ShiftMasterAliseName" placeholder="Enter alias name" />
+                    </mat-form-field>
+                </div>
+            </div>
 
-                    <!-- Lunch End -->
+            <!-- Third row -->
+            <div class="row mb-3">
+                <div class="col-sm-4 col-xl-4">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Lunch Start Time</mat-label>
+                        <input matInput type="time" formControlName="ShiftMasterLunchStartTime" />
+                    </mat-form-field>
+                </div>
 
+                <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Lunch End Time</mat-label>
                         <input matInput type="time" formControlName="ShiftMasterLunchEndTime" />
                     </mat-form-field>
-
                 </div>
 
-                <!-- Remark -->
-                <div class="col-md-6">
+                <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Remark</mat-label>
                         <input matInput formControlName="ShiftMasterRemark" placeholder="Enter remark..." />
                     </mat-form-field>
                 </div>
+            </div>
 
-                <!-- Auth Remark -->
-                <div class="col-md-6">
+            <!-- Fourth row -->
+            <div class="row mb-3">
+                <div class="col-sm-4 col-xl-4">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Auth Remark</mat-label>
                         <input matInput formControlName="ShiftMasterAuthRemark" placeholder="Enter auth remark..." />
                     </mat-form-field>
                 </div>
+                <div class="col-sm-8 col-xl-8"></div>
             </div>
 
             <!-- Action Buttons -->
@@ -145,6 +123,7 @@
                     </button>
                 </div>
             </div>
+
         </form>
     </mat-card-content>
 </mat-card>

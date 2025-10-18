@@ -1,6 +1,6 @@
 <mat-card class="custom-card">
     <mat-card-title class="text-center mb-3">
-        {{ isEditMode ? 'Edit Workstation Budget' : 'Add Workstation Budget' }}
+        {{ isEditMode ? ' Workstation Budget' : ' Workstation Budget' }}
     </mat-card-title>
 
     <mat-card-content>
@@ -8,12 +8,13 @@
 
             <!-- Checkboxes -->
             <div class="row mb-3">
-                <div class="col-12 d-flex gap-4 align-items-center justify-content-start">
+                <div class="col-12 d-flex gap-4 align-items-center justify-content-end">
                     <!-- <mat-checkbox formControlName="WorkstationBudgetAuth" color="primary">Auth</mat-checkbox> -->
                     <mat-checkbox formControlName="WorkstationBudgetIsActive" color="primary">Active</mat-checkbox>
                     <mat-checkbox formControlName="WorkstationBudgetIsDiscard" color="primary">Discard</mat-checkbox>
                 </div>
             </div>
+
 
             <!-- Form Fields -->
             <div class="row mb-3">

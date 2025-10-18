@@ -47,7 +47,7 @@ export class Qualificationmaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -195,7 +195,7 @@ export class Qualificationmaster implements OnInit {
         this.QualificationServices.updateQualification(updatePayload).subscribe({
           next: (response) => {
             console.log('Qualification updated successfully:', response);
-         
+
             this.toastService.showSuccess("Qualification updated successfully");
             this.loadAllQualification();
           },
@@ -241,7 +241,7 @@ export class Qualificationmaster implements OnInit {
             console.log('Qualification added successfully:', response);
             this.loadAllQualification();
             this.toastService.showSuccess("Qualification added successfully");
-           
+
 
           },
           error: (err) => {
@@ -268,7 +268,7 @@ export class Qualificationmaster implements OnInit {
         console.log('Qualification deleted successfully:', response);
         this.toastService.showSuccess("Qualification delete successfully")
         this.loadAllQualification();
-       
+
       },
       error: (err) => {
         console.error('Error deleting Qualification:', err);

@@ -59,7 +59,7 @@ export class Departmentbudget implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -174,6 +174,7 @@ export class Departmentbudget implements OnInit {
   ];
 
   getAllDepartmentBudget() {
+    debugger
     this.departmentbudgetservice.getAllDepartmentBudget().subscribe({
       next: data => {
         this.list = data.map((item: any, index: number) => ({

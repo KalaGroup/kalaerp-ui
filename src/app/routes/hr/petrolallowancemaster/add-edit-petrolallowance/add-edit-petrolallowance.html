@@ -1,6 +1,6 @@
 <mat-card>
     <mat-card-title>
-        {{ isEditMode ? 'Edit Petrol Allowance' : 'Add Petrol Allowance' }}
+        {{ isEditMode ? ' Petrol Allowance' : ' Petrol Allowance' }}
     </mat-card-title>
 
     <mat-card-content class="config-content">
@@ -8,19 +8,19 @@
 
             <!-- Row: ID, Created Date -->
             <div class="row mb-3 option-section">
-
-                <mat-checkbox formControlName="PetrolAllowanceIsActive" color="primary" [disabled]="!isEditMode">
-                    Active
-                </mat-checkbox>
-                <mat-checkbox formControlName="PetrolAllowanceIsAuth" color="primary" [disabled]="!isEditMode">
-                    Authorized
-                </mat-checkbox>
-                <mat-checkbox formControlName="PetrolAllowanceIsDiscard" color="warn" [disabled]="!isEditMode">
-                    Discarded
-                </mat-checkbox>
-
-
+                <div class="col-12 d-flex align-items-center justify-content-end gap-3">
+                    <mat-checkbox formControlName="PetrolAllowanceIsActive" color="primary" [disabled]="!isEditMode">
+                        Active
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="PetrolAllowanceIsAuth" color="primary" [disabled]="!isEditMode">
+                        Authorized
+                    </mat-checkbox>
+                    <mat-checkbox formControlName="PetrolAllowanceIsDiscard" color="warn" [disabled]="!isEditMode">
+                        Discarded
+                    </mat-checkbox>
+                </div>
             </div>
+
 
             <!-- Row: Rates -->
             <div class="row mb-3 option-section">

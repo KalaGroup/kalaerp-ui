@@ -46,7 +46,7 @@ export class Petrolallowancemaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -164,8 +164,8 @@ export class Petrolallowancemaster implements OnInit {
 
   edit(record: IPetrolAllowance) {
     this.dialog.open(AddEditPetrolallowance, {
-      width: '80%',
-      height: '70%',
+      width: '70%',
+      height: '50%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: { petrolallowance: record },
@@ -205,7 +205,7 @@ export class Petrolallowancemaster implements OnInit {
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditPetrolallowance, {
       width: '60%',
-      height: '60%',
+      height: '50%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {}

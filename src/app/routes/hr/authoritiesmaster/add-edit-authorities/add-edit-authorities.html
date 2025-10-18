@@ -1,15 +1,14 @@
 <mat-card>
   <mat-card-title>
-    {{ isEditMode ? 'Edit Authorities Master' : 'Add Authorities Master' }}
+    {{ isEditMode ? ' Authorities Master' : ' Authorities Master' }}
   </mat-card-title>
 
   <mat-card-content>
     <form [formGroup]="authoritiesForm" class="form-field-full">
       <div class="row mb-3">
         <div class="col-sm-4 col-xl-3"></div>
-
-        <div class="col-sm-4 col-xl-3">
-          <div class="d-flex align-items-center justify-content-end" style="height: 56px">
+        <div class="col-sm-8 col-xl-9">
+          <div class="d-flex checkbox-group justify-content-end gap-3">
             <mat-checkbox formControlName="AuthoritiesAuth" color="primary" [disabled]="!isEditMode">
               Auth
             </mat-checkbox>
@@ -24,38 +23,53 @@
         </div>
       </div>
 
+
       <div class="row mb-3">
-        <!-- Left Side -->
-        <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline">
+
+        <!-- Column 1 -->
+        <div class="col-sm-4 col-xl-4">
+          <!-- Grade -->
+          <mat-form-field appearance="outline" class="w-100 mb-3">
             <mat-label>Grade</mat-label>
             <mat-select formControlName="AuthoritiesGradeId" placeholder="Select Grade">
               <mat-option value="">Select Grade</mat-option>
-              @for (grade of filteredgradeList; track grade.GradeId) {
-              <mat-option [value]="grade.GradeId">{{ grade.GradeName }}</mat-option>
-              }
+              <mat-option *ngFor="let grade of filteredgradeList" [value]="grade.GradeId">
+                {{ grade.GradeName }}
+              </mat-option>
             </mat-select>
-            @if (authoritiesForm.get('AuthoritiesGradeId')?.invalid &&
-            authoritiesForm.get('AuthoritiesGradeId')?.touched) {
-            <mat-error>Grade is required</mat-error>
-            }
+            <mat-error
+              *ngIf="authoritiesForm.get('AuthoritiesGradeId')?.invalid && authoritiesForm.get('AuthoritiesGradeId')?.touched">
+              Grade is required
+            </mat-error>
+          </mat-form-field>
+          <!-- Remark -->
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Remark</mat-label>
+            <input matInput formControlName="AuthoritiesRemark" placeholder="Enter Remark" />
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Designation</mat-label>
-            <mat-select formControlName="AuthoritiesDesignationId" placeholder="Select Designation">
-              <mat-option value="">Select Designation</mat-option>
-              @for (desg of filtereddesignationList; track desg.DesignationId) {
-              <mat-option [value]="desg.DesignationId">{{ desg.DesignationName }}</mat-option>
-              }
+        </div>
+
+        <!-- Column 2 -->
+        <div class="col-sm-4 col-xl-4">
+          <!-- Division -->
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Division</mat-label>
+            <mat-select formControlName="AuthoritiesDivisionId" placeholder="Select Division">
+              <mat-option value="">Select Division</mat-option>
+              <mat-option *ngFor="let div of filtereddivisionList" [value]="div.DivisionId">
+                {{ div.DivisionName }}
+              </mat-option>
             </mat-select>
-            @if (authoritiesForm.get('AuthoritiesDesignationId')?.invalid &&
-            authoritiesForm.get('AuthoritiesDesignationId')?.touched) {
-            <mat-error>Designation is required</mat-error>
-            }
+            <mat-error
+              *ngIf="authoritiesForm.get('AuthoritiesDivisionId')?.invalid && authoritiesForm.get('AuthoritiesDivisionId')?.touched">
+              Division is required
+            </mat-error>
           </mat-form-field>
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Auth Remark</mat-label>
+
+          <!-- Auth Remark -->
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Authorization Remark</mat-label>
             <input matInput formControlName="AuthoritiesAuthRemark" placeholder="Enter Authorization Remark..." />
             <mat-error
               *ngIf="authoritiesForm.get('AuthoritiesAuthRemark')?.hasError('required') && authoritiesForm.get('AuthoritiesAuthRemark')?.touched">
@@ -64,31 +78,28 @@
           </mat-form-field>
         </div>
 
-        <!-- Right Side -->
-        <div class="col-sm-6 col-xl-6">
-          <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Division</mat-label>
-            <mat-select formControlName="AuthoritiesDivisionId" placeholder="Select Division">
-              <mat-option value="">Select Division</mat-option>
-              @for (div of filtereddivisionList; track div.DivisionId) {
-              <mat-option [value]="div.DivisionId">{{ div.DivisionName }}</mat-option>
-              }
+        <!-- Column 3 -->
+        <div class="col-sm-4 col-xl-4">
+
+          <!-- Designation -->
+          <mat-form-field appearance="outline" class="w-100 mb-3">
+            <mat-label>Designation</mat-label>
+            <mat-select formControlName="AuthoritiesDesignationId" placeholder="Select Designation">
+              <mat-option value="">Select Designation</mat-option>
+              <mat-option *ngFor="let desg of filtereddesignationList" [value]="desg.DesignationId">
+                {{ desg.DesignationName }}
+              </mat-option>
             </mat-select>
-            @if (authoritiesForm.get('AuthoritiesDivisionId')?.invalid &&
-            authoritiesForm.get('AuthoritiesDivisionId')?.touched) {
-            <mat-error>Division is required</mat-error>
-            }
+            <mat-error
+              *ngIf="authoritiesForm.get('AuthoritiesDesignationId')?.invalid && authoritiesForm.get('AuthoritiesDesignationId')?.touched">
+              Designation is required
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Remark</mat-label>
-            <input matInput formControlName="AuthoritiesRemark" placeholder="Enter Remark" />
-          </mat-form-field>
-
-
-          <br />
         </div>
+
       </div>
+
 
       <div class="container mt-3">
         <mat-card>

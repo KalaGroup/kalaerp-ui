@@ -10,7 +10,7 @@ export class DepartmentbudgetServices {
   private baseUrl = apiEnvironment.baseUrl;
 
   // eslint-disable-next-line @angular-eslint/prefer-inject
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // 🔹 GET all department budgets
   getAllDepartmentBudget(): Observable<any[]> {
@@ -52,13 +52,13 @@ export class DepartmentbudgetServices {
 
   // EmployeeIdFK
   getAllEmployeeId(): Observable<any[]> {
-     return this.http.get<any[]>(`${this.baseUrl}RecruitmentMaster/getemployeeidandname`);
+    return this.http.get<any[]>(`${this.baseUrl}RecruitmentMaster/getemployeeidandname`);
   }
 
 
-    // EmployeeIdFK
+  // EmployeeIdFK
   getAllDepartments(): Observable<any[]> {
-    return this.http.get<any[]>(`https://localhost:7019/api/DepartmentMaster/getalldepartments`);
+    return this.http.get<any[]>(`${this.baseUrl}DepartmentMaster/getalldepartments`);
   }
 
 }

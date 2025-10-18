@@ -45,7 +45,7 @@ export class Shiftmaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -200,10 +200,10 @@ export class Shiftmaster implements OnInit {
 
 
   edit(record: IShiftMaster) {
-    
+
     this.dialog.open(AddEditShift, {
-      width: '80%',
-      height: '90%',
+      width: '70%',
+      height: '60%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: { shiftmaster: record },
@@ -251,7 +251,7 @@ export class Shiftmaster implements OnInit {
         console.log('Update payload:', updatePayload);
         this.ShiftMasterservice.UpdateShiftMaster(updatePayload).subscribe({
           next: () => {
-           
+
             this.toastService.showSuccess("shift updated successfully");
             this.GetAllShiftMaster();
           },
@@ -265,8 +265,8 @@ export class Shiftmaster implements OnInit {
 
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditShift, {
-      width: '80%',
-      height: '77%',
+      width: '70%',
+      height: '60%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {}
@@ -309,7 +309,7 @@ export class Shiftmaster implements OnInit {
         };
         this.ShiftMasterservice.insertShiftMaster(payload).subscribe({
           next: () => {
-          
+
             this.toastService.showSuccess("shift added successfully");
             this.GetAllShiftMaster();
           },
@@ -325,7 +325,7 @@ export class Shiftmaster implements OnInit {
     this.ShiftMasterservice.deleteShiftMaster(value.ShiftMasterId).subscribe({
       next: (response) => {
         console.log('Delete success:', response);
-    
+
         this.toastService.showSuccess("shift delete successfully");
         this.GetAllShiftMaster();
       },

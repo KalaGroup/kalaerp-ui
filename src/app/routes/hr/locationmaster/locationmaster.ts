@@ -46,7 +46,7 @@ export class Locationmaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -204,8 +204,8 @@ export class Locationmaster implements OnInit {
         this.LocationServices.updateLocation(updatePayload).subscribe({
           next: (response) => {
             console.log('location updated successfully:', response);
-         
-            this.toastService.showSuccess("updated successfully");
+
+            this.toastService.showSuccess("location updated successfully");
             this.loadAllLocation();
           },
           error: (err) => {
@@ -250,8 +250,8 @@ export class Locationmaster implements OnInit {
           next: (response) => {
             console.log('Location added successfully:', response);
             this.loadAllLocation();
-            this.toastService.showSuccess("added successfully");
-          
+            this.toastService.showSuccess("location added successfully");
+
           },
           error: (err) => {
             console.error('Error while adding Location:', err);
@@ -276,8 +276,8 @@ export class Locationmaster implements OnInit {
         console.log('Delete success:', response);
         console.log('Location deleted successfully:', response);
         this.loadAllLocation();
-        this.toastService.showSuccess("delete successfully");
-       
+        this.toastService.showSuccess("location delete successfully");
+
       },
       error: (err) => {
         console.error('Error deleting Location:', err);

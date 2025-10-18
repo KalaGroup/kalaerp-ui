@@ -57,7 +57,7 @@ export class Gatepasstype implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -219,7 +219,7 @@ export class Gatepasstype implements OnInit {
                 this.toastService.showError(message);
               });
             } else {
-             
+
             }
           },
         });
@@ -261,7 +261,7 @@ export class Gatepasstype implements OnInit {
                   this.toastService.showError(message);
                 });
               } else {
-                
+
               }
             },
           });

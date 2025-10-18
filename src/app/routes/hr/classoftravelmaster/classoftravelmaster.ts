@@ -9,8 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-
-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
@@ -49,7 +47,7 @@ export class Classoftravelmaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -185,7 +183,7 @@ export class Classoftravelmaster implements OnInit {
   edit(record: Iclassoftravelmaster) { // If you have a Qualification interface, use it here
     this.dialog.open<AddEditClass, { classoftravel: Iclassoftravelmaster }, Iclassoftravelmaster>(AddEditClass, {
       width: '80%',
-      height: '70%',
+      height: '60%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: { classoftravel: record },
@@ -213,7 +211,7 @@ export class Classoftravelmaster implements OnInit {
 
         this.ClassofTravelService.updateClassOftravel(updatePayload).subscribe({
           next: (response) => {
-            this.toastService.showSuccess('class update successfully:', response);
+            this.toastService.showSuccess('class Travel update successfully:', response);
 
             this.loadAllClassoftravel();
           },
@@ -258,7 +256,7 @@ export class Classoftravelmaster implements OnInit {
           next: (response) => {
             console.log('class added successfully:', response);
             this.loadAllClassoftravel();
-            this.toastService.showSuccess('class added successfully:');
+            this.toastService.showSuccess('class Travel added successfully:');
 
 
           },
@@ -283,7 +281,7 @@ export class Classoftravelmaster implements OnInit {
         console.log('Delete success:', response);
         console.log('class deleted successfully:', response);
         this.loadAllClassoftravel();
-        this.toastService.showSuccess('class delete successfully:');
+        this.toastService.showSuccess('class Travel delete successfully:');
 
       },
       error: (err) => {

@@ -60,7 +60,7 @@ export class AddEditQualification {
       CreatedDate: [{ value: currentDate, disabled: true }],
       QualificationId: [''],
       QualificationCode: [''],
-      QualificationName: ['', [Validators.required], Validators.pattern(/^[A-Za-z ]+$/)],
+      QualificationName: ['', [Validators.required]],
       MasterQualificationTypeID: ['', [Validators.required]],
       QualificationAuth: [{ value: true, disabled: !this.isEditMode }],
       QualificationRemark: [''],
@@ -154,20 +154,6 @@ export class AddEditQualification {
       event.preventDefault();
     }
   }
-  // Prevent pasting invalid characters
-  blockInvalidPaste(event: ClipboardEvent) {
-    const pastedInput = event.clipboardData?.getData('text') ?? '';
-    if (!/^[A-Za-z ]+$/.test(pastedInput)) {
-      event.preventDefault();
-    }
-  }
 
-  // Real-time typing restriction
-  allowAlphanumeric(event: KeyboardEvent) {
-    const pattern = /^[A-Za-z0-9]$/;
-    if (!pattern.test(event.key)) {
-      event.preventDefault();
-    }
-  }
 
 }

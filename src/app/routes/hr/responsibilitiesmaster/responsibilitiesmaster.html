@@ -1,4 +1,3 @@
-
 <page-header class="bg-green-50" />
 
 <div class="container-fluid">
@@ -6,14 +5,14 @@
   <mat-card class="mb-4 shadow-lg border-0 rounded-3 overflow-hidden">
     <div
       class="config-header d-flex justify-content-between align-items-center p-4 bg-gradient cursor-pointer position-relative"
-         (click)="toggleConfigSection()">
+      (click)="toggleConfigSection()">
       <div class="d-flex align-items-center">
         <div class="settings-icon-wrapper me-3">
           <mat-icon class="settings-icon text-white">settings</mat-icon>
         </div>
         <div>
           <h3 class="mb-1 text-white fw-bold">Grid Configuration</h3>
-          <small class="text-white-50">Customize your data grid settings</small>
+          <!-- <small class="text-white-50">Customize your data grid settings</small> -->
         </div>
       </div>
       <div class="toggle-wrapper">
@@ -86,27 +85,12 @@
   </mat-card>
 
   <!-- Action Buttons Card -->
-  <mat-card class="mb-4">
-    <mat-card-content>
-  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
-    <!-- Left side - Action Buttons -->
-    <div class="d-flex flex-wrap gap-2 align-items-center">
-      <button mat-button class="action-btn" (click)="updateCell()">
-        <mat-icon>edit</mat-icon>
-        Update Cell
-      </button>
-      <button mat-button class="action-btn" (click)="updateList()">
-        <mat-icon>refresh</mat-icon>
-        Update List
-      </button>
-          <button mat-raised-button class="primary-btn" (click)="openAddDialog()">
-        <mat-icon>add</mat-icon>
-        Add New
-      </button>
-    </div>
+  <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+    <button mat-raised-button color="primary" class="px-4 d-flex align-items-center gap-1" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon>
+      Add New
+    </button>
   </div>
-</mat-card-content>
-  </mat-card>
 
   <!-- Data Grid Card -->
   <mat-card>
@@ -114,7 +98,7 @@
       <mtx-grid [data]="list" [columns]="columns" [loading]="isLoading" [columnResizable]="columnResizable"
         [multiSelectable]="multiSelectable" [rowSelectable]="rowSelectable"
         [hideRowSelectionCheckbox]="hideRowSelectionCheckbox" [rowHover]="rowHover" [rowStriped]="rowStriped"
-        [showToolbar]="showToolbar" [toolbarTitle]="'Data Grid Toolbar'" [columnHideable]="columnHideable"
+        [showToolbar]="showToolbar" [toolbarTitle]="'Responsibilities Master'" [columnHideable]="columnHideable"
         [columnSortable]="columnSortable" [columnPinnable]="columnPinnable" [expandable]="expandable"
         [expansionTemplate]="expansionTpl" [pageOnFront]="showPaginator" [showPaginator]="showPaginator"
         [pageSizeOptions]="[5, 10, 50, 100]" [pageIndex]="0" [pageSize]="5" (sortChange)="changeSort($event)"

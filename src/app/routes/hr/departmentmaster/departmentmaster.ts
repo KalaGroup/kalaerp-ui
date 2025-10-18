@@ -58,7 +58,7 @@ export class Departmentmaster implements OnInit {
   columnSortable = true;
   columnPinnable = true;
   rowHover = false;
-  rowStriped = false;
+  rowStriped = true;
   showPaginator = true;
   expandable = false;
   columnResizable = false;
@@ -201,7 +201,7 @@ export class Departmentmaster implements OnInit {
   openAddDialog() {
     const dialogRef = this.dialog.open(AddEditDepartment, {
       width: '80%',
-      height: '70%',
+      height: '50%',
       maxWidth: '100vw',
       maxHeight: '100vh',
       data: {}, // empty for add
@@ -262,7 +262,7 @@ export class Departmentmaster implements OnInit {
     this.dialog
       .open(AddEditDepartment, {
         width: '80%',
-        height: '70%',
+        height: '50%',
         maxWidth: '100vw',
         maxHeight: '100vh',
         data: { department: record },

@@ -1,22 +1,25 @@
 <mat-card class="custom-card">
   <mat-card-title class="text-center mb-3">
-    {{ isEditMode ? 'Edit Leave Applications' : 'Add Leave Applications ' }}
+    {{ isEditMode ? ' Leave Applications' : ' Leave Applications ' }}
   </mat-card-title>
 
   <mat-card-content>
     <form [formGroup]="leaveapplicationsForm" class="form-field-full">
       <!-- Checkboxes -->
       <div class="row mb-3">
-        <div class="col-12 d-flex flex-wrap gap-3 align-items-center">
+        <div class="col-12 d-flex flex-wrap gap-3 align-items-center justify-content-end">
           <mat-checkbox formControlName="LeaveApplicationsIsActive" color="primary">
             Active
           </mat-checkbox>
-          <mat-checkbox formControlName="LeaveApplicationsAuth" color="primary">Auth</mat-checkbox>
+          <mat-checkbox formControlName="LeaveApplicationsAuth" color="primary">
+            Auth
+          </mat-checkbox>
           <mat-checkbox formControlName="LeaveApplicationsIsDiscard" color="primary">
             Discard
           </mat-checkbox>
         </div>
       </div>
+
       <!-- Row 1: Employee Name | Employee ID | Type -->
       <div class="row mb-3">
         <div class="col-12 col-md-4">
