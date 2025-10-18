@@ -101,7 +101,7 @@ export class AddEditKpa {
     });
 
     if (this.isEditMode && this.data.kpa) {
-      debugger
+      
       console.log('Patching form with kpa data:', this.data.kpa);
       this.loadAllDescriptions();
       this.KPAForm.patchValue({
@@ -121,7 +121,7 @@ export class AddEditKpa {
   }
 
   loadAllDescriptions(): void {
-    debugger
+    
     const KpaMstId = this.data.kpa.Kpaid;
     this.KPAservice.getKpaByMstId(KpaMstId).subscribe({
       next: res => {
@@ -141,7 +141,7 @@ export class AddEditKpa {
   }
 
   loadAllKPAGrade(): void {
-    debugger
+    
     this.KPAservice.getAllGrade().subscribe({
       next: res => {
         this.gradeList = res;

@@ -136,7 +136,7 @@ export class AddEditLeaveapplications {
   }
 
   // private updateLeaveCount(): void {
-  //   debugger
+  //   
   //   const from = this.leaveapplicationsForm.get('range.LeaveApplicationsFromDate')?.value;
   //   const to = this.leaveapplicationsForm.get('range.LeaveApplicationsToDate')?.value;
 
@@ -226,7 +226,7 @@ export class AddEditLeaveapplications {
   }
 
   private onEmployeeChange(empId: number): void {
-    debugger
+    
     const selectedEmp = this.EmployeeList.find(e => e.EmployeeMasterId === empId);
     if (selectedEmp) {
       this.leaveapplicationsForm.patchValue({
@@ -296,7 +296,7 @@ export class AddEditLeaveapplications {
 
 
   onSave(): void {
-    debugger
+    
     if (this.leaveapplicationsForm.valid) {
       // Use getRawValue() to include disabled fields (like LeaveApplicationsLeaveCount)
       const result = this.leaveapplicationsForm.getRawValue();

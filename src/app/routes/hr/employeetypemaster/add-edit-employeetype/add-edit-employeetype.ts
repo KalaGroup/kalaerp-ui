@@ -72,7 +72,7 @@ export class AddEditEmployeetype {
 
     // If editing, pre-fill form with available data
     if (this.isEditMode && this.data.employeetype) {
-      debugger
+      
       console.log('Patching form with employeetype data:', this.data.employeetype);
       this.employeetypeForm.patchValue({
         code: this.data.employeetype.code || this.data.employeetype.EmployeeTypeCode || '',
@@ -90,7 +90,7 @@ export class AddEditEmployeetype {
   }
 
   onSubmit(): void {
-    debugger
+    
     if (this.employeetypeForm.valid) {
       this.employeetypeForm.enable();
       console.log('Form Values', this.employeetypeForm.value);

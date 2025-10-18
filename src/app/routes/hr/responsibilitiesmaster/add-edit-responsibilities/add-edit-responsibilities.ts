@@ -148,7 +148,7 @@ export class AddEditResponsibilities {
   }
 
   loadAllGrades(): void {
-    debugger
+    
     this.responsibilitiesService.getGradeList().subscribe({
       next: grades => {
         this.gradeList = grades;
@@ -170,7 +170,7 @@ export class AddEditResponsibilities {
   }
 
   private setGradeForEdit(): void {
-    debugger
+    
     let gradeId = null;
     const gradeData = this.data.responsibilities;
     // Find company entity type by name (trim whitespace for comparison)
@@ -300,7 +300,7 @@ export class AddEditResponsibilities {
   }
 
   onSubmit(): void {
-    debugger;
+    ;
     if (this.responsibilitiesMstForm.valid && this.description.length > 0) {
       this.responsibilitiesMstForm.enable();
       const descriptionString = this.description.map(item => ({
@@ -319,7 +319,7 @@ export class AddEditResponsibilities {
   }
 
   addRow() {
-    debugger;
+    ;
     const desc = this.newDescription.trim();
 
     if (this.newDescription.trim() == undefined || this.newDescription.trim() == '') {

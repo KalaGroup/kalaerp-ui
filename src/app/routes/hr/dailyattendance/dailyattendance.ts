@@ -1,6 +1,6 @@
-import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
+import { Component, inject, OnInit, TemplateRef, ViewChild, DestroyRef } from '@angular/core';
+import { ReactiveFormsModule, FormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialogModule, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
@@ -8,37 +8,68 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MtxGridColumn, MtxGridModule } from '@ng-matero/extensions/grid';
 import { TranslateService } from '@ngx-translate/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { PageHeader } from '@shared';
 import { Toastservice } from 'app/routes/toastservice';
 import { dailyattendanceservice } from '@shared/services/hr/dailyattendance/dailyattendance';
 import { IDailyAttendance } from '@shared/interfaces/hr/dailyattendance';
 import { AddEditAttendance } from './add-edit-attendance/add-edit-attendance';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { NgModel } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-dailyattendance',
-  imports: [CommonModule, MatTableModule, MatCardModule, MatDividerModule, MatButtonModule, MatIconModule,
-    ReactiveFormsModule, FormsModule, MatFormFieldModule, MatCheckboxModule, MatRadioModule, MtxGridModule,
-    PageHeader, MatDialogModule, MatDatepickerModule, MatSelectModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatCardModule,
+    MatDividerModule,
+    MatButtonModule,
+    MatIconModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatFormFieldModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MtxGridModule,
+    PageHeader,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatSelectModule,
+    MatInputModule
+  ],
   templateUrl: './dailyattendance.html',
   styleUrl: './dailyattendance.scss'
 })
 export class Dailyattendance implements OnInit {
   private readonly translate = inject(TranslateService);
-  @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
-  dialogRef!: MatDialogRef<any>;
+  private readonly fb = inject(FormBuilder);
+  private readonly dailyattendanceservice = inject(dailyattendanceservice);
+  private readonly dialog = inject(MatDialog);
+  private readonly toastService = inject(Toastservice);
+  private readonly destroyRef = inject(DestroyRef);
 
-  DailyAttendance: IDailyAttendance[] = [];
-  showForm = false;
-  editIndex: number | null = null;
+  @ViewChild('editTemplate') editTemplate!: TemplateRef<any>;
+
+  // Data
+  list: IDailyAttendance[] = [];
+  originalList: IDailyAttendance[] = [];
+  filteredList: IDailyAttendance[] = [];
+  EmployeeList: any[] = [];
+  companyList: any[] = [];
+  filteredEmployeeList: any[] = [];
+
+  // Form
+  filterForm!: FormGroup;
+  DailyAttendancefrom!: FormGroup;
+
+  // State
+  isLoading = false;
   multiSelectable = true;
   hideRowSelectionCheckbox = false;
   showToolbar = true;
@@ -50,67 +81,7 @@ export class Dailyattendance implements OnInit {
   showPaginator = true;
   expandable = false;
   columnResizable = false;
-  isLoading = false;
-  list: any[] = [];
-  isConfigExpanded: boolean = false;
-
-  // Filter form
-  filterForm!: FormGroup;
-  originalList: any[] = [];
-  filteredList: any[] = [];
-  EmployeeList: any[] = [];
-  companyList: any[] = [];
-  filteredEmployeeList: any[] = [];
-  DailyAttendancefrom!: FormGroup;
-
-  // Dropdown data
-  employeeList: any[] = [];
-  // companyList: any[] = [];
-  // EmployeeList: any[] = [];
-  isEditMode: any;
-  data: any;
-  // DailyAttendancefrom: any;
-
-  constructor(
-    private fb: FormBuilder,
-    private DailyAttendanceservice: dailyattendanceservice,
-    private dialog: MatDialog,
-    private toastService: Toastservice
-  ) {
-    // Initialize filter form
-    this.filterForm = this.fb.group({
-      fromDate: ['', Validators.required],
-      toDate: ['', Validators.required],
-      EmployeeMasterFullName: [''],
-      CompanyName: ['']
-    });
-
-  }
-
-
-  ngOnInit(): void {
-    this.filterByDate();
-    this.getAllEmployeeName();
-    this.getAllCompanyName();
-    this.initializeForm();
-
-  }
-
-  initializeForm() {
-    this.DailyAttendancefrom = this.fb.group({
-      fromDate: [''],
-      toDate: [''],
-      companyId: [''],
-      employeeId: [''],
-      // other form controls
-    });
-
-  }
-
-
-  toggleConfigSection(): void {
-    this.isConfigExpanded = !this.isConfigExpanded;
-  }
+  isConfigExpanded = false;
 
   Columns: MtxGridColumn[] = [
     {
@@ -205,31 +176,36 @@ export class Dailyattendance implements OnInit {
     }
   ];
 
+  constructor() {
+    this.initializeForms();
+  }
 
+  ngOnInit(): void {
+    this.filterByDate();
+    this.initializeForm();
+  }
 
-  // // Get all daily attendance data
-  // getAllDailyAttendance() {
-  //   this.isLoading = true;
-  //   this.DailyAttendanceservice.getAllDailyAttendance().subscribe({
-  //     next: (data) => {
-  //       this.originalList = data.map((item: any, index: number) => ({
-  //         ...item,
-  //         SNo: index + 1
-  //       }));
-  //       this.list = [...this.originalList];
-  //       this.filteredList = [...this.originalList];
-  //       this.isLoading = false;
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching daily attendance:', err);
-  //       this.isLoading = false;
-  //       this.toastService.showError('Error fetching daily attendance data');
-  //     }
-  //   });
-  // }
+  private initializeForms(): void {
+    this.filterForm = this.fb.group({
+      fromDate: ['', Validators.required],
+      toDate: ['', Validators.required]
+    });
+  }
 
+  initializeForm(): void {
+    this.DailyAttendancefrom = this.fb.group({
+      fromDate: [''],
+      toDate: [''],
+      companyId: [''],
+      employeeId: ['']
+    });
+  }
 
-  filterByDate() {
+  toggleConfigSection(): void {
+    this.isConfigExpanded = !this.isConfigExpanded;
+  }
+
+  filterByDate(): void {
     const formValues = this.filterForm.value;
 
     if (!formValues.fromDate || !formValues.toDate) {
@@ -239,294 +215,142 @@ export class Dailyattendance implements OnInit {
 
     const fromDate = new Date(formValues.fromDate);
     const toDate = new Date(formValues.toDate);
+    fromDate.setHours(0, 0, 0, 0);
+    toDate.setHours(23, 59, 59, 999);
 
     this.isLoading = true;
-    this.DailyAttendanceservice.getAllDailyAttendance().subscribe({
-      next: (data) => {
-        // Filter date-wise
-        const filtered = data.filter(item => {
-          const itemDate = new Date(item.AttendanceDate);
-          itemDate.setHours(0, 0, 0, 0);
-          return itemDate >= fromDate && itemDate <= toDate;
-        });
 
-        this.list = filtered.map((item, index) => ({ ...item, SNo: index + 1 }));
-        this.isLoading = false;
+    this.dailyattendanceservice.getAllDailyAttendance()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (data) => {
+          // Store original data
+          this.originalList = data || [];
 
-        this.list.length
-          ? this.toastService.showSuccess(`${this.list.length} record(s) found`)
-          : this.toastService.showInfo('No records found');
-      },
-      error: (err) => {
-        console.error(err);
-        this.isLoading = false;
-        this.toastService.showError('Error fetching data');
-      }
-    });
-  }
+          // Filter by date range
+          const filtered = this.originalList.filter(item => {
+            const itemDate = new Date(item.AttendanceDate);
+            itemDate.setHours(0, 0, 0, 0);
+            return itemDate >= fromDate && itemDate <= toDate;
+          });
 
+          // Add serial numbers
+          this.list = filtered.map((item, index) => ({
+            ...item,
+            SNo: index + 1
+          }));
 
+          this.filteredList = [...this.list];
+          this.isLoading = false;
 
-  // // Get all employee names for dropdown
-  // getAllEmployeeName() {
-  //   this.DailyAttendanceservice.getEmployeeName().subscribe({
-  //     next: (data) => {
-  //       this.employeeList = data;
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching employee names:', err);
-  //     }
-  //   });
-  // }
-
-  // getAllEmployeeName(): void {
-  //   this.DailyAttendanceservice.getEmployeeName().subscribe({
-  //     next: res => {
-  //       this.EmployeeList = res;
-  //       console.log('EmployeeList', this.EmployeeList);
-  //       if (this.isEditMode && this.data) {
-  //         this.setEmployeeForEdit();
-  //       }
-  //     },
-  //     error: err => console.error('Error loading employees', err)
-  //   });
-  // }
-
-  // private setEmployeeForEdit(): void {
-  //   const profitcenterData = this.data.profitcenterbudget;
-  //   if (profitcenterData?.EmployeeMasterFullName) {
-  //     const match = this.EmployeeList.find(
-  //       e => e.EmployeeMasterFullName?.trim() === profitcenterData.EmployeeMasterFullName?.trim()
-  //     );
-  //     if (match) {
-  //       this.DailyAttendancefrom.patchValue({
-  //         AttendanceEmployeeId: match.EmployeeMasterId
-  //       });
-  //     }
-  //   }
-  // }
-  getAllEmployeeName(): void {
-    this.DailyAttendanceservice.getEmployeeName().subscribe({
-      next: res => {
-        this.EmployeeList = res;
-        this.filteredEmployeeList = [...res]; // Initialize filtered list
-        console.log('EmployeeList', this.EmployeeList);
-        if (this.isEditMode && this.data) {
-          this.setEmployeeForEdit();
+          if (this.list.length > 0) {
+            this.toastService.showSuccess(`${this.list.length} record(s) found`);
+          } else {
+            this.toastService.showInfo('No records found');
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching attendance data:', err);
+          this.isLoading = false;
+          this.toastService.showError('Error fetching attendance data');
         }
-      },
-      error: err => console.error('Error loading employees', err)
-    });
-  }
-
-  private setEmployeeForEdit(): void {
-    const profitcenterData = this.data.profitcenterbudget;
-    if (profitcenterData?.EmployeeMasterFullName) {
-      const match = this.EmployeeList.find(
-        e => e.EmployeeMasterFullName?.trim() === profitcenterData.EmployeeMasterFullName?.trim()
-      );
-      if (match) {
-        this.DailyAttendancefrom.patchValue({
-          employeeId: match.EmployeeMasterId,
-          companyId: match.CompanyId // Also set company if available
-        });
-      }
-    }
-  }
-  // // Get all company names for dropdown
-  // getAllCompanyName() {
-  //   this.DailyAttendanceservice.getCompanyName().subscribe({
-  //     next: (data) => {
-  //       this.companyList = data;
-  //     },
-  //     error: (err) => {
-  //       console.error('Error fetching company names:', err);
-  //     }
-  //   });
-  // }
-
-  getAllCompanyName(): void {
-    this.DailyAttendanceservice.getCompanyName().subscribe({
-      next: (data) => {
-        this.companyList = data;
-        console.log('CompanyList', this.companyList);
-      },
-      error: (err) => {
-        console.error('Error fetching company names:', err);
-      }
-    });
-  }
-
-  onCompanyChange(companyId: string): void {
-    if (companyId) {
-      // Filter employees by selected company
-      this.filteredEmployeeList = this.EmployeeList.filter(
-        employee => employee.CompanyId === companyId
-      );
-
-      // Reset employee selection when company changes
-      this.DailyAttendancefrom.patchValue({
-        employeeId: ''
       });
-    } else {
-      // Show all employees if no company selected
-      this.filteredEmployeeList = [...this.EmployeeList];
-    }
   }
 
-
-
-  onReset(): void {
-    this.DailyAttendancefrom.reset();
-    this.filteredEmployeeList = [...this.EmployeeList];
-  }
-
-
-
-
-  // Main search/filter function
-  // filterByDate() {
-  //   debugger
-  //   const formValues = this.filterForm.value;
-
-  //   this.filteredList = this.originalList.filter(item => {
-  //     let matches = true;
-
-  //     // Filter by From Date
-  //     if (formValues.fromDate) {
-  //       const fromDate = new Date(formValues.fromDate);
-  //       const itemDate = new Date(item.AttendanceDate);
-  //       fromDate.setHours(0, 0, 0, 0);
-  //       itemDate.setHours(0, 0, 0, 0);
-  //       matches = matches && itemDate >= fromDate;
-  //     }
-
-  //     // Filter by To Date
-  //     if (formValues.toDate) {
-  //       const toDate = new Date(formValues.toDate);
-  //       const itemDate = new Date(item.AttendanceDate);
-  //       toDate.setHours(23, 59, 59, 999);
-  //       itemDate.setHours(0, 0, 0, 0);
-  //       matches = matches && itemDate <= toDate;
-  //     }
-
-  //     // Filter by Employee Name
-  //     if (formValues.EmployeeMasterFullName && formValues.EmployeeMasterFullName.trim() !== '') {
-  //       const employeeName = item.EmployeeMasterFullName || '';
-  //       matches = matches &&
-  //         employeeName.toLowerCase().includes(formValues.EmployeeMasterFullName.toLowerCase().trim());
-  //     }
-
-  //     // Filter by Company Name
-  //     if (formValues.CompanyName && formValues.CompanyName.trim() !== '') {
-  //       const companyName = item.CompanyName || '';
-  //       matches = matches &&
-  //         companyName.toLowerCase().includes(formValues.CompanyName.toLowerCase().trim());
-  //     }
-
-  //     return matches;
-  //   });
-
-  //   // Update the list with filtered results and renumber
-  //   this.list = this.filteredList.map((item, index) => ({
-  //     ...item,
-  //     SNo: index + 1
-  //   }));
-
-  //   // Show message if no results found
-  //   if (this.list.length === 0) {
-  //     this.toastService.showInfo('No records found matching your criteria');
-  //   } else {
-  //     this.toastService.showSuccess(`matching ${this.list.length} record`);
-  //   }
-  // }
-
-  // Reset filter function
-  resetFilter() {
+  resetFilter(): void {
     this.filterForm.reset();
-    this.list = [...this.originalList];
-    this.filteredList = [...this.originalList];
+    this.list = [];
+    this.filteredList = [];
+    this.originalList = [];
     this.toastService.showInfo('Filters reset successfully');
   }
 
-  // Format date for display
   formatDate(date: string): string {
     if (!date) return '';
-    const d = new Date(date);
-    return d.toLocaleDateString();
+    try {
+      return new Date(date).toLocaleDateString();
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      return '';
+    }
   }
 
-  // Export to Excel
-  exportToExcel() {
+  exportToExcel(): void {
+    if (this.list.length === 0) {
+      this.toastService.showInfo('No data to export');
+      return;
+    }
     console.log('Exporting filtered data:', this.list);
-    // Implement export functionality
+    // Implement export functionality here
   }
 
-  // Open Add Dialog
-  openAddDialog() {
+  openAddDialog(): void {
     const dialogRef = this.dialog.open(AddEditAttendance, {
       width: '70%',
       height: '70%',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: {}
+      data: { isEditMode: false }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const payload: any = {
-
-        };
-        console.log('Add payload:', payload);
-        // Add your save logic here
+        this.filterByDate();
       }
     });
   }
 
-  // Edit function
-  edit(record: IDailyAttendance) {
+  edit(record: IDailyAttendance): void {
     this.dialog.open(AddEditAttendance, {
       width: '80%',
       height: '70%',
       maxWidth: '100vw',
       maxHeight: '100vh',
-      data: { attendance: record },
+      data: { isEditMode: true, attendance: record }
     })
       .afterClosed()
       .subscribe(result => {
         if (result) {
-          const updatePayload: any = {
-
-          };
-          console.log('Update payload:', updatePayload);
-          // Add your update logic here
+          this.filterByDate();
         }
       });
   }
 
-  // Delete function
-  delete(value: any) {
-    console.log('Delete:', value);
-    // Add your delete logic here
-  }
+  // delete(record: IDailyAttendance): void {
+  //   if (confirm('Are you sure you want to delete this record?')) {
+  //     this.isLoading = true;
 
-  // Grid event handlers
-  changeSelect(e: any) {
+  //     this.dailyattendanceservice.deleteAttendance(record.AttendanceId)
+  //       .pipe(takeUntilDestroyed(this.destroyRef))
+  //       .subscribe({
+  //         next: () => {
+  //           this.toastService.showSuccess('Record deleted successfully');
+  //           this.filterByDate();
+  //         },
+  //         error: (err) => {
+  //           console.error('Error deleting record:', err);
+  //           this.isLoading = false;
+  //           this.toastService.showError('Failed to delete record');
+  //         }
+  //       });
+  //   }
+  // }
+
+  changeSelect(e: any): void {
     console.log('Selection changed:', e);
   }
 
-  changeSort(e: any) {
+  changeSort(e: any): void {
     console.log('Sort changed:', e);
   }
 
-  updateCell() {
+  updateCell(): void {
     this.list = this.list.map(item => {
-      item.weight = Math.round(Math.random() * 1000) / 100;
       return item;
     });
   }
 
-  updateList() {
-    this.list = this.list.splice(-1).concat(this.list);
+  updateList(): void {
+    this.list = this.list.slice();
   }
 }
